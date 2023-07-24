@@ -1,8 +1,8 @@
 {
-  "name": "@minimal-kit/next-ts",
-  "author": "Minimals",
-  "version": "5.1.0",
-  "description": "Next & TypeScript",
+  "name": "@mumbai-angels/admin-web",
+  "author": "Mumbai Angels",
+  "version": "1.0.0",
+  "description": "Mumbai Angels Admin Web Platform using Next.js and Typescript",
   "private": true,
   "scripts": {
     "dev": "next dev -p 8081",
