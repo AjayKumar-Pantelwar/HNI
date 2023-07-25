@@ -14,13 +14,13 @@ import { useRouter } from 'src/routes/hook';
 // hooks
 import { useMockedUser } from 'src/hooks/use-mocked-user';
 // auth
-import { useAuthContext } from 'src/auth/hooks';
 // components
 import { varHover } from 'src/components/animate';
 import { useSnackbar } from 'src/components/snackbar';
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
 import { useDispatch } from 'src/redux/store';
 import { authSlice } from 'src/redux/slices/auth';
+import { authService } from 'src/services/auth.service';
 
 // ----------------------------------------------------------------------
 
@@ -53,12 +53,14 @@ export default function AccountPopover() {
 
   const handleLogout = async () => {
     try {
-      dispatch(authSlice.actions.logout());
-      popover.onClose();
-      router.replace('/');
+      await authService.logout();
     } catch (error) {
       console.error(error);
       enqueueSnackbar('Unable to logout!', { variant: 'error' });
+    } finally {
+      dispatch(authSlice.actions.logout());
+      popover.onClose();
+      router.replace('/');
     }
   };
 
