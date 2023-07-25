@@ -19,6 +19,8 @@ import { useAuthContext } from 'src/auth/hooks';
 import { varHover } from 'src/components/animate';
 import { useSnackbar } from 'src/components/snackbar';
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
+import { useDispatch } from 'src/redux/store';
+import { authSlice } from 'src/redux/slices/auth';
 
 // ----------------------------------------------------------------------
 
@@ -41,10 +43,9 @@ const OPTIONS = [
 
 export default function AccountPopover() {
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const { user } = useMockedUser();
-
-  const { logout } = useAuthContext();
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -52,7 +53,7 @@ export default function AccountPopover() {
 
   const handleLogout = async () => {
     try {
-      await logout();
+      dispatch(authSlice.actions.logout());
       popover.onClose();
       router.replace('/');
     } catch (error) {

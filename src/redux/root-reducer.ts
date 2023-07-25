@@ -3,6 +3,7 @@ import { persistReducer } from 'redux-persist';
 import createWebStorage from 'redux-persist/lib/storage/createWebStorage';
 // slices
 import checkoutReducer from './slices/checkout';
+import { authSlice } from './slices/auth';
 
 // ----------------------------------------------------------------------
 
@@ -27,6 +28,13 @@ const checkoutPersistConfig = {
   keyPrefix: 'redux-',
 };
 
+const authPersistConfig = {
+  key: 'auth',
+  storage,
+  keyPrefix: 'redux-',
+};
+
 export const rootReducer = combineReducers({
   checkout: persistReducer(checkoutPersistConfig, checkoutReducer),
+  [authSlice.name]: persistReducer(authPersistConfig, authSlice.reducer),
 });

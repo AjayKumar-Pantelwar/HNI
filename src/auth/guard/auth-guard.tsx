@@ -3,11 +3,11 @@ import { useEffect, useCallback, useState } from 'react';
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hook';
 //
-import { useAuthContext } from '../hooks';
+import { useSelector } from 'src/redux/store';
 
 // ----------------------------------------------------------------------
 
-const loginPaths: Record<string, string> = {
+const loginPaths = {
   jwt: paths.auth.jwt.login,
   auth0: paths.auth.auth0.login,
   amplify: paths.auth.amplify.login,
@@ -22,16 +22,15 @@ type Props = {
 
 export default function AuthGuard({ children }: Props) {
   const router = useRouter();
-
-  const { authenticated, method } = useAuthContext();
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
   const [checked, setChecked] = useState(false);
 
   const check = useCallback(() => {
-    if (!authenticated) {
+    if (!isAuthenticated) {
       const searchParams = new URLSearchParams({ returnTo: window.location.pathname }).toString();
 
-      const loginPath = loginPaths[method];
+      const loginPath = loginPaths.jwt;
 
       const href = `${loginPath}?${searchParams}`;
 
@@ -39,7 +38,7 @@ export default function AuthGuard({ children }: Props) {
     } else {
       setChecked(true);
     }
-  }, [authenticated, method, router]);
+  }, [isAuthenticated, router]);
 
   useEffect(() => {
     check();

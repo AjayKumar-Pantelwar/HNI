@@ -3,7 +3,7 @@ import { useCallback, useEffect } from 'react';
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hook';
 //
-import { useAuthContext } from '../hooks';
+import { useSelector } from 'src/redux/store';
 
 // ----------------------------------------------------------------------
 
@@ -14,13 +14,13 @@ type Props = {
 export default function GuestGuard({ children }: Props) {
   const router = useRouter();
 
-  const { authenticated } = useAuthContext();
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
   const check = useCallback(() => {
-    if (authenticated) {
+    if (isAuthenticated) {
       router.replace(paths.dashboard.root);
     }
-  }, [authenticated, router]);
+  }, [isAuthenticated, router]);
 
   useEffect(() => {
     check();

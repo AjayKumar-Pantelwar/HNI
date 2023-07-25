@@ -20,17 +20,17 @@ import { useSearchParams, useRouter } from 'src/routes/hook';
 import { PATH_AFTER_LOGIN } from 'src/config-global';
 // hooks
 import { useBoolean } from 'src/hooks/use-boolean';
-// auth
-import { useAuthContext } from 'src/auth/hooks';
 // components
 import Iconify from 'src/components/iconify';
 import FormProvider, { RHFTextField } from 'src/components/hook-form';
+import { authService } from 'src/services/auth.service';
+import { useDispatch } from 'src/redux/store';
+import { authSlice } from 'src/redux/slices/auth';
 
 // ----------------------------------------------------------------------
 
 export default function JwtLoginView() {
-  const { login } = useAuthContext();
-
+  const dispatch = useDispatch();
   const router = useRouter();
 
   const [errorMsg, setErrorMsg] = useState('');
@@ -42,13 +42,13 @@ export default function JwtLoginView() {
   const password = useBoolean();
 
   const LoginSchema = Yup.object().shape({
-    email: Yup.string().required('Email is required').email('Email must be a valid email address'),
+    username: Yup.string().required('Username is required'),
     password: Yup.string().required('Password is required'),
   });
 
   const defaultValues = {
-    email: 'demo@minimals.cc',
-    password: 'demo1234',
+    username: '',
+    password: '',
   };
 
   const methods = useForm({
@@ -64,13 +64,13 @@ export default function JwtLoginView() {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      await login?.(data.email, data.password);
-
+      const response = await authService.login(data);
+      dispatch(authSlice.actions.login(response.data.data));
       router.push(returnTo || PATH_AFTER_LOGIN);
     } catch (error) {
       console.error(error);
       reset();
-      setErrorMsg(typeof error === 'string' ? error : error.message);
+      setErrorMsg(typeof error === 'string' ? error : error.response.data.error);
     }
   });
 
@@ -92,7 +92,7 @@ export default function JwtLoginView() {
     <Stack spacing={2.5}>
       {!!errorMsg && <Alert severity="error">{errorMsg}</Alert>}
 
-      <RHFTextField name="email" label="Email address" />
+      <RHFTextField name="username" label="Username" />
 
       <RHFTextField
         name="password"
