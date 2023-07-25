@@ -14,14 +14,24 @@ export type GenerateGauthRequest = {
     req_token: string;
 }
 
+export type GenerateGauthResponse = {  
+  req_token: string;
+  secret: string;
+  url: string;
+}
+
 export type ActivateGauthRequest = {
   username : string;
   req_token : string;
   totp : number;
 }
 
-export type ValidateTotp = {
+export type ValidateTotpRequest = {
   username:  string;
   req_token: string;
   totp:      string;
+}
+
+export type ValidateTotpResponse = {
+  
 }
