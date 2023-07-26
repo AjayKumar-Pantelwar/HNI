@@ -2,38 +2,38 @@
 
 import * as Yup from 'yup';
 import { useForm } from 'react-hook-form';
-import { useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
 import LoadingButton from '@mui/lab/LoadingButton';
-import Link from '@mui/material/Link';
-import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import InputAdornment from '@mui/material/InputAdornment';
 // routes
-import { paths } from 'src/routes/paths';
-import { RouterLink } from 'src/routes/components';
-import { useSearchParams, useRouter } from 'src/routes/hook';
-// config
-import { PATH_AFTER_LOGIN } from 'src/config-global';
 // hooks
 import { useBoolean } from 'src/hooks/use-boolean';
+// assets
+
+// config
+import { PATH_AFTER_LOGIN } from 'src/config-global';
+
+
 // components
 import Iconify from 'src/components/iconify';
 import FormProvider, { RHFTextField } from 'src/components/hook-form';
-import { authService } from 'src/services/auth.service';
 import { useDispatch } from 'src/redux/store';
+import { useRouter, useSearchParams } from 'next/navigation';
+import React from 'react';
+import { authService } from 'src/services/auth.service';
 import { authSlice } from 'src/redux/slices/auth';
 
 // ----------------------------------------------------------------------
 
-export default function JwtLoginView() {
+export default function LoginSection() {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const [errorMsg, setErrorMsg] = useState('');
+  const [errorMsg, setErrorMsg] = React.useState('');
 
   const searchParams = useSearchParams();
 
@@ -62,7 +62,7 @@ export default function JwtLoginView() {
     formState: { isSubmitting },
   } = methods;
 
-  console.log(methods.getValues())
+  // console.log(methods.getValues())
 
   const onSubmit = handleSubmit(async (data) => {
     try {
@@ -77,25 +77,15 @@ export default function JwtLoginView() {
     }
   });
 
-  const renderHead = (
-    <Stack spacing={2} sx={{ mb: 5 }}>
-      <Typography variant="h4">Sign in to Mumbai Angels</Typography>
-
-      <Stack direction="row" spacing={0.5}>
-        <Typography variant="body2">New user?</Typography>
-
-        <Link component={RouterLink} href={paths.auth.jwt.register} variant="subtitle2">
-          Create an account
-        </Link>
-      </Stack>
-    </Stack>
-  );
-
   const renderForm = (
-    <Stack spacing={2.5}>
-      {!!errorMsg && <Alert severity="error">{errorMsg}</Alert>}
+    <Stack spacing={3} alignItems="center" maxWidth="450px">
+      <RHFTextField
+        name="username"
+        label="Username"
+        placeholder="example@gmail.com"
+        InputLabelProps={{ shrink: true }}
+      />
 
-      <RHFTextField name="username" label="Username" />
 
       <RHFTextField
         name="password"
@@ -112,28 +102,29 @@ export default function JwtLoginView() {
         }}
       />
 
-      <Link variant="body2" color="inherit" underline="always" sx={{ alignSelf: 'flex-end' }}>
-        Forgot password?
-      </Link>
-
+     
       <LoadingButton
         fullWidth
-        color="inherit"
         size="large"
         type="submit"
         variant="contained"
         loading={isSubmitting}
       >
         Login
-      </LoadingButton>
+      </LoadingButton>        
     </Stack>
+  );
+
+  const renderHead = (
+    <Stack spacing={1} sx={{ my: 5 , display : "flex" , alignItems : "center" }}>
+        <Typography variant="h3">Login to</Typography>
+        <Typography variant="h3">Mumbai Angels</Typography>        
+      </Stack>
   );
 
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>
       {renderHead}
-
-    
 
       {renderForm}
     </FormProvider>

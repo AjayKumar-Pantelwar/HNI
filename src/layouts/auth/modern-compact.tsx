@@ -44,7 +44,8 @@ export default function AuthModernCompactLayout({ children }: Props) {
           sx={{
             py: 5,
             px: 3,
-            maxWidth: 420,
+            minWidth: "min(450px, 90%)",
+            maxWidth : "450px"
           }}
         >
           {children}

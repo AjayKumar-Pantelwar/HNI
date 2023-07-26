@@ -1,4 +1,4 @@
-import { LoginRequest, LoginResponse } from 'src/types/auth';
+import { GenerateGauthRequest, GenerateGauthResponse, LoginRequest, LoginResponse } from 'src/types/auth';
 import { AxiosResponse } from 'axios';
 import { ApiResponse } from 'src/types/api';
 import { PrivateService } from './private-service';
@@ -12,7 +12,7 @@ export class AuthService extends PrivateService {
     return this.client.post('/api/auth/logout')
   }
   
-  generateGauth(request: { username: string, req_token: string }): Promise<AxiosResponse<ApiResponse>> {
+  generateGauth(request: GenerateGauthRequest): Promise<AxiosResponse<ApiResponse<GenerateGauthResponse>>> {
     return this.client.post('/api/auth/generate-gauth', request);
   }
   
