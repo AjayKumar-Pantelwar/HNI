@@ -1,53 +1,51 @@
-import { GenerateGauthRequest, GenerateGauthResponse, LoginRequest, LoginResponse } from 'src/types/auth';
+import {
+  ActivateTotpRequest,
+  ActivateTotpResponse,
+  ChangePasswordRequest,
+  ChangePasswordResponse,
+  GenerateTotpRequest,
+  GenerateTotpResponse,
+  LoginRequest,
+  LoginResponse,
+  ValidateTotpRequest,
+  ValidateTotpResponse,
+} from 'src/types/auth';
 import { AxiosResponse } from 'axios';
 import { ApiResponse } from 'src/types/api';
 import { PrivateService } from './private-service';
 
-export class AuthService extends PrivateService {
+class AuthService extends PrivateService {
   login(request: LoginRequest): Promise<AxiosResponse<ApiResponse<LoginResponse>>> {
     return this.client.post('/api/auth/login', request);
   }
 
   logout(): Promise<AxiosResponse<ApiResponse>> {
-    return this.client.post('/api/auth/logout')
-  }
-  
-  generateGauth(request: GenerateGauthRequest): Promise<AxiosResponse<ApiResponse<GenerateGauthResponse>>> {
-    return this.client.post('/api/auth/generate-gauth', request);
-  }
-  
-  activateGauth(request: { username: string, req_token: string, totp: number }): Promise<AxiosResponse<ApiResponse>> {
-    return this.client.post('/api/auth/activate-gauth', request);
+    return this.client.post('/api/auth/logout');
   }
 
-  changePassword(request: { username: string, req_token: string, password: string }): Promise<AxiosResponse<ApiResponse>> {
+  generateTotp(
+    request: GenerateTotpRequest
+  ): Promise<AxiosResponse<ApiResponse<GenerateTotpResponse>>> {
+    return this.client.post('/api/auth/totp/generate', request);
+  }
+
+  activateTotp(
+    request: ActivateTotpRequest
+  ): Promise<AxiosResponse<ApiResponse<ActivateTotpResponse>>> {
+    return this.client.post('/api/auth/totp/activate', request);
+  }
+
+  changePassword(
+    request: ChangePasswordRequest
+  ): Promise<AxiosResponse<ApiResponse<ChangePasswordResponse>>> {
     return this.client.post('/api/auth/change-password', request);
   }
 
-  validateTotp(request: { username: string, req_token: string, totp: string }): Promise<AxiosResponse<ApiResponse>> {
-    return this.client.post('/api/auth/validate-totp', request);
-  }
-
-  createRole(request: { username: string, req_token: string }): Promise<AxiosResponse<ApiResponse>> {
-    return this.client.post('/api/auth/create-role', request);
-  }
-
-  getRoles(): Promise<AxiosResponse<ApiResponse>> {
-    return this.client.get('/api/auth/get-roles');
-  }
-
-  editRole(request: { username: string, req_token: string }): Promise<AxiosResponse<ApiResponse>> {
-    return this.client.post('/api/auth/edit-role', request);
-  }
-
-  createAdmin(request: { username: string, req_token: string }): Promise<AxiosResponse<ApiResponse>> {
-    return this.client.post('/api/auth/create-admin', request);
-  }
-
-  editAdmin(request: { username: string, req_token: string }): Promise<AxiosResponse<ApiResponse>> {
-    return this.client.post('/api/auth/edit-admin', request);
+  validateTotp(
+    request: ValidateTotpRequest
+  ): Promise<AxiosResponse<ApiResponse<ValidateTotpResponse>>> {
+    return this.client.post('/api/auth/totp/verify', request);
   }
 }
-
 
 export const authService = new AuthService();

@@ -4,17 +4,19 @@ import { LoginResponse } from 'src/types/auth';
 export const authSlice = createSlice({
   initialState: {
     isAuthenticated: false,
-    user: null as LoginResponse & { username: string } | null,
+    loginData: null as (LoginResponse & { username: string }) | null,
   },
   name: 'auth',
   reducers: {
-    login(state, action: PayloadAction<LoginResponse & { username: string }>) {
+    login(state) {
       state.isAuthenticated = true;
-      state.user = action.payload;
+    },
+    setLoginData(state, action: PayloadAction<LoginResponse & { username: string }>) {
+      state.loginData = action.payload;
     },
     logout(state) {
       state.isAuthenticated = false;
-      state.user = null;
+      state.loginData = null;
     },
   },
 });

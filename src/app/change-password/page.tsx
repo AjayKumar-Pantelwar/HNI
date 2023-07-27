@@ -1,10 +1,10 @@
 // sections
-import ChangePasswordSection from "src/sections/change-password/change-password-section";
 // ----------------------------------------------------------------------
 
+import ChangePasswordSection from 'src/sections/change-password/change-password-section';
 
 export const metadata = {
-  title: 'Auth Modern: New Password',
+  title: 'Change Password',
 };
 
 export default function ChangePasswordPage() {

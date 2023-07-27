@@ -17,7 +17,10 @@ const ROOTS = {
 // ----------------------------------------------------------------------
 
 export const paths = {
+
   login : '/login',
+  changePassword : '/change-password',
+  activateTotp: '/activate-totp',
   comingSoon: '/coming-soon',
   maintenance: '/maintenance',
   pricing: '/pricing',

@@ -48,7 +48,7 @@ export default function HeaderSimple() {
           }),
         }}
       >
-        <Logo />
+        <img src="/logo/logo.png" alt="logo" style={{ width: 60, height: 60 }} />
 
         <Stack direction="row" alignItems="center" spacing={1}>
           <SettingsButton />

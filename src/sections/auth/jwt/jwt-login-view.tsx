@@ -62,13 +62,11 @@ export default function JwtLoginView() {
     formState: { isSubmitting },
   } = methods;
 
-  console.log(methods.getValues())
+  console.log(methods.getValues());
 
   const onSubmit = handleSubmit(async (data) => {
     try {
       console.info('DATA', data);
-      const response = await authService.login(data);
-      dispatch(authSlice.actions.login({ ...response.data.data, username: data.username }));
       router.push(returnTo || PATH_AFTER_LOGIN);
     } catch (error) {
       console.error(error);
@@ -132,8 +130,6 @@ export default function JwtLoginView() {
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>
       {renderHead}
-
-    
 
       {renderForm}
     </FormProvider>

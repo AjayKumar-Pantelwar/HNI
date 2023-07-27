@@ -29,38 +29,27 @@ import { useSelector } from 'src/redux/store';
 
 // ----------------------------------------------------------------------
 
-export default function ModernNewPasswordView() {
-
-  const NewPasswordSchema = Yup.object().shape({
+export default function ActivateTotpSection() {
+  const TotpSchema = Yup.object().shape({
     code: Yup.string().min(6, 'Code must be at least 6 characters').required('Code is required'),
-    email: Yup.string().required('Email is required').email('Email must be a valid email address'),
-    password: Yup.string()
-      .min(6, 'Password must be at least 6 characters')
-      .required('Password is required'),
-    confirmPassword: Yup.string()
-      .required('Confirm password is required')
-      .oneOf([Yup.ref('password')], 'Passwords must match'),
   });
 
   const { enqueueSnackbar } = useSnackbar();
 
   const { copy } = useCopyToClipboard();
 
-  const { user } = useSelector((state) => state.auth)
+  const { loginData } = useSelector((state) => state.auth);
 
-  const [secret , setSecret] = React.useState('');
+  const [secret, setSecret] = React.useState('');
   const [url, setUrl] = React.useState('');
 
   const defaultValues = {
     code: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
   };
 
   const methods = useForm({
     mode: 'onChange',
-    resolver: yupResolver(NewPasswordSchema),
+    resolver: yupResolver(TotpSchema),
     defaultValues,
   });
 
@@ -71,8 +60,12 @@ export default function ModernNewPasswordView() {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      console.info('DATA', data);
+      if (loginData === null) return;
+      const response = await authService.activateTotp({
+        username: loginData.username,
+        req_token: loginData.req_token,
+        totp: data.code,
+      });
     } catch (error) {
       console.error(error);
     }
@@ -87,11 +80,10 @@ export default function ModernNewPasswordView() {
     [copy, enqueueSnackbar]
   );
 
- 
-
   React.useEffect(() => {
-    if (user === null) return;
-    authService.generateGauth({ username: user.username, req_token: user.req_token })
+    if (loginData === null) return;
+    authService
+      .generateTotp({ username: loginData.username, req_token: loginData.req_token })
       .then((response) => {
         setSecret(response.data?.data?.secret || '');
         setUrl(response.data?.data?.url || '');
@@ -99,10 +91,10 @@ export default function ModernNewPasswordView() {
       .catch((error) => {
         console.error('Error fetching secret key:', error);
       });
-  }, [user]);
+  }, [loginData]);
 
   const renderForm = (
-    <Stack spacing={3} alignItems="center">
+    <Stack spacing={3} mt={4} alignItems="center">
       <RHFCode name="code" />
 
       <LoadingButton
@@ -135,41 +127,38 @@ export default function ModernNewPasswordView() {
     <>
       {/* <SentIcon sx={{ height: 96 }} /> */}
 
-      <Stack spacing={2} sx={{ my: 5 }}>
+      <Stack spacing={2} sx={{ mb: 5 }}>
         <Typography variant="h3">Activate TOTP</Typography>
 
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-         Please scan the QR Code or enter the setup key manually 
-         and then enter the code in below box to verify your account.
+          Please scan the QR Code or enter the setup key manually and then enter the code in below
+          box to verify your account.
         </Typography>
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Box sx={{ bgcolor: 'white', p: 1 }}>
+            <QRCodeSVG value={url} />
+          </Box>
+        </Box>
+        <Typography variant="subtitle2" color="textSecondary" align="center">
+          Alternatively you can manually put this secret key in your Google Authenticator App
+        </Typography>
+        <Box>
+          <TextField
+            value={secret}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <Tooltip title="Copy">
+                    <IconButton onClick={() => onCopy(secret)}>
+                      <Iconify icon="eva:copy-fill" width={24} color="text.primary" />
+                    </IconButton>
+                  </Tooltip>
+                </InputAdornment>
+              ),
+            }}
+          />
+        </Box>
       </Stack>
-      <Box display="flex" width="100%" justifyContent="center" alignItems="center" gap={4}>
-              <Box >
-                <QRCodeSVG value={url} />
-              </Box>
-              <Box sx={{ width: 220 }}>
-                <Typography variant="subtitle2" color="textSecondary">
-                  Alternatively you can manually put this secret key in your Google Authenticator
-                  App
-                </Typography>
-                <TextField
-                fullWidth
-                value={secret}
-                disabled
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <Tooltip title="Copy">
-                        <IconButton onClick={() => onCopy(secret)}>
-                          <Iconify icon="eva:copy-fill" width={24} />
-                        </IconButton>
-                      </Tooltip>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              </Box>
-            </Box>
     </>
   );
 

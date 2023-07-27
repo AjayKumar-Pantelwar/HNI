@@ -15,29 +15,33 @@ import { useBoolean } from 'src/hooks/use-boolean';
 // assets
 
 // config
-import { PATH_AFTER_LOGIN } from 'src/config-global';
-
 
 // components
 import Iconify from 'src/components/iconify';
 import FormProvider, { RHFTextField } from 'src/components/hook-form';
-import { useDispatch } from 'src/redux/store';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useDispatch, useSelector } from 'src/redux/store';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 import { authService } from 'src/services/auth.service';
 import { authSlice } from 'src/redux/slices/auth';
+import { Alert, Dialog } from '@mui/material';
+import { paths } from 'src/routes/paths';
+import { MuiOtpInput } from 'mui-one-time-password-input';
+import { useSnackbar } from 'notistack';
+import { useSelect } from '@mui/base';
 
 // ----------------------------------------------------------------------
 
 export default function LoginSection() {
   const dispatch = useDispatch();
   const router = useRouter();
+  const { loginData } = useSelector((state) => state.auth);
 
   const [errorMsg, setErrorMsg] = React.useState('');
-
-  const searchParams = useSearchParams();
-
-  const returnTo = searchParams.get('returnTo');
+  const [open, setOpen] = React.useState(false);
+  const [otp, setOtp] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   const password = useBoolean();
 
@@ -57,35 +61,74 @@ export default function LoginSection() {
   });
 
   const {
-    reset,
     handleSubmit,
     formState: { isSubmitting },
   } = methods;
 
-  // console.log(methods.getValues())
+  const handleLogin = async () => {
+    setLoading(true);
+    try {
+      if (loginData === null) return;
+      if (otp.length < 6) {
+        enqueueSnackbar('Invalid OTP', { variant: 'error' });
+        return;
+      }
+      await authService.validateTotp({
+        totp: otp,
+        username: loginData.username,
+        req_token: loginData.req_token,
+      });
+      dispatch(authSlice.actions.login());
+    } catch (error) {
+      enqueueSnackbar(error.response.data.error, { variant: 'error' });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      console.info('DATA', data);
       const response = await authService.login(data);
-      dispatch(authSlice.actions.login({ ...response.data.data, username: data.username }));
-      router.push(returnTo || PATH_AFTER_LOGIN);
+      /*
+       * if login is successful, we need to store the req_token to
+       * use it in the next request for validate totp, and we open
+       * the validate totp dialog
+       */
+      dispatch(authSlice.actions.setLoginData({ ...response.data.data, username: data.username }));
+      setOpen(true);
     } catch (error) {
       console.error(error);
-      reset();
-      setErrorMsg(typeof error === 'string' ? error : error.response.data.error);
+      const { response } = error;
+      /*
+       * if login is not successful, we need to store the req_token to
+       * use it in the next request for change password and activate totp
+       */
+      if (response.data?.data?.is_pwd_change_required) {
+        dispatch(
+          authSlice.actions.setLoginData({ ...response.data.data, username: data.username })
+        );
+        router.push(paths.changePassword);
+      } else if (response.data?.data?.is_totp_activated === false) {
+        dispatch(
+          authSlice.actions.setLoginData({ ...response.data.data, username: data.username })
+        );
+        router.push(paths.activateTotp);
+      } else {
+        /*
+         * if there is any other error in the login even if the user has setup
+         * password and totp, then we need to show the error and keep the
+         * user on login page, for example, incorrect credentials
+         */
+        setErrorMsg(typeof error === 'string' ? error : error.response.data.error);
+      }
     }
   });
 
   const renderForm = (
-    <Stack spacing={3} alignItems="center" maxWidth="450px">
-      <RHFTextField
-        name="username"
-        label="Username"
-        placeholder="example@gmail.com"
-        InputLabelProps={{ shrink: true }}
-      />
+    <Stack spacing={3}>
+      {!!errorMsg && <Alert severity="error">{errorMsg}</Alert>}
 
+      <RHFTextField name="username" label="Username" />
 
       <RHFTextField
         name="password"
@@ -102,7 +145,6 @@ export default function LoginSection() {
         }}
       />
 
-     
       <LoadingButton
         fullWidth
         size="large"
@@ -111,15 +153,16 @@ export default function LoginSection() {
         loading={isSubmitting}
       >
         Login
-      </LoadingButton>        
+      </LoadingButton>
     </Stack>
   );
 
   const renderHead = (
-    <Stack spacing={1} sx={{ my: 5 , display : "flex" , alignItems : "center" }}>
-        <Typography variant="h3">Login to</Typography>
-        <Typography variant="h3">Mumbai Angels</Typography>        
-      </Stack>
+    <Stack sx={{ mb: 5, display: 'flex', alignItems: 'center' }}>
+      <img src="/logo/logo.png" alt="logo" style={{ width: 120, height: 120 }} />
+      <Typography variant="h3">Login to</Typography>
+      <Typography variant="h3">Mumbai Angels</Typography>
+    </Stack>
   );
 
   return (
@@ -127,6 +170,40 @@ export default function LoginSection() {
       {renderHead}
 
       {renderForm}
+
+      <Dialog
+        PaperProps={{ sx: { p: 2 } }}
+        open={open}
+        onClose={() => setOpen(false)}
+        maxWidth="xs"
+      >
+        <Typography variant="h3" align="center">
+          Enter TOTP
+        </Typography>
+        <Typography align="center" color="text.secondary" my={2}>
+          Enter the 6 digit code from your External TOTP app
+        </Typography>
+        <MuiOtpInput
+          sx={{ my: 2 }}
+          value={otp}
+          onChange={(value) => setOtp(value)}
+          autoFocus
+          gap={1.5}
+          length={6}
+          TextFieldsProps={{
+            placeholder: '-',
+          }}
+        />
+        <LoadingButton
+          fullWidth
+          size="large"
+          variant="contained"
+          onClick={handleLogin}
+          loading={loading}
+        >
+          Login
+        </LoadingButton>
+      </Dialog>
     </FormProvider>
   );
 }

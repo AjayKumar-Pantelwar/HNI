@@ -14,7 +14,6 @@ import { useSelector } from 'src/redux/store';
 // ----------------------------------------------------------------------
 
 export function useMockedUser() {
-  const { user } = useSelector((state) => state.auth);
   return {
     user: {
       id: '8864c717-587d-472a-929a-8e5f298024da-0',
@@ -31,7 +30,6 @@ export function useMockedUser() {
       about: 'Praesent turpis. Phasellus viverra nulla ut metus varius laoreet. Phasellus tempus.',
       role: 'admin',
       isPublic: true,
-      ...user,
     },
   };
 }
