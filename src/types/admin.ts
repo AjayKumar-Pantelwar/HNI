@@ -11,8 +11,8 @@ export type Admin = {
   is_pwd_change_required: boolean;
   is_totp_activated: boolean;
   is_blocked: boolean;
-  created_at: Date;
-  updated_at: Date;
+  created_at: string;
+  updated_at: string;
 };
 
 export type AdminResponse = ApiResponse<{ admins: Admin[] }>;

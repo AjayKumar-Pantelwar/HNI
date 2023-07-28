@@ -172,7 +172,7 @@ export default function LoginSection() {
       {renderForm}
 
       <Dialog
-        PaperProps={{ sx: { p: 2 } }}
+        PaperProps={{ sx: { p: 4 } }}
         open={open}
         onClose={() => setOpen(false)}
         maxWidth="xs"

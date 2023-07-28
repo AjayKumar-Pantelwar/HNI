@@ -1,0 +1,54 @@
+[
+  {
+    "rid": "777eb10a-f77b-489b-9b37-276d0380cd67",
+    "name": "ir",
+    "permission": [
+      {
+        "module": "ir",
+        "view": true,
+        "edit": true
+      }
+    ],
+    "is_active": true,
+    "created_at": "2023-07-18T12:47:47.615Z",
+    "updated_at": "0001-01-01T00:00:00Z"
+  },
+  {
+    "rid": "748876c6-d263-454b-bfae-d0814dfc4a82",
+    "name": "abcd",
+    "permission": [
+      {
+        "module": "ir",
+        "view": true,
+        "edit": true
+      },
+      {
+        "module": "investor",
+        "view": true,
+        "edit": true
+      }
+    ],
+    "is_active": true,
+    "created_at": "2023-07-18T12:59:49.783Z",
+    "updated_at": "0001-01-01T00:00:00Z"
+  },
+  {
+    "rid": "6d81c9e7-6cf1-4cc3-b322-a721e3be92c3",
+    "name": "abcde",
+    "permission": [
+      {
+        "module": "ir",
+        "view": true,
+        "edit": true
+      },
+      {
+        "module": "investor",
+        "view": true,
+        "edit": true
+      }
+    ],
+    "is_active": true,
+    "created_at": "2023-07-18T13:19:18.855Z",
+    "updated_at": "0001-01-01T00:00:00Z"
+  }
+]

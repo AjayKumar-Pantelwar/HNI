@@ -5,6 +5,11 @@ export type CreateRoleRequest = {
   permission: Permission[];
 };
 
+export type EditRoleRequest = {
+  name: string;
+  permission: Permission[];
+};
+
 export type Permission = {
   module: string;
   view: boolean;
