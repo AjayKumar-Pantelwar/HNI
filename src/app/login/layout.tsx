@@ -1,5 +1,6 @@
 'use client';
 
+import { GuestGuard } from 'src/auth/guard';
 // components
 import AuthModernCompactLayout from 'src/layouts/auth/modern-compact';
 
@@ -10,5 +11,9 @@ type Props = {
 };
 
 export default function Layout({ children }: Props) {
-  return <AuthModernCompactLayout>{children}</AuthModernCompactLayout>;
+  return (
+    <GuestGuard>
+      <AuthModernCompactLayout>{children}</AuthModernCompactLayout>;
+    </GuestGuard>
+  );
 }

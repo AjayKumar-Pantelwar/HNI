@@ -1,13 +1,11 @@
 // sections
-import ActivateTotpSection from "src/sections/activate-totp/activate-totp-section";
+import ActivateTotpSection from 'src/sections/activate-totp/activate-totp-section';
 // ----------------------------------------------------------------------
 
-
-
 export const metadata = {
-  title: 'Auth Modern: New Password',
+  title: 'Activate TOTP',
 };
 
 export default function ActivateTotp() {
-  return < ActivateTotpSection/>;
+  return <ActivateTotpSection />;
 }

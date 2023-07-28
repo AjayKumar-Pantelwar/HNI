@@ -14,16 +14,14 @@ import { RouterLink } from 'src/routes/components';
 // hooks
 
 // assets
-import { SentIcon } from 'src/assets/icons';
 // components
 import Iconify from 'src/components/iconify';
 import FormProvider, { RHFCode } from 'src/components/hook-form';
 import { Box, IconButton, InputAdornment, TextField, Tooltip } from '@mui/material';
 import { QRCodeSVG } from 'qrcode.react';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { useSnackbar } from 'notistack';
 import { useCopyToClipboard } from 'src/hooks/use-copy-to-clipboard';
-import { generateKey } from 'crypto';
 import { authService } from 'src/services/auth.service';
 import { useSelector } from 'src/redux/store';
 

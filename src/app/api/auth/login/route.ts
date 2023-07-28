@@ -39,7 +39,7 @@ export async function POST(req: Request): Promise<NextResponse<ApiResponse<Login
   return NextResponse.json(
     {
       data: null,
-      error: 'Username or password is incorrect',
+      error: 'Username or password is incorrect !',
     },
     {
       status: 401,

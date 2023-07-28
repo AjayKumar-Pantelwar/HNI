@@ -25,3 +25,25 @@ export type AdminRequest = {
   email: string;
   is_blocked: string;
 };
+
+export type CreateAdminRequest = {
+  name: string;
+  username: string;
+  mobile_number: string;
+  email: string;
+  rid: string;
+  pwd: string;
+  is_pwd_change_required: boolean;
+};
+
+export type CreateAdminResponse = ApiResponse;
+
+export type EditAdminRequest = {
+  name: string;
+  username: string;
+  mobile_number: string;
+  email: string;
+  id: string;
+};
+
+export type EditAdminResponse = ApiResponse;
