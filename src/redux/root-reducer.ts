@@ -4,6 +4,7 @@ import createWebStorage from 'redux-persist/lib/storage/createWebStorage';
 // slices
 import checkoutReducer from './slices/checkout';
 import { authSlice } from './slices/auth';
+import { adminApi } from './api/admin';
 
 // ----------------------------------------------------------------------
 
@@ -37,4 +38,5 @@ const authPersistConfig = {
 export const rootReducer = combineReducers({
   checkout: persistReducer(checkoutPersistConfig, checkoutReducer),
   [authSlice.name]: persistReducer(authPersistConfig, authSlice.reducer),
+  [adminApi.reducerPath]: adminApi.reducer,
 });

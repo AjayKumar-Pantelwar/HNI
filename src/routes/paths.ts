@@ -17,9 +17,8 @@ const ROOTS = {
 // ----------------------------------------------------------------------
 
 export const paths = {
-
-  login : '/login',
-  changePassword : '/change-password',
+  login: '/login',
+  changePassword: '/change-password',
   activateTotp: '/activate-totp',
   comingSoon: '/coming-soon',
   maintenance: '/maintenance',
@@ -110,6 +109,15 @@ export const paths = {
       banking: `${ROOTS.DASHBOARD}/banking`,
       booking: `${ROOTS.DASHBOARD}/booking`,
       file: `${ROOTS.DASHBOARD}/file`,
+    },
+    admin: {
+      root: `${ROOTS.DASHBOARD}/admin`,
+      new: `${ROOTS.DASHBOARD}/admin/new`,
+      list: `${ROOTS.DASHBOARD}/admin/list`,
+      cards: `${ROOTS.DASHBOARD}/admin/cards`,
+      account: `${ROOTS.DASHBOARD}/admin/account`,
+      edit: (id: string) => `${ROOTS.DASHBOARD}/admin/${id}/edit`,
+      profile: (id: string) => `${ROOTS.DASHBOARD}/admin/${id}/profile`,
     },
     user: {
       root: `${ROOTS.DASHBOARD}/user`,

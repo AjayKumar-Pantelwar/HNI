@@ -8,34 +8,34 @@ import { paths } from 'src/routes/paths';
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 //
-import UserNewEditForm from '../user-new-edit-form';
+import AdminNewEditForm from '../admin-new-edit-form';
 
 // ----------------------------------------------------------------------
 
-export default function UserCreateView() {
+export default function AdminCreateView() {
   const settings = useSettingsContext();
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
       <CustomBreadcrumbs
-        heading="Create a new User"
+        heading="Create a new Admin"
         links={[
           {
             name: 'Dashboard',
             href: paths.dashboard.root,
           },
           {
-            name: 'User',
-            href: paths.dashboard.user.root,
+            name: 'Admin',
+            href: paths.dashboard.admin.root,
           },
-          { name: 'New User' },
+          { name: 'New Admin' },
         ]}
         sx={{
           mb: { xs: 3, md: 5 },
         }}
       />
 
-      <UserNewEditForm />
+      <AdminNewEditForm />
     </Container>
   );
 }

@@ -28,7 +28,7 @@ export const adminApi = createApi({
     editAdmin: builder.mutation<EditAdminResponse, EditAdminRequest>({
       query: ({ id, ...body }) => ({
         url: `/api/admin/${id}`,
-        method: 'POST',
+        method: 'PUT',
         body,
       }),
       invalidatesTags: ['Admin'],
