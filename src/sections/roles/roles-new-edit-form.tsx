@@ -28,7 +28,7 @@ type Props = {
   currentUser?: Admin;
 };
 
-export default function AdminNewEditForm({ currentUser }: Props) {
+export default function RolesNewEditForm({ currentUser }: Props) {
   const router = useRouter();
 
   const { data: rolesData } = roleApi.useRolesQuery();

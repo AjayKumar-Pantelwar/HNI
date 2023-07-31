@@ -8,7 +8,7 @@ import { useSelector } from 'src/redux/store';
 // ----------------------------------------------------------------------
 
 const loginPaths = {
-  jwt: paths.auth.jwt.login,
+  jwt: paths.login,
   auth0: paths.auth.auth0.login,
   amplify: paths.auth.amplify.login,
   firebase: paths.auth.firebase.login,
@@ -42,8 +42,7 @@ export default function AuthGuard({ children }: Props) {
 
   useEffect(() => {
     check();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [check]);
 
   if (!checked) {
     return null;

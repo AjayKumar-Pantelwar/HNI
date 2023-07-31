@@ -4,9 +4,9 @@ import { AdminListView } from 'src/sections/admin/view';
 // ----------------------------------------------------------------------
 
 export const metadata = {
-  title: 'Dashboard: User List',
+  title: 'Admin List',
 };
 
-export default function UserListPage() {
+export default function AdminListPage() {
   return <AdminListView />;
 }

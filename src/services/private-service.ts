@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { authSlice } from 'src/redux/slices/auth';
+import { authSlice } from 'src/redux/slices/auth.slice';
 import { store } from 'src/redux/store';
 
 export class PrivateService {

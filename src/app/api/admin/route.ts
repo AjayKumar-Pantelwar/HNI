@@ -110,6 +110,7 @@ export async function POST(req: Request): Promise<NextResponse<CreateAdminRespon
       email: body.email,
       rid: body.rid,
       is_pwd_change_required: body.is_pwd_change_required,
+      name: body.name,
     });
 
     await fs.writeFile(`${jsonDirectory}/mock.json`, JSON.stringify(admins), 'utf8');

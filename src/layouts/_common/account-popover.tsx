@@ -19,7 +19,7 @@ import { varHover } from 'src/components/animate';
 import { useSnackbar } from 'src/components/snackbar';
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
 import { useDispatch } from 'src/redux/store';
-import { authSlice } from 'src/redux/slices/auth';
+import { authSlice } from 'src/redux/slices/auth.slice';
 import { authService } from 'src/services/auth.service';
 
 // ----------------------------------------------------------------------

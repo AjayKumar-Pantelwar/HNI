@@ -6,6 +6,7 @@ export type CreateRoleRequest = {
 };
 
 export type EditRoleRequest = {
+  id: string;
   name: string;
   permission: Permission[];
 };

@@ -10,15 +10,18 @@ import SvgColor from 'src/components/svg-color';
 
 // ----------------------------------------------------------------------
 
-const icon = (name: string) => (
-  <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ width: 1, height: 1 }} />
+const icon = (name: string, isIconify: boolean = false) =>
   // OR
-  // <Iconify icon="fluent:mail-24-filled" />
-  // https://icon-sets.iconify.design/solar/
-  // https://www.streamlinehq.com/icons
-);
+  isIconify ? (
+    <Iconify icon={name} />
+  ) : (
+    <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ width: 1, height: 1 }} />
+  );
+// https://icon-sets.iconify.design/solar/
+// https://www.streamlinehq.com/icons
 
 const ICONS = {
+  roles: icon('fluent-mdl2:permissions-solid', true),
   job: icon('ic_job'),
   blog: icon('ic_blog'),
   chat: icon('ic_chat'),
@@ -71,14 +74,24 @@ export function useNavData() {
       {
         subheader: t('management'),
         items: [
+          // ADMIN
           {
             title: t('Admin'),
             path: paths.dashboard.admin.root,
             icon: ICONS.user,
             children: [
-              { title: t('cards'), path: paths.dashboard.admin.cards },
               { title: t('list'), path: paths.dashboard.admin.list },
               { title: t('create'), path: paths.dashboard.admin.new },
+            ],
+          },
+          // ROLES
+          {
+            title: t('Roles'),
+            path: paths.dashboard.roles.root,
+            icon: ICONS.roles,
+            children: [
+              { title: t('list'), path: paths.dashboard.roles.list },
+              { title: t('create'), path: paths.dashboard.roles.new },
             ],
           },
           // USER

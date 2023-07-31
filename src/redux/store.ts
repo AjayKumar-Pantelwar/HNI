@@ -5,8 +5,9 @@ import {
   useSelector as useAppSelector,
 } from 'react-redux';
 import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, persistStore } from 'redux-persist';
-import { adminApi } from './api/admin';
+import { adminApi } from './api/admin.api';
 import { rootReducer } from './root-reducer';
+import { roleApi } from './api/role.api';
 
 // ----------------------------------------------------------------------
 
@@ -21,7 +22,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(adminApi.middleware),
+    }).concat([adminApi.middleware, roleApi.middleware]),
 });
 
 export const persistor = persistStore(store);

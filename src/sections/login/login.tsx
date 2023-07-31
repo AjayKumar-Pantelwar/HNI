@@ -23,7 +23,7 @@ import { useDispatch, useSelector } from 'src/redux/store';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import { authService } from 'src/services/auth.service';
-import { authSlice } from 'src/redux/slices/auth';
+import { authSlice } from 'src/redux/slices/auth.slice';
 import { Alert, Dialog } from '@mui/material';
 import { paths } from 'src/routes/paths';
 import { MuiOtpInput } from 'mui-one-time-password-input';

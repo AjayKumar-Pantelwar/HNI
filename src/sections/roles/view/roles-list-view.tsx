@@ -16,7 +16,6 @@ import { RouterLink } from 'src/routes/components';
 import { useRouter } from 'src/routes/hook';
 import { paths } from 'src/routes/paths';
 // _mock
-import { USER_STATUS_OPTIONS } from 'src/_mock';
 // hooks
 import { useBoolean } from 'src/hooks/use-boolean';
 // components
@@ -36,12 +35,11 @@ import {
   useTable,
 } from 'src/components/table';
 // types
-import { IUserItem, IUserTableFilterValue } from 'src/types/user';
 //
 import { adminApi } from 'src/redux/api/admin.api';
 import { Admin, AdminRequest } from 'src/types/admin';
-import AdminTableRow from '../admin-table-row';
-import AdminSearch from '../admin-search';
+import AdminTableRow from '../roles-table-row';
+import AdminSearch from '../roles-search';
 
 // ----------------------------------------------------------------------
 
@@ -66,7 +64,7 @@ const defaultFilters: AdminRequest = {
 
 // ----------------------------------------------------------------------
 
-export default function AdminListView() {
+export default function RolesListView() {
   const table = useTable();
 
   const settings = useSettingsContext();
