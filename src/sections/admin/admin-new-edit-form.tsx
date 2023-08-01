@@ -7,7 +7,6 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
 // utils
 // routes
 import { useRouter } from 'src/routes/hook';
@@ -18,9 +17,18 @@ import { paths } from 'src/routes/paths';
 import FormProvider, { RHFAutocomplete, RHFSwitch, RHFTextField } from 'src/components/hook-form';
 import { useSnackbar } from 'src/components/snackbar';
 import { adminApi } from 'src/redux/api/admin.api';
-import { Admin, CreateAdminRequest } from 'src/types/admin';
+import { Admin, CreateAdminRequest } from 'src/types/admin.type';
 import { roleApi } from 'src/redux/api/role.api';
 import Iconify from 'src/components/iconify/iconify';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -81,6 +89,10 @@ export default function AdminNewEditForm({ currentUser }: Props) {
     }
   });
 
+  const currentRid = methods.watch('rid');
+
+  const currentRole = rolesData?.data?.roles?.find((role) => role.rid === currentRid);
+
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>
       <Card sx={{ p: 3 }}>
@@ -134,10 +146,56 @@ export default function AdminNewEditForm({ currentUser }: Props) {
                 </Typography>
               </>
             }
-            sx={{ justifyContent: 'space-between', pl: 5 }}
+            sx={{ justifyContent: 'space-between' }}
           />
         </Box>
-
+        {currentRole && (
+          <TableContainer sx={{ mt: 3 }}>
+            <Typography sx={{ mb: 2, color: 'text.secondary' }}>
+              This role has the following permissions:
+            </Typography>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Role</TableCell>
+                  <TableCell>View</TableCell>
+                  <TableCell>Edit</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {currentRole?.permission?.map((permission) => (
+                  <TableRow key={permission.module}>
+                    <TableCell>{permission.module}</TableCell>
+                    <TableCell>
+                      {permission.view ? (
+                        <Iconify icon="gg:check-o" width={20} height={20} color="success.main" />
+                      ) : (
+                        <Iconify
+                          icon="humbleicons:times-circle"
+                          width={20}
+                          height={20}
+                          color="error.main"
+                        />
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {permission.edit ? (
+                        <Iconify icon="gg:check-o" width={20} height={20} color="success.main" />
+                      ) : (
+                        <Iconify
+                          icon="humbleicons:times-circle"
+                          width={20}
+                          height={20}
+                          color="error.main"
+                        />
+                      )}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
         <Stack alignItems="flex-end" sx={{ mt: 3 }}>
           <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
             {!currentUser ? 'Create Admin' : 'Save Changes'}

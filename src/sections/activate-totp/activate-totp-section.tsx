@@ -24,6 +24,8 @@ import { useSnackbar } from 'notistack';
 import { useCopyToClipboard } from 'src/hooks/use-copy-to-clipboard';
 import { authService } from 'src/services/auth.service';
 import { useSelector } from 'src/redux/store';
+import { useDispatch } from 'react-redux';
+import { authSlice } from 'src/redux/slices/auth.slice';
 
 // ----------------------------------------------------------------------
 
@@ -37,6 +39,8 @@ export default function ActivateTotpSection() {
   const { copy } = useCopyToClipboard();
 
   const { loginData } = useSelector((state) => state.auth);
+
+  const dispatch = useDispatch();
 
   const [secret, setSecret] = React.useState('');
   const [url, setUrl] = React.useState('');
@@ -59,11 +63,12 @@ export default function ActivateTotpSection() {
   const onSubmit = handleSubmit(async (data) => {
     try {
       if (loginData === null) return;
-      const response = await authService.activateTotp({
+      await authService.activateTotp({
         username: loginData.username,
         req_token: loginData.req_token,
         totp: data.code,
       });
+      dispatch(authSlice.actions.login());
     } catch (error) {
       console.error(error);
     }
@@ -85,11 +90,18 @@ export default function ActivateTotpSection() {
       .then((response) => {
         setSecret(response.data?.data?.secret || '');
         setUrl(response.data?.data?.url || '');
+        dispatch(
+          authSlice.actions.setLoginData({
+            ...loginData,
+            req_token: response.data?.data?.req_token,
+          })
+        );
       })
       .catch((error) => {
         console.error('Error fetching secret key:', error);
       });
-  }, [loginData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const renderForm = (
     <Stack spacing={3} mt={4} alignItems="center">

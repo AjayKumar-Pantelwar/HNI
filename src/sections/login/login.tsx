@@ -103,7 +103,7 @@ export default function LoginSection() {
        * if login is not successful, we need to store the req_token to
        * use it in the next request for change password and activate totp
        */
-      if (response.data?.data?.is_pwd_change_required) {
+      if (response?.data?.data?.is_pwd_change_required) {
         dispatch(
           authSlice.actions.setLoginData({ ...response.data.data, username: data.username })
         );

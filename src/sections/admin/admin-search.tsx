@@ -13,7 +13,7 @@ import { useRouter } from 'src/routes/hook';
 // components
 import Iconify from 'src/components/iconify';
 import SearchNotFound from 'src/components/search-not-found';
-import { Admin } from 'src/types/admin';
+import { Admin } from 'src/types/admin.type';
 
 // ----------------------------------------------------------------------
 

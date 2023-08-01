@@ -47,3 +47,8 @@ export type EditAdminRequest = {
 };
 
 export type EditAdminResponse = ApiResponse;
+
+export type BlockAdminRequest = {
+  username: string;
+  is_blocked: boolean;
+};

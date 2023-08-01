@@ -16,7 +16,6 @@ import { RouterLink } from 'src/routes/components';
 import { useRouter } from 'src/routes/hook';
 import { paths } from 'src/routes/paths';
 // _mock
-import { USER_STATUS_OPTIONS } from 'src/_mock';
 // hooks
 import { useBoolean } from 'src/hooks/use-boolean';
 // components
@@ -36,12 +35,13 @@ import {
   useTable,
 } from 'src/components/table';
 // types
-import { IUserItem, IUserTableFilterValue } from 'src/types/user';
 //
 import { adminApi } from 'src/redux/api/admin.api';
-import { Admin, AdminRequest } from 'src/types/admin';
-import AdminTableRow from '../admin-table-row';
+import { Admin, AdminRequest } from 'src/types/admin.types';
+import { Box } from '@mui/material';
+import AdminFilters from '../admin-filters';
 import AdminSearch from '../admin-search';
+import AdminTableRow from '../admin-table-row';
 
 // ----------------------------------------------------------------------
 
@@ -58,7 +58,7 @@ const TABLE_HEAD = [
 const defaultFilters: AdminRequest = {
   name: '',
   email: '',
-  is_blocked: '',
+  is_blocked: 'all',
   mobile_number: '',
   rid: '',
   username: '',
@@ -70,6 +70,8 @@ export default function AdminListView() {
   const table = useTable();
 
   const settings = useSettingsContext();
+
+  const openFilters = useBoolean();
 
   const router = useRouter();
 
@@ -83,6 +85,7 @@ export default function AdminListView() {
   });
 
   const { data } = adminApi.useAdminQuery(filters);
+
   const dataFiltered = applyFilter({
     inputData: data?.data?.admins || [],
     comparator: getComparator(table.order, table.orderBy),
@@ -100,16 +103,12 @@ export default function AdminListView() {
 
   const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
 
-  // const handleFilters = useCallback(
-  //   (name: string, value: IUserTableFilterValue) => {
-  //     table.onResetPage();
-  //     setFilters((prevState) => ({
-  //       ...prevState,
-  //       [name]: value,
-  //     }));
-  //   },
-  //   [table]
-  // );
+  const handleFilters = useCallback((name: keyof AdminRequest, value: string) => {
+    setFilters((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  }, []);
 
   const handleEditRow = useCallback(
     (id: string) => {
@@ -168,12 +167,26 @@ export default function AdminListView() {
             mb: { xs: 3, md: 5 },
           }}
         />
-        <AdminSearch
-          query={search.query}
-          results={search.results}
-          onSearch={handleSearch}
-          hrefItem={(id: string) => paths.dashboard.admin.profile(id)}
-        />
+        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', pb: 5 }}>
+          <AdminSearch
+            query={search.query}
+            results={search.results}
+            onSearch={handleSearch}
+            hrefItem={(id: string) => paths.dashboard.admin.profile(id)}
+          />
+          <AdminFilters
+            open={openFilters.value}
+            onOpen={openFilters.onTrue}
+            onClose={openFilters.onFalse}
+            //
+            filters={filters}
+            defaultFilters={defaultFilters}
+            onFilters={handleFilters}
+            //
+            canReset={canReset}
+            onResetFilters={handleResetFilters}
+          />
+        </Box>
         <Card>
           <TableContainer sx={{ position: 'relative', overflow: 'unset' }}>
             <TableSelectedAction

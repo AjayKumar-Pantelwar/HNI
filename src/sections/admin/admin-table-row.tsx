@@ -6,7 +6,6 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
-import Tooltip from '@mui/material/Tooltip';
 // hooks
 import { useBoolean } from 'src/hooks/use-boolean';
 // types
@@ -15,7 +14,8 @@ import CustomPopover, { usePopover } from 'src/components/custom-popover';
 import Iconify from 'src/components/iconify';
 import Label from 'src/components/label';
 //
-import { Admin } from 'src/types/admin';
+import { Admin } from 'src/types/admin.type';
+import AdminBlockForm from './admin-block-form';
 import AdminQuickEditForm from './admin-quick-edit-form';
 
 // ----------------------------------------------------------------------
@@ -28,9 +28,9 @@ type Props = {
 };
 
 export default function AdminTableRow({ row, selected, onEditRow, onSelectRow }: Props) {
-  const confirm = useBoolean();
-
   const quickEdit = useBoolean();
+
+  const block = useBoolean();
 
   const popover = usePopover();
 
@@ -73,11 +73,11 @@ export default function AdminTableRow({ row, selected, onEditRow, onSelectRow }:
         </TableCell>
 
         <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
-          <Tooltip title="Quick Edit" placement="top" arrow>
+          {/* <Tooltip title="Quick Edit" placement="top" arrow>
             <IconButton color={quickEdit.value ? 'inherit' : 'default'} onClick={quickEdit.onTrue}>
               <Iconify icon="solar:pen-bold" />
             </IconButton>
-          </Tooltip>
+          </Tooltip> */}
 
           <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
             <Iconify icon="eva:more-vertical-fill" />
@@ -86,7 +86,7 @@ export default function AdminTableRow({ row, selected, onEditRow, onSelectRow }:
       </TableRow>
 
       <AdminQuickEditForm currentAdmin={row} open={quickEdit.value} onClose={quickEdit.onFalse} />
-
+      <AdminBlockForm currentAdmin={row} open={block.value} onClose={block.onFalse} />
       <CustomPopover
         open={popover.open}
         onClose={popover.onClose}
@@ -95,12 +95,21 @@ export default function AdminTableRow({ row, selected, onEditRow, onSelectRow }:
       >
         <MenuItem
           onClick={() => {
-            onEditRow();
+            quickEdit.onTrue();
             popover.onClose();
           }}
         >
           <Iconify icon="solar:pen-bold" />
           Edit
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            block.onTrue();
+            popover.onClose();
+          }}
+        >
+          <Iconify icon="carbon:warning-filled" />
+          Block
         </MenuItem>
       </CustomPopover>
     </>

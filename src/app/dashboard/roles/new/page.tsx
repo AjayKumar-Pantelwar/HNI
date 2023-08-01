@@ -1,6 +1,6 @@
 // sections
 
-import { AdminCreateView } from 'src/sections/admin/view';
+import { RolesCreateView } from 'src/sections/roles/view';
 
 // ----------------------------------------------------------------------
 
@@ -9,5 +9,5 @@ export const metadata = {
 };
 
 export default function UserCreatePage() {
-  return <AdminCreateView />;
+  return <RolesCreateView />;
 }

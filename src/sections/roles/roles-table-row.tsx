@@ -3,7 +3,6 @@ import Avatar from '@mui/material/Avatar';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import ListItemText from '@mui/material/ListItemText';
-import MenuItem from '@mui/material/MenuItem';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import Tooltip from '@mui/material/Tooltip';
@@ -11,23 +10,22 @@ import Tooltip from '@mui/material/Tooltip';
 import { useBoolean } from 'src/hooks/use-boolean';
 // types
 // components
-import CustomPopover, { usePopover } from 'src/components/custom-popover';
+import { usePopover } from 'src/components/custom-popover';
 import Iconify from 'src/components/iconify';
 import Label from 'src/components/label';
 //
-import { Admin } from 'src/types/admin';
+import { Role } from 'src/types/role.types';
 import AdminQuickEditForm from './roles-quick-edit-form';
 
 // ----------------------------------------------------------------------
 
 type Props = {
   selected: boolean;
-  onEditRow: VoidFunction;
-  row: Admin;
+  row: Role;
   onSelectRow: VoidFunction;
 };
 
-export default function RolesTableRow({ row, selected, onEditRow, onSelectRow }: Props) {
+export default function RolesTableRow({ row, selected, onSelectRow }: Props) {
   const confirm = useBoolean();
 
   const quickEdit = useBoolean();
@@ -86,23 +84,6 @@ export default function RolesTableRow({ row, selected, onEditRow, onSelectRow }:
       </TableRow>
 
       <AdminQuickEditForm currentAdmin={row} open={quickEdit.value} onClose={quickEdit.onFalse} />
-
-      <CustomPopover
-        open={popover.open}
-        onClose={popover.onClose}
-        arrow="right-top"
-        sx={{ width: 140 }}
-      >
-        <MenuItem
-          onClick={() => {
-            onEditRow();
-            popover.onClose();
-          }}
-        >
-          <Iconify icon="solar:pen-bold" />
-          Edit
-        </MenuItem>
-      </CustomPopover>
     </>
   );
 }

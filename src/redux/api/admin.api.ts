@@ -2,13 +2,14 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import {
   AdminRequest,
   AdminResponse,
+  BlockAdminRequest,
   CreateAdminRequest,
   CreateAdminResponse,
   EditAdminRequest,
   EditAdminResponse,
-} from 'src/types/admin';
+} from 'src/types/admin.types';
 import { enqueueSnackbar } from 'notistack';
-import { authSlice } from '../slices/auth.slice';
+import { ApiResponse } from 'src/types/api';
 
 export const adminApi = createApi({
   reducerPath: 'admin',
@@ -48,6 +49,14 @@ export const adminApi = createApi({
     editAdmin: builder.mutation<EditAdminResponse, EditAdminRequest>({
       query: ({ id, ...body }) => ({
         url: `/api/admin/${id}`,
+        method: 'PUT',
+        body,
+      }),
+      invalidatesTags: ['Admin'],
+    }),
+    blockAdmin: builder.mutation<ApiResponse, BlockAdminRequest>({
+      query: (body) => ({
+        url: `/api/admin/block`,
         method: 'PUT',
         body,
       }),

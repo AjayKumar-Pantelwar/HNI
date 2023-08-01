@@ -1,7 +1,5 @@
 'use client';
 
-import isEqual from 'lodash/isEqual';
-import { useCallback, useState } from 'react';
 // @mui
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -13,7 +11,6 @@ import TableContainer from '@mui/material/TableContainer';
 import Tooltip from '@mui/material/Tooltip';
 // routes
 import { RouterLink } from 'src/routes/components';
-import { useRouter } from 'src/routes/hook';
 import { paths } from 'src/routes/paths';
 // _mock
 // hooks
@@ -31,117 +28,32 @@ import {
   TablePaginationCustom,
   TableSelectedAction,
   emptyRows,
-  getComparator,
   useTable,
 } from 'src/components/table';
 // types
 //
-import { adminApi } from 'src/redux/api/admin.api';
-import { Admin, AdminRequest } from 'src/types/admin';
-import AdminTableRow from '../roles-table-row';
-import AdminSearch from '../roles-search';
+import { roleApi } from 'src/redux/api/role.api';
+import { Admin, AdminRequest } from 'src/types/admin.types';
+import RolesTableRow from '../roles-table-row';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Name' },
-  { id: 'mobile_number', label: 'Phone Number', width: 180 },
-  { id: 'username', label: 'Username', width: 220 },
-  { id: 'type', label: 'Type', width: 180 },
-  { id: 'status', label: 'Status', width: 100 },
-  { id: 'security', label: 'Security', width: 200 },
   { id: '', width: 80 },
 ];
-
-const defaultFilters: AdminRequest = {
-  name: '',
-  email: '',
-  is_blocked: '',
-  mobile_number: '',
-  rid: '',
-  username: '',
-};
-
-// ----------------------------------------------------------------------
 
 export default function RolesListView() {
   const table = useTable();
 
   const settings = useSettingsContext();
 
-  const router = useRouter();
-
   const confirm = useBoolean();
 
-  const [filters, setFilters] = useState(defaultFilters);
-
-  const [search, setSearch] = useState<{ query: string; results: Admin[] }>({
-    query: '',
-    results: [],
-  });
-
-  const { data } = adminApi.useAdminQuery(filters);
-  const dataFiltered = applyFilter({
-    inputData: data?.data?.admins || [],
-    comparator: getComparator(table.order, table.orderBy),
-    filters,
-  });
-
-  const dataInPage = dataFiltered.slice(
-    table.page * table.rowsPerPage,
-    table.page * table.rowsPerPage + table.rowsPerPage
-  );
+  const { data } = roleApi.useRolesQuery();
 
   const denseHeight = table.dense ? 52 : 72;
 
-  const canReset = !isEqual(defaultFilters, filters);
-
-  const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
-
-  // const handleFilters = useCallback(
-  //   (name: string, value: IUserTableFilterValue) => {
-  //     table.onResetPage();
-  //     setFilters((prevState) => ({
-  //       ...prevState,
-  //       [name]: value,
-  //     }));
-  //   },
-  //   [table]
-  // );
-
-  const handleEditRow = useCallback(
-    (id: string) => {
-      router.push(paths.dashboard.admin.edit(id));
-    },
-    [router]
-  );
-
-  const handleResetFilters = useCallback(() => {
-    setFilters(defaultFilters);
-  }, []);
-
-  const handleSearch = useCallback(
-    (inputValue: string) => {
-      setSearch((prevState) => ({
-        ...prevState,
-        query: inputValue,
-      }));
-
-      if (inputValue) {
-        const results = data?.data?.admins?.filter(
-          (admin) => admin.name.toLowerCase().indexOf(search.query.toLowerCase()) !== -1
-        );
-
-        if (results) {
-          setSearch((prevState) => ({
-            ...prevState,
-            results,
-          }));
-        }
-      }
-    },
-    [search.query, data?.data?.admins]
-  );
   return (
     <>
       <Container maxWidth={settings.themeStretch ? false : 'lg'}>
@@ -149,37 +61,32 @@ export default function RolesListView() {
           heading="List"
           links={[
             { name: 'Dashboard', href: paths.dashboard.root },
-            { name: 'Admin', href: paths.dashboard.admin.root },
+            { name: 'Roles', href: paths.dashboard.roles.root },
             { name: 'List' },
           ]}
           action={
             <Button
               component={RouterLink}
-              href={paths.dashboard.admin.new}
+              href={paths.dashboard.roles.new}
               variant="contained"
               startIcon={<Iconify icon="mingcute:add-line" />}
             >
-              New Admin
+              New Role
             </Button>
           }
           sx={{
             mb: { xs: 3, md: 5 },
           }}
         />
-        <AdminSearch
-          query={search.query}
-          results={search.results}
-          onSearch={handleSearch}
-          hrefItem={(id: string) => paths.dashboard.admin.profile(id)}
-        />
+
         <Card>
           <TableContainer sx={{ position: 'relative', overflow: 'unset' }}>
             <TableSelectedAction
               dense={table.dense}
               numSelected={table.selected.length}
-              rowCount={data?.data?.admins?.length || 0}
+              rowCount={data?.data?.roles?.length || 0}
               onSelectAllRows={(checked) =>
-                table.onSelectAllRows(checked, data?.data?.admins?.map((row) => row.aid) || [])
+                table.onSelectAllRows(checked, data?.data?.roles?.map((row) => row.rid) || [])
               }
               action={
                 <Tooltip title="Delete">
@@ -196,27 +103,26 @@ export default function RolesListView() {
                   order={table.order}
                   orderBy={table.orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={data?.data?.admins?.length}
+                  rowCount={data?.data?.roles?.length}
                   numSelected={table.selected.length}
                   onSort={table.onSort}
                   onSelectAllRows={(checked) =>
-                    table.onSelectAllRows(checked, data?.data?.admins?.map((row) => row.aid) || [])
+                    table.onSelectAllRows(checked, data?.data?.roles?.map((row) => row.rid) || [])
                   }
                 />
 
                 <TableBody>
-                  {dataFiltered
+                  {[...(data?.data?.roles || [])]
                     .slice(
                       table.page * table.rowsPerPage,
                       table.page * table.rowsPerPage + table.rowsPerPage
                     )
                     .map((row) => (
-                      <AdminTableRow
-                        key={row.aid}
+                      <RolesTableRow
+                        key={row.rid}
                         row={row}
-                        selected={table.selected.includes(row.aid)}
-                        onSelectRow={() => table.onSelectRow(row.aid)}
-                        onEditRow={() => handleEditRow(row.aid)}
+                        selected={table.selected.includes(row.rid)}
+                        onSelectRow={() => table.onSelectRow(row.rid)}
                       />
                     ))}
 
@@ -225,18 +131,18 @@ export default function RolesListView() {
                     emptyRows={emptyRows(
                       table.page,
                       table.rowsPerPage,
-                      data?.data?.admins?.length || 0
+                      data?.data?.roles?.length || 0
                     )}
                   />
 
-                  <TableNoData notFound={notFound} />
+                  <TableNoData notFound={!data?.data?.roles?.length} />
                 </TableBody>
               </Table>
             </Scrollbar>
           </TableContainer>
 
           <TablePaginationCustom
-            count={dataFiltered.length}
+            count={data?.data?.roles?.length || 0}
             page={table.page}
             rowsPerPage={table.rowsPerPage}
             onPageChange={table.onChangePage}

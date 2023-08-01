@@ -2,7 +2,12 @@ import { faker } from '@faker-js/faker';
 import { promises as fs } from 'fs';
 import { NextResponse } from 'next/server';
 import path from 'path';
-import { Admin, AdminResponse, CreateAdminRequest, CreateAdminResponse } from 'src/types/admin';
+import {
+  Admin,
+  AdminResponse,
+  CreateAdminRequest,
+  CreateAdminResponse,
+} from 'src/types/admin.type';
 import { ApiResponse } from 'src/types/api';
 import { fDateTime } from 'src/utils/format-time';
 import uuidv4 from 'src/utils/uuidv4';

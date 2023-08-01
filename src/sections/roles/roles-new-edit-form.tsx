@@ -17,51 +17,48 @@ import { paths } from 'src/routes/paths';
 // components
 import FormProvider, { RHFAutocomplete, RHFSwitch, RHFTextField } from 'src/components/hook-form';
 import { useSnackbar } from 'src/components/snackbar';
-import { adminApi } from 'src/redux/api/admin.api';
-import { Admin, CreateAdminRequest } from 'src/types/admin';
 import { roleApi } from 'src/redux/api/role.api';
-import Iconify from 'src/components/iconify/iconify';
+import { CreateRoleRequest, Module, Role } from 'src/types/role.types';
+import {
+  Checkbox,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from '@mui/material';
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  currentUser?: Admin;
+  currentUser?: Role;
 };
 
 export default function RolesNewEditForm({ currentUser }: Props) {
   const router = useRouter();
 
-  const { data: rolesData } = roleApi.useRolesQuery();
-
-  const [createAdmin] = adminApi.useCreateAdminMutation();
+  const [createRole] = roleApi.useCreateRoleMutation();
 
   const { enqueueSnackbar } = useSnackbar();
 
-  const AdminSchema = Yup.object().shape({
+  const RolesSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
-    email: Yup.string().required('Email is required').email('Email must be a valid email address'),
-    mobile_number: Yup.string().required('Phone number is required'),
-    username: Yup.string().required('Username is required'),
-    pwd: Yup.string().required('Password is required'),
-    is_pwd_change_required: Yup.boolean().required('Password is required'),
-    rid: Yup.string().required('Role is required'),
+    permission: Yup.array().required('Permission is required'),
   });
 
-  const defaultValues = useMemo<CreateAdminRequest>(
+  const defaultValues = useMemo<CreateRoleRequest>(
     () => ({
       name: currentUser?.name || '',
-      email: currentUser?.email || '',
-      is_pwd_change_required: currentUser?.is_pwd_change_required || false,
-      mobile_number: currentUser?.mobile_number || '',
-      pwd: '',
-      rid: currentUser?.rid || '',
-      username: currentUser?.username || '',
+      permission:
+        currentUser?.permission ||
+        Object.values(Module).map((module) => ({ module, view: false, edit: false })),
     }),
     [currentUser]
   );
 
   const methods = useForm({
-    resolver: yupResolver(AdminSchema),
+    resolver: yupResolver(RolesSchema),
     defaultValues,
   });
 
@@ -71,9 +68,11 @@ export default function RolesNewEditForm({ currentUser }: Props) {
     formState: { isSubmitting },
   } = methods;
 
+  const permissions = methods.watch('permission');
+
   const onSubmit = handleSubmit(async (data) => {
     try {
-      await createAdmin(data).unwrap();
+      await createRole(data).unwrap();
       enqueueSnackbar(currentUser ? 'Update success!' : 'Create success!');
       router.push(paths.dashboard.admin.list);
     } catch (error) {
@@ -84,63 +83,49 @@ export default function RolesNewEditForm({ currentUser }: Props) {
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>
       <Card sx={{ p: 3 }}>
-        <Box
-          rowGap={3}
-          columnGap={2}
-          display="grid"
-          gridTemplateColumns={{
-            xs: 'repeat(1, 1fr)',
-            sm: 'repeat(2, 1fr)',
-          }}
-        >
-          <RHFTextField name="name" label="Full Name" />
-          <RHFTextField name="email" label="Email Address" />
-          <RHFTextField name="username" label="Username" />
-          <RHFTextField name="mobile_number" label="Phone Number" />
-          <RHFTextField name="pwd" label="Password" />
-
-          {rolesData?.data?.roles && (
-            <RHFAutocomplete
-              name="rid"
-              label="Role"
-              options={rolesData?.data?.roles?.map((role) => role.rid) || []}
-              getOptionLabel={(option) => {
-                const found = rolesData?.data?.roles?.find((role) => role.rid === option);
-                if (!found) return option;
-                return found.name;
-              }}
-              isOptionEqualToValue={(option, value) => option === value}
-              renderOption={(props, option) => {
-                const found = rolesData?.data?.roles?.find((role) => role.rid === option);
-                if (!found) return null;
-                return (
-                  <li {...props} key={found.rid}>
-                    {found.name}
-                  </li>
-                );
-              }}
-            />
-          )}
-
-          <RHFSwitch
-            name="is_pwd_change_required"
-            label={
-              <>
-                <Typography variant="subtitle2" sx={{ mb: 0.5 }}>
-                  Password change
-                </Typography>
-                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                  Enabling this will require a password change at first login.
-                </Typography>
-              </>
-            }
-            sx={{ justifyContent: 'space-between', pl: 5 }}
-          />
-        </Box>
+        <RHFTextField name="name" label="Name" />
+        <TableContainer>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell />
+                <TableCell align="right">View</TableCell>
+                <TableCell align="right">Edit</TableCell>
+              </TableRow>
+            </TableHead>
+            {Object.values(Module).map((key) => (
+              <TableRow key={key}>
+                <TableCell>{key.split('_').join(' ').toUpperCase()}</TableCell>
+                <TableCell>
+                  <Checkbox
+                    checked={permissions.find((perm) => perm.module === key)?.view}
+                    onChange={(e, checked) => {
+                      const index = permissions.findIndex((perm) => perm.module === key);
+                      const newPermissions = [...permissions];
+                      newPermissions[index].view = checked;
+                      setValue('permission', newPermissions);
+                    }}
+                  />
+                </TableCell>
+                <TableCell>
+                  <Checkbox
+                    checked={permissions.find((perm) => perm.module === key)?.edit}
+                    onChange={(e, checked) => {
+                      const index = permissions.findIndex((perm) => perm.module === key);
+                      const newPermissions = [...permissions];
+                      newPermissions[index].edit = checked;
+                      setValue('permission', newPermissions);
+                    }}
+                  />
+                </TableCell>
+              </TableRow>
+            ))}
+          </Table>
+        </TableContainer>
 
         <Stack alignItems="flex-end" sx={{ mt: 3 }}>
           <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-            {!currentUser ? 'Create Admin' : 'Save Changes'}
+            {!currentUser ? 'Create Role' : 'Save Changes'}
           </LoadingButton>
         </Stack>
       </Card>
