@@ -17,10 +17,12 @@ import { paths } from 'src/routes/paths';
 import FormProvider, { RHFAutocomplete, RHFSwitch, RHFTextField } from 'src/components/hook-form';
 import { useSnackbar } from 'src/components/snackbar';
 import { adminApi } from 'src/redux/api/admin.api';
-import { Admin, CreateAdminRequest } from 'src/types/admin.type';
+import { Admin, CreateAdminRequest } from 'src/types/admin.types';
 import { roleApi } from 'src/redux/api/role.api';
 import Iconify from 'src/components/iconify/iconify';
 import {
+  IconButton,
+  InputAdornment,
   Table,
   TableBody,
   TableCell,
@@ -29,6 +31,7 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
+import { useBoolean } from 'src/hooks/use-boolean';
 
 // ----------------------------------------------------------------------
 
@@ -38,6 +41,8 @@ type Props = {
 
 export default function AdminNewEditForm({ currentUser }: Props) {
   const router = useRouter();
+
+  const password = useBoolean();
 
   const { data: rolesData } = roleApi.useRolesQuery();
 
@@ -109,7 +114,20 @@ export default function AdminNewEditForm({ currentUser }: Props) {
           <RHFTextField name="email" label="Email Address" />
           <RHFTextField name="username" label="Username" />
           <RHFTextField name="mobile_number" label="Phone Number" />
-          <RHFTextField name="pwd" label="Password" />
+          <RHFTextField
+            name="pwd"
+            label="Password"
+            type={password.value ? 'text' : 'password'}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={password.onToggle} edge="end">
+                    <Iconify icon={password.value ? 'solar:eye-bold' : 'solar:eye-closed-bold'} />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
 
           {rolesData?.data?.roles && (
             <RHFAutocomplete

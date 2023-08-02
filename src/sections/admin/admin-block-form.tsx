@@ -13,7 +13,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { Typography } from '@mui/material';
 import { useSnackbar } from 'src/components/snackbar';
 import { adminApi } from 'src/redux/api/admin.api';
-import { Admin } from 'src/types/admin.type';
+import { Admin } from 'src/types/admin.types';
 
 // ----------------------------------------------------------------------
 

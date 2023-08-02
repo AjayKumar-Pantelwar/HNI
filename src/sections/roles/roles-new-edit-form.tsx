@@ -4,10 +4,8 @@ import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 // @mui
 import LoadingButton from '@mui/lab/LoadingButton';
-import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
 // utils
 // routes
 import { useRouter } from 'src/routes/hook';
@@ -15,19 +13,11 @@ import { paths } from 'src/routes/paths';
 // types
 // assets
 // components
-import FormProvider, { RHFAutocomplete, RHFSwitch, RHFTextField } from 'src/components/hook-form';
+import { Checkbox, Table, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import FormProvider, { RHFTextField } from 'src/components/hook-form';
 import { useSnackbar } from 'src/components/snackbar';
 import { roleApi } from 'src/redux/api/role.api';
 import { CreateRoleRequest, Module, Role } from 'src/types/role.types';
-import {
-  Checkbox,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -74,7 +64,7 @@ export default function RolesNewEditForm({ currentUser }: Props) {
     try {
       await createRole(data).unwrap();
       enqueueSnackbar(currentUser ? 'Update success!' : 'Create success!');
-      router.push(paths.dashboard.admin.list);
+      router.push(paths.dashboard.roles.list);
     } catch (error) {
       console.error(error);
     }
@@ -83,14 +73,16 @@ export default function RolesNewEditForm({ currentUser }: Props) {
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>
       <Card sx={{ p: 3 }}>
-        <RHFTextField name="name" label="Name" />
+        <Stack sx={{ pb: 3 }}>
+          <RHFTextField name="name" label="Choose a name" fullWidth />
+        </Stack>
         <TableContainer>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell />
-                <TableCell align="right">View</TableCell>
-                <TableCell align="right">Edit</TableCell>
+                <TableCell>Permissions</TableCell>
+                <TableCell>View</TableCell>
+                <TableCell>Edit</TableCell>
               </TableRow>
             </TableHead>
             {Object.values(Module).map((key) => (

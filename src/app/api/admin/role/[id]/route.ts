@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { ApiResponse } from 'src/types/api';
-import { EditRoleRequest } from 'src/types/role';
+import { EditRoleRequest } from 'src/types/role.types';
 
 export async function PUT(
   req: Request,

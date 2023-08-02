@@ -40,7 +40,7 @@ import RolesTableRow from '../roles-table-row';
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Name' },
-  { id: '', width: 80 },
+  { id: 'edit', label: 'Actions', width: 80 },
 ];
 
 export default function RolesListView() {

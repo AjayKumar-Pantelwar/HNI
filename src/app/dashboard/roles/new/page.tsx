@@ -5,7 +5,7 @@ import { RolesCreateView } from 'src/sections/roles/view';
 // ----------------------------------------------------------------------
 
 export const metadata = {
-  title: 'Dashboard: Create a new user',
+  title: 'Create a new role',
 };
 
 export default function UserCreatePage() {

@@ -1,10 +1,9 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 // @mui
 import LoadingButton from '@mui/lab/LoadingButton';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -14,57 +13,64 @@ import DialogTitle from '@mui/material/DialogTitle';
 // types
 // assets
 // components
+import {
+  Checkbox,
+  Stack,
+  Table,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from '@mui/material';
 import FormProvider, { RHFTextField } from 'src/components/hook-form';
 import { useSnackbar } from 'src/components/snackbar';
-import { adminApi } from 'src/redux/api/admin.api';
-import { EditAdminRequest } from 'src/types/admin.types';
+import { roleApi } from 'src/redux/api/role.api';
+import { EditRoleRequest, Module, Role } from 'src/types/role.types';
 
 // ----------------------------------------------------------------------
 
 type Props = {
   open: boolean;
   onClose: VoidFunction;
-  currentAdmin?: Admin;
+  currentRole?: Role;
 };
 
-export default function RolesQuickEditForm({ currentAdmin, open, onClose }: Props) {
+export default function RolesQuickEditForm({ currentRole, open, onClose }: Props) {
   const { enqueueSnackbar } = useSnackbar();
 
-  const [editAdmin] = adminApi.useEditAdminMutation();
+  const [editRole] = roleApi.useEditRoleMutation();
 
-  const AdminSchema = Yup.object().shape({
+  const RoleSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
-    email: Yup.string().required('Email is required').email('Email must be a valid email address'),
-    mobile_number: Yup.string().required('Phone number is required'),
-    username: Yup.string().required('Username is required'),
     id: Yup.string().required('ID is required'),
+    permission: Yup.array().required('Permission is required'),
   });
 
-  const defaultValues: EditAdminRequest = useMemo(
+  const defaultValues = useMemo<EditRoleRequest>(
     () => ({
-      name: currentAdmin?.name || '',
-      email: currentAdmin?.email || '',
-      mobile_number: currentAdmin?.mobile_number || '',
-      username: currentAdmin?.username || '',
-      id: currentAdmin?.aid || '',
+      id: currentRole?.rid || '',
+      name: currentRole?.name || '',
+      permission:
+        currentRole?.permission ||
+        Object.values(Module).map((module) => ({ module, view: false, edit: false })),
     }),
-    [currentAdmin]
+    [currentRole]
   );
-
   const methods = useForm({
-    resolver: yupResolver(AdminSchema),
+    resolver: yupResolver(RoleSchema),
     defaultValues,
   });
 
   const {
     reset,
+    setValue,
     handleSubmit,
     formState: { isSubmitting },
   } = methods;
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      await editAdmin(data).unwrap();
+      await editRole(data).unwrap();
       reset();
       onClose();
       enqueueSnackbar('Update success!');
@@ -73,7 +79,7 @@ export default function RolesQuickEditForm({ currentAdmin, open, onClose }: Prop
     }
   });
 
-  // useEffect(() => reset(), [open]);
+  const permissions = methods.watch('permission');
 
   return (
     <Dialog
@@ -89,21 +95,47 @@ export default function RolesQuickEditForm({ currentAdmin, open, onClose }: Prop
         <DialogTitle>Quick Update</DialogTitle>
 
         <DialogContent>
-          <Box
-            pt={2}
-            rowGap={3}
-            columnGap={2}
-            display="grid"
-            gridTemplateColumns={{
-              xs: 'repeat(1, 1fr)',
-              sm: 'repeat(2, 1fr)',
-            }}
-          >
-            <RHFTextField name="name" label="Full Name" />
-            <RHFTextField name="email" label="Email Address" />
-            <RHFTextField name="username" label="Username" />
-            <RHFTextField name="mobile_number" label="Phone Number" />
-          </Box>
+          <Stack sx={{ py: 3 }}>
+            <RHFTextField name="name" label="Name" fullWidth />
+          </Stack>
+          <TableContainer>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Permissions</TableCell>
+                  <TableCell>View</TableCell>
+                  <TableCell>Edit</TableCell>
+                </TableRow>
+              </TableHead>
+              {Object.values(Module).map((key) => (
+                <TableRow key={key}>
+                  <TableCell>{key.split('_').join(' ').toUpperCase()}</TableCell>
+                  <TableCell>
+                    <Checkbox
+                      checked={permissions.find((perm) => perm.module === key)?.view}
+                      onChange={(e, checked) => {
+                        const index = permissions.findIndex((perm) => perm.module === key);
+                        const newPermissions = [...permissions];
+                        newPermissions[index].view = checked;
+                        setValue('permission', newPermissions);
+                      }}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <Checkbox
+                      checked={permissions.find((perm) => perm.module === key)?.edit}
+                      onChange={(e, checked) => {
+                        const index = permissions.findIndex((perm) => perm.module === key);
+                        const newPermissions = [...permissions];
+                        newPermissions[index].edit = checked;
+                        setValue('permission', newPermissions);
+                      }}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </Table>
+          </TableContainer>
         </DialogContent>
 
         <DialogActions>

@@ -17,7 +17,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import FormProvider, { RHFTextField } from 'src/components/hook-form';
 import { useSnackbar } from 'src/components/snackbar';
 import { adminApi } from 'src/redux/api/admin.api';
-import { Admin, EditAdminRequest } from 'src/types/admin.type';
+import { Admin, EditAdminRequest } from 'src/types/admin.types';
 
 // ----------------------------------------------------------------------
 

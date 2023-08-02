@@ -14,7 +14,7 @@ import FormProvider, { RHFSelect, RHFTextField } from 'src/components/hook-form'
 // types
 // components
 import Iconify from 'src/components/iconify';
-import { AdminRequest } from 'src/types/admin.type';
+import { AdminRequest } from 'src/types/admin.types';
 import * as Yup from 'yup';
 
 // ----------------------------------------------------------------------

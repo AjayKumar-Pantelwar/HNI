@@ -7,7 +7,7 @@ import {
   AdminResponse,
   CreateAdminRequest,
   CreateAdminResponse,
-} from 'src/types/admin.type';
+} from 'src/types/admin.types';
 import { ApiResponse } from 'src/types/api';
 import { fDateTime } from 'src/utils/format-time';
 import uuidv4 from 'src/utils/uuidv4';

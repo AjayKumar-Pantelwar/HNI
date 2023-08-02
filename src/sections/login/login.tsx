@@ -1,14 +1,14 @@
 'use client';
 
-import * as Yup from 'yup';
-import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form';
+import * as Yup from 'yup';
 // @mui
 import LoadingButton from '@mui/lab/LoadingButton';
-import Stack from '@mui/material/Stack';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 import InputAdornment from '@mui/material/InputAdornment';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 // routes
 // hooks
 import { useBoolean } from 'src/hooks/use-boolean';
@@ -17,18 +17,17 @@ import { useBoolean } from 'src/hooks/use-boolean';
 // config
 
 // components
-import Iconify from 'src/components/iconify';
-import FormProvider, { RHFTextField } from 'src/components/hook-form';
-import { useDispatch, useSelector } from 'src/redux/store';
-import { useRouter } from 'next/navigation';
-import React from 'react';
-import { authService } from 'src/services/auth.service';
-import { authSlice } from 'src/redux/slices/auth.slice';
 import { Alert, Dialog } from '@mui/material';
-import { paths } from 'src/routes/paths';
 import { MuiOtpInput } from 'mui-one-time-password-input';
+import { useRouter } from 'next/navigation';
 import { useSnackbar } from 'notistack';
-import { useSelect } from '@mui/base';
+import React from 'react';
+import FormProvider, { RHFTextField } from 'src/components/hook-form';
+import Iconify from 'src/components/iconify';
+import { authSlice } from 'src/redux/slices/auth.slice';
+import { useDispatch, useSelector } from 'src/redux/store';
+import { paths } from 'src/routes/paths';
+import { authService } from 'src/services/auth.service';
 
 // ----------------------------------------------------------------------
 

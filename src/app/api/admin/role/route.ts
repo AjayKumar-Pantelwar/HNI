@@ -2,7 +2,7 @@ import { promises as fs } from 'fs';
 import { NextResponse } from 'next/server';
 import path from 'path';
 import { ApiResponse } from 'src/types/api';
-import { CreateRoleRequest, GetRolesResponse } from 'src/types/role';
+import { CreateRoleRequest, GetRolesResponse } from 'src/types/role.types';
 
 export async function GET(req: Request): Promise<NextResponse<GetRolesResponse>> {
   let err;

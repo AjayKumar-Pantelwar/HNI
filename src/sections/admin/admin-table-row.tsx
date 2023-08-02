@@ -14,7 +14,7 @@ import CustomPopover, { usePopover } from 'src/components/custom-popover';
 import Iconify from 'src/components/iconify';
 import Label from 'src/components/label';
 //
-import { Admin } from 'src/types/admin.type';
+import { Admin } from 'src/types/admin.types';
 import AdminBlockForm from './admin-block-form';
 import AdminQuickEditForm from './admin-quick-edit-form';
 

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { Admin, EditAdminRequest, EditAdminResponse } from 'src/types/admin.type';
+import { Admin, EditAdminRequest, EditAdminResponse } from 'src/types/admin.types';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { fDate } from 'src/utils/format-time';

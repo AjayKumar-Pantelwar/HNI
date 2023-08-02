@@ -5,7 +5,7 @@ import { AdminCreateView } from 'src/sections/admin/view';
 // ----------------------------------------------------------------------
 
 export const metadata = {
-  title: 'Dashboard: Create a new user',
+  title: 'Create a new admin',
 };
 
 export default function UserCreatePage() {

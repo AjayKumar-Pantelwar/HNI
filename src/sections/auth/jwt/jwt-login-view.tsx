@@ -25,7 +25,6 @@ import Iconify from 'src/components/iconify';
 import FormProvider, { RHFTextField } from 'src/components/hook-form';
 import { authService } from 'src/services/auth.service';
 import { useDispatch } from 'src/redux/store';
-import { authSlice } from 'src/redux/slices/auth';
 
 // ----------------------------------------------------------------------
 
