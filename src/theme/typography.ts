@@ -1,4 +1,4 @@
-import { Public_Sans, Barlow } from 'next/font/google';
+import { Space_Grotesk, Hanken_Grotesk } from 'next/font/google';
 
 // ----------------------------------------------------------------------
 
@@ -29,20 +29,20 @@ declare module '@mui/material/styles' {
     fontWeightSemiBold: React.CSSProperties['fontWeight'];
   }
 }
-export const primaryFont = Public_Sans({
-  weight: ['400', '500', '600', '700', '800'],
+
+export const primaryFont = Hanken_Grotesk({
+  weight: ['300', '400', '500', '600', '700'],
   subsets: ['latin'],
   display: 'swap',
   fallback: ['Helvetica', 'Arial', 'sans-serif'],
 });
 
-export const secondaryFont = Barlow({
-  weight: ['900'],
+export const secondaryFont = Space_Grotesk({
+  weight: ['300', '400', '500', '600', '700'],
   subsets: ['latin'],
   display: 'swap',
   fallback: ['Helvetica', 'Arial', 'sans-serif'],
 });
-
 // ----------------------------------------------------------------------
 
 // LEARN MORE

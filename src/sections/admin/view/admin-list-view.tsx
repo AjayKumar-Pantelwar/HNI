@@ -52,7 +52,7 @@ const TABLE_HEAD = [
   { id: 'type', label: 'Type', width: 180 },
   { id: 'status', label: 'Status', width: 100 },
   { id: 'security', label: 'Security', width: 200 },
-  { id: '', width: 80 },
+  { id: '', label: 'Actions', width: 80 },
 ];
 
 const defaultFilters: AdminRequest = {
@@ -167,7 +167,7 @@ export default function AdminListView() {
             mb: { xs: 3, md: 5 },
           }}
         />
-        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', pb: 5 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', pb: 5 }}>
           <AdminSearch
             query={search.query}
             results={search.results}

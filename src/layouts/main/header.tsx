@@ -16,7 +16,6 @@ import { bgBlur } from 'src/theme/css';
 // routes
 import { paths } from 'src/routes/paths';
 // components
-import Logo from 'src/components/logo';
 import Label from 'src/components/label';
 //
 import { HEADER } from '../config-layout';
@@ -80,7 +79,7 @@ export default function Header() {
               </Link>
             }
           >
-            <Logo />
+            <img src="/logo/logo.png" alt="logo" style={{ width: 60, height: 60 }} />
           </Badge>
 
           <Box sx={{ flexGrow: 1 }} />
