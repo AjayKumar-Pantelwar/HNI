@@ -20,6 +20,7 @@ const icon = (name: string, isIconify: boolean = false) =>
 // https://www.streamlinehq.com/icons
 
 const ICONS = {
+  deals: icon('ph:handshake-fill', true),
   roles: icon('fluent-mdl2:permissions-solid', true),
   job: icon('ic_job'),
   blog: icon('ic_blog'),
@@ -91,6 +92,16 @@ export function useNavData() {
             children: [
               { title: t('list'), path: paths.dashboard.roles.list },
               { title: t('create'), path: paths.dashboard.roles.new },
+            ],
+          },
+          // DEALS
+          {
+            title: t('deals'),
+            path: paths.dashboard.deals.root,
+            icon: ICONS.deals,
+            children: [
+              { title: t('list'), path: paths.dashboard.deals.list },
+              { title: t('create'), path: paths.dashboard.deals.new },
             ],
           },
           //     // USER

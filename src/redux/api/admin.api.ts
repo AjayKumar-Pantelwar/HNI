@@ -10,6 +10,7 @@ import {
 } from 'src/types/admin.types';
 import { enqueueSnackbar } from 'notistack';
 import { ApiResponse } from 'src/types/api';
+import { authSlice } from '../slices/auth.slice';
 
 export const adminApi = createApi({
   reducerPath: 'admin',
@@ -27,7 +28,7 @@ export const adminApi = createApi({
      */
     if (result.meta?.response?.status === 401) {
       enqueueSnackbar('Your session is expired, please login again', { variant: 'error' });
-      // baseApi.dispatch(authSlice.actions.logout());
+      baseApi.dispatch(authSlice.actions.logout());
     }
 
     return result;
