@@ -80,6 +80,7 @@ type RHFMultiSelectProps = SelectProps & {
     label: string;
     value: string;
   }[];
+  onlyOne?: boolean;
 };
 
 export function RHFMultiSelect({
@@ -91,6 +92,7 @@ export function RHFMultiSelect({
   placeholder,
   helperText,
   sx,
+  onlyOne,
   ...other
 }: RHFMultiSelectProps) {
   const { control } = useFormContext();
@@ -134,6 +136,14 @@ export function RHFMultiSelect({
             labelId={name}
             input={<OutlinedInput fullWidth label={label} error={!!error} />}
             renderValue={renderValues}
+            onChange={(e, child) => {
+              if (onlyOne) {
+                if (e.target.value.length) e.target.value = [e.target.value.pop()];
+                field.onChange(e, child);
+              } else {
+                field.onChange(e, child);
+              }
+            }}
             {...other}
           >
             {placeholder && (

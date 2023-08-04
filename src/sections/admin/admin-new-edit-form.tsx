@@ -98,6 +98,8 @@ export default function AdminNewEditForm({ currentUser }: Props) {
 
   const currentRole = rolesData?.data?.roles?.find((role) => role.rid === currentRid);
 
+  // console.log(permission.module);
+
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>
       <Card sx={{ p: 3 }}>
@@ -151,21 +153,6 @@ export default function AdminNewEditForm({ currentUser }: Props) {
               }}
             />
           )}
-
-          <RHFSwitch
-            name="is_pwd_change_required"
-            label={
-              <>
-                <Typography variant="subtitle2" sx={{ mb: 0.5 }}>
-                  Password change
-                </Typography>
-                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                  Enabling this will require a password change at first login.
-                </Typography>
-              </>
-            }
-            sx={{ justifyContent: 'space-between' }}
-          />
         </Box>
         {currentRole && (
           <TableContainer sx={{ mt: 3 }}>
@@ -183,7 +170,7 @@ export default function AdminNewEditForm({ currentUser }: Props) {
               <TableBody>
                 {currentRole?.permission?.map((permission) => (
                   <TableRow key={permission.module}>
-                    <TableCell>{permission.module}</TableCell>
+                    <TableCell>{permission.module.toUpperCase()}</TableCell>
                     <TableCell>
                       {permission.view ? (
                         <Iconify icon="gg:check-o" width={20} height={20} color="success.main" />
@@ -214,6 +201,22 @@ export default function AdminNewEditForm({ currentUser }: Props) {
             </Table>
           </TableContainer>
         )}
+        <Box sx={{ pt: 2 }}>
+          <RHFSwitch
+            name="is_pwd_change_required"
+            label={
+              <>
+                <Typography variant="subtitle2" sx={{ mb: 0.5 }}>
+                  Password change
+                </Typography>
+                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                  Enabling this will require a password change at first login.
+                </Typography>
+              </>
+            }
+            sx={{ justifyContent: 'space-between' }}
+          />
+        </Box>
         <Stack alignItems="flex-end" sx={{ mt: 3 }}>
           <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
             {!currentUser ? 'Create Admin' : 'Save Changes'}

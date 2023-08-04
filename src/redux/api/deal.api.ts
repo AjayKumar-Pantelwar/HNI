@@ -1,7 +1,14 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { enqueueSnackbar } from 'notistack';
 import { ApiResponse } from 'src/types/api';
-import { CreateDealResponse } from 'src/types/deals.types';
+import {
+  BasicInfoMediaResponse,
+  CreateDealResponse,
+  GetDealRequest,
+  GetDealResponse,
+  HighlightsResponse,
+  PitchResponse,
+} from 'src/types/deals.types';
 import { authSlice } from '../slices/auth.slice';
 
 export const dealApi = createApi({
@@ -26,8 +33,8 @@ export const dealApi = createApi({
   },
   tagTypes: ['Deal'],
   endpoints: (builder) => ({
-    deal: builder.query<ApiResponse, void>({
-      query: (params) => ({ url: '/api/admin', params }),
+    deal: builder.query<GetDealResponse, GetDealRequest>({
+      query: (params) => ({ url: '/api/deal', params }),
       providesTags: ['Deal'],
     }),
     createDeal: builder.mutation<CreateDealResponse, FormData>({
@@ -38,21 +45,29 @@ export const dealApi = createApi({
       }),
       invalidatesTags: ['Deal'],
     }),
-    // editAdmin: builder.mutation<EditAdminResponse, EditAdminRequest>({
-    //   query: ({ id, ...body }) => ({
-    //     url: `/api/admin/${id}`,
-    //     method: 'PUT',
-    //     body,
-    //   }),
-    //   invalidatesTags: ['Deal'],
-    // }),
-    // blockAdmin: builder.mutation<ApiResponse, BlockAdminRequest>({
-    //   query: (body) => ({
-    //     url: `/api/admin/block`,
-    //     method: 'PUT',
-    //     body,
-    //   }),
-    //   invalidatesTags: ['Admin'],
-    // }),
+    basicInfoMedia: builder.mutation<BasicInfoMediaResponse, { id: string; body: FormData }>({
+      query: ({ id, body }) => ({
+        url: `/api/deal/basic/media/${id}`,
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: ['Deal'],
+    }),
+    pitch: builder.mutation<PitchResponse, { id: string; body: FormData }>({
+      query: ({ id, body }) => ({
+        url: `/api/deal/pitch/${id}`,
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: ['Deal'],
+    }),
+    highlights: builder.mutation<HighlightsResponse, { id: string; body: FormData }>({
+      query: ({ id, body }) => ({
+        url: `/api/deal/pitch/highlights/${id}`,
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: ['Deal'],
+    }),
   }),
 });

@@ -8,6 +8,7 @@ import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, persistStore } from 
 import { adminApi } from './api/admin.api';
 import { rootReducer } from './root-reducer';
 import { roleApi } from './api/role.api';
+import { dealApi } from './api/deal.api';
 
 // ----------------------------------------------------------------------
 
@@ -22,7 +23,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat([adminApi.middleware, roleApi.middleware]),
+    }).concat([adminApi.middleware, roleApi.middleware, dealApi.middleware]),
 });
 
 export const persistor = persistStore(store);

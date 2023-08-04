@@ -133,6 +133,9 @@ export const paths = {
       new: `${ROOTS.DASHBOARD}/deals/new`,
       list: `${ROOTS.DASHBOARD}/deals/list`,
       edit: (id: string) => `${ROOTS.DASHBOARD}/deals/${id}/edit`,
+      media: (id: string) => `${ROOTS.DASHBOARD}/deals/${id}/media`,
+      pitch: (id: string) => `${ROOTS.DASHBOARD}/deals/${id}/pitch`,
+      highlights: (id: string) => `${ROOTS.DASHBOARD}/deals/${id}/highlights`,
     },
     user: {
       root: `${ROOTS.DASHBOARD}/user`,

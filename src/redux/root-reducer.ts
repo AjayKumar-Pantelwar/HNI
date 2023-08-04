@@ -6,6 +6,7 @@ import checkoutReducer from './slices/checkout';
 import { authSlice } from './slices/auth.slice';
 import { adminApi } from './api/admin.api';
 import { roleApi } from './api/role.api';
+import { dealApi } from './api/deal.api';
 
 // ----------------------------------------------------------------------
 
@@ -41,4 +42,5 @@ export const rootReducer = combineReducers({
   [authSlice.name]: persistReducer(authPersistConfig, authSlice.reducer),
   [adminApi.reducerPath]: adminApi.reducer,
   [roleApi.reducerPath]: roleApi.reducer,
+  [dealApi.reducerPath]: dealApi.reducer,
 });
