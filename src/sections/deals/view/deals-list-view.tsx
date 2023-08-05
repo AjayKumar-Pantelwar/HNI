@@ -153,7 +153,7 @@ export function DealListView() {
               variant="contained"
               startIcon={<Iconify icon="mingcute:add-line" />}
             >
-              New Admin
+              New Deal
             </Button>
           }
           sx={{
@@ -207,12 +207,12 @@ export function DealListView() {
                   rowCount={data?.data?.deals?.length}
                   numSelected={table.selected.length}
                   onSort={table.onSort}
-                  onSelectAllRows={(checked) =>
-                    table.onSelectAllRows(
-                      checked,
-                      data?.data?.deals?.map((row) => row.deal_id) || []
-                    )
-                  }
+                  // onSelectAllRows={(checked) =>
+                  //   table.onSelectAllRows(
+                  //     checked,
+                  //     data?.data?.deals?.map((row) => row.deal_id) || []
+                  //   )
+                  // }
                 />
 
                 <TableBody>
@@ -225,8 +225,8 @@ export function DealListView() {
                       <DealTableRow
                         key={row.deal_id}
                         row={row}
-                        selected={table.selected.includes(row.deal_id)}
-                        onSelectRow={() => table.onSelectRow(row.deal_id)}
+                        // selected={table.selected.includes(row.deal_id)}
+                        // onSelectRow={() => table.onSelectRow(row.deal_id)}
                         onEditRow={() => handleEditRow(row.deal_id)}
                       />
                     ))}

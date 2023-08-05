@@ -13,11 +13,20 @@ import { paths } from 'src/routes/paths';
 // types
 // assets
 // components
-import { Checkbox, Table, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import {
+  Checkbox,
+  Table,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Skeleton,
+} from '@mui/material';
 import FormProvider, { RHFTextField } from 'src/components/hook-form';
 import { useSnackbar } from 'src/components/snackbar';
 import { roleApi } from 'src/redux/api/role.api';
-import { CreateRoleRequest, Module, Role } from 'src/types/role.types';
+import { CreateRoleRequest, Module, Permission, Role } from 'src/types/role.types';
+import { deflate } from 'zlib';
 
 // ----------------------------------------------------------------------
 
@@ -32,6 +41,8 @@ export default function RolesNewEditForm({ currentUser }: Props) {
 
   const { enqueueSnackbar } = useSnackbar();
 
+  const { data: apiPermissions } = roleApi.usePermissionsQuery();
+
   const RolesSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
     permission: Yup.array().required('Permission is required'),
@@ -42,9 +53,15 @@ export default function RolesNewEditForm({ currentUser }: Props) {
       name: currentUser?.name || '',
       permission:
         currentUser?.permission ||
-        Object.values(Module).map((module) => ({ module, view: false, edit: false })),
+        (apiPermissions
+          ? Object.values(apiPermissions.data.permissions).map((module) => ({
+              view: false,
+              edit: false,
+              module: module.value,
+            }))
+          : []),
     }),
-    [currentUser]
+    [currentUser, apiPermissions]
   );
 
   const methods = useForm({
@@ -56,6 +73,7 @@ export default function RolesNewEditForm({ currentUser }: Props) {
     handleSubmit,
     setValue,
     formState: { isSubmitting },
+    getValues,
   } = methods;
 
   const permissions = methods.watch('permission');
@@ -85,33 +103,44 @@ export default function RolesNewEditForm({ currentUser }: Props) {
                 <TableCell>Edit</TableCell>
               </TableRow>
             </TableHead>
-            {Object.values(Module).map((key) => (
-              <TableRow key={key}>
-                <TableCell>{key.split('_').join(' ').toUpperCase()}</TableCell>
-                <TableCell>
-                  <Checkbox
-                    checked={permissions.find((perm) => perm.module === key)?.view}
-                    onChange={(e, checked) => {
-                      const index = permissions.findIndex((perm) => perm.module === key);
-                      const newPermissions = [...permissions];
-                      newPermissions[index].view = checked;
-                      setValue('permission', newPermissions);
-                    }}
-                  />
-                </TableCell>
-                <TableCell>
-                  <Checkbox
-                    checked={permissions.find((perm) => perm.module === key)?.edit}
-                    onChange={(e, checked) => {
-                      const index = permissions.findIndex((perm) => perm.module === key);
-                      const newPermissions = [...permissions];
-                      newPermissions[index].edit = checked;
-                      setValue('permission', newPermissions);
-                    }}
-                  />
-                </TableCell>
-              </TableRow>
-            ))}
+            {apiPermissions ? (
+              Object.values(apiPermissions.data.permissions).map((permission) => {
+                console.log(permission.value);
+                return (
+                  <TableRow key={permission.value}>
+                    <TableCell>{permission.title}</TableCell>
+                    <TableCell>
+                      <Checkbox
+                        checked={permissions.find((perm) => perm.module === permission.value)?.view}
+                        onChange={(_e, checked) => {
+                          const index = permissions.findIndex(
+                            (perm) => perm.module === permission.value
+                          );
+                          const newPermissions = [...permissions];
+                          newPermissions[index].view = checked;
+                          setValue('permission', newPermissions);
+                        }}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <Checkbox
+                        checked={permissions.find((perm) => perm.module === permission.value)?.edit}
+                        onChange={(e, checked) => {
+                          const index = permissions.findIndex(
+                            (perm) => perm.module === permission.value
+                          );
+                          const newPermissions = [...permissions];
+                          newPermissions[index].edit = checked;
+                          setValue('permission', newPermissions);
+                        }}
+                      />
+                    </TableCell>
+                  </TableRow>
+                );
+              })
+            ) : (
+              <Skeleton width="100%" height={100} />
+            )}
           </Table>
         </TableContainer>
 

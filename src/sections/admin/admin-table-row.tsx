@@ -21,10 +21,10 @@ import AdminQuickEditForm from './admin-quick-edit-form';
 // ----------------------------------------------------------------------
 
 type Props = {
-  selected: boolean;
+  selected?: boolean;
   onEditRow: VoidFunction;
   row: Admin;
-  onSelectRow: VoidFunction;
+  onSelectRow?: VoidFunction;
 };
 
 export default function AdminTableRow({ row, selected, onEditRow, onSelectRow }: Props) {
@@ -37,9 +37,11 @@ export default function AdminTableRow({ row, selected, onEditRow, onSelectRow }:
   return (
     <>
       <TableRow hover selected={selected}>
-        <TableCell padding="checkbox">
-          <Checkbox checked={selected} onClick={onSelectRow} />
-        </TableCell>
+        {selected && onSelectRow && (
+          <TableCell padding="checkbox">
+            <Checkbox checked={selected} onClick={onSelectRow} />
+          </TableCell>
+        )}
 
         <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
           <Avatar alt={row.name} sx={{ mr: 2 }} />

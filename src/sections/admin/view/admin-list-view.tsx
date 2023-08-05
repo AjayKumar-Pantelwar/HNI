@@ -214,9 +214,9 @@ export default function AdminListView() {
                   rowCount={data?.data?.admins?.length}
                   numSelected={table.selected.length}
                   onSort={table.onSort}
-                  onSelectAllRows={(checked) =>
-                    table.onSelectAllRows(checked, data?.data?.admins?.map((row) => row.aid) || [])
-                  }
+                  // onSelectAllRows={(checked) =>
+                  //   table.onSelectAllRows(checked, data?.data?.admins?.map((row) => row.aid) || [])
+                  // }
                 />
 
                 <TableBody>
@@ -229,8 +229,8 @@ export default function AdminListView() {
                       <AdminTableRow
                         key={row.aid}
                         row={row}
-                        selected={table.selected.includes(row.aid)}
-                        onSelectRow={() => table.onSelectRow(row.aid)}
+                        // selected={table.selected.includes(row.aid)}
+                        // onSelectRow={() => table.onSelectRow(row.aid)}
                         onEditRow={() => handleEditRow(row.aid)}
                       />
                     ))}

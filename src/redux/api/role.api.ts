@@ -1,7 +1,12 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { enqueueSnackbar } from 'notistack';
 import { ApiResponse } from 'src/types/api';
-import { CreateRoleRequest, EditRoleRequest, GetRolesResponse } from 'src/types/role.types';
+import {
+  CreateRoleRequest,
+  EditRoleRequest,
+  GetPermissionsResponse,
+  GetRolesResponse,
+} from 'src/types/role.types';
 import { authSlice } from '../slices/auth.slice';
 
 export const roleApi = createApi({
@@ -45,6 +50,9 @@ export const roleApi = createApi({
         body,
       }),
       invalidatesTags: ['Role'],
+    }),
+    permissions: builder.query<GetPermissionsResponse, void>({
+      query: () => ({ url: '/api/admin/role/permission' }),
     }),
   }),
 });

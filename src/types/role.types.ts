@@ -32,3 +32,21 @@ export enum Module {
   IR = 'ir',
   INVESTOR = 'investor',
 }
+
+export interface GetPermissionsResponse {
+  data: PermissionsData;
+}
+
+export interface PermissionsData {
+  permissions: Permissions;
+}
+
+export interface Permissions {
+  deal: Deal;
+  event: Deal;
+}
+
+export interface Deal {
+  value: string;
+  title: string;
+}

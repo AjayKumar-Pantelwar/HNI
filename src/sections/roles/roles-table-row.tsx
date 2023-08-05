@@ -18,9 +18,9 @@ import AdminQuickEditForm from './roles-quick-edit-form';
 // ----------------------------------------------------------------------
 
 type Props = {
-  selected: boolean;
+  selected?: boolean;
   row: Role;
-  onSelectRow: VoidFunction;
+  onSelectRow?: VoidFunction;
 };
 
 export default function RolesTableRow({ row, selected, onSelectRow }: Props) {
@@ -33,9 +33,11 @@ export default function RolesTableRow({ row, selected, onSelectRow }: Props) {
   return (
     <>
       <TableRow hover selected={selected}>
-        <TableCell padding="checkbox">
-          <Checkbox checked={selected} onClick={onSelectRow} />
-        </TableCell>
+        {selected && onSelectRow && (
+          <TableCell padding="checkbox">
+            <Checkbox checked={selected} onClick={onSelectRow} />
+          </TableCell>
+        )}
 
         <TableCell sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
           <Iconify icon="fluent-mdl2:permissions-solid" width={18} height={18} />

@@ -92,7 +92,7 @@ export default function RolesQuickEditForm({ currentRole, open, onClose }: Props
       }}
     >
       <FormProvider methods={methods} onSubmit={onSubmit}>
-        <DialogTitle>Quick Update</DialogTitle>
+        <DialogTitle>Edit Role</DialogTitle>
 
         <DialogContent>
           <Stack sx={{ py: 3 }}>
