@@ -200,7 +200,7 @@ export default function LoginSection() {
           onClick={handleLogin}
           loading={loading}
         >
-          Login
+          Verify
         </LoadingButton>
       </Dialog>
     </FormProvider>

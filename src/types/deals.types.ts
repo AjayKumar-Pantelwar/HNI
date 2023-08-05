@@ -95,6 +95,32 @@ export type BasicInfoMediaResponse = ApiResponse;
 export type PitchResponse = ApiResponse;
 export type HighlightsResponse = ApiResponse;
 
+export type GetDealResponse = ApiResponse<{ deals: Deal[] }>;
+
+export type Deal = {
+  deal_id: string;
+  brand_name: string;
+  company_name: string;
+  one_liner: string;
+  description: string;
+  start_date: string;
+  end_date: string;
+  closing_soon_date: string;
+  sector: Sector;
+  deal_name: string;
+  deal_aggregation: DealAggregation;
+  cover_image: string | null;
+  is_deal_of_the_week: boolean;
+  is_deal_trending: boolean;
+  logo_link: string | null;
+  rounds: Round[];
+};
+
+export type GetDealRequest = {
+  name: string;
+  id: string;
+};
+
 export enum Sector1 {
   AGRICULTURE = 'agriculture',
   AUTOMOBILES = 'automobiles',
@@ -135,29 +161,3 @@ export enum RoundType {
   SERIES_A = 'series_a',
   SERIES_B = 'series_b',
 }
-
-export type GetDealResponse = ApiResponse<{ deals: Deal[] }>;
-
-export type Deal = {
-  deal_id: string;
-  brand_name: string;
-  company_name: string;
-  one_liner: string;
-  description: string;
-  start_date: string;
-  end_date: string;
-  closing_soon_date: string;
-  sector: Sector;
-  deal_name: string;
-  deal_aggregation: DealAggregation;
-  cover_image: string | null;
-  is_deal_of_the_week: boolean;
-  is_deal_trending: boolean;
-  logo_link: string | null;
-  rounds: Round[];
-};
-
-export type GetDealRequest = {
-  name: string;
-  id: string;
-};

@@ -1,7 +1,7 @@
 'use client';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 // @mui
@@ -11,10 +11,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import InputAdornment from '@mui/material/InputAdornment';
 import Stack from '@mui/material/Stack';
-import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Unstable_Grid2';
 // routes
@@ -24,7 +21,6 @@ import { useResponsive } from 'src/hooks/use-responsive';
 // _mock
 // components
 import FormProvider, {
-  RHFAutocomplete,
   RHFMultiSelect,
   RHFSelect,
   RHFSwitch,
@@ -35,6 +31,9 @@ import FormProvider, {
 import { useSnackbar } from 'src/components/snackbar';
 import { useRouter } from 'src/routes/hook';
 // types
+import { Button, MenuItem } from '@mui/material';
+import { capitalize } from 'lodash';
+import { dealApi } from 'src/redux/api/deal.api';
 import {
   CreateDealRequest,
   Model,
@@ -44,10 +43,7 @@ import {
   Sector3,
   Tech,
 } from 'src/types/deals.types';
-import { dealApi } from 'src/redux/api/deal.api';
 import { convertToFD } from 'src/utils/convert-fd';
-import { Button, Checkbox, MenuItem } from '@mui/material';
-import { capitalize } from 'lodash';
 
 // ----------------------------------------------------------------------
 

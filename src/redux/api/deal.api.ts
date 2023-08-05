@@ -34,7 +34,7 @@ export const dealApi = createApi({
   tagTypes: ['Deal'],
   endpoints: (builder) => ({
     deal: builder.query<GetDealResponse, GetDealRequest>({
-      query: (params) => ({ url: '/api/deal', params }),
+      query: ({ id }) => ({ url: `/api/deal?{${id}`, method: 'GET' }),
       providesTags: ['Deal'],
     }),
     createDeal: builder.mutation<CreateDealResponse, FormData>({

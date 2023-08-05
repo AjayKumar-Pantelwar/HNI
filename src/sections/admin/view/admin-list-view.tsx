@@ -121,28 +121,28 @@ export default function AdminListView() {
     setFilters(defaultFilters);
   }, []);
 
-  const handleSearch = useCallback(
-    (inputValue: string) => {
-      setSearch((prevState) => ({
-        ...prevState,
-        query: inputValue,
-      }));
+  // const handleSearch = useCallback(
+  //   (inputValue: string) => {
+  //     setSearch((prevState) => ({
+  //       ...prevState,
+  //       query: inputValue,
+  //     }));
 
-      if (inputValue) {
-        const results = data?.data?.admins?.filter(
-          (admin) => admin.name.toLowerCase().indexOf(search.query.toLowerCase()) !== -1
-        );
+  //     if (inputValue) {
+  //       const results = data?.data?.admins?.filter(
+  //         (admin) => admin.name.toLowerCase().indexOf(search.query.toLowerCase()) !== -1
+  //       );
 
-        if (results) {
-          setSearch((prevState) => ({
-            ...prevState,
-            results,
-          }));
-        }
-      }
-    },
-    [search.query, data?.data?.admins]
-  );
+  //       if (results) {
+  //         setSearch((prevState) => ({
+  //           ...prevState,
+  //           results,
+  //         }));
+  //       }
+  //     }
+  //   },
+  //   [search.query, data?.data?.admins]
+  // );
   return (
     <>
       <Container maxWidth={settings.themeStretch ? false : 'lg'}>
@@ -168,12 +168,12 @@ export default function AdminListView() {
           }}
         />
         <Box sx={{ display: 'flex', justifyContent: 'space-between', pb: 5 }}>
-          <AdminSearch
+          {/* <AdminSearch
             query={search.query}
             results={search.results}
             onSearch={handleSearch}
             hrefItem={(id: string) => paths.dashboard.admin.profile(id)}
-          />
+          /> */}
           <AdminFilters
             open={openFilters.value}
             onOpen={openFilters.onTrue}
