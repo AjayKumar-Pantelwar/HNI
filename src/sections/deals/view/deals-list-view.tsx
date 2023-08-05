@@ -36,11 +36,10 @@ import {
 } from 'src/components/table';
 // types
 //
-import { adminApi } from 'src/redux/api/admin.api';
-import { Admin, AdminRequest } from 'src/types/admin.types';
 import { Box } from '@mui/material';
-import { Deal, GetDealRequest } from 'src/types/deals.types';
 import { dealApi } from 'src/redux/api/deal.api';
+import { AdminRequest } from 'src/types/admin.types';
+import { Deal, GetDealRequest } from 'src/types/deals.types';
 import DealTableRow from '../deal-table-row';
 
 // ----------------------------------------------------------------------
@@ -153,7 +152,7 @@ export function DealListView() {
               variant="contained"
               startIcon={<Iconify icon="mingcute:add-line" />}
             >
-              New Admin
+              New Deal
             </Button>
           }
           sx={{
