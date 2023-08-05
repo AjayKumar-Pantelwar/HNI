@@ -68,7 +68,9 @@ export default function AdminFilters({
     if (values.is_blocked)
       onFilters('is_blocked', values.is_blocked === 'all' ? '' : values.is_blocked);
     if (values.rid) onFilters('rid', values.rid);
-
+    if (JSON.stringify(values) === JSON.stringify(defaultFilters)) {
+      onResetFilters();
+    }
     onClose();
   });
 
