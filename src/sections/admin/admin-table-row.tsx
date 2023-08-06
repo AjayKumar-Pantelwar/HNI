@@ -15,6 +15,7 @@ import Iconify from 'src/components/iconify';
 import Label from 'src/components/label';
 //
 import { Admin } from 'src/types/admin.types';
+import { roleApi } from 'src/redux/api/role.api';
 import AdminBlockForm from './admin-block-form';
 import AdminQuickEditForm from './admin-quick-edit-form';
 
@@ -27,7 +28,13 @@ type Props = {
   onSelectRow?: VoidFunction;
 };
 
-export default function AdminTableRow({ row, selected, onEditRow, onSelectRow }: Props) {
+async function getRole(id: string) {
+  const { data: rolesData } = roleApi.useRolesQuery();
+
+  return rolesData?.data?.roles.find((r) => r.rid === id)?.name.toLocaleUpperCase() || 'Admin';
+}
+
+export default async function AdminTableRow({ row, selected, onEditRow, onSelectRow }: Props) {
   const quickEdit = useBoolean();
 
   const block = useBoolean();
@@ -58,7 +65,7 @@ export default function AdminTableRow({ row, selected, onEditRow, onSelectRow }:
 
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{row.username}</TableCell>
 
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{row.type}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{await getRole(row.rid)}</TableCell>
 
         <TableCell>
           <Label variant="soft">{row.is_blocked ? ' blocked' : 'active'}</Label>
@@ -105,6 +112,7 @@ export default function AdminTableRow({ row, selected, onEditRow, onSelectRow }:
           Edit
         </MenuItem>
         <MenuItem
+          disabled
           onClick={() => {
             block.onTrue();
             popover.onClose();

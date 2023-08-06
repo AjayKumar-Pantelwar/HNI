@@ -142,7 +142,7 @@ export function DealListView() {
           heading="List"
           links={[
             { name: 'Dashboard', href: paths.dashboard.root },
-            { name: 'Deals', href: paths.dashboard.deals.root },
+            { name: 'Deals', href: paths.dashboard.deals.list },
             { name: 'List' },
           ]}
           action={

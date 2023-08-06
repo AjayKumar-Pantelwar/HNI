@@ -21,6 +21,7 @@ import {
   TableHead,
   TableRow,
   Skeleton,
+  TableBody,
 } from '@mui/material';
 import FormProvider, { RHFTextField } from 'src/components/hook-form';
 import { useSnackbar } from 'src/components/snackbar';
@@ -84,6 +85,7 @@ export default function RolesNewEditForm({ currentUser }: Props) {
       enqueueSnackbar(currentUser ? 'Update success!' : 'Create success!');
       router.push(paths.dashboard.roles.list);
     } catch (error) {
+      enqueueSnackbar(error.data.error, { variant: 'error' });
       console.error(error);
     }
   });
@@ -103,44 +105,54 @@ export default function RolesNewEditForm({ currentUser }: Props) {
                 <TableCell>Edit</TableCell>
               </TableRow>
             </TableHead>
-            {apiPermissions ? (
-              Object.values(apiPermissions.data.permissions).map((permission) => {
-                console.log(permission.value);
-                return (
-                  <TableRow key={permission.value}>
-                    <TableCell>{permission.title}</TableCell>
-                    <TableCell>
-                      <Checkbox
-                        checked={permissions.find((perm) => perm.module === permission.value)?.view}
-                        onChange={(_e, checked) => {
-                          const index = permissions.findIndex(
-                            (perm) => perm.module === permission.value
-                          );
-                          const newPermissions = [...permissions];
-                          newPermissions[index].view = checked;
-                          setValue('permission', newPermissions);
-                        }}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <Checkbox
-                        checked={permissions.find((perm) => perm.module === permission.value)?.edit}
-                        onChange={(e, checked) => {
-                          const index = permissions.findIndex(
-                            (perm) => perm.module === permission.value
-                          );
-                          const newPermissions = [...permissions];
-                          newPermissions[index].edit = checked;
-                          setValue('permission', newPermissions);
-                        }}
-                      />
-                    </TableCell>
-                  </TableRow>
-                );
-              })
-            ) : (
-              <Skeleton width="100%" height={100} />
-            )}
+            <TableBody>
+              {apiPermissions ? (
+                Object.values(apiPermissions.data.permissions).map((permission) => {
+                  console.log(permission.value);
+                  return (
+                    <TableRow key={permission.value}>
+                      <TableCell>{permission.title}</TableCell>
+                      <TableCell>
+                        <Checkbox
+                          checked={
+                            permissions.find((perm) => perm.module === permission.value)?.view
+                          }
+                          onChange={(_e, checked) => {
+                            const index = permissions.findIndex(
+                              (perm) => perm.module === permission.value
+                            );
+                            const newPermissions = [...permissions];
+                            newPermissions[index].view = checked;
+                            setValue('permission', newPermissions);
+                          }}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <Checkbox
+                          checked={
+                            permissions.find((perm) => perm.module === permission.value)?.edit
+                          }
+                          onChange={(e, checked) => {
+                            const index = permissions.findIndex(
+                              (perm) => perm.module === permission.value
+                            );
+                            const newPermissions = [...permissions];
+                            newPermissions[index].edit = checked;
+                            setValue('permission', newPermissions);
+                          }}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={3}>
+                    <Skeleton width="100%" height={100} />
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
           </Table>
         </TableContainer>
 
