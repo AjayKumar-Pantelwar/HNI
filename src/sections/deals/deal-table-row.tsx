@@ -22,10 +22,10 @@ import { paths } from 'src/routes/paths';
 // ----------------------------------------------------------------------
 
 type Props = {
-  selected: boolean;
+  selected?: boolean;
   onEditRow: VoidFunction;
   row: Deal;
-  onSelectRow: VoidFunction;
+  onSelectRow?: VoidFunction;
 };
 
 export default function DealTableRow({ row, selected, onEditRow, onSelectRow }: Props) {
@@ -35,9 +35,11 @@ export default function DealTableRow({ row, selected, onEditRow, onSelectRow }: 
   return (
     <>
       <TableRow hover selected={selected}>
-        <TableCell padding="checkbox">
-          <Checkbox checked={selected} onClick={onSelectRow} />
-        </TableCell>
+        {selected && onSelectRow && (
+          <TableCell padding="checkbox">
+            <Checkbox checked={selected} onClick={onSelectRow} />
+          </TableCell>
+        )}
 
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{row.deal_name}</TableCell>
 

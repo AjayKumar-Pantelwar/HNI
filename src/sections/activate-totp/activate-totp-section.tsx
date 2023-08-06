@@ -17,7 +17,7 @@ import { RouterLink } from 'src/routes/components';
 // components
 import Iconify from 'src/components/iconify';
 import FormProvider, { RHFCode } from 'src/components/hook-form';
-import { Box, IconButton, InputAdornment, TextField, Tooltip } from '@mui/material';
+import { Box, IconButton, InputAdornment, Skeleton, TextField, Tooltip } from '@mui/material';
 import { QRCodeSVG } from 'qrcode.react';
 import React, { useCallback } from 'react';
 import { useSnackbar } from 'notistack';
@@ -26,6 +26,10 @@ import { authService } from 'src/services/auth.service';
 import { useSelector } from 'src/redux/store';
 import { useDispatch } from 'react-redux';
 import { authSlice } from 'src/redux/slices/auth.slice';
+import { TableSkeleton } from 'src/components/table';
+import Paper from 'src/theme/overrides/components/paper';
+import { useRouter } from 'next/navigation';
+import { ProductItemSkeleton } from '../product/product-skeleton';
 
 // ----------------------------------------------------------------------
 
@@ -41,6 +45,7 @@ export default function ActivateTotpSection() {
   const { loginData } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const [secret, setSecret] = React.useState('');
   const [url, setUrl] = React.useState('');
@@ -58,11 +63,17 @@ export default function ActivateTotpSection() {
   const {
     handleSubmit,
     formState: { isSubmitting },
+    reset,
   } = methods;
+
+  console.log(loginData);
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      if (loginData === null) return;
+      if (loginData === null) {
+        router.push(paths.login);
+        return;
+      }
       await authService.activateTotp({
         username: loginData.username,
         req_token: loginData.req_token,
@@ -71,6 +82,8 @@ export default function ActivateTotpSection() {
       dispatch(authSlice.actions.login());
     } catch (error) {
       console.error(error);
+      reset();
+      enqueueSnackbar(error.response.data.error, { variant: 'error' });
     }
   });
   const onCopy = useCallback(
@@ -105,17 +118,23 @@ export default function ActivateTotpSection() {
 
   const renderForm = (
     <Stack spacing={3} mt={4} alignItems="center">
-      <RHFCode name="code" />
+      {secret && url ? (
+        <>
+          <RHFCode name="code" />
 
-      <LoadingButton
-        fullWidth
-        size="large"
-        type="submit"
-        variant="contained"
-        loading={isSubmitting}
-      >
-        Activate TOTP
-      </LoadingButton>
+          <LoadingButton
+            fullWidth
+            size="large"
+            type="submit"
+            variant="contained"
+            loading={isSubmitting}
+          >
+            Activate TOTP
+          </LoadingButton>
+        </>
+      ) : (
+        <Skeleton height={100} width="100%" />
+      )}
 
       <Link
         component={RouterLink}
@@ -146,27 +165,35 @@ export default function ActivateTotpSection() {
         </Typography>
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <Box sx={{ bgcolor: 'white', p: 1 }}>
-            <QRCodeSVG value={url} />
+            {url ? <QRCodeSVG value={url} /> : <Skeleton height={130} width={130} />}
           </Box>
         </Box>
-        <Typography variant="subtitle2" color="textSecondary" align="center">
-          Alternatively you can manually put this secret key in your Google Authenticator App
-        </Typography>
+        {secret && url ? (
+          <Typography variant="subtitle2" color="textSecondary" align="center">
+            Alternatively you can manually put this secret key in your Google Authenticator App
+          </Typography>
+        ) : (
+          <Skeleton height={30} width="100%" />
+        )}
         <Box>
-          <TextField
-            value={secret}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <Tooltip title="Copy">
-                    <IconButton onClick={() => onCopy(secret)}>
-                      <Iconify icon="eva:copy-fill" width={24} color="text.primary" />
-                    </IconButton>
-                  </Tooltip>
-                </InputAdornment>
-              ),
-            }}
-          />
+          {secret ? (
+            <TextField
+              value={secret}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <Tooltip title="Copy">
+                      <IconButton onClick={() => onCopy(secret)}>
+                        <Iconify icon="eva:copy-fill" width={24} color="text.primary" />
+                      </IconButton>
+                    </Tooltip>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          ) : (
+            <Skeleton height={45} />
+          )}
         </Box>
       </Stack>
     </>

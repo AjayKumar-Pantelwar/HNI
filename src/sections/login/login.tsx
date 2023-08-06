@@ -42,6 +42,8 @@ export default function LoginSection() {
   const [loading, setLoading] = React.useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
+  const [reqToken, setReqToken] = React.useState('');
+
   const password = useBoolean();
 
   const LoginSchema = Yup.object().shape({
@@ -62,26 +64,29 @@ export default function LoginSection() {
   const {
     handleSubmit,
     formState: { isSubmitting },
+    getValues,
   } = methods;
 
   const handleLogin = async () => {
     setLoading(true);
     try {
-      if (loginData === null) return;
+      if (!reqToken && !getValues('username')) return;
       if (otp.length < 6) {
         enqueueSnackbar('Invalid OTP', { variant: 'error' });
         return;
       }
       await authService.validateTotp({
         totp: otp,
-        username: loginData.username,
-        req_token: loginData.req_token,
+        username: getValues('username'),
+        req_token: reqToken,
       });
+      setOpen(false);
       dispatch(authSlice.actions.login());
     } catch (error) {
       enqueueSnackbar(error.response.data.error, { variant: 'error' });
     } finally {
       setLoading(false);
+      setOtp('');
     }
   };
 
@@ -94,6 +99,7 @@ export default function LoginSection() {
        * the validate totp dialog
        */
       dispatch(authSlice.actions.setLoginData({ ...response.data.data, username: data.username }));
+      setReqToken(response.data.data.req_token);
       setOpen(true);
     } catch (error) {
       console.error(error);
@@ -126,33 +132,34 @@ export default function LoginSection() {
   const renderForm = (
     <Stack spacing={3}>
       {!!errorMsg && <Alert severity="error">{errorMsg}</Alert>}
+      <Stack spacing={3}>
+        <RHFTextField name="username" label="Username" />
 
-      <RHFTextField name="username" label="Username" />
+        <RHFTextField
+          name="password"
+          label="Password"
+          type={password.value ? 'text' : 'password'}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={password.onToggle} edge="end">
+                  <Iconify icon={password.value ? 'solar:eye-bold' : 'solar:eye-closed-bold'} />
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
 
-      <RHFTextField
-        name="password"
-        label="Password"
-        type={password.value ? 'text' : 'password'}
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position="end">
-              <IconButton onClick={password.onToggle} edge="end">
-                <Iconify icon={password.value ? 'solar:eye-bold' : 'solar:eye-closed-bold'} />
-              </IconButton>
-            </InputAdornment>
-          ),
-        }}
-      />
-
-      <LoadingButton
-        fullWidth
-        size="large"
-        type="submit"
-        variant="contained"
-        loading={isSubmitting}
-      >
-        Login
-      </LoadingButton>
+        <LoadingButton
+          fullWidth
+          size="large"
+          type="submit"
+          variant="contained"
+          loading={isSubmitting}
+        >
+          Login
+        </LoadingButton>
+      </Stack>
     </Stack>
   );
 

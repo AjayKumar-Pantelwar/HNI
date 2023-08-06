@@ -106,9 +106,9 @@ export default function RolesListView() {
                   rowCount={data?.data?.roles?.length}
                   numSelected={table.selected.length}
                   onSort={table.onSort}
-                  onSelectAllRows={(checked) =>
-                    table.onSelectAllRows(checked, data?.data?.roles?.map((row) => row.rid) || [])
-                  }
+                  // onSelectAllRows={(checked) =>
+                  //   table.onSelectAllRows(checked, data?.data?.roles?.map((row) => row.rid) || [])
+                  // }
                 />
 
                 <TableBody>
@@ -121,8 +121,8 @@ export default function RolesListView() {
                       <RolesTableRow
                         key={row.rid}
                         row={row}
-                        selected={table.selected.includes(row.rid)}
-                        onSelectRow={() => table.onSelectRow(row.rid)}
+                        // selected={table.selected.includes(row.rid)}
+                        // onSelectRow={() => table.onSelectRow(row.rid)}
                       />
                     ))}
 
