@@ -1,3 +1,5 @@
+'use client';
+
 // @mui
 import Avatar from '@mui/material/Avatar';
 import Checkbox from '@mui/material/Checkbox';
@@ -21,20 +23,22 @@ import AdminQuickEditForm from './admin-quick-edit-form';
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props {
   selected?: boolean;
   onEditRow: VoidFunction;
   row: Admin;
   onSelectRow?: VoidFunction;
-};
+}
 
-async function getRole(id: string) {
+function getRole(id: string) {
   const { data: rolesData } = roleApi.useRolesQuery();
 
   return rolesData?.data?.roles.find((r) => r.rid === id)?.name.toLocaleUpperCase() || 'Admin';
 }
 
-export default async function AdminTableRow({ row, selected, onEditRow, onSelectRow }: Props) {
+export default function AdminTableRow(props: Props) {
+  const { row, selected, onEditRow, onSelectRow } = props;
+
   const quickEdit = useBoolean();
 
   const block = useBoolean();
@@ -65,13 +69,26 @@ export default async function AdminTableRow({ row, selected, onEditRow, onSelect
 
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{row.username}</TableCell>
 
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{await getRole(row.rid)}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{getRole(row.rid)}</TableCell>
 
         <TableCell>
           <Label variant="soft">{row.is_blocked ? ' blocked' : 'active'}</Label>
         </TableCell>
-
         <TableCell>
+          {row.is_pwd_change_required ? (
+            <Iconify icon="humbleicons:times-circle" width={20} height={20} color="error.main" />
+          ) : (
+            <Iconify icon="gg:check-o" width={20} height={20} color="success.main" />
+          )}
+        </TableCell>
+        <TableCell>
+          {!row.is_totp_activated ? (
+            <Iconify icon="humbleicons:times-circle" width={20} height={20} color="error.main" />
+          ) : (
+            <Iconify icon="gg:check-o" width={20} height={20} color="success.main" />
+          )}
+        </TableCell>
+        {/* <TableCell>
           {!row.is_pwd_change_required && row.is_totp_activated
             ? 'All good'
             : !row.is_totp_activated && row.is_pwd_change_required
@@ -79,7 +96,7 @@ export default async function AdminTableRow({ row, selected, onEditRow, onSelect
             : !row.is_totp_activated
             ? 'TOTP activation required'
             : 'Password change required'}
-        </TableCell>
+        </TableCell> */}
 
         <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
           {/* <Tooltip title="Quick Edit" placement="top" arrow>

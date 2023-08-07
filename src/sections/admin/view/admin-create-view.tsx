@@ -14,11 +14,12 @@ import { Stack } from '@mui/system';
 import Link from 'next/link';
 import { Role } from 'src/types/role.types';
 import { roleApi } from 'src/redux/api/role.api';
+import { RouterLink } from 'src/routes/components';
 import AdminNewEditForm from '../admin-new-edit-form';
 
 // ----------------------------------------------------------------------
 
-export default async function AdminCreateView() {
+export default function AdminCreateView() {
   const { data: rolesData, isLoading } = roleApi.useRolesQuery();
   const settings = useSettingsContext();
 
@@ -70,9 +71,9 @@ export default async function AdminCreateView() {
               You have to create roles first, to create admins
             </Typography>
             <Stack alignItems="center" flex={1}>
-              <Link href="/dashboard/roles/new">
-                <Button component="a">Click here to redirect to roles</Button>
-              </Link>
+              <Button variant="outlined" component={RouterLink} href={paths.dashboard.roles.new}>
+                Click here to add a role
+              </Button>
             </Stack>
           </Stack>
         </Box>

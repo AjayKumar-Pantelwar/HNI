@@ -52,7 +52,8 @@ const TABLE_HEAD = [
   { id: 'username', label: 'Username', width: 220 },
   { id: 'role', label: 'Role', width: 180 },
   { id: 'status', label: 'Status', width: 100 },
-  { id: 'security', label: 'Security', width: 200 },
+  { id: 'password', label: 'Password', width: 80 },
+  { id: 'totp', label: 'TOTP', width: 80 },
   { id: '', label: 'Actions', width: 80 },
 ];
 
@@ -229,7 +230,7 @@ export default function AdminListView() {
                     .map((row) => (
                       <AdminTableRow
                         key={row.aid}
-                        row={row}
+                        row={row as Admin}
                         // selected={table.selected.includes(row.aid)}
                         // onSelectRow={() => table.onSelectRow(row.aid)}
                         onEditRow={() => handleEditRow(row.aid)}

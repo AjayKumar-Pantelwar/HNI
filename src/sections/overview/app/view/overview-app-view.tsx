@@ -35,8 +35,10 @@ export default function OverviewAppView() {
 
   const settings = useSettingsContext();
 
+  console.log(settings.themeStretch);
+
   return (
-    <Container maxWidth={settings.themeStretch ? false : 'xl'}>
+    <Container sx={{ width: '100%' }}>
       <Grid container spacing={3}>
         <Grid xs={12} md={8}>
           <AppWelcome

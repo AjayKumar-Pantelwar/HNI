@@ -63,6 +63,8 @@ export default function AdminNewEditForm({ currentUser }: Props) {
     rid: Yup.string().required('Role is required'),
   });
 
+  type CreateAdminRequest = Yup.InferType<typeof AdminSchema>;
+
   const defaultValues = useMemo<CreateAdminRequest>(
     () => ({
       name: currentUser?.name || '',
@@ -88,23 +90,18 @@ export default function AdminNewEditForm({ currentUser }: Props) {
   } = methods;
 
   const onSubmit = handleSubmit(async (data) => {
-    console.log('hello');
-
     await createAdmin(data)
       .unwrap()
       .then((res: any) => {
         if (res.status !== 200) {
           enqueueSnackbar(res.data.error, { variant: 'error' });
-          methods.formState.isSubmitting = false;
         } else {
           enqueueSnackbar(currentUser ? 'Update success!' : 'Create success!');
           router.push(paths.dashboard.admin.list);
-          methods.formState.isSubmitting = false;
         }
       })
       .catch((error) => {
         enqueueSnackbar(error.data.error, { variant: 'error' });
-        methods.formState.isSubmitting = false;
       });
   });
 
@@ -231,7 +228,7 @@ export default function AdminNewEditForm({ currentUser }: Props) {
           />
         </Box>
         <Stack alignItems="flex-end" sx={{ mt: 3 }}>
-          <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
+          <LoadingButton type="submit" variant="contained">
             {!currentUser ? 'Create Admin' : 'Save Changes'}
           </LoadingButton>
         </Stack>

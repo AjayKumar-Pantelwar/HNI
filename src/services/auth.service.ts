@@ -13,8 +13,9 @@ import {
 import { AxiosResponse } from 'axios';
 import { ApiResponse } from 'src/types/api';
 import { PrivateService } from './private-service';
+import { PublicService } from './public-service';
 
-class AuthService extends PrivateService {
+class AuthService extends PublicService {
   login(request: LoginRequest): Promise<AxiosResponse<ApiResponse<LoginResponse>>> {
     return this.client.post('/api/auth/login', request);
   }
