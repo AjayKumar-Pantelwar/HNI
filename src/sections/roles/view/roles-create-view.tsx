@@ -26,7 +26,7 @@ export default function RolesCreateView() {
           },
           {
             name: 'Roles',
-            href: paths.dashboard.roles.root,
+            href: paths.dashboard.roles.list,
           },
           { name: 'New Role' },
         ]}

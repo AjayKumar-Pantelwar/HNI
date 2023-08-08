@@ -1,3 +1,5 @@
+'use client';
+
 // @mui
 import Checkbox from '@mui/material/Checkbox';
 import Typography from '@mui/material/Typography';

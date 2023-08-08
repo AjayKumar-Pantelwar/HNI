@@ -63,6 +63,8 @@ export default function AdminNewEditForm({ currentUser }: Props) {
     rid: Yup.string().required('Role is required'),
   });
 
+  type CreateAdminRequest = Yup.InferType<typeof AdminSchema>;
+
   const defaultValues = useMemo<CreateAdminRequest>(
     () => ({
       name: currentUser?.name || '',
@@ -88,13 +90,19 @@ export default function AdminNewEditForm({ currentUser }: Props) {
   } = methods;
 
   const onSubmit = handleSubmit(async (data) => {
-    try {
-      await createAdmin(data).unwrap();
-      enqueueSnackbar(currentUser ? 'Update success!' : 'Create success!');
-      router.push(paths.dashboard.admin.list);
-    } catch (error) {
-      console.error(error);
-    }
+    await createAdmin(data)
+      .unwrap()
+      .then((res: any) => {
+        if (res.status !== 200) {
+          enqueueSnackbar(res.data.error, { variant: 'error' });
+        } else {
+          enqueueSnackbar(currentUser ? 'Update success!' : 'Create success!');
+          router.push(paths.dashboard.admin.list);
+        }
+      })
+      .catch((error) => {
+        enqueueSnackbar(error.data.error, { variant: 'error' });
+      });
   });
 
   const currentRid = methods.watch('rid');
@@ -102,145 +110,129 @@ export default function AdminNewEditForm({ currentUser }: Props) {
   const currentRole = rolesData?.data?.roles?.find((role) => role.rid === currentRid);
 
   // console.log(permission.module);
-  if (rolesData)
-    return (
-      <FormProvider methods={methods} onSubmit={onSubmit}>
-        <Card sx={{ p: 3 }}>
-          <Box
-            rowGap={3}
-            columnGap={2}
-            display="grid"
-            gridTemplateColumns={{
-              xs: 'repeat(1, 1fr)',
-              sm: 'repeat(2, 1fr)',
+  return (
+    <FormProvider methods={methods} onSubmit={onSubmit}>
+      <Card sx={{ p: 3 }}>
+        <Box
+          rowGap={3}
+          columnGap={2}
+          display="grid"
+          gridTemplateColumns={{
+            xs: 'repeat(1, 1fr)',
+            sm: 'repeat(2, 1fr)',
+          }}
+        >
+          <RHFTextField name="name" label="Full Name" />
+          <RHFTextField name="email" label="Email Address" />
+          <RHFTextField name="username" label="Username" />
+          <RHFTextField name="mobile_number" label="Phone Number" />
+          <RHFTextField
+            name="pwd"
+            label="Password"
+            type={password.value ? 'text' : 'password'}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={password.onToggle} edge="end">
+                    <Iconify icon={password.value ? 'solar:eye-bold' : 'solar:eye-closed-bold'} />
+                  </IconButton>
+                </InputAdornment>
+              ),
             }}
-          >
-            <RHFTextField name="name" label="Full Name" />
-            <RHFTextField name="email" label="Email Address" />
-            <RHFTextField name="username" label="Username" />
-            <RHFTextField name="mobile_number" label="Phone Number" />
-            <RHFTextField
-              name="pwd"
-              label="Password"
-              type={password.value ? 'text' : 'password'}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton onClick={password.onToggle} edge="end">
-                      <Iconify icon={password.value ? 'solar:eye-bold' : 'solar:eye-closed-bold'} />
-                    </IconButton>
-                  </InputAdornment>
-                ),
+          />
+
+          {rolesData?.data?.roles && (
+            <RHFAutocomplete
+              name="rid"
+              label="Role"
+              options={rolesData?.data?.roles?.map((role) => role.rid) || []}
+              getOptionLabel={(option) => {
+                const found = rolesData?.data?.roles?.find((role) => role.rid === option);
+                if (!found) return option;
+                return found.name.toLocaleUpperCase();
+              }}
+              isOptionEqualToValue={(option, value) => option === value}
+              renderOption={(props, option) => {
+                const found = rolesData?.data?.roles?.find((role) => role.rid === option);
+                if (!found) return null;
+                return (
+                  <li {...props} key={found.rid}>
+                    {found.name.toLocaleUpperCase()}
+                  </li>
+                );
               }}
             />
-
-            {rolesData?.data?.roles && (
-              <RHFAutocomplete
-                name="rid"
-                label="Role"
-                options={rolesData?.data?.roles?.map((role) => role.rid) || []}
-                getOptionLabel={(option) => {
-                  const found = rolesData?.data?.roles?.find((role) => role.rid === option);
-                  if (!found) return option;
-                  return found.name;
-                }}
-                isOptionEqualToValue={(option, value) => option === value}
-                renderOption={(props, option) => {
-                  const found = rolesData?.data?.roles?.find((role) => role.rid === option);
-                  if (!found) return null;
-                  return (
-                    <li {...props} key={found.rid}>
-                      {found.name}
-                    </li>
-                  );
-                }}
-              />
-            )}
-          </Box>
-          {currentRole && (
-            <TableContainer sx={{ mt: 3 }}>
-              <Typography sx={{ mb: 2, color: 'text.secondary' }}>
-                This role has the following permissions:
-              </Typography>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Role</TableCell>
-                    <TableCell>View</TableCell>
-                    <TableCell>Edit</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {currentRole?.permission?.map((permission) => (
-                    <TableRow key={permission.module}>
-                      <TableCell>{permission.module.toUpperCase()}</TableCell>
-                      <TableCell>
-                        {permission.view ? (
-                          <Iconify icon="gg:check-o" width={20} height={20} color="success.main" />
-                        ) : (
-                          <Iconify
-                            icon="humbleicons:times-circle"
-                            width={20}
-                            height={20}
-                            color="error.main"
-                          />
-                        )}
-                      </TableCell>
-                      <TableCell>
-                        {permission.edit ? (
-                          <Iconify icon="gg:check-o" width={20} height={20} color="success.main" />
-                        ) : (
-                          <Iconify
-                            icon="humbleicons:times-circle"
-                            width={20}
-                            height={20}
-                            color="error.main"
-                          />
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
           )}
-          <Box sx={{ pt: 2 }}>
-            <RHFSwitch
-              name="is_pwd_change_required"
-              label={
-                <>
-                  <Typography variant="subtitle2" sx={{ mb: 0.5 }}>
-                    Password change
-                  </Typography>
-                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                    Enabling this will require a password change at first login.
-                  </Typography>
-                </>
-              }
-              sx={{ justifyContent: 'space-between' }}
-            />
-          </Box>
-          <Stack alignItems="flex-end" sx={{ mt: 3 }}>
-            <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-              {!currentUser ? 'Create Admin' : 'Save Changes'}
-            </LoadingButton>
-          </Stack>
-        </Card>
-      </FormProvider>
-    );
-
-  return (
-    <Card
-      sx={{ p: 5, display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}
-    >
-      <Stack gap={3}>
-        <Typography variant="h3">You need to create roles before creating Admins</Typography>
-        <Stack alignItems="center" flex={1}>
-          <Button onClick={() => router.push('/dashboard/roles/new')}>
-            Click here to redirect to roles
-          </Button>
+        </Box>
+        {currentRole && (
+          <TableContainer sx={{ mt: 3 }}>
+            <Typography sx={{ mb: 2, color: 'text.secondary' }}>
+              This role has the following permissions:
+            </Typography>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Role</TableCell>
+                  <TableCell>View</TableCell>
+                  <TableCell>Edit</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {currentRole?.permission?.map((permission) => (
+                  <TableRow key={permission.module}>
+                    <TableCell>{permission.module.toUpperCase()}</TableCell>
+                    <TableCell>
+                      {permission.view ? (
+                        <Iconify icon="gg:check-o" width={20} height={20} color="success.main" />
+                      ) : (
+                        <Iconify
+                          icon="humbleicons:times-circle"
+                          width={20}
+                          height={20}
+                          color="error.main"
+                        />
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {permission.edit ? (
+                        <Iconify icon="gg:check-o" width={20} height={20} color="success.main" />
+                      ) : (
+                        <Iconify
+                          icon="humbleicons:times-circle"
+                          width={20}
+                          height={20}
+                          color="error.main"
+                        />
+                      )}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
+        <Box sx={{ pt: 2 }}>
+          <RHFSwitch
+            name="is_pwd_change_required"
+            label={
+              <>
+                <Typography variant="subtitle2" sx={{ mb: 0.5 }}>
+                  Password change
+                </Typography>
+                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                  Enabling this will require a password change at first login.
+                </Typography>
+              </>
+            }
+            sx={{ justifyContent: 'space-between' }}
+          />
+        </Box>
+        <Stack alignItems="flex-end" sx={{ mt: 3 }}>
+          <LoadingButton type="submit" variant="contained">
+            {!currentUser ? 'Create Admin' : 'Save Changes'}
+          </LoadingButton>
         </Stack>
-      </Stack>
-    </Card>
+      </Card>
+    </FormProvider>
   );
 }

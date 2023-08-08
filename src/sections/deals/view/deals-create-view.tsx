@@ -26,7 +26,7 @@ export default function DealsCreateView() {
           },
           {
             name: 'Deals',
-            href: paths.dashboard.deals.root,
+            href: paths.dashboard.deals.list,
           },
           { name: 'New Deal' },
         ]}

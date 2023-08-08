@@ -80,7 +80,7 @@ export default function DashboardLayout({ children }: Props) {
       >
         {renderNavVertical}
 
-        <Main>{children}</Main>
+        <Main sx={{ maxWidth: '100%' }}>{children}</Main>
       </Box>
     </>
   );

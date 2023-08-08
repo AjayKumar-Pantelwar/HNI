@@ -61,7 +61,7 @@ export default function RolesListView() {
           heading="List"
           links={[
             { name: 'Dashboard', href: paths.dashboard.root },
-            { name: 'Roles', href: paths.dashboard.roles.root },
+            { name: 'Roles', href: paths.dashboard.roles.list },
             { name: 'List' },
           ]}
           action={

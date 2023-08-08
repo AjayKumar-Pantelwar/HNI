@@ -27,8 +27,7 @@ import { useRouter } from 'src/routes/hook/use-router';
 // ----------------------------------------------------------------------
 
 export default function ChangePasswordSection() {
-  const password1 = useBoolean();
-  const password2 = useBoolean();
+  const password = useBoolean();
 
   const router = useRouter();
   const [errorMsg, setErrorMsg] = React.useState('');
@@ -85,12 +84,12 @@ export default function ChangePasswordSection() {
       <RHFTextField
         name="password"
         label="Password"
-        type={password1.value ? 'text' : 'password'}
+        type={password.value ? 'text' : 'password'}
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">
-              <IconButton onClick={password1.onToggle} edge="end">
-                <Iconify icon={password1.value ? 'solar:eye-bold' : 'solar:eye-closed-bold'} />
+              <IconButton onClick={password.onToggle} edge="end">
+                <Iconify icon={password.value ? 'solar:eye-bold' : 'solar:eye-closed-bold'} />
               </IconButton>
             </InputAdornment>
           ),
@@ -100,12 +99,12 @@ export default function ChangePasswordSection() {
       <RHFTextField
         name="confirmPassword"
         label="Confirm New Password"
-        type={password2.value ? 'text' : 'password'}
+        type={password.value ? 'text' : 'password'}
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">
-              <IconButton onClick={password2.onToggle} edge="end">
-                <Iconify icon={password2.value ? 'solar:eye-bold' : 'solar:eye-closed-bold'} />
+              <IconButton onClick={password.onToggle} edge="end">
+                <Iconify icon={password.value ? 'solar:eye-bold' : 'solar:eye-closed-bold'} />
               </IconButton>
             </InputAdornment>
           ),

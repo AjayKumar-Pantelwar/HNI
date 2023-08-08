@@ -42,8 +42,6 @@ export default function LoginSection() {
   const [loading, setLoading] = React.useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
-  const [reqToken, setReqToken] = React.useState('');
-
   const password = useBoolean();
 
   const LoginSchema = Yup.object().shape({
@@ -70,15 +68,15 @@ export default function LoginSection() {
   const handleLogin = async () => {
     setLoading(true);
     try {
-      if (!reqToken && !getValues('username')) return;
+      if (loginData === null) return;
       if (otp.length < 6) {
         enqueueSnackbar('Invalid OTP', { variant: 'error' });
         return;
       }
       await authService.validateTotp({
         totp: otp,
-        username: getValues('username'),
-        req_token: reqToken,
+        username: loginData.username,
+        req_token: loginData.req_token,
       });
       setOpen(false);
       dispatch(authSlice.actions.login());
@@ -99,7 +97,6 @@ export default function LoginSection() {
        * the validate totp dialog
        */
       dispatch(authSlice.actions.setLoginData({ ...response.data.data, username: data.username }));
-      setReqToken(response.data.data.req_token);
       setOpen(true);
     } catch (error) {
       console.error(error);
@@ -112,11 +109,14 @@ export default function LoginSection() {
         dispatch(
           authSlice.actions.setLoginData({ ...response.data.data, username: data.username })
         );
+        enqueueSnackbar(error.response.data.error, { variant: 'error' });
         router.push(paths.changePassword);
       } else if (response.data?.data?.is_totp_activated === false) {
         dispatch(
           authSlice.actions.setLoginData({ ...response.data.data, username: data.username })
         );
+        enqueueSnackbar(error.response.data.error, { variant: 'error' });
+
         router.push(paths.activateTotp);
       } else {
         /*

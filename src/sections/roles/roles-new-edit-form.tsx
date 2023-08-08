@@ -1,5 +1,7 @@
+'use client';
+
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 // @mui
@@ -21,6 +23,7 @@ import {
   TableHead,
   TableRow,
   Skeleton,
+  TableBody,
 } from '@mui/material';
 import FormProvider, { RHFTextField } from 'src/components/hook-form';
 import { useSnackbar } from 'src/components/snackbar';
@@ -31,10 +34,10 @@ import { deflate } from 'zlib';
 // ----------------------------------------------------------------------
 
 type Props = {
-  currentUser?: Role;
+  currentRole?: Role;
 };
 
-export default function RolesNewEditForm({ currentUser }: Props) {
+export default function RolesNewEditForm({ currentRole }: Props) {
   const router = useRouter();
 
   const [createRole] = roleApi.useCreateRoleMutation();
@@ -48,21 +51,10 @@ export default function RolesNewEditForm({ currentUser }: Props) {
     permission: Yup.array().required('Permission is required'),
   });
 
-  const defaultValues = useMemo<CreateRoleRequest>(
-    () => ({
-      name: currentUser?.name || '',
-      permission:
-        currentUser?.permission ||
-        (apiPermissions
-          ? Object.values(apiPermissions.data.permissions).map((module) => ({
-              view: false,
-              edit: false,
-              module: module.value,
-            }))
-          : []),
-    }),
-    [currentUser, apiPermissions]
-  );
+  const defaultValues = {
+    name: currentRole?.name || '',
+    permission: currentRole?.permission || [],
+  };
 
   const methods = useForm({
     resolver: yupResolver(RolesSchema),
@@ -73,20 +65,34 @@ export default function RolesNewEditForm({ currentUser }: Props) {
     handleSubmit,
     setValue,
     formState: { isSubmitting },
-    getValues,
   } = methods;
+
+  React.useEffect(() => {
+    if (apiPermissions) {
+      const perms = Object.values(apiPermissions.data.permissions).map((module) => ({
+        view: false,
+        edit: false,
+        module: module.value,
+      }));
+      setValue('permission', perms);
+    }
+  }, [apiPermissions]);
 
   const permissions = methods.watch('permission');
 
   const onSubmit = handleSubmit(async (data) => {
     try {
       await createRole(data).unwrap();
-      enqueueSnackbar(currentUser ? 'Update success!' : 'Create success!');
+      enqueueSnackbar(currentRole ? 'Update success!' : 'Create success!');
       router.push(paths.dashboard.roles.list);
     } catch (error) {
+      enqueueSnackbar(error.data.error, { variant: 'error' });
       console.error(error);
     }
   });
+
+  console.log({ defaultValues });
+  console.log({ permissions });
 
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>
@@ -103,50 +109,60 @@ export default function RolesNewEditForm({ currentUser }: Props) {
                 <TableCell>Edit</TableCell>
               </TableRow>
             </TableHead>
-            {apiPermissions ? (
-              Object.values(apiPermissions.data.permissions).map((permission) => {
-                console.log(permission.value);
-                return (
-                  <TableRow key={permission.value}>
-                    <TableCell>{permission.title}</TableCell>
-                    <TableCell>
-                      <Checkbox
-                        checked={permissions.find((perm) => perm.module === permission.value)?.view}
-                        onChange={(_e, checked) => {
-                          const index = permissions.findIndex(
-                            (perm) => perm.module === permission.value
-                          );
-                          const newPermissions = [...permissions];
-                          newPermissions[index].view = checked;
-                          setValue('permission', newPermissions);
-                        }}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <Checkbox
-                        checked={permissions.find((perm) => perm.module === permission.value)?.edit}
-                        onChange={(e, checked) => {
-                          const index = permissions.findIndex(
-                            (perm) => perm.module === permission.value
-                          );
-                          const newPermissions = [...permissions];
-                          newPermissions[index].edit = checked;
-                          setValue('permission', newPermissions);
-                        }}
-                      />
-                    </TableCell>
-                  </TableRow>
-                );
-              })
-            ) : (
-              <Skeleton width="100%" height={100} />
-            )}
+            <TableBody>
+              {apiPermissions ? (
+                Object.values(apiPermissions.data.permissions).map((permission) => {
+                  console.log(permission.value);
+                  return (
+                    <TableRow key={permission.value}>
+                      <TableCell>{permission.title}</TableCell>
+                      <TableCell>
+                        <Checkbox
+                          checked={
+                            permissions.find((perm) => perm.module === permission.value)?.view
+                          }
+                          onChange={(_e, checked) => {
+                            const index = permissions.findIndex(
+                              (perm) => perm.module === permission.value
+                            );
+                            const newPermissions = [...permissions];
+                            newPermissions[index].view = checked;
+                            setValue('permission', newPermissions);
+                          }}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <Checkbox
+                          checked={
+                            permissions.find((perm) => perm.module === permission.value)?.edit
+                          }
+                          onChange={(e, checked) => {
+                            const index = permissions.findIndex(
+                              (perm) => perm.module === permission.value
+                            );
+                            const newPermissions = [...permissions];
+                            newPermissions[index].edit = checked;
+                            setValue('permission', newPermissions);
+                          }}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={3}>
+                    <Skeleton width="100%" height={100} />
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
           </Table>
         </TableContainer>
 
         <Stack alignItems="flex-end" sx={{ mt: 3 }}>
           <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-            {!currentUser ? 'Create Role' : 'Save Changes'}
+            {!currentRole ? 'Create Role' : 'Save Changes'}
           </LoadingButton>
         </Stack>
       </Card>

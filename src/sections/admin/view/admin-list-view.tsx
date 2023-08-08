@@ -30,6 +30,7 @@ import {
   TableNoData,
   TablePaginationCustom,
   TableSelectedAction,
+  TableSkeleton,
   emptyRows,
   getComparator,
   useTable,
@@ -49,9 +50,10 @@ const TABLE_HEAD = [
   { id: 'name', label: 'Name' },
   { id: 'mobile_number', label: 'Phone Number', width: 180 },
   { id: 'username', label: 'Username', width: 220 },
-  { id: 'type', label: 'Type', width: 180 },
+  { id: 'role', label: 'Role', width: 180 },
   { id: 'status', label: 'Status', width: 100 },
-  { id: 'security', label: 'Security', width: 200 },
+  { id: 'password', label: 'Password', width: 80 },
+  { id: 'totp', label: 'TOTP', width: 80 },
   { id: '', label: 'Actions', width: 80 },
 ];
 
@@ -84,7 +86,7 @@ export default function AdminListView() {
     results: [],
   });
 
-  const { data } = adminApi.useAdminQuery(filters);
+  const { data, isLoading } = adminApi.useAdminQuery(filters);
 
   const dataFiltered = applyFilter({
     inputData: data?.data?.admins || [],
@@ -150,7 +152,7 @@ export default function AdminListView() {
           heading="List"
           links={[
             { name: 'Dashboard', href: paths.dashboard.root },
-            { name: 'Admin', href: paths.dashboard.admin.root },
+            { name: 'Admin', href: paths.dashboard.admin.list },
             { name: 'List' },
           ]}
           action={
@@ -228,7 +230,7 @@ export default function AdminListView() {
                     .map((row) => (
                       <AdminTableRow
                         key={row.aid}
-                        row={row}
+                        row={row as Admin}
                         // selected={table.selected.includes(row.aid)}
                         // onSelectRow={() => table.onSelectRow(row.aid)}
                         onEditRow={() => handleEditRow(row.aid)}
@@ -243,8 +245,16 @@ export default function AdminListView() {
                       data?.data?.admins?.length || 0
                     )}
                   />
-
-                  <TableNoData notFound={notFound} />
+                  {isLoading ? (
+                    <>
+                      <TableSkeleton />
+                      <TableSkeleton />
+                      <TableSkeleton />
+                      <TableSkeleton />
+                    </>
+                  ) : (
+                    <TableNoData notFound={notFound} />
+                  )}
                 </TableBody>
               </Table>
             </Scrollbar>

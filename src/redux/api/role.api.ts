@@ -7,10 +7,12 @@ import {
   GetPermissionsResponse,
   GetRolesResponse,
 } from 'src/types/role.types';
+
 import { authSlice } from '../slices/auth.slice';
 
 export const roleApi = createApi({
   reducerPath: 'role',
+
   baseQuery: async (args, baseApi, extraOptions) => {
     const baseQuery = fetchBaseQuery({
       baseUrl: process.env.NEXT_PUBLIC_API_URL,
@@ -30,6 +32,7 @@ export const roleApi = createApi({
     return result;
   },
   tagTypes: ['Role'],
+
   endpoints: (builder) => ({
     roles: builder.query<GetRolesResponse, void>({
       query: (params) => ({ url: '/api/admin/role', params }),

@@ -1,3 +1,5 @@
+'use client';
+
 // @mui
 import { yupResolver } from '@hookform/resolvers/yup';
 import { MenuItem } from '@mui/material';
