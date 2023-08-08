@@ -40,6 +40,7 @@ import {
 import { adminApi } from 'src/redux/api/admin.api';
 import { Admin, AdminRequest } from 'src/types/admin.types';
 import { Box } from '@mui/material';
+import { filter } from 'lodash';
 import AdminFilters from '../admin-filters';
 import AdminSearch from '../admin-search';
 import AdminTableRow from '../admin-table-row';
@@ -105,11 +106,8 @@ export default function AdminListView() {
 
   const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
 
-  const handleFilters = useCallback((name: keyof AdminRequest, value: string) => {
-    setFilters((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+  const handleFilters = useCallback((appliedFilters: AdminRequest) => {
+    setFilters(appliedFilters);
   }, []);
 
   const handleEditRow = useCallback(
@@ -122,6 +120,8 @@ export default function AdminListView() {
   const handleResetFilters = useCallback(() => {
     setFilters(defaultFilters);
   }, []);
+
+  console.log(filters);
 
   // const handleSearch = useCallback(
   //   (inputValue: string) => {
