@@ -1,4 +1,5 @@
 export type CompanyInfoRequest = {
+  deal_id: string;
   legal_name: string;
   incorporated_date: string;
   form: string;

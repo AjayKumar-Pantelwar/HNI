@@ -143,6 +143,8 @@ export type CompanyInfo = {
   team: Team[];
   investors: Investor[];
   news: News[];
+  company_name: string;
+  cover_image: string;
 };
 
 export type Team = {

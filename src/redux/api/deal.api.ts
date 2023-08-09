@@ -3,6 +3,7 @@ import { enqueueSnackbar } from 'notistack';
 import { ApiResponse } from 'src/types/api.types';
 import {
   BasicInfoMediaResponse,
+  CompanyInfoRequest,
   CreateDealResponse,
   DeleteInvestorRequest,
   DeleteNewsRequest,
@@ -51,7 +52,7 @@ export const dealApi = createApi({
     }),
     basicInfoMedia: builder.mutation<BasicInfoMediaResponse, { id: string; body: FormData }>({
       query: ({ id, body }) => ({
-        url: `/api/deal/basic/${id}/media`,
+        url: `/api/deal/${id}/basic/media`,
         method: 'POST',
         body,
       }),
@@ -73,9 +74,9 @@ export const dealApi = createApi({
       }),
       invalidatesTags: ['Deal'],
     }),
-    companyInfo: builder.mutation<ApiResponse, { id: string; body: FormData }>({
-      query: ({ id, ...body }) => ({
-        url: `/api/deal/${id}/company-info`,
+    companyInfo: builder.mutation<ApiResponse, CompanyInfoRequest>({
+      query: ({ deal_id, ...body }) => ({
+        url: `/api/deal/${deal_id}/company-info`,
         method: 'POST',
         body,
       }),

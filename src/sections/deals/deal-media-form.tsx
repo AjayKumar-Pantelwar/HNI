@@ -43,9 +43,9 @@ export default function DealsMediaForm({ currentDeal }: Props) {
     media: Yup.array()
       .of(
         Yup.object({
-          link: Yup.string().required(),
+          link: Yup.string(),
           description: Yup.string().required(),
-          thumbnail_link: Yup.string().required(),
+          thumbnail_link: Yup.string(),
           type: Yup.string().required(),
           priority: Yup.number().required(),
           is_published: Yup.string().required(),
@@ -56,7 +56,16 @@ export default function DealsMediaForm({ currentDeal }: Props) {
 
   const defaultValues = useMemo<BasicInfoMediaRequest>(
     () => ({
-      media: currentDeal.media || [],
+      media: currentDeal.media || [
+        {
+          description: '',
+          is_published: 'true',
+          link: '',
+          priority: 0,
+          thumbnail_link: '',
+          type: 'image',
+        },
+      ],
     }),
     [currentDeal]
   );
@@ -84,7 +93,12 @@ export default function DealsMediaForm({ currentDeal }: Props) {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      const formData = convertToFD(data);
+      const formData = new FormData();
+      Object.keys(data).forEach((key) => {
+        // @ts-ignore
+        formData.append(key, key === 'media' ? JSON.stringify(data[key]) : data[key]);
+      });
+
       await addMedia({ id: currentDeal.deal_id, body: formData }).unwrap();
       reset();
       enqueueSnackbar(currentDeal ? 'Update success' : 'Create success', { variant: 'success' });
@@ -181,7 +195,7 @@ export default function DealsMediaForm({ currentDeal }: Props) {
   const sectionTwo = (
     <>
       {mdUp && <Grid md={4} />}
-      <Grid xs={12} md={8} sx={{ display: 'flex', alignItems: 'center' }}>
+      <Grid xs={12} md={8} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'end' }}>
         <LoadingButton type="submit" variant="contained" size="large" loading={isSubmitting}>
           {!currentDeal ? 'Create Deal' : 'Save Changes'}
         </LoadingButton>
