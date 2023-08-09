@@ -67,7 +67,7 @@ export const dealApi = createApi({
     }),
     highlights: builder.mutation<HighlightsResponse, { id: string; body: FormData }>({
       query: ({ id, body }) => ({
-        url: `/api/deal/pitch/${id}/highlights`,
+        url: `/api/deal/${id}/pitch/highlights`,
         method: 'POST',
         body,
       }),

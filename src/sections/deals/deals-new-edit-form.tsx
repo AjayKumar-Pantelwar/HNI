@@ -70,7 +70,10 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
     brand_name: Yup.string().required('brand name  is required'),
     company_name: Yup.string().required('company name is required'),
     one_liner: Yup.string().required('one liner is required'),
-    description: Yup.string().required('description is required'),
+    description: Yup.string()
+      .required('description is required')
+      .min(100, 'minimum 100 words')
+      .max(250, 'maximum 250 words'),
     start_date: Yup.string().required('start date is required'),
     end_date: Yup.string().required('end date is required'),
     closing_soon_date: Yup.string().required('closing soon date is required'),
@@ -142,7 +145,7 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
       const response = await createDeal(formData).unwrap();
       reset();
       enqueueSnackbar(currentDeal ? 'Update success' : 'Create success', { variant: 'success' });
-      router.push(paths.dashboard.deals.media(response.data.deal_id));
+      router.push(paths.dashboard.deals.list);
     } catch (error) {
       console.error(error);
     }

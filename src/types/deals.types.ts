@@ -88,7 +88,7 @@ export type HighlightsRequest = {
   highlights: {
     title: string;
     description: string;
-  };
+  }[];
   [key: `icon_link_${number}`]: File;
 };
 
@@ -122,6 +122,12 @@ export type Deal = {
   deal_aggregation: DealAggregation;
   created_at: Time;
   updated_at: Time;
+};
+
+export type Highlight = {
+  title: string;
+  description: string;
+  icon_link: string;
 };
 
 export type CompanyInfo = {
@@ -162,6 +168,7 @@ export type Pitch = {
   info: string[];
   why_shortlist: string[];
   traction: Traction[];
+  highlights?: Highlight[];
 };
 
 export type GetDealRequest = {

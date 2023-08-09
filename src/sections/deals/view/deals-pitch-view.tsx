@@ -9,8 +9,11 @@ import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 import { dealApi } from 'src/redux/api/deal.api';
 import { useParams } from 'src/routes/hook';
+import { Divider, Stack } from '@mui/material';
 import DealsNewEditForm from '../deals-new-edit-form';
 import DealsPitchForm from '../deals-pitch-form';
+import DealsMediaForm from '../deal-media-form';
+import DealHighlightForm from '../deal-highlights-form';
 //
 
 // ----------------------------------------------------------------------
@@ -40,8 +43,11 @@ export default function DealsPitchView() {
           mb: { xs: 3, md: 5 },
         }}
       />
-
-      {data?.data?.deals?.[0] && <DealsPitchForm currentDeal={data?.data?.deals?.[0]} />}
+      <Stack gap={4}>
+        {data?.data?.deals?.[0] && <DealsPitchForm currentDeal={data?.data?.deals?.[0]} />}
+        <Divider />
+        {data?.data?.deals?.[0] && <DealHighlightForm currentDeal={data?.data?.deals?.[0]} />}
+      </Stack>
     </Container>
   );
 }

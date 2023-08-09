@@ -1,11 +1,10 @@
 'use client';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useCallback, useEffect, useMemo } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { useEffect, useMemo } from 'react';
+import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 // @mui
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import LoadingButton from '@mui/lab/LoadingButton';
 import Box from '@mui/material/Box';
@@ -15,38 +14,16 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Unstable_Grid2';
 // routes
-import { paths } from 'src/routes/paths';
 // hooks
 import { useResponsive } from 'src/hooks/use-responsive';
 // _mock
 // components
-import FormProvider, {
-  RHFMultiSelect,
-  RHFSelect,
-  RHFSwitch,
-  RHFTextField,
-  RHFUpload,
-  RHFUploadAvatar,
-} from 'src/components/hook-form';
+import FormProvider, { RHFTextField } from 'src/components/hook-form';
 import { useSnackbar } from 'src/components/snackbar';
-import { useRouter } from 'src/routes/hook';
 // types
-import { Button, MenuItem } from '@mui/material';
-import { capitalize } from 'lodash';
+import { Button } from '@mui/material';
 import { dealApi } from 'src/redux/api/deal.api';
-import {
-  CreateDealRequest,
-  Deal,
-  Model,
-  PitchRequest,
-  RoundType,
-  Sector1,
-  Sector2,
-  Sector3,
-  Tech,
-} from 'src/types/deals.types';
-import { convertToFD } from 'src/utils/convert-fd';
-import { fDate, pDate } from 'src/utils/format-time';
+import { Deal, PitchRequest } from 'src/types/deals.types';
 
 // ----------------------------------------------------------------------
 
@@ -62,24 +39,38 @@ export default function DealsPitchForm({ currentDeal }: Props) {
   const [addPitch] = dealApi.usePitchMutation();
 
   const NewDealSchema = Yup.object().shape({
-    info: Yup.array().of(Yup.string()).required(),
-    why_shortlist: Yup.array().of(Yup.string()).required(),
+    deal_id: Yup.string().required(),
+    info: Yup.array()
+      .of(Yup.string().required())
+      .required()
+      .min(2, 'Enter atleast 2 info values')
+      .max(3, 'Maximum 3 values allowed'),
+    why_shortlist: Yup.array()
+      .of(Yup.string().required())
+      .required()
+      .min(2, 'Enter atleast 2 info values')
+      .max(4, 'Maximum 4 values allowed'),
     traction: Yup.array()
       .of(
         Yup.object().shape({
-          key: Yup.string(),
-          value: Yup.string(),
+          key: Yup.string().required(),
+          value: Yup.string().required(),
         })
       )
-      .required(),
+      .required()
+      .min(2, 'Enter atleast 2 traction')
+      .max(5, 'Maximum 5 traction values allowed'),
   });
 
   const defaultValues = useMemo<PitchRequest>(
     () => ({
       deal_id: currentDeal.deal_id,
-      info: currentDeal.pitch?.info || [],
-      why_shortlist: currentDeal.pitch?.why_shortlist || [],
-      traction: currentDeal.pitch?.traction || [],
+      info: currentDeal.pitch?.info || ['', ''],
+      why_shortlist: currentDeal.pitch?.why_shortlist || ['', ''],
+      traction: currentDeal.pitch?.traction || [
+        { key: '', value: '' },
+        { key: '', value: '' },
+      ],
     }),
     [currentDeal]
   );
@@ -109,11 +100,13 @@ export default function DealsPitchForm({ currentDeal }: Props) {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      const response = await addPitch(data).unwrap();
+      await addPitch(data).unwrap();
       reset();
       enqueueSnackbar(currentDeal ? 'Update success' : 'Create success', { variant: 'success' });
     } catch (error) {
-      console.error(error);
+      enqueueSnackbar(error?.error || error?.message || 'Something went wrong', {
+        variant: 'error',
+      });
     }
   });
 
@@ -132,7 +125,7 @@ export default function DealsPitchForm({ currentDeal }: Props) {
 
       <Grid xs={12} md={8}>
         <Card>
-          {!mdUp && <CardHeader title="Basic Details" />}
+          {!mdUp && <CardHeader title="Pitch Info" />}
           <Stack spacing={3} sx={{ p: 3 }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
               <Typography variant="h5">Info</Typography>
@@ -163,6 +156,67 @@ export default function DealsPitchForm({ currentDeal }: Props) {
               </Box>
             ))}
           </Stack>
+          <Stack spacing={3} sx={{ p: 3 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Typography variant="h5">Why Shortlist?</Typography>
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  const newShortlist = [...(shortlist || [])];
+                  newShortlist.push('');
+                  setValue('why_shortlist', newShortlist);
+                }}
+              >
+                + Add
+              </Button>
+            </Box>
+            {shortlist?.map((_, index) => (
+              <Box sx={{ display: 'flex', gap: 1, alignItems: 'start' }} key={index}>
+                <RHFTextField name={`why_shortlist.${index}`} label="Shortlist" />
+                <Button
+                  color="error"
+                  onClick={() => {
+                    const newShortlist = [...(shortlist || [])];
+                    newShortlist.splice(index, 1);
+                    setValue('why_shortlist', newShortlist);
+                  }}
+                >
+                  Delete
+                </Button>
+              </Box>
+            ))}
+          </Stack>
+          <Stack spacing={3} sx={{ p: 3 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Typography variant="h5">Traction</Typography>
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  const newTraction = [...(traction || [])];
+                  newTraction.push({ key: '', value: '' });
+                  setValue('traction', newTraction);
+                }}
+              >
+                + Add
+              </Button>
+            </Box>
+            {traction?.map((_, index) => (
+              <Box sx={{ display: 'flex', gap: 1, alignItems: 'start' }} key={index}>
+                <RHFTextField name={`traction.${index}.key`} label="Key" />
+                <RHFTextField name={`traction.${index}.value`} label="Value" />
+                <Button
+                  color="error"
+                  onClick={() => {
+                    const newTraction = [...(traction || [])];
+                    newTraction.splice(index, 1);
+                    setValue('traction', newTraction);
+                  }}
+                >
+                  Delete
+                </Button>
+              </Box>
+            ))}
+          </Stack>
         </Card>
       </Grid>
     </>
@@ -171,9 +225,9 @@ export default function DealsPitchForm({ currentDeal }: Props) {
   const sectionTwo = (
     <>
       {mdUp && <Grid md={4} />}
-      <Grid xs={12} md={8} sx={{ display: 'flex', alignItems: 'center' }}>
+      <Grid xs={12} md={8} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'end' }}>
         <LoadingButton type="submit" variant="contained" size="large" loading={isSubmitting}>
-          {!currentDeal ? 'Create Deal' : 'Save Changes'}
+          {!currentDeal ? 'Create Deal' : 'Save Pitch Info'}
         </LoadingButton>
       </Grid>
     </>

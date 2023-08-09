@@ -41,6 +41,7 @@ export default function RolesNewEditForm({ currentRole }: Props) {
   const router = useRouter();
 
   const [createRole] = roleApi.useCreateRoleMutation();
+  const [editRole] = roleApi.useEditRoleMutation();
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -51,10 +52,13 @@ export default function RolesNewEditForm({ currentRole }: Props) {
     permission: Yup.array().required('Permission is required'),
   });
 
-  const defaultValues = {
-    name: currentRole?.name || '',
-    permission: currentRole?.permission || [],
-  };
+  const defaultValues = useMemo(
+    () => ({
+      name: currentRole?.name || '',
+      permission: currentRole?.permission || [],
+    }),
+    [currentRole]
+  );
 
   const methods = useForm({
     resolver: yupResolver(RolesSchema),
@@ -68,7 +72,7 @@ export default function RolesNewEditForm({ currentRole }: Props) {
   } = methods;
 
   React.useEffect(() => {
-    if (apiPermissions) {
+    if (apiPermissions && !currentRole) {
       const perms = Object.values(apiPermissions.data.permissions).map((module) => ({
         view: false,
         edit: false,
@@ -76,13 +80,19 @@ export default function RolesNewEditForm({ currentRole }: Props) {
       }));
       setValue('permission', perms);
     }
-  }, [apiPermissions]);
+  }, [apiPermissions, currentRole]);
 
   const permissions = methods.watch('permission');
 
+  console.log(permissions);
+
   const onSubmit = handleSubmit(async (data) => {
     try {
-      await createRole(data).unwrap();
+      if (currentRole) {
+        await editRole({ id: currentRole.rid, ...data }).unwrap();
+      } else {
+        await createRole(data).unwrap();
+      }
       enqueueSnackbar(currentRole ? 'Update success!' : 'Create success!');
       router.push(paths.dashboard.roles.list);
     } catch (error) {
