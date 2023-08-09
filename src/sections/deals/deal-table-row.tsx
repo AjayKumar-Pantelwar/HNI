@@ -60,7 +60,7 @@ export default function DealTableRow({ row, selected, onEditRow, onSelectRow }: 
         arrow="right-top"
         sx={{ width: 140 }}
       >
-        <MenuItem
+        {/* <MenuItem
           onClick={() => {
             router.push(paths.dashboard.deals.edit(row.deal_id));
             popover.onClose();
@@ -68,7 +68,7 @@ export default function DealTableRow({ row, selected, onEditRow, onSelectRow }: 
         >
           <Iconify icon="solar:pen-bold" />
           Edit
-        </MenuItem>
+        </MenuItem> */}
         <MenuItem
           onClick={() => {
             router.push(paths.dashboard.deals.pitch(row.deal_id));
@@ -87,7 +87,7 @@ export default function DealTableRow({ row, selected, onEditRow, onSelectRow }: 
           <Iconify icon="solar:pen-bold" />
           Media
         </MenuItem>
-        <MenuItem
+        {/* <MenuItem
           onClick={() => {
             router.push(paths.dashboard.deals.highlights(row.deal_id));
             popover.onClose();
@@ -95,6 +95,15 @@ export default function DealTableRow({ row, selected, onEditRow, onSelectRow }: 
         >
           <Iconify icon="solar:pen-bold" />
           Highlights
+        </MenuItem> */}
+        <MenuItem
+          onClick={() => {
+            router.push(paths.dashboard.deals.accountInfo(row.deal_id));
+            popover.onClose();
+          }}
+        >
+          <Iconify icon="solar:pen-bold" />
+          Company Info
         </MenuItem>
       </CustomPopover>
     </>

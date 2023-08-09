@@ -120,7 +120,7 @@ export const paths = {
       profile: (id: string) => `${ROOTS.DASHBOARD}/admin/${id}/profile`,
     },
     roles: {
-      root: `${ROOTS.DASHBOARD}/roles`,
+      root: `${ROOTS.DASHBOARD}/roles/list`,
       new: `${ROOTS.DASHBOARD}/roles/new`,
       list: `${ROOTS.DASHBOARD}/roles/list`,
       cards: `${ROOTS.DASHBOARD}/roles/cards`,
@@ -129,13 +129,14 @@ export const paths = {
       profile: (id: string) => `${ROOTS.DASHBOARD}/roles/${id}/profile`,
     },
     deals: {
-      root: `${ROOTS.DASHBOARD}/deals`,
+      root: `${ROOTS.DASHBOARD}/deals/list`,
       new: `${ROOTS.DASHBOARD}/deals/new`,
       list: `${ROOTS.DASHBOARD}/deals/list`,
       edit: (id: string) => `${ROOTS.DASHBOARD}/deals/${id}/edit`,
       media: (id: string) => `${ROOTS.DASHBOARD}/deals/${id}/media`,
       pitch: (id: string) => `${ROOTS.DASHBOARD}/deals/${id}/pitch`,
       highlights: (id: string) => `${ROOTS.DASHBOARD}/deals/${id}/highlights`,
+      accountInfo: (id: string) => `${ROOTS.DASHBOARD}/deals/${id}/company-info`,
     },
     user: {
       root: `${ROOTS.DASHBOARD}/user`,

@@ -11,7 +11,7 @@ import {
   ValidateTotpResponse,
 } from 'src/types/auth';
 import { AxiosResponse } from 'axios';
-import { ApiResponse } from 'src/types/api';
+import { ApiResponse } from 'src/types/api.types';
 import { PrivateService } from './private-service';
 import { PublicService } from './public-service';
 

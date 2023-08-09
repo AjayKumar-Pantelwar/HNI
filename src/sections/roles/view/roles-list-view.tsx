@@ -39,7 +39,7 @@ import RolesTableRow from '../roles-table-row';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name' },
+  { id: 'name', label: 'Name', width: 200 },
   { id: 'edit', label: 'Actions', width: 80 },
 ];
 
@@ -98,7 +98,7 @@ export default function RolesListView() {
             />
 
             <Scrollbar>
-              <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
+              <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 0 }}>
                 <TableHeadCustom
                   order={table.order}
                   orderBy={table.orderBy}

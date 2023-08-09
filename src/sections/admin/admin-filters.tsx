@@ -11,12 +11,13 @@ import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import FormProvider, { RHFSelect, RHFTextField } from 'src/components/hook-form';
 // types
 // components
 import Iconify from 'src/components/iconify';
-import { AdminRequest } from 'src/types/admin.types';
+import { AdminRequest, AdminRequestSchema } from 'src/types/admin.types';
 import * as Yup from 'yup';
 
 // ----------------------------------------------------------------------
@@ -28,7 +29,7 @@ type Props = {
   //
   filters: AdminRequest;
   defaultFilters: AdminRequest;
-  onFilters: (name: keyof AdminRequest, value: string) => void;
+  onFilters: (appliedFilters: AdminRequest) => void;
   //
   canReset: boolean;
   onResetFilters: VoidFunction;
@@ -46,33 +47,20 @@ export default function AdminFilters({
   canReset,
   onResetFilters,
 }: Props) {
-  const AdminRequestSchema = Yup.object().shape({
-    username: Yup.string(),
-    email: Yup.string(),
-    mobile_number: Yup.string(),
-    is_blocked: Yup.string(),
-    name: Yup.string(),
-    rid: Yup.string(),
-  });
+  const defaultValues = useMemo(
+    () => ({
+      ...defaultFilters,
+    }),
+    [defaultFilters]
+  );
 
   const methods = useForm({
-    defaultValues: {
-      ...defaultFilters,
-      is_blocked: 'all',
-    },
+    defaultValues,
     resolver: yupResolver(AdminRequestSchema),
   });
 
   const handleSubmit = methods.handleSubmit((values) => {
-    if (values.username) onFilters('username', values.username);
-    if (values.email) onFilters('email', values.email);
-    if (values.mobile_number) onFilters('mobile_number', values.mobile_number);
-    if (values.is_blocked)
-      onFilters('is_blocked', values.is_blocked === 'all' ? '' : values.is_blocked);
-    if (values.rid) onFilters('rid', values.rid);
-    if (JSON.stringify(values) === JSON.stringify(defaultFilters)) {
-      onResetFilters();
-    }
+    onFilters(values);
     onClose();
   });
 
@@ -88,7 +76,12 @@ export default function AdminFilters({
       </Typography>
 
       <Tooltip title="Reset">
-        <IconButton onClick={onResetFilters}>
+        <IconButton
+          onClick={() => {
+            onResetFilters();
+            methods.reset();
+          }}
+        >
           <Badge color="error" variant="dot" invisible={!canReset}>
             <Iconify icon="solar:restart-bold" />
           </Badge>

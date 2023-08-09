@@ -4,50 +4,46 @@
 import Container from '@mui/material/Container';
 // routes
 import { paths } from 'src/routes/paths';
-import { useParams } from 'src/routes/hook';
-// _mock
-import { _userList } from 'src/_mock';
 // components
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
-import { roleApi } from 'src/redux/api/role.api';
-import AdminNewEditForm from '../roles-new-edit-form';
+import { dealApi } from 'src/redux/api/deal.api';
+import { useParams } from 'src/routes/hook';
+import DealsNewEditForm from '../deals-new-edit-form';
+import DealsPitchForm from '../deals-pitch-form';
+import DealsMediaForm from '../deal-media-form';
+import DealHighlightForm from '../deal-highlights-form';
 //
 
 // ----------------------------------------------------------------------
 
-export default function RolesEditView() {
+export default function DealsMediaView() {
   const settings = useSettingsContext();
-
   const params = useParams();
 
-  const { id } = params;
-
-  const { data } = roleApi.useRolesQuery();
-
-  const currentRole = data?.data?.roles?.find((role) => role.rid === id);
+  const { data } = dealApi.useDealQuery({ deal_id: params.id as string }, { skip: !params.id });
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
       <CustomBreadcrumbs
-        heading="Edit"
+        heading="Edit a Deal"
         links={[
           {
             name: 'Dashboard',
             href: paths.dashboard.root,
           },
           {
-            name: 'Roles',
-            href: paths.dashboard.roles.list,
+            name: 'Deals',
+            href: paths.dashboard.deals.list,
           },
-          { name: currentRole?.name },
+          { name: 'Media' },
         ]}
         sx={{
           mb: { xs: 3, md: 5 },
         }}
       />
 
-      {currentRole && <AdminNewEditForm currentRole={currentRole} />}
+      {data?.data?.deals?.[0] && <DealsMediaForm currentDeal={data?.data?.deals?.[0]} />}
     </Container>
   );
 }

@@ -61,8 +61,6 @@ export default function JwtLoginView() {
     formState: { isSubmitting },
   } = methods;
 
-  console.log(methods.getValues());
-
   const onSubmit = handleSubmit(async (data) => {
     try {
       console.info('DATA', data);

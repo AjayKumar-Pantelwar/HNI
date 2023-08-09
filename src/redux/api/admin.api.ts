@@ -9,7 +9,7 @@ import {
   EditAdminResponse,
 } from 'src/types/admin.types';
 import { enqueueSnackbar } from 'notistack';
-import { ApiResponse } from 'src/types/api';
+import { ApiResponse } from 'src/types/api.types';
 import { authSlice } from '../slices/auth.slice';
 
 export const adminApi = createApi({

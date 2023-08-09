@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { ApiResponse } from 'src/types/api';
+import { ApiResponse } from 'src/types/api.types';
 import { ValidateTotpResponse } from 'src/types/auth';
 
 export async function POST(

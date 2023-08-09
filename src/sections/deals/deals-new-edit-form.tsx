@@ -44,6 +44,7 @@ import {
   Tech,
 } from 'src/types/deals.types';
 import { convertToFD } from 'src/utils/convert-fd';
+import { fDate, pDate } from 'src/utils/format-time';
 
 // ----------------------------------------------------------------------
 
@@ -55,9 +56,6 @@ type OptionType = {
   value: string;
   label: string;
 };
-
-const MAX_ROUNDS = 1;
-const MIN_ROUNDS = 1;
 
 export default function DealsNewEditForm({ currentDeal }: Props) {
   const router = useRouter();
@@ -72,7 +70,10 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
     brand_name: Yup.string().required('brand name  is required'),
     company_name: Yup.string().required('company name is required'),
     one_liner: Yup.string().required('one liner is required'),
-    description: Yup.string().required('description is required'),
+    description: Yup.string()
+      .required('description is required')
+      .min(100, 'minimum 100 words')
+      .max(250, 'maximum 250 words'),
     start_date: Yup.string().required('start date is required'),
     end_date: Yup.string().required('end date is required'),
     closing_soon_date: Yup.string().required('closing soon date is required'),
@@ -86,24 +87,6 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
       })
       .required('sector is required'),
     deal_name: Yup.string().required('deal name is required'),
-    deal_aggregation: Yup.object().required('deal aggregation is required'),
-    is_deal_of_the_week: Yup.boolean().required('is deal of the week is required'),
-    is_deal_trending: Yup.boolean().required('is deal trending is required'),
-    round: Yup.array()
-      .of(
-        Yup.object().shape({
-          ask_from_ma: Yup.string(),
-          is_active: Yup.boolean(),
-          raised_in_perc: Yup.string(),
-          min_investment: Yup.string(),
-          externally_raised: Yup.string(),
-          round_size: Yup.string(),
-          valuation: Yup.string(),
-          round_type: Yup.string(),
-        })
-      )
-      .min(MIN_ROUNDS, 'round is required')
-      .max(MAX_ROUNDS, 'round is required'),
     cover_image: Yup.mixed(),
     logo_link: Yup.mixed(),
   });
@@ -125,14 +108,6 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
         sector_3: [],
       },
       deal_name: currentDeal?.deal_name || '',
-      deal_aggregation: currentDeal?.deal_aggregation || {
-        total_amount_committed: '',
-        total_user_committed: '',
-        total_user_interest: '',
-      },
-      is_deal_of_the_week: currentDeal?.is_deal_of_the_week || false,
-      is_deal_trending: currentDeal?.is_deal_trending || false,
-      round: currentDeal?.round || [],
       cover_image: null,
       logo_link: null,
     }),
@@ -152,7 +127,7 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
     formState: { isSubmitting },
   } = methods;
 
-  const rounds = watch('round');
+  // const rounds = watch('round');
 
   useEffect(() => {
     if (currentDeal) {
@@ -170,7 +145,7 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
       const response = await createDeal(formData).unwrap();
       reset();
       enqueueSnackbar(currentDeal ? 'Update success' : 'Create success', { variant: 'success' });
-      router.push(paths.dashboard.deals.media(response.data.deal_id));
+      router.push(paths.dashboard.deals.list);
     } catch (error) {
       console.error(error);
     }
@@ -235,6 +210,8 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
                     {...field}
                     format="dd/MM/yyyy"
                     label="Start date"
+                    value={pDate(field.value)}
+                    onChange={(value) => setValue('start_date', fDate(value))}
                     slotProps={{
                       textField: {
                         fullWidth: true,
@@ -253,6 +230,8 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
                     {...field}
                     format="dd/MM/yyyy"
                     label="End date"
+                    value={pDate(field.value)}
+                    onChange={(value) => setValue('end_date', fDate(value))}
                     slotProps={{
                       textField: {
                         fullWidth: true,
@@ -271,6 +250,8 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
                     label="Closing date"
                     {...field}
                     format="dd/MM/yyyy"
+                    value={pDate(field.value)}
+                    onChange={(value) => setValue('closing_soon_date', fDate(value))}
                     slotProps={{
                       textField: {
                         fullWidth: true,
@@ -308,14 +289,12 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
 
           <Stack spacing={1.5} p={3}>
             <RHFUpload
-              multiple
               thumbnail
               name="cover_image"
               maxSize={3145728}
               onDrop={handleDrop('cover_image')}
               onRemove={handleRemoveFile}
               onRemoveAll={handleRemoveAllFiles}
-              onUpload={() => console.info('ON UPLOAD')}
             />
 
             <Box sx={{ pt: 10, pb: 10 }}>
@@ -353,7 +332,7 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
             Secondary Details
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            Enter sectors, tech. model and rounds of the deal
+            Enter sectors, tech and model of the deal
           </Typography>
         </Grid>
       )}
@@ -363,39 +342,44 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
           {!mdUp && <CardHeader title="Secondary Details" />}
           <Stack spacing={3} sx={{ p: 3 }}>
             <Typography variant="h5">Sectors</Typography>
-            <RHFMultiSelect
-              name="sector.sector_1"
-              label="Sector 1"
-              onlyOne
-              options={Object.values(Sector1).map((value) => ({
-                value,
-                label: value.split('_').map(capitalize).join(' '),
-              }))}
-              chip
-              checkbox
-            />
-            <RHFMultiSelect
-              name="sector.sector_2"
-              label="Sector 2"
-              onlyOne
-              options={Object.values(Sector2).map((value) => ({
-                value,
-                label: value.split('_').map(capitalize).join(' '),
-              }))}
-              chip
-              checkbox
-            />
-            <RHFMultiSelect
-              name="sector.sector_3"
-              label="Sector 3"
-              onlyOne
-              options={Object.values(Sector3).map((value) => ({
-                value,
-                label: value.split('_').map(capitalize).join(' '),
-              }))}
-              chip
-              checkbox
-            />
+            <Box sx={{ display: 'flex', gap: 2 }}>
+              <RHFMultiSelect
+                fullWidth
+                name="sector.sector_1"
+                label="Sector 1"
+                onlyOne
+                options={Object.values(Sector1).map((value) => ({
+                  value,
+                  label: value.split('_').map(capitalize).join(' '),
+                }))}
+                chip
+                checkbox
+              />
+              <RHFMultiSelect
+                fullWidth
+                name="sector.sector_2"
+                label="Sector 2"
+                onlyOne
+                options={Object.values(Sector2).map((value) => ({
+                  value,
+                  label: value.split('_').map(capitalize).join(' '),
+                }))}
+                chip
+                checkbox
+              />
+              <RHFMultiSelect
+                fullWidth
+                name="sector.sector_3"
+                label="Sector 3"
+                onlyOne
+                options={Object.values(Sector3).map((value) => ({
+                  value,
+                  label: value.split('_').map(capitalize).join(' '),
+                }))}
+                chip
+                checkbox
+              />
+            </Box>
             <RHFMultiSelect
               name="sector.tech"
               label="Tech"
@@ -419,7 +403,7 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
               checkbox
             />
           </Stack>
-          <Stack spacing={3} sx={{ p: 3 }}>
+          {/* <Stack spacing={3} sx={{ p: 3 }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
               <Typography variant="h5">Rounds</Typography>
               <Button
@@ -452,63 +436,13 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
                 <RHFSwitch name={`round.${index}.is_active`} label="Is Active" />
               </Stack>
             ))}
-          </Stack>
+          </Stack> */}
         </Card>
       </Grid>
     </>
   );
 
   const sectionFour = (
-    <>
-      {mdUp && (
-        <Grid md={4}>
-          <Typography variant="h6" sx={{ mb: 0.5 }}>
-            Other details
-          </Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            Enter additional details about the deal here
-          </Typography>
-        </Grid>
-      )}
-
-      <Grid xs={12} md={8}>
-        <Card>
-          {!mdUp && <CardHeader title="Basic Details" />}
-
-          <Stack spacing={3} sx={{ p: 3 }}>
-            <RHFTextField name="total_user_interest" label="Total User Interest" />
-
-            <RHFTextField name="total_user_committed" label="Total User Committed" />
-
-            <RHFTextField name="total_amount_committed" label="Total Amount Committed" />
-
-            <Box>
-              <RHFSwitch
-                name="is_deal_of_the_week"
-                label={
-                  <Typography variant="subtitle2" sx={{ mb: 0.5 }}>
-                    Is deal of the week
-                  </Typography>
-                }
-                sx={{ justifyContent: 'space-between' }}
-              />
-              <RHFSwitch
-                name="is_deal_trending"
-                label={
-                  <Typography variant="subtitle2" sx={{ mb: 0.5 }}>
-                    Is deal trending
-                  </Typography>
-                }
-                sx={{ justifyContent: 'space-between' }}
-              />
-            </Box>
-          </Stack>
-        </Card>
-      </Grid>
-    </>
-  );
-
-  const sectionFive = (
     <>
       {mdUp && <Grid md={4} />}
       <Grid xs={12} md={8} sx={{ display: 'flex', alignItems: 'center' }}>
@@ -529,8 +463,6 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
         {sectionThree}
 
         {sectionFour}
-
-        {sectionFive}
       </Grid>
     </FormProvider>
   );

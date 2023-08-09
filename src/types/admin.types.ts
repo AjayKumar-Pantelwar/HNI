@@ -1,4 +1,6 @@
-import { ApiResponse } from './api';
+import * as Yup from 'yup';
+import { ApiResponse } from './api.types';
+import { RequiredOrUndefinedProperties, RequiredProperties } from './ts.types';
 
 export type Admin = {
   aid: string;
@@ -17,13 +19,24 @@ export type Admin = {
 
 export type AdminResponse = ApiResponse<{ admins: Admin[] }>;
 
+export const AdminRequestSchema = Yup.object()
+  .shape({
+    username: Yup.string(),
+    email: Yup.string(),
+    mobile_number: Yup.string(),
+    is_blocked: Yup.string(),
+    name: Yup.string(),
+    rid: Yup.string(),
+  })
+  .required();
+
 export type AdminRequest = {
-  name: string;
-  username: string;
-  mobile_number: string;
-  rid: string;
-  email: string;
-  is_blocked: string;
+  username: string | undefined;
+  email: string | undefined;
+  mobile_number: string | undefined;
+  is_blocked: string | undefined;
+  name: string | undefined;
+  rid: string | undefined;
 };
 
 export type CreateAdminRequest = {

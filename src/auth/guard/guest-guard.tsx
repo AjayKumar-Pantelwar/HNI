@@ -17,9 +17,7 @@ export default function GuestGuard({ children }: Props) {
   const { isAuthenticated } = useSelector((state) => state.auth);
 
   const check = useCallback(() => {
-    console.log('here in');
     if (isAuthenticated) {
-      console.log('here');
       router.replace(paths.dashboard.root);
     }
   }, [isAuthenticated, router]);

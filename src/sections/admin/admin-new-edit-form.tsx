@@ -109,7 +109,6 @@ export default function AdminNewEditForm({ currentUser }: Props) {
 
   const currentRole = rolesData?.data?.roles?.find((role) => role.rid === currentRid);
 
-  // console.log(permission.module);
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>
       <Card sx={{ p: 3 }}>
