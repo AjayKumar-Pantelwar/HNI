@@ -126,7 +126,7 @@ export function RHFMultiSelect({
       name={name}
       control={control}
       render={({ field, fieldState: { error } }) => (
-        <FormControl sx={sx}>
+        <FormControl sx={sx} fullWidth={other.fullWidth}>
           {label && <InputLabel id={name}> {label} </InputLabel>}
 
           <Select

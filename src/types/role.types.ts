@@ -1,4 +1,4 @@
-import { ApiResponse } from './api';
+import { ApiResponse } from './api.types';
 
 export type Role = {
   rid: string;
@@ -42,11 +42,10 @@ export interface PermissionsData {
 }
 
 export interface Permissions {
-  deal: Deal;
-  event: Deal;
+  [key: string]: PermissionObj;
 }
 
-export interface Deal {
+export interface PermissionObj {
   value: string;
   title: string;
 }

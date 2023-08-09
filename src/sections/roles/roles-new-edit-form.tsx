@@ -91,9 +91,6 @@ export default function RolesNewEditForm({ currentRole }: Props) {
     }
   });
 
-  console.log({ defaultValues });
-  console.log({ permissions });
-
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>
       <Card sx={{ p: 3 }}>
@@ -111,44 +108,37 @@ export default function RolesNewEditForm({ currentRole }: Props) {
             </TableHead>
             <TableBody>
               {apiPermissions ? (
-                Object.values(apiPermissions.data.permissions).map((permission) => {
-                  console.log(permission.value);
-                  return (
-                    <TableRow key={permission.value}>
-                      <TableCell>{permission.title}</TableCell>
-                      <TableCell>
-                        <Checkbox
-                          checked={
-                            permissions.find((perm) => perm.module === permission.value)?.view
-                          }
-                          onChange={(_e, checked) => {
-                            const index = permissions.findIndex(
-                              (perm) => perm.module === permission.value
-                            );
-                            const newPermissions = [...permissions];
-                            newPermissions[index].view = checked;
-                            setValue('permission', newPermissions);
-                          }}
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <Checkbox
-                          checked={
-                            permissions.find((perm) => perm.module === permission.value)?.edit
-                          }
-                          onChange={(e, checked) => {
-                            const index = permissions.findIndex(
-                              (perm) => perm.module === permission.value
-                            );
-                            const newPermissions = [...permissions];
-                            newPermissions[index].edit = checked;
-                            setValue('permission', newPermissions);
-                          }}
-                        />
-                      </TableCell>
-                    </TableRow>
-                  );
-                })
+                Object.values(apiPermissions.data.permissions).map((permission) => (
+                  <TableRow key={permission.value}>
+                    <TableCell>{permission.title}</TableCell>
+                    <TableCell>
+                      <Checkbox
+                        checked={permissions.find((perm) => perm.module === permission.value)?.view}
+                        onChange={(_e, checked) => {
+                          const index = permissions.findIndex(
+                            (perm) => perm.module === permission.value
+                          );
+                          const newPermissions = [...permissions];
+                          newPermissions[index].view = checked;
+                          setValue('permission', newPermissions);
+                        }}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <Checkbox
+                        checked={permissions.find((perm) => perm.module === permission.value)?.edit}
+                        onChange={(e, checked) => {
+                          const index = permissions.findIndex(
+                            (perm) => perm.module === permission.value
+                          );
+                          const newPermissions = [...permissions];
+                          newPermissions[index].edit = checked;
+                          setValue('permission', newPermissions);
+                        }}
+                      />
+                    </TableCell>
+                  </TableRow>
+                ))
               ) : (
                 <TableRow>
                   <TableCell colSpan={3}>

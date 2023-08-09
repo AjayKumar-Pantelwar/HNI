@@ -53,7 +53,7 @@ const TABLE_HEAD = [
 
 const defaultFilters: GetDealRequest = {
   name: '',
-  id: '',
+  deal_id: '',
 };
 
 // ----------------------------------------------------------------------
@@ -148,7 +148,7 @@ export function DealListView() {
           action={
             <Button
               component={RouterLink}
-              href={paths.dashboard.admin.new}
+              href={paths.dashboard.deals.new}
               variant="contained"
               startIcon={<Iconify icon="mingcute:add-line" />}
             >

@@ -1,7 +1,7 @@
 import { promises as fs } from 'fs';
 import { NextResponse } from 'next/server';
 import path from 'path';
-import { ApiResponse } from 'src/types/api';
+import { ApiResponse } from 'src/types/api.types';
 import { CreateRoleRequest, GetRolesResponse } from 'src/types/role.types';
 
 export async function GET(req: Request): Promise<NextResponse<GetRolesResponse>> {

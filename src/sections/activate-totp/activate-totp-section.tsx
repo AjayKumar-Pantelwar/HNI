@@ -66,8 +66,6 @@ export default function ActivateTotpSection() {
     reset,
   } = methods;
 
-  console.log(loginData);
-
   const onSubmit = handleSubmit(async (data) => {
     try {
       if (loginData === null) {

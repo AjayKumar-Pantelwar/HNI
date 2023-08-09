@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import { ApiResponse } from './api';
+import { ApiResponse } from './api.types';
 import { RequiredOrUndefinedProperties, RequiredProperties } from './ts.types';
 
 export type Admin = {

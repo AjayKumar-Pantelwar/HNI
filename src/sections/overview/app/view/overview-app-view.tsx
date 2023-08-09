@@ -35,8 +35,6 @@ export default function OverviewAppView() {
 
   const settings = useSettingsContext();
 
-  console.log(settings.themeStretch);
-
   return (
     <Container sx={{ width: '100%' }}>
       <Grid container spacing={3}>

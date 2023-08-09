@@ -121,8 +121,6 @@ export default function AdminListView() {
     setFilters(defaultFilters);
   }, []);
 
-  console.log(filters);
-
   // const handleSearch = useCallback(
   //   (inputValue: string) => {
   //     setSearch((prevState) => ({
