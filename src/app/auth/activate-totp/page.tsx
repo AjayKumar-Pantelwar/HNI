@@ -3,7 +3,7 @@ import ActivateTotpSection from 'src/sections/activate-totp/activate-totp-sectio
 // ----------------------------------------------------------------------
 
 export const metadata = {
-  title: 'Activate TOTP',
+  title: 'Activate TOTP: Mumbai Angels Admin',
 };
 
 export default function ActivateTotp() {

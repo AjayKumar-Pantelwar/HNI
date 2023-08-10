@@ -12,7 +12,7 @@ export type CompanyInfoRequest = {
 };
 
 export type AddTeamRequest = {
-  file: File;
+  file: File | null;
   name: string;
   designation: string;
   social: string;
@@ -27,7 +27,7 @@ export type DeleteTeamRequest = {
 };
 
 export type AddInvestorRequest = {
-  file: File;
+  file: File | null;
   name: string;
   designation: string;
 };
@@ -40,7 +40,7 @@ export type DeleteInvestorRequest = {
 };
 
 export type AddNewsRequest = {
-  file: File;
+  file: File | null;
   title: string;
 };
 

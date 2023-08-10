@@ -17,7 +17,7 @@ import { useBoolean } from 'src/hooks/use-boolean';
 // config
 
 // components
-import { Alert, Dialog } from '@mui/material';
+import { Alert, Box, Dialog } from '@mui/material';
 import { MuiOtpInput } from 'mui-one-time-password-input';
 import { useRouter } from 'next/navigation';
 import { useSnackbar } from 'notistack';
@@ -28,6 +28,7 @@ import { authSlice } from 'src/redux/slices/auth.slice';
 import { useDispatch, useSelector } from 'src/redux/store';
 import { paths } from 'src/routes/paths';
 import { authService } from 'src/services/auth.service';
+import { handleError } from 'src/utils/handle-error';
 
 // ----------------------------------------------------------------------
 
@@ -65,14 +66,13 @@ export default function LoginSection() {
     getValues,
   } = methods;
 
-  const handleLogin = async () => {
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
     setLoading(true);
     try {
       if (loginData === null) return;
-      if (otp.length < 6) {
-        enqueueSnackbar('Invalid OTP', { variant: 'error' });
-        return;
-      }
+      if (otp.length < 6) throw new Error('Invalid OTP');
+
       await authService.validateTotp({
         totp: otp,
         username: loginData.username,
@@ -81,7 +81,7 @@ export default function LoginSection() {
       setOpen(false);
       dispatch(authSlice.actions.login());
     } catch (error) {
-      enqueueSnackbar(error.response.data.error, { variant: 'error' });
+      handleError(error);
     } finally {
       setLoading(false);
       setOtp('');
@@ -99,7 +99,6 @@ export default function LoginSection() {
       dispatch(authSlice.actions.setLoginData({ ...response.data.data, username: data.username }));
       setOpen(true);
     } catch (error) {
-      console.error(error);
       const { response } = error;
       /*
        * if login is not successful, we need to store the req_token to
@@ -110,14 +109,14 @@ export default function LoginSection() {
           authSlice.actions.setLoginData({ ...response.data.data, username: data.username })
         );
         enqueueSnackbar(error.response.data.error, { variant: 'error' });
-        router.push(paths.changePassword);
+        router.push(paths.auth.changePassword);
       } else if (response.data?.data?.is_totp_activated === false) {
         dispatch(
           authSlice.actions.setLoginData({ ...response.data.data, username: data.username })
         );
         enqueueSnackbar(error.response.data.error, { variant: 'error' });
 
-        router.push(paths.activateTotp);
+        router.push(paths.auth.activateTotp);
       } else {
         /*
          * if there is any other error in the login even if the user has setup
@@ -172,11 +171,12 @@ export default function LoginSection() {
   );
 
   return (
-    <FormProvider methods={methods} onSubmit={onSubmit}>
-      {renderHead}
+    <>
+      <FormProvider methods={methods} onSubmit={onSubmit}>
+        {renderHead}
 
-      {renderForm}
-
+        {renderForm}
+      </FormProvider>
       <Dialog
         PaperProps={{ sx: { p: 4 } }}
         open={open}
@@ -189,27 +189,23 @@ export default function LoginSection() {
         <Typography align="center" color="text.secondary" my={2}>
           Enter the 6 digit code from your External TOTP app
         </Typography>
-        <MuiOtpInput
-          sx={{ my: 2 }}
-          value={otp}
-          onChange={(value) => setOtp(value)}
-          autoFocus
-          gap={1.5}
-          length={6}
-          TextFieldsProps={{
-            placeholder: '-',
-          }}
-        />
-        <LoadingButton
-          fullWidth
-          size="large"
-          variant="contained"
-          onClick={handleLogin}
-          loading={loading}
-        >
-          Verify
-        </LoadingButton>
+        <Box component="form" onSubmit={handleLogin}>
+          <MuiOtpInput
+            sx={{ my: 2 }}
+            value={otp}
+            onChange={(value) => setOtp(value)}
+            autoFocus
+            gap={1.5}
+            length={6}
+            TextFieldsProps={{
+              placeholder: '-',
+            }}
+          />
+          <LoadingButton fullWidth size="large" variant="contained" type="submit" loading={loading}>
+            Verify
+          </LoadingButton>
+        </Box>
       </Dialog>
-    </FormProvider>
+    </>
   );
 }

@@ -1,6 +1,6 @@
 // utils
-import { paramCase } from 'src/utils/change-case';
 import { _id, _postTitles } from 'src/_mock/assets';
+import { paramCase } from 'src/utils/change-case';
 
 // ----------------------------------------------------------------------
 
@@ -17,9 +17,6 @@ const ROOTS = {
 // ----------------------------------------------------------------------
 
 export const paths = {
-  login: '/login',
-  changePassword: '/change-password',
-  activateTotp: '/activate-totp',
   comingSoon: '/coming-soon',
   maintenance: '/maintenance',
   pricing: '/pricing',
@@ -55,6 +52,9 @@ export const paths = {
   },
   // AUTH
   auth: {
+    login: '/login',
+    changePassword: '/change-password',
+    activateTotp: '/activate-totp',
     amplify: {
       login: `${ROOTS.AUTH}/amplify/login`,
       verify: `${ROOTS.AUTH}/amplify/verify`,

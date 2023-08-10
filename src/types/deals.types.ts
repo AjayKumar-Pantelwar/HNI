@@ -1,3 +1,7 @@
+import * as Yup from 'yup';
+
+import { isBefore } from 'date-fns';
+import { pDate } from 'src/utils/format-time';
 import { ApiResponse, Time } from './api.types';
 
 export * from './deals/company-info.types';
@@ -8,19 +12,65 @@ export enum Stage {
 
 export type DealsResponse = ApiResponse<{ deals: Deal[] }>;
 
-export type CreateDealRequest = {
-  brand_name: string;
-  company_name: string;
-  one_liner: string;
-  description: string;
-  start_date: string;
-  end_date: string;
-  closing_soon_date: string;
-  sector: Sector;
-  deal_name: string;
-  cover_image: File | null;
-  logo_link: File | null;
-};
+export const CreateDealSchema = Yup.object().shape({
+  brand_name: Yup.string().required('Brand name  is required'),
+  company_name: Yup.string().required('Company name is required'),
+  one_liner: Yup.string().required('One liner is required'),
+  description: Yup.string()
+    .required('Description is required')
+    .min(100, 'Description must have a minimum of 100 words')
+    .max(250, 'Description must have a maximum of 250 words'),
+  start_date: Yup.string()
+    .required('Start date is required')
+    .test((value, context) => {
+      const today = new Date();
+      const startDate = pDate(value);
+      if (startDate && isBefore(startDate, today)) {
+        return context.createError({
+          message: 'Start date must be in the future',
+        });
+      }
+      return true;
+    }),
+  end_date: Yup.string()
+    .required('End date is required')
+    .test((value, context) => {
+      const startDate = pDate(context.parent.end_date);
+      const endDate = pDate(value);
+      if (startDate && endDate && isBefore(endDate, startDate)) {
+        return context.createError({
+          message: 'End date must be after start date',
+        });
+      }
+      return true;
+    }),
+  closing_soon_date: Yup.string()
+    .required('Closing soon date is required')
+    .test((value, context) => {
+      const closingSoonDate = pDate(value);
+      const endDate = pDate(context.parent.end_date);
+      if (closingSoonDate && endDate && isBefore(endDate, closingSoonDate)) {
+        return context.createError({
+          message: 'Closing soon date must be before end date',
+        });
+      }
+      return true;
+    }),
+  sector: Yup.object()
+    .shape({
+      tech: Yup.array().of(Yup.string()).length(1, 'Tech is required'),
+      model: Yup.array().of(Yup.string()).length(1, 'Model is required'),
+      sector_1: Yup.array().of(Yup.string()).length(1, 'Sector 1 is required'),
+      sector_2: Yup.array().of(Yup.string()).length(1, 'Sector 2 is required'),
+      sector_3: Yup.array().of(Yup.string()).length(1, 'Sector 3 is required'),
+    })
+    .required('Sector is required'),
+  deal_name: Yup.string().required('Deal name is required'),
+  cover_image: Yup.mixed().required('Cover image is required').nullable(),
+  logo_link: Yup.mixed().required('Logo link is required').nullable(),
+});
+
+export type CreateDealRequest = Yup.InferType<typeof CreateDealSchema>;
 
 export type Round = {
   ask_from_ma?: string;
@@ -148,11 +198,11 @@ export type CompanyInfo = {
 };
 
 export type Team = {
-  file: File;
   name: string;
   designation: string;
-  social: string;
-  link: string;
+  id: string;
+  image_link: string;
+  profile_links: { social: string; link: string }[];
 };
 
 export type Investor = {

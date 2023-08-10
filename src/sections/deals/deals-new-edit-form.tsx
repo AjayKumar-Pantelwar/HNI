@@ -2,10 +2,8 @@
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useCallback, useEffect, useMemo } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import * as Yup from 'yup';
+import { useForm } from 'react-hook-form';
 // @mui
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import LoadingButton from '@mui/lab/LoadingButton';
 import Box from '@mui/material/Box';
@@ -22,8 +20,6 @@ import { useResponsive } from 'src/hooks/use-responsive';
 // components
 import FormProvider, {
   RHFMultiSelect,
-  RHFSelect,
-  RHFSwitch,
   RHFTextField,
   RHFUpload,
   RHFUploadAvatar,
@@ -31,30 +27,27 @@ import FormProvider, {
 import { useSnackbar } from 'src/components/snackbar';
 import { useRouter } from 'src/routes/hook';
 // types
-import { Button, MenuItem } from '@mui/material';
 import { capitalize } from 'lodash';
+import RHFDateField from 'src/components/hook-form/rhf-date-field';
 import { dealApi } from 'src/redux/api/deal.api';
 import {
   CreateDealRequest,
+  CreateDealSchema,
+  Deal,
   Model,
-  RoundType,
   Sector1,
   Sector2,
   Sector3,
   Tech,
 } from 'src/types/deals.types';
 import { convertToFD } from 'src/utils/convert-fd';
-import { fDate, pDate } from 'src/utils/format-time';
+import { fDate } from 'src/utils/format-time';
+import { handleError } from 'src/utils/handle-error';
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  currentDeal?: CreateDealRequest;
-};
-
-type OptionType = {
-  value: string;
-  label: string;
+  currentDeal?: Deal;
 };
 
 export default function DealsNewEditForm({ currentDeal }: Props) {
@@ -65,31 +58,7 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
   const { enqueueSnackbar } = useSnackbar();
 
   const [createDeal] = dealApi.useCreateDealMutation();
-
-  const NewDealSchema = Yup.object().shape({
-    brand_name: Yup.string().required('brand name  is required'),
-    company_name: Yup.string().required('company name is required'),
-    one_liner: Yup.string().required('one liner is required'),
-    description: Yup.string()
-      .required('description is required')
-      .min(100, 'minimum 100 words')
-      .max(250, 'maximum 250 words'),
-    start_date: Yup.string().required('start date is required'),
-    end_date: Yup.string().required('end date is required'),
-    closing_soon_date: Yup.string().required('closing soon date is required'),
-    sector: Yup.object()
-      .shape({
-        tech: Yup.array().of(Yup.string()).length(1, 'Tech is required'),
-        model: Yup.array().of(Yup.string()).length(1, 'Model is required'),
-        sector_1: Yup.array().of(Yup.string()),
-        sector_2: Yup.array().of(Yup.string()),
-        sector_3: Yup.array().of(Yup.string()),
-      })
-      .required('sector is required'),
-    deal_name: Yup.string().required('deal name is required'),
-    cover_image: Yup.mixed(),
-    logo_link: Yup.mixed(),
-  });
+  const [editDeal] = dealApi.useEditDealMutation();
 
   const defaultValues = useMemo<CreateDealRequest>(
     () => ({
@@ -97,9 +66,13 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
       company_name: currentDeal?.company_name || '',
       one_liner: currentDeal?.one_liner || '',
       description: currentDeal?.description || '',
-      start_date: currentDeal?.start_date || '',
-      end_date: currentDeal?.end_date || '',
-      closing_soon_date: currentDeal?.closing_soon_date || '',
+      start_date: currentDeal?.start_date?.seconds
+        ? fDate(currentDeal.start_date.seconds * 1000)
+        : '',
+      end_date: currentDeal?.end_date?.seconds ? fDate(currentDeal.end_date.seconds * 1000) : '',
+      closing_soon_date: currentDeal?.closing_soon_date?.seconds
+        ? fDate(currentDeal.closing_soon_date.seconds * 1000)
+        : '',
       sector: currentDeal?.sector || {
         model: [],
         tech: [],
@@ -115,8 +88,9 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
   );
 
   const methods = useForm({
-    resolver: yupResolver(NewDealSchema),
+    resolver: yupResolver<CreateDealRequest>(CreateDealSchema),
     defaultValues,
+    mode: 'onTouched',
   });
 
   const {
@@ -127,7 +101,7 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
     formState: { isSubmitting },
   } = methods;
 
-  // const rounds = watch('round');
+  const description = watch('description');
 
   useEffect(() => {
     if (currentDeal) {
@@ -138,16 +112,16 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
   const onSubmit = handleSubmit(async (data) => {
     try {
       const formData = convertToFD(data);
-
-      // TEMPORARY CONSOLE.LOG
-      formData.forEach((value, key) => console.log({ [key]: value }));
-
-      const response = await createDeal(formData).unwrap();
+      if (currentDeal) {
+        await editDeal({ id: currentDeal.deal_id, body: formData }).unwrap();
+      } else {
+        await createDeal(formData).unwrap();
+      }
       reset();
       enqueueSnackbar(currentDeal ? 'Update success' : 'Create success', { variant: 'success' });
       router.push(paths.dashboard.deals.list);
     } catch (error) {
-      console.error(error);
+      handleError(error);
     }
   });
 
@@ -199,69 +173,18 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
 
             <RHFTextField name="deal_name" label="Deal Name" />
             <RHFTextField name="one_liner" label="One Liner" />
-            <RHFTextField name="description" label="Description" multiline rows={4} />
+            <RHFTextField
+              name="description"
+              label="Description"
+              multiline
+              rows={4}
+              helperText={`${description.length} / 250`}
+            />
 
             <Box sx={{ display: 'flex', gap: 2 }}>
-              <Controller
-                name="start_date"
-                control={methods.control}
-                render={({ field, fieldState: { error } }) => (
-                  <DatePicker
-                    {...field}
-                    format="dd/MM/yyyy"
-                    label="Start date"
-                    value={pDate(field.value)}
-                    onChange={(value) => setValue('start_date', fDate(value))}
-                    slotProps={{
-                      textField: {
-                        fullWidth: true,
-                        error: !!error,
-                        helperText: error?.message,
-                      },
-                    }}
-                  />
-                )}
-              />
-              <Controller
-                name="end_date"
-                control={methods.control}
-                render={({ field, fieldState: { error } }) => (
-                  <DatePicker
-                    {...field}
-                    format="dd/MM/yyyy"
-                    label="End date"
-                    value={pDate(field.value)}
-                    onChange={(value) => setValue('end_date', fDate(value))}
-                    slotProps={{
-                      textField: {
-                        fullWidth: true,
-                        error: !!error,
-                        helperText: error?.message,
-                      },
-                    }}
-                  />
-                )}
-              />
-              <Controller
-                name="closing_soon_date"
-                control={methods.control}
-                render={({ field, fieldState: { error } }) => (
-                  <DatePicker
-                    label="Closing date"
-                    {...field}
-                    format="dd/MM/yyyy"
-                    value={pDate(field.value)}
-                    onChange={(value) => setValue('closing_soon_date', fDate(value))}
-                    slotProps={{
-                      textField: {
-                        fullWidth: true,
-                        error: !!error,
-                        helperText: error?.message,
-                      },
-                    }}
-                  />
-                )}
-              />
+              <RHFDateField name="start_date" label="Start Date" />
+              <RHFDateField name="closing_soon_date" label="Closing Soon Date" />
+              <RHFDateField name="end_date" label="End Date" />
             </Box>
           </Stack>
         </Card>

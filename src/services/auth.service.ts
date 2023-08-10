@@ -9,10 +9,9 @@ import {
   LoginResponse,
   ValidateTotpRequest,
   ValidateTotpResponse,
-} from 'src/types/auth';
+} from 'src/types/auth.types';
 import { AxiosResponse } from 'axios';
 import { ApiResponse } from 'src/types/api.types';
-import { PrivateService } from './private-service';
 import { PublicService } from './public-service';
 
 class AuthService extends PublicService {

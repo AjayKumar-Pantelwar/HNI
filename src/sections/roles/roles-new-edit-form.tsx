@@ -17,19 +17,18 @@ import { paths } from 'src/routes/paths';
 // components
 import {
   Checkbox,
+  Skeleton,
   Table,
+  TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Skeleton,
-  TableBody,
 } from '@mui/material';
 import FormProvider, { RHFTextField } from 'src/components/hook-form';
 import { useSnackbar } from 'src/components/snackbar';
 import { roleApi } from 'src/redux/api/role.api';
-import { CreateRoleRequest, Module, Permission, Role } from 'src/types/role.types';
-import { deflate } from 'zlib';
+import { Role } from 'src/types/role.types';
 
 // ----------------------------------------------------------------------
 
@@ -83,8 +82,6 @@ export default function RolesNewEditForm({ currentRole }: Props) {
   }, [apiPermissions, currentRole]);
 
   const permissions = methods.watch('permission');
-
-  console.log(permissions);
 
   const onSubmit = handleSubmit(async (data) => {
     try {

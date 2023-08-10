@@ -1,7 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import * as Yup from 'yup';
 // @mui
 import LoadingButton from '@mui/lab/LoadingButton';
 import Box from '@mui/material/Box';
@@ -14,14 +13,7 @@ import { paths } from 'src/routes/paths';
 // types
 // assets
 // components
-import FormProvider, { RHFAutocomplete, RHFSwitch, RHFTextField } from 'src/components/hook-form';
-import { useSnackbar } from 'src/components/snackbar';
-import { adminApi } from 'src/redux/api/admin.api';
-import { Admin, CreateAdminRequest } from 'src/types/admin.types';
-import { roleApi } from 'src/redux/api/role.api';
-import Iconify from 'src/components/iconify/iconify';
 import {
-  Button,
   IconButton,
   InputAdornment,
   Table,
@@ -32,17 +24,22 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
+import FormProvider, { RHFAutocomplete, RHFSwitch, RHFTextField } from 'src/components/hook-form';
+import Iconify from 'src/components/iconify/iconify';
+import { useSnackbar } from 'src/components/snackbar';
 import { useBoolean } from 'src/hooks/use-boolean';
-import { CheckInIllustration } from 'src/assets/illustrations';
-import SeoIllustration from 'src/assets/illustrations/seo-illustration';
+import { adminApi } from 'src/redux/api/admin.api';
+import { roleApi } from 'src/redux/api/role.api';
+import { Admin, CreateAdminRequest, CreateAdminSchema } from 'src/types/admin.types';
+import { handleError } from 'src/utils/handle-error';
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  currentUser?: Admin;
+  currentAdmin?: Admin;
 };
 
-export default function AdminNewEditForm({ currentUser }: Props) {
+export default function AdminNewEditForm({ currentAdmin }: Props) {
   const router = useRouter();
 
   const password = useBoolean();
@@ -53,60 +50,37 @@ export default function AdminNewEditForm({ currentUser }: Props) {
 
   const { enqueueSnackbar } = useSnackbar();
 
-  const AdminSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
-    email: Yup.string().required('Email is required').email('Email must be a valid email address'),
-    mobile_number: Yup.string().required('Phone number is required'),
-    username: Yup.string().required('Username is required'),
-    pwd: Yup.string().required('Password is required'),
-    is_pwd_change_required: Yup.boolean().required('Password is required'),
-    rid: Yup.string().required('Role is required'),
-  });
-
-  type CreateAdminRequest = Yup.InferType<typeof AdminSchema>;
-
   const defaultValues = useMemo<CreateAdminRequest>(
     () => ({
-      name: currentUser?.name || '',
-      email: currentUser?.email || '',
-      is_pwd_change_required: currentUser?.is_pwd_change_required || false,
-      mobile_number: currentUser?.mobile_number || '',
+      name: currentAdmin?.name || '',
+      email: currentAdmin?.email || '',
+      is_pwd_change_required: currentAdmin?.is_pwd_change_required || false,
+      mobile_number: currentAdmin?.mobile_number || '',
       pwd: '',
-      rid: currentUser?.rid || '',
-      username: currentUser?.username || '',
+      rid: currentAdmin?.rid || '',
+      username: currentAdmin?.username || '',
     }),
-    [currentUser]
+    [currentAdmin]
   );
 
   const methods = useForm({
-    resolver: yupResolver(AdminSchema),
+    resolver: yupResolver(CreateAdminSchema),
     defaultValues,
   });
 
   const {
     handleSubmit,
-    setValue,
     formState: { isSubmitting },
   } = methods;
 
   const onSubmit = handleSubmit(async (data) => {
-    await createAdmin(data)
-      .unwrap()
-      .then((res: any) => {
-        // console.log('RESPONSE', JSON.parse(JSON.stringify(res)));
-        // if (res?.status !== 200) {
-        //   throw new Error(res?.data?.error);
-        // } else {
-        //   enqueueSnackbar(currentUser ? 'Update success!' : 'Create success!');
-        //   router.push(paths.dashboard.admin.list);
-        // }
-        enqueueSnackbar(currentUser ? 'Update success!' : 'Create success!');
-        router.push(paths.dashboard.admin.list);
-      })
-      .catch((error) => {
-        console.log(JSON.parse(JSON.stringify(error.data)));
-        enqueueSnackbar(error?.data?.error || 'Something went wrong', { variant: 'error' });
-      });
+    try {
+      await createAdmin(data).unwrap();
+      enqueueSnackbar(currentAdmin ? 'Update success!' : 'Create success!');
+      router.push(paths.dashboard.admin.list);
+    } catch (error) {
+      handleError(error);
+    }
   });
 
   const currentRid = methods.watch('rid');
@@ -231,8 +205,8 @@ export default function AdminNewEditForm({ currentUser }: Props) {
           />
         </Box>
         <Stack alignItems="flex-end" sx={{ mt: 3 }}>
-          <LoadingButton type="submit" variant="contained">
-            {!currentUser ? 'Create Admin' : 'Save Changes'}
+          <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
+            {!currentAdmin ? 'Create Admin' : 'Save Changes'}
           </LoadingButton>
         </Stack>
       </Card>

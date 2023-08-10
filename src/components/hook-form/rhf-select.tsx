@@ -1,16 +1,17 @@
-import { useFormContext, Controller } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 // @mui
-import { Theme, SxProps } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Chip from '@mui/material/Chip';
-import MenuItem from '@mui/material/MenuItem';
 import Checkbox from '@mui/material/Checkbox';
-import InputLabel from '@mui/material/InputLabel';
+import Chip from '@mui/material/Chip';
 import FormControl from '@mui/material/FormControl';
-import OutlinedInput from '@mui/material/OutlinedInput';
 import FormHelperText from '@mui/material/FormHelperText';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import OutlinedInput from '@mui/material/OutlinedInput';
 import Select, { SelectProps } from '@mui/material/Select';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
+import { SxProps, Theme } from '@mui/material/styles';
+import { useState } from 'react';
 
 // ----------------------------------------------------------------------
 
@@ -57,7 +58,7 @@ export function RHFSelect({
             sx: { textTransform: 'capitalize' },
           }}
           error={!!error}
-          helperText={error ? error?.message : helperText}
+          helperText={error ? error?.message : helperText || ' '}
           {...other}
         >
           {children}
@@ -97,6 +98,8 @@ export function RHFMultiSelect({
 }: RHFMultiSelectProps) {
   const { control } = useFormContext();
 
+  const [open, setOpen] = useState(false);
+
   const renderValues = (selectedIds: string[]) => {
     const selectedItems = options.filter((item) => selectedIds.includes(item.value));
 
@@ -134,11 +137,15 @@ export function RHFMultiSelect({
             multiple
             displayEmpty={!!placeholder}
             labelId={name}
+            open={open}
+            onOpen={() => setOpen(true)}
+            onClose={() => setOpen(false)}
             input={<OutlinedInput fullWidth label={label} error={!!error} />}
             renderValue={renderValues}
             onChange={(e, child) => {
               if (onlyOne) {
                 if (e.target.value.length) e.target.value = [e.target.value.pop()];
+                setOpen(false);
                 field.onChange(e, child);
               } else {
                 field.onChange(e, child);

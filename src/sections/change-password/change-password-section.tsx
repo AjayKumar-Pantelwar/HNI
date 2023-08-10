@@ -1,28 +1,28 @@
 'use client';
 
-import * as Yup from 'yup';
-import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form';
+import * as Yup from 'yup';
 // @mui
 import LoadingButton from '@mui/lab/LoadingButton';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import InputAdornment from '@mui/material/InputAdornment';
 // routes
-import { paths } from 'src/routes/paths';
 import { RouterLink } from 'src/routes/components';
+import { paths } from 'src/routes/paths';
 // hooks
 import { useBoolean } from 'src/hooks/use-boolean';
 // assets
 // components
-import Iconify from 'src/components/iconify';
-import FormProvider, { RHFTextField } from 'src/components/hook-form';
-import { authService } from 'src/services/auth.service';
-import { useSelector } from 'src/redux/store';
 import React from 'react';
+import FormProvider, { RHFTextField } from 'src/components/hook-form';
+import Iconify from 'src/components/iconify';
+import { useSelector } from 'src/redux/store';
 import { useRouter } from 'src/routes/hook/use-router';
+import { authService } from 'src/services/auth.service';
 
 // ----------------------------------------------------------------------
 
@@ -70,7 +70,7 @@ export default function ChangePasswordSection() {
       });
 
       if (response.data?.data.is_totp_activated === false) {
-        router.push(paths.activateTotp);
+        router.push(paths.auth.activateTotp);
       }
     } catch (error) {
       console.error(error);
@@ -125,7 +125,7 @@ export default function ChangePasswordSection() {
 
       <Link
         component={RouterLink}
-        href={paths.login}
+        href={paths.auth.login}
         color="inherit"
         variant="subtitle2"
         sx={{

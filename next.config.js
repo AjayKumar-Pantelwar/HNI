@@ -15,14 +15,13 @@ module.exports = {
     });
     return config;
   },
-  async redirects () {
+  async redirects() {
     return [
       {
         source: '/',
-        destination: '/login',
-        permanent : true,
+        destination: '/auth/login',
+        permanent: true,
       },
-    ]
-  }
-  
+    ];
+  },
 };

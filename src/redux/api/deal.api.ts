@@ -14,6 +14,7 @@ import {
   PitchRequest,
   PitchResponse,
 } from 'src/types/deals.types';
+import { TrendingDealsRequest } from 'src/types/deals/basic.types';
 import { authSlice } from '../slices/auth.slice';
 
 export const dealApi = createApi({
@@ -45,6 +46,22 @@ export const dealApi = createApi({
     createDeal: builder.mutation<CreateDealResponse, FormData>({
       query: (body) => ({
         url: '/api/deal/basic',
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: ['Deal'],
+    }),
+    editDeal: builder.mutation<ApiResponse, { id: string; body: FormData }>({
+      query: ({ id, body }) => ({
+        url: `/api/deal/basic/${id}`,
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: ['Deal'],
+    }),
+    trendingDeal: builder.mutation<ApiResponse, TrendingDealsRequest>({
+      query: (body) => ({
+        url: `/api/deal/trending`,
         method: 'POST',
         body,
       }),
@@ -83,7 +100,7 @@ export const dealApi = createApi({
       invalidatesTags: ['Deal'],
     }),
     addTeam: builder.mutation<ApiResponse, { id: string; body: FormData }>({
-      query: ({ id, ...body }) => ({
+      query: ({ id, body }) => ({
         url: `/api/deal/${id}/company-info/team`,
         method: 'POST',
         body,
@@ -91,7 +108,7 @@ export const dealApi = createApi({
       invalidatesTags: ['Deal'],
     }),
     editTeam: builder.mutation<ApiResponse, { id: string; mem_id: string; body: FormData }>({
-      query: ({ id, mem_id, ...body }) => ({
+      query: ({ id, mem_id, body }) => ({
         url: `/api/deal/${id}/company-info/team/${mem_id}`,
         method: 'PUT',
         body,
@@ -107,7 +124,7 @@ export const dealApi = createApi({
       invalidatesTags: ['Deal'],
     }),
     addInvestor: builder.mutation<ApiResponse, { id: string; body: FormData }>({
-      query: ({ id, ...body }) => ({
+      query: ({ id, body }) => ({
         url: `/api/deal/${id}/company-info/current-investor`,
         method: 'POST',
         body,
@@ -115,7 +132,7 @@ export const dealApi = createApi({
       invalidatesTags: ['Deal'],
     }),
     editInvestor: builder.mutation<ApiResponse, { id: string; mem_id: string; body: FormData }>({
-      query: ({ id, mem_id, ...body }) => ({
+      query: ({ id, mem_id, body }) => ({
         url: `/api/deal/${id}/company-info/current-investor/${mem_id}`,
         method: 'PUT',
         body,
@@ -131,7 +148,7 @@ export const dealApi = createApi({
       invalidatesTags: ['Deal'],
     }),
     addNews: builder.mutation<ApiResponse, { id: string; body: FormData }>({
-      query: ({ id, ...body }) => ({
+      query: ({ id, body }) => ({
         url: `/api/deal/${id}/company-info/news`,
         method: 'POST',
         body,
@@ -139,7 +156,7 @@ export const dealApi = createApi({
       invalidatesTags: ['Deal'],
     }),
     editNews: builder.mutation<ApiResponse, { id: string; news_id: string; body: FormData }>({
-      query: ({ id, news_id, ...body }) => ({
+      query: ({ id, news_id, body }) => ({
         url: `/api/deal/${id}/company-info/news/${news_id}`,
         method: 'PUT',
         body,

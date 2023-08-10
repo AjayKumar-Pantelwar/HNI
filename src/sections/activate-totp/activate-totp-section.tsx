@@ -1,35 +1,33 @@
 'use client';
 
-import * as Yup from 'yup';
-import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form';
+import * as Yup from 'yup';
 // @mui
 import LoadingButton from '@mui/lab/LoadingButton';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 // routes
-import { paths } from 'src/routes/paths';
 import { RouterLink } from 'src/routes/components';
+import { paths } from 'src/routes/paths';
 // hooks
 
 // assets
 // components
-import Iconify from 'src/components/iconify';
-import FormProvider, { RHFCode } from 'src/components/hook-form';
 import { Box, IconButton, InputAdornment, Skeleton, TextField, Tooltip } from '@mui/material';
+import { useRouter } from 'next/navigation';
+import { useSnackbar } from 'notistack';
 import { QRCodeSVG } from 'qrcode.react';
 import React, { useCallback } from 'react';
-import { useSnackbar } from 'notistack';
-import { useCopyToClipboard } from 'src/hooks/use-copy-to-clipboard';
-import { authService } from 'src/services/auth.service';
-import { useSelector } from 'src/redux/store';
 import { useDispatch } from 'react-redux';
+import FormProvider, { RHFCode } from 'src/components/hook-form';
+import Iconify from 'src/components/iconify';
+import { useCopyToClipboard } from 'src/hooks/use-copy-to-clipboard';
 import { authSlice } from 'src/redux/slices/auth.slice';
-import { TableSkeleton } from 'src/components/table';
-import Paper from 'src/theme/overrides/components/paper';
-import { useRouter } from 'next/navigation';
-import { ProductItemSkeleton } from '../product/product-skeleton';
+import { useSelector } from 'src/redux/store';
+import { authService } from 'src/services/auth.service';
+import { handleError } from 'src/utils/handle-error';
 
 // ----------------------------------------------------------------------
 
@@ -69,7 +67,7 @@ export default function ActivateTotpSection() {
   const onSubmit = handleSubmit(async (data) => {
     try {
       if (loginData === null) {
-        router.push(paths.login);
+        router.push(paths.auth.login);
         return;
       }
       await authService.activateTotp({
@@ -77,11 +75,11 @@ export default function ActivateTotpSection() {
         req_token: loginData.req_token,
         totp: data.code,
       });
+      enqueueSnackbar('Successfully activated TOTP', { variant: 'success' });
       dispatch(authSlice.actions.login());
     } catch (error) {
-      console.error(error);
       reset();
-      enqueueSnackbar(error.response.data.error, { variant: 'error' });
+      handleError(error);
     }
   });
   const onCopy = useCallback(
@@ -109,7 +107,8 @@ export default function ActivateTotpSection() {
         );
       })
       .catch((error) => {
-        console.error('Error fetching secret key:', error);
+        handleError(error);
+        router.push(paths.auth.login);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -136,7 +135,7 @@ export default function ActivateTotpSection() {
 
       <Link
         component={RouterLink}
-        href={paths.login}
+        href={paths.auth.login}
         color="inherit"
         variant="subtitle2"
         sx={{
