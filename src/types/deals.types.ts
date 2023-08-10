@@ -12,6 +12,47 @@ export enum Stage {
 
 export type DealsResponse = ApiResponse<{ deals: Deal[] }>;
 
+export const DealTermsScehma = Yup.object().shape({
+  ask_from_ma: Yup.string().required('Asking amount from MA is required'),
+  is_active: Yup.boolean().required('Active status is required'),
+  raised_in_perc: Yup.string().required('Raised in percentage is required'),
+  min_investment: Yup.number().required('Minimum investment is required'),
+  externally_raised: Yup.number().required('Externally raised amount is required'),
+  valuation: Yup.string().required('Valuation is required'),
+  round_size: Yup.string().required('Round size is required'),
+  round_type: Yup.string().required('Round type is required'),
+  round_instrument: Yup.string().required('Round instrument is required'),
+  valuation_type: Yup.string().required('Valuation type is required'),
+  subscription_in_perc: Yup.string().required('Subscription in percentage is required'),
+  floor: Yup.string().required('Floor amount is required'),
+  cap: Yup.string().required('Cap amount is required'),
+  disc_matrix: Yup.array().of(
+    Yup.object().shape({
+      total_months: Yup.string().required('Total months is required'),
+      perc: Yup.string().required('Percentage is required'),
+    })
+  ),
+  cap_table: Yup.array().of(
+    Yup.object().shape({
+      name: Yup.string().required('Name is required'),
+      perc: Yup.string().required('Percentage is required'),
+    })
+  ),
+  co_investors: Yup.array().of(Yup.string()).required('Co-investors are required'),
+  deal_price: Yup.array().of(
+    Yup.object().shape({
+      title: Yup.string().required('Title is required'),
+      perc: Yup.string().required('Percentage is required'),
+      info: Yup.string().required('Information is required'),
+    })
+  ),
+  rules_of_allocation: Yup.array().of(Yup.string()).required('Rules of allocation are required'),
+  note: Yup.string().required('Note is required'),
+  read_qualification_criteria_link: Yup.string().required('Link is required'),
+});
+
+export type CreateDealTerms = Yup.InferType<typeof DealTermsScehma>;
+
 export const CreateDealSchema = Yup.object().shape({
   brand_name: Yup.string().required('Brand name  is required'),
   company_name: Yup.string().required('Company name is required'),
@@ -76,11 +117,39 @@ export type Round = {
   ask_from_ma?: string;
   is_active?: boolean;
   raised_in_perc?: string;
-  min_investment?: string;
-  externally_raised?: string;
+  min_investment?: number;
+  externally_raised?: number;
   round_size?: string;
   valuation?: string;
+  round_instrument?: RoundInstrument;
+  valuation_type?: string;
+  subscription_in_perc?: string;
+  floor?: string;
+  cap?: string;
+  cap_table: CapTableEntry[];
+  disc_matrix?: DiscountMatrixItem[];
+  co_investors?: string[];
   round_type?: RoundType;
+  deal_price?: DealPrice[];
+  rules_of_allocation?: string[];
+  note?: string;
+  read_qualification_criteria_link?: string;
+};
+
+export type DealPrice = {
+  title: string;
+  perc: string;
+  info: string;
+};
+
+export type CapTableEntry = {
+  name: string;
+  perc: string;
+};
+
+export type DiscountMatrixItem = {
+  total_months: string;
+  perc: string;
 };
 
 export type CreateDealResponse = {
@@ -167,7 +236,7 @@ export type Deal = {
   stage: Stage;
   is_active: true;
   media: Media[];
-  rounds: Round[];
+  round: Round;
   pitch?: Pitch;
   deal_aggregation: DealAggregation;
   created_at: Time;
@@ -354,4 +423,16 @@ export enum RoundType {
   SEED = 'seed',
   SERIES_A = 'series_a',
   SERIES_B = 'series_b',
+}
+
+export enum RoundInstrument {
+  CCPS = 'ccps',
+  CCD = 'ccd',
+  EQUITY = 'equity',
+  CONVERTIBLE_NOTE = 'convertible_note',
+}
+
+export enum ValuationType {
+  FIXED = 'fixed',
+  VARIABLE = 'variable',
 }

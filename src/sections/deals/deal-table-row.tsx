@@ -126,6 +126,15 @@ export default function DealTableRow({ row, selected, onEditRow, onSelectRow }: 
           <Iconify icon="solar:pen-bold" />
           Company Info
         </MenuItem>
+        <MenuItem
+          onClick={() => {
+            router.push(paths.dashboard.deals.terms(row.deal_id));
+            popover.onClose();
+          }}
+        >
+          <Iconify icon="solar:pen-bold" />
+          Deal Terms
+        </MenuItem>
       </CustomPopover>
     </>
   );

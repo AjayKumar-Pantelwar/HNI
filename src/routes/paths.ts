@@ -137,6 +137,7 @@ export const paths = {
       pitch: (id: string) => `${ROOTS.DASHBOARD}/deals/${id}/pitch`,
       highlights: (id: string) => `${ROOTS.DASHBOARD}/deals/${id}/highlights`,
       accountInfo: (id: string) => `${ROOTS.DASHBOARD}/deals/${id}/company-info`,
+      terms: (id: string) => `${ROOTS.DASHBOARD}/deals/${id}/terms`,
     },
     user: {
       root: `${ROOTS.DASHBOARD}/user`,
