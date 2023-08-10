@@ -10,6 +10,7 @@ import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 // hooks
 import { useBoolean } from 'src/hooks/use-boolean';
+import { useRouter } from 'src/routes/hook';
 // types
 // components
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
@@ -18,6 +19,7 @@ import Label from 'src/components/label';
 //
 import { Admin } from 'src/types/admin.types';
 import { roleApi } from 'src/redux/api/role.api';
+import { paths } from 'src/routes/paths';
 import AdminBlockForm from './admin-block-form';
 import AdminQuickEditForm from './admin-quick-edit-form';
 
@@ -38,6 +40,8 @@ function getRole(id: string) {
 
 export default function AdminTableRow(props: Props) {
   const { row, selected, onEditRow, onSelectRow } = props;
+
+  const router = useRouter();
 
   const quickEdit = useBoolean();
 
@@ -121,6 +125,7 @@ export default function AdminTableRow(props: Props) {
       >
         <MenuItem
           onClick={() => {
+            // router.push(paths.dashboard.admin.new);
             quickEdit.onTrue();
             popover.onClose();
           }}

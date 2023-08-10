@@ -28,7 +28,7 @@ import { useRouter } from 'src/routes/hook/use-router';
 
 export default function ChangePasswordSection() {
   const password = useBoolean();
-
+  const confirmPassword = useBoolean();
   const router = useRouter();
   const [errorMsg, setErrorMsg] = React.useState('');
 
@@ -99,12 +99,14 @@ export default function ChangePasswordSection() {
       <RHFTextField
         name="confirmPassword"
         label="Confirm New Password"
-        type={password.value ? 'text' : 'password'}
+        type={confirmPassword.value ? 'text' : 'password'}
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">
-              <IconButton onClick={password.onToggle} edge="end">
-                <Iconify icon={password.value ? 'solar:eye-bold' : 'solar:eye-closed-bold'} />
+              <IconButton onClick={confirmPassword.onToggle} edge="end">
+                <Iconify
+                  icon={confirmPassword.value ? 'solar:eye-bold' : 'solar:eye-closed-bold'}
+                />
               </IconButton>
             </InputAdornment>
           ),

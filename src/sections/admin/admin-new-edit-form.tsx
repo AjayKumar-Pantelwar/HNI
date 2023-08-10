@@ -93,15 +93,19 @@ export default function AdminNewEditForm({ currentUser }: Props) {
     await createAdmin(data)
       .unwrap()
       .then((res: any) => {
-        if (res.status !== 200) {
-          enqueueSnackbar(res.data.error, { variant: 'error' });
-        } else {
-          enqueueSnackbar(currentUser ? 'Update success!' : 'Create success!');
-          router.push(paths.dashboard.admin.list);
-        }
+        // console.log('RESPONSE', JSON.parse(JSON.stringify(res)));
+        // if (res?.status !== 200) {
+        //   throw new Error(res?.data?.error);
+        // } else {
+        //   enqueueSnackbar(currentUser ? 'Update success!' : 'Create success!');
+        //   router.push(paths.dashboard.admin.list);
+        // }
+        enqueueSnackbar(currentUser ? 'Update success!' : 'Create success!');
+        router.push(paths.dashboard.admin.list);
       })
       .catch((error) => {
-        enqueueSnackbar(error.data.error, { variant: 'error' });
+        console.log(JSON.parse(JSON.stringify(error.data)));
+        enqueueSnackbar(error?.data?.error || 'Something went wrong', { variant: 'error' });
       });
   });
 

@@ -165,7 +165,7 @@ export default function LoginSection() {
 
   const renderHead = (
     <Stack sx={{ mb: 5, display: 'flex', alignItems: 'center' }}>
-      <img src="/logo/logo.png" alt="logo" style={{ width: 120, height: 120 }} />
+      <img src="/logo/logo.png" alt="logo" style={{ width: 120 }} />
       <Typography variant="h3">Login to</Typography>
       <Typography variant="h3">Mumbai Angels</Typography>
     </Stack>
