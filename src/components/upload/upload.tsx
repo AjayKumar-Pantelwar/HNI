@@ -1,20 +1,20 @@
 import { useDropzone } from 'react-dropzone';
 // @mui
-import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import { alpha } from '@mui/material/styles';
 // assets
 import { UploadIllustration } from 'src/assets/illustrations';
 //
 import Iconify from '../iconify';
 //
-import { UploadProps } from './types';
 import RejectionFiles from './errors-rejection-files';
 import MultiFilePreview from './preview-multi-file';
 import SingleFilePreview from './preview-single-file';
+import { UploadProps } from './types';
 
 // ----------------------------------------------------------------------
 
@@ -71,7 +71,10 @@ export default function Upload({
   );
 
   const renderSinglePreview = (
-    <SingleFilePreview imgUrl={typeof file === 'string' ? file : file?.preview} />
+    <SingleFilePreview
+      imgUrl={typeof file === 'string' ? file : file?.preview}
+      video={typeof file === 'string' ? false : file?.type === 'video/mp4'}
+    />
   );
 
   const removeSinglePreview = hasFile && onDelete && (

@@ -28,8 +28,8 @@ const DealAccountInfoForm = ({ deal }: Props) => {
     () => ({
       deal_id: deal?.deal_id || '',
       form: deal?.company_info?.form || '',
-      incorporated_date: deal?.company_info?.incorporated_date?.seconds
-        ? fDate(new Date(deal.company_info.incorporated_date.seconds * 1000))
+      incorporated_date: deal?.company_info?.incorporated_date
+        ? fDate(new Date(deal.company_info.incorporated_date))
         : '',
       location: {
         state: deal?.company_info?.location?.state || '',
@@ -68,7 +68,6 @@ const DealAccountInfoForm = ({ deal }: Props) => {
   } = methods;
 
   const values = methods.watch();
-  console.log(values);
 
   const onSubmit = handleSubmit(async (data) => {
     try {

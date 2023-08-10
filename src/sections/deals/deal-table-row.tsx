@@ -63,10 +63,10 @@ export default function DealTableRow({ row, selected, onEditRow, onSelectRow }: 
         </TableCell>
 
         <TableCell>
-          <Box>Start Date: {fDateTime(row.start_date.seconds * 1000)}</Box>
-          <Box>End Date: {fDateTime(row.end_date.seconds * 1000)}</Box>
+          <Box>Start Date: {fDateTime(row.start_date)}</Box>
+          <Box>End Date: {fDateTime(row.end_date)}</Box>
         </TableCell>
-        <TableCell>{fDateTime(row.created_at.seconds * 1000)}</TableCell>
+        <TableCell>{fDateTime(row.created_at)}</TableCell>
 
         <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
           <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>

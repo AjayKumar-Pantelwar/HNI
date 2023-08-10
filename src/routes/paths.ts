@@ -52,9 +52,9 @@ export const paths = {
   },
   // AUTH
   auth: {
-    login: '/auth/login',
-    changePassword: '/change-password',
-    activateTotp: '/activate-totp',
+    login: `${ROOTS.AUTH}/login`,
+    changePassword: `${ROOTS.AUTH}/change-password`,
+    activateTotp: `${ROOTS.AUTH}/activate-totp`,
     amplify: {
       login: `${ROOTS.AUTH}/amplify/login`,
       verify: `${ROOTS.AUTH}/amplify/verify`,

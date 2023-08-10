@@ -116,9 +116,9 @@ export type BasicInfoMediaRequest = {
 export type Media = {
   link: string;
   description: string;
-  thumbnail_link: string;
-  type: 'video' | 'image';
-  priority: number;
+  thumbnail_link: string; // required when uploading video
+  type: 'video' | 'image' | 'pitch_video';
+  priority: number; // pitch_video priority is always -1
   is_published: string;
 };
 
@@ -206,14 +206,17 @@ export type Team = {
 };
 
 export type Investor = {
-  file: File;
+  image_link: string;
+  id: string;
   name: string;
   designation: string;
 };
 
 export type News = {
-  file: File;
   title: string;
+  id: string;
+  article_link: string;
+  thumbnail_link: string;
 };
 
 export type Pitch = {

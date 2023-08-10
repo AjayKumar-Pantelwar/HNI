@@ -8,9 +8,11 @@ export const handleError = (error: any) => {
   if (axios.isAxiosError(error)) {
     console.error(error.response || error.message);
     errorMessage = error.response?.data?.error || error.message;
-  } else {
+  } else if (error.hasOwnProperty('data')) {
     console.error(error.data?.error);
     errorMessage = error.data?.error || errorMessage;
+  } else {
+    errorMessage = error.message;
   }
 
   enqueueSnackbar(errorMessage, { variant: 'error' });
