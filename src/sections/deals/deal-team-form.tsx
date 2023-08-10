@@ -69,7 +69,7 @@ export default function DealTeamForm({ currentDeal }: Props) {
         open={deleteOpen}
         teamIds={selectedIds}
       />
-      <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
         {!currentDeal?.company_info?.team || currentDeal?.company_info?.team?.length === 0 ? (
           <EmptyContent filled title="No Team Members Added" sx={{ py: 10 }} />
         ) : (
