@@ -23,6 +23,7 @@ import FormProvider, {
   RHFTextField,
   RHFUpload,
   RHFUploadAvatar,
+  RHFUploadBox,
 } from 'src/components/hook-form';
 import { useSnackbar } from 'src/components/snackbar';
 import { useRouter } from 'src/routes/hook';
@@ -80,6 +81,7 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
       deal_name: currentDeal?.deal_name || '',
       cover_image: null,
       logo_link: null,
+      pitch_deck: null,
     }),
     [currentDeal]
   );
@@ -107,14 +109,20 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
         .then((file) => {
           setValue('cover_image', file);
         })
-        .catch(handleError);
+        .catch((err) => handleError(err, true));
       convertUrlToFile(currentDeal.logo_link)
         .then((file) => {
           setValue('logo_link', file);
         })
-        .catch(handleError);
+        .catch((err) => handleError(err, true));
+
+      convertUrlToFile(currentDeal.pitch_deck)
+        .then((file) => {
+          setValue('pitch_deck', file);
+        })
+        .catch((err) => handleError(err, true));
     }
-  }, [currentDeal, defaultValues, reset]);
+  }, [currentDeal, defaultValues, reset, setValue]);
 
   const onSubmit = handleSubmit(async (data) => {
     try {
@@ -374,6 +382,36 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
 
   const sectionFour = (
     <>
+      {mdUp && (
+        <Grid md={4}>
+          <Typography variant="h6" sx={{ mb: 0.5 }}>
+            Pitch Deck
+          </Typography>
+          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+            Upload the pitch deck pdf here
+          </Typography>
+        </Grid>
+      )}
+
+      <Grid xs={12} md={8}>
+        <Card>
+          {!mdUp && <CardHeader title="Pitch Deck" />}
+          <Stack spacing={3} sx={{ p: 3 }}>
+            <RHFUploadBox
+              accept={{
+                'application/*': ['.pdf'],
+              }}
+              name="pitch_deck"
+              sx={{ width: '100%' }}
+            />
+          </Stack>
+        </Card>
+      </Grid>
+    </>
+  );
+
+  const lastSection = (
+    <>
       {mdUp && <Grid md={4} />}
       <Grid
         xs={12}
@@ -397,6 +435,8 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
         {sectionThree}
 
         {sectionFour}
+
+        {lastSection}
       </Grid>
     </FormProvider>
   );

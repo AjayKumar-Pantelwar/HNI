@@ -15,17 +15,31 @@ export type DealsResponse = ApiResponse<{ deals: Deal[] }>;
 export const DealTermsScehma = Yup.object().shape({
   ask_from_ma: Yup.string().required('Asking amount from MA is required'),
   is_active: Yup.boolean().required('Active status is required'),
-  raised_in_perc: Yup.string().required('Raised in percentage is required'),
   min_investment: Yup.number().required('Minimum investment is required'),
   externally_raised: Yup.number().required('Externally raised amount is required'),
-  valuation: Yup.string().required('Valuation is required'),
   round_size: Yup.string().required('Round size is required'),
   round_type: Yup.string().required('Round type is required'),
   round_instrument: Yup.string().required('Round instrument is required'),
   valuation_type: Yup.string().required('Valuation type is required'),
   subscription_in_perc: Yup.string().required('Subscription in percentage is required'),
-  floor: Yup.string().required('Floor amount is required'),
-  cap: Yup.string().required('Cap amount is required'),
+  floor: Yup.string().test((value, context) => {
+    if (context.parent.valuation_type === ValuationType.VARIABLE && !value) {
+      return context.createError({ message: 'Floor amount is required' });
+    }
+    return true;
+  }),
+  cap: Yup.string().test((value, context) => {
+    if (context.parent.valuation_type === ValuationType.VARIABLE && !value) {
+      return context.createError({ message: 'Cap amount is required' });
+    }
+    return true;
+  }),
+  valuation: Yup.string().test((value, context) => {
+    if (context.parent.valuation_type === ValuationType.FIXED && !value) {
+      return context.createError({ message: 'Valuation is required' });
+    }
+    return true;
+  }),
   disc_matrix: Yup.array().of(
     Yup.object().shape({
       total_months: Yup.string().required('Total months is required'),
@@ -61,18 +75,7 @@ export const CreateDealSchema = Yup.object().shape({
     .required('Description is required')
     .min(100, 'Description must have a minimum of 100 words')
     .max(250, 'Description must have a maximum of 250 words'),
-  start_date: Yup.string()
-    .required('Start date is required')
-    .test((value, context) => {
-      const today = new Date();
-      const startDate = pDate(value);
-      if (startDate && isBefore(startDate, today)) {
-        return context.createError({
-          message: 'Start date must be in the future',
-        });
-      }
-      return true;
-    }),
+  start_date: Yup.string().required('Start date is required'),
   end_date: Yup.string()
     .required('End date is required')
     .test((value, context) => {
@@ -109,9 +112,15 @@ export const CreateDealSchema = Yup.object().shape({
   deal_name: Yup.string().required('Deal name is required'),
   cover_image: Yup.mixed().required('Cover image is required').nullable(),
   logo_link: Yup.mixed().required('Logo link is required').nullable(),
+  pitch_deck: Yup.mixed().required('Logo link is required').nullable(),
 });
 
 export type CreateDealRequest = Yup.InferType<typeof CreateDealSchema>;
+
+export const DataroomSchema = Yup.object().shape({
+  pitch_pdf_link: Yup.string().required(),
+  document_link: Yup.string().required(),
+});
 
 export type Round = {
   ask_from_ma?: string;
@@ -228,12 +237,14 @@ export type Deal = {
   one_liner: string;
   description: string;
   start_date: Time;
+  pitch_deck: string;
   end_date: Time;
   closing_soon_date: Time;
   sector: Sector;
   deal_name: string;
   logo_link: string;
   stage: Stage;
+  dataroom: Dataroom;
   is_active: true;
   media: Media[];
   round: Round;
@@ -241,6 +252,11 @@ export type Deal = {
   deal_aggregation: DealAggregation;
   created_at: Time;
   updated_at: Time;
+};
+
+export type Dataroom = {
+  pitch_pdf_link: string;
+  document_link: string;
 };
 
 export type Highlight = {

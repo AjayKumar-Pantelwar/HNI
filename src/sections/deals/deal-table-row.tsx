@@ -108,15 +108,15 @@ export default function DealTableRow({ row, selected, onEditRow, onSelectRow }: 
           <Iconify icon="solar:pen-bold" />
           Media
         </MenuItem>
-        {/* <MenuItem
+        <MenuItem
           onClick={() => {
-            router.push(paths.dashboard.deals.highlights(row.deal_id));
+            router.push(paths.dashboard.deals.dataroom(row.deal_id));
             popover.onClose();
           }}
         >
           <Iconify icon="solar:pen-bold" />
-          Highlights
-        </MenuItem> */}
+          Dataroom
+        </MenuItem>
         <MenuItem
           onClick={() => {
             router.push(paths.dashboard.deals.accountInfo(row.deal_id));

@@ -113,7 +113,6 @@ export default function DealsMediaForm({ currentDeal }: Props) {
         if (m.thumbnail instanceof File) formData.append(`thumbnail_${index}`, m.thumbnail);
       });
 
-      formData.forEach((value, key) => console.log({ [key]: value }));
       await updateMedia({ id: currentDeal.deal_id, body: formData }).unwrap();
       reset();
       enqueueSnackbar(currentDeal ? 'Update success' : 'Create success', { variant: 'success' });

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { enqueueSnackbar } from 'notistack';
 
-export const handleError = (error: any) => {
+export const handleError = (error: any, silent = false) => {
   let errorMessage = 'Something went wrong!';
   console.error(error);
 
@@ -15,5 +15,5 @@ export const handleError = (error: any) => {
     errorMessage = error.message;
   }
 
-  enqueueSnackbar(errorMessage, { variant: 'error' });
+  if (!silent) enqueueSnackbar(errorMessage, { variant: 'error' });
 };

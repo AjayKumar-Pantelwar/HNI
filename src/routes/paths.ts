@@ -135,9 +135,9 @@ export const paths = {
       edit: (id: string) => `${ROOTS.DASHBOARD}/deals/${id}/edit`,
       media: (id: string) => `${ROOTS.DASHBOARD}/deals/${id}/media`,
       pitch: (id: string) => `${ROOTS.DASHBOARD}/deals/${id}/pitch`,
-      highlights: (id: string) => `${ROOTS.DASHBOARD}/deals/${id}/highlights`,
       accountInfo: (id: string) => `${ROOTS.DASHBOARD}/deals/${id}/company-info`,
       terms: (id: string) => `${ROOTS.DASHBOARD}/deals/${id}/terms`,
+      dataroom: (id: string) => `${ROOTS.DASHBOARD}/deals/${id}/dataroom`,
     },
     user: {
       root: `${ROOTS.DASHBOARD}/user`,
