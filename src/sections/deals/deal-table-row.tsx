@@ -63,10 +63,10 @@ export default function DealTableRow({ row, selected, onEditRow, onSelectRow }: 
         </TableCell>
 
         <TableCell>
-          <Box>Start Date: {fDateTime(row.start_date.seconds * 1000)}</Box>
-          <Box>End Date: {fDateTime(row.end_date.seconds * 1000)}</Box>
+          <Box>Start Date: {fDateTime(row.start_date)}</Box>
+          <Box>End Date: {fDateTime(row.end_date)}</Box>
         </TableCell>
-        <TableCell>{fDateTime(row.created_at.seconds * 1000)}</TableCell>
+        <TableCell>{fDateTime(row.created_at)}</TableCell>
 
         <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
           <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
@@ -108,15 +108,15 @@ export default function DealTableRow({ row, selected, onEditRow, onSelectRow }: 
           <Iconify icon="solar:pen-bold" />
           Media
         </MenuItem>
-        {/* <MenuItem
+        <MenuItem
           onClick={() => {
-            router.push(paths.dashboard.deals.highlights(row.deal_id));
+            router.push(paths.dashboard.deals.dataroom(row.deal_id));
             popover.onClose();
           }}
         >
           <Iconify icon="solar:pen-bold" />
-          Highlights
-        </MenuItem> */}
+          Dataroom
+        </MenuItem>
         <MenuItem
           onClick={() => {
             router.push(paths.dashboard.deals.accountInfo(row.deal_id));
@@ -125,6 +125,15 @@ export default function DealTableRow({ row, selected, onEditRow, onSelectRow }: 
         >
           <Iconify icon="solar:pen-bold" />
           Company Info
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            router.push(paths.dashboard.deals.terms(row.deal_id));
+            popover.onClose();
+          }}
+        >
+          <Iconify icon="solar:pen-bold" />
+          Deal Terms
         </MenuItem>
       </CustomPopover>
     </>

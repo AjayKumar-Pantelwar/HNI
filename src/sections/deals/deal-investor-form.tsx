@@ -1,21 +1,13 @@
 'use client';
 
-import React from 'react';
-// @mui
-
+import { Button, Card, IconButton, Stack, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
-// routes
-// hooks
-// _mock
-// components
-// types
-import { Button, Card, IconButton, Link, Stack, Typography } from '@mui/material';
+import React from 'react';
 import EmptyContent from 'src/components/empty-content/empty-content';
 import Iconify from 'src/components/iconify/iconify';
-import { Deal, Team } from 'src/types/deals.types';
-import { capitalize } from 'src/utils/change-case';
-import TeamDeleteForm from './teams/team-delete-form';
-import TeamNewEditForm from './teams/team-new-edit-form';
+import { Deal, Investor } from 'src/types/deals.types';
+import InvestorDeleteForm from './investors/investor-delete-form';
+import InvestorNewEditForm from './investors/investor-new-edit-form';
 
 // ----------------------------------------------------------------------
 
@@ -23,11 +15,11 @@ type Props = {
   currentDeal?: Deal;
 };
 
-export default function DealTeamForm({ currentDeal }: Props) {
+export default function DealInvestor({ currentDeal }: Props) {
   const [open, setOpen] = React.useState(false);
   const [deleteOpen, setDeleteOpen] = React.useState(false);
 
-  const [selectedTeam, setSelectedTeam] = React.useState<Team>();
+  const [selectedTeam, setSelectedTeam] = React.useState<Investor>();
   const [selectedIds, setSelectedIds] = React.useState<string[]>([]);
 
   return (
@@ -41,67 +33,56 @@ export default function DealTeamForm({ currentDeal }: Props) {
           mb: 2,
         }}
       >
-        <Typography variant="h4">Meet the Team</Typography>
+        <Typography variant="h4">Current Investors</Typography>
         <Button onClick={() => setOpen(true)} variant="outlined" color="success">
-          Add Team
+          Add Investor
         </Button>
       </Box>
-      <TeamNewEditForm
+      <InvestorNewEditForm
         open={open}
         onClose={() => {
           setOpen(false);
           setSelectedTeam(undefined);
         }}
         dealId={currentDeal?.deal_id || ''}
-        team={
+        investor={
           selectedTeam
             ? {
                 ...selectedTeam,
-                social: selectedTeam?.profile_links?.[0]?.social,
-                link: selectedTeam?.profile_links?.[0]?.link,
                 file: null,
               }
             : undefined
         }
       />
-      <TeamDeleteForm
+      <InvestorDeleteForm
         dealId={currentDeal?.deal_id || ''}
         onClose={() => setDeleteOpen(false)}
         open={deleteOpen}
-        teamIds={selectedIds}
+        investorIds={selectedIds}
       />
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-        {!currentDeal?.company_info?.team || currentDeal?.company_info?.team?.length === 0 ? (
-          <EmptyContent filled title="No Team Members Added" sx={{ py: 10 }} />
+        {!currentDeal?.company_info?.investors ||
+        currentDeal?.company_info?.investors?.length === 0 ? (
+          <EmptyContent filled title="No Investors Added" sx={{ py: 10 }} />
         ) : (
-          currentDeal?.company_info?.team?.map((team) => (
-            <Card key={team.id} sx={{ p: 2 }}>
+          currentDeal?.company_info?.investors?.map((investor) => (
+            <Card key={investor.id} sx={{ p: 2 }}>
               <Stack>
                 <img
-                  src={team.image_link}
+                  src={investor.image_link}
                   width={150}
                   height={150}
                   style={{ objectFit: 'cover', borderRadius: '100%' }}
-                  alt={team.name}
+                  alt={investor.name}
                 />
-                <Typography>{team.name}</Typography>
-                <Typography color="text.secondary">{team.designation}</Typography>
-                {team.profile_links?.map((link) => (
-                  <Link
-                    key={link.social}
-                    sx={{ display: 'flex', alignItems: 'center' }}
-                    href={link.link}
-                    target="_blank"
-                  >
-                    {capitalize(link.social)} <Iconify icon="gg:external" />
-                  </Link>
-                ))}
+                <Typography>{investor.name}</Typography>
+                <Typography color="text.secondary">{investor.designation}</Typography>
                 <Box sx={{ mt: 1, display: 'flex', justifyContent: 'space-around' }}>
                   <IconButton
                     color="error"
                     onClick={() => {
                       setDeleteOpen(true);
-                      setSelectedIds([team.id]);
+                      setSelectedIds([investor.id]);
                     }}
                   >
                     <Iconify icon="solar:trash-bin-trash-bold" />
@@ -110,7 +91,7 @@ export default function DealTeamForm({ currentDeal }: Props) {
                     color="success"
                     onClick={() => {
                       setOpen(true);
-                      setSelectedTeam(team);
+                      setSelectedTeam(investor);
                     }}
                   >
                     <Iconify icon="solar:pen-bold" />

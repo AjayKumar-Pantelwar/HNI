@@ -42,6 +42,7 @@ export type DeleteInvestorRequest = {
 export type AddNewsRequest = {
   file: File | null;
   title: string;
+  article_link: string;
 };
 
 export type EditNewsRequest = AddNewsRequest;

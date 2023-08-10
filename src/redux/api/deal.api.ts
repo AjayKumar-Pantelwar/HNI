@@ -5,6 +5,7 @@ import {
   BasicInfoMediaResponse,
   CompanyInfoRequest,
   CreateDealResponse,
+  CreateDealTerms,
   DeleteInvestorRequest,
   DeleteNewsRequest,
   DeleteTeamRequest,
@@ -170,6 +171,21 @@ export const dealApi = createApi({
         body,
       }),
       invalidatesTags: ['Deal'],
+    }),
+    dealTerms: builder.mutation<ApiResponse, CreateDealTerms & { id: string }>({
+      query: ({ id, ...body }) => ({
+        url: `/api/deal/${id}/terms`,
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: ['Deal'],
+    }),
+    dataroom: builder.mutation<ApiResponse, any>({
+      query: ({ id, ...body }) => ({
+        url: `/api/deal/${id}/dataroom`,
+        method: 'POST',
+        body,
+      }),
     }),
   }),
 });

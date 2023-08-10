@@ -3,7 +3,4 @@ export type ApiResponse<T = never> = {
   error?: string;
 };
 
-export type Time = {
-  seconds: number;
-  nanos?: number;
-};
+export type Time = string;

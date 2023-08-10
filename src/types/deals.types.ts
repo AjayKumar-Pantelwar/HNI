@@ -12,6 +12,61 @@ export enum Stage {
 
 export type DealsResponse = ApiResponse<{ deals: Deal[] }>;
 
+export const DealTermsScehma = Yup.object().shape({
+  ask_from_ma: Yup.string().required('Asking amount from MA is required'),
+  is_active: Yup.boolean().required('Active status is required'),
+  min_investment: Yup.number().required('Minimum investment is required'),
+  externally_raised: Yup.number().required('Externally raised amount is required'),
+  round_size: Yup.string().required('Round size is required'),
+  round_type: Yup.string().required('Round type is required'),
+  round_instrument: Yup.string().required('Round instrument is required'),
+  valuation_type: Yup.string().required('Valuation type is required'),
+  subscription_in_perc: Yup.string().required('Subscription in percentage is required'),
+  floor: Yup.string().test((value, context) => {
+    if (context.parent.valuation_type === ValuationType.VARIABLE && !value) {
+      return context.createError({ message: 'Floor amount is required' });
+    }
+    return true;
+  }),
+  cap: Yup.string().test((value, context) => {
+    if (context.parent.valuation_type === ValuationType.VARIABLE && !value) {
+      return context.createError({ message: 'Cap amount is required' });
+    }
+    return true;
+  }),
+  valuation: Yup.string().test((value, context) => {
+    if (context.parent.valuation_type === ValuationType.FIXED && !value) {
+      return context.createError({ message: 'Valuation is required' });
+    }
+    return true;
+  }),
+  disc_matrix: Yup.array().of(
+    Yup.object().shape({
+      total_months: Yup.string().required('Total months is required'),
+      perc: Yup.string().required('Percentage is required'),
+    })
+  ),
+  cap_table: Yup.array().of(
+    Yup.object().shape({
+      name: Yup.string().required('Name is required'),
+      perc: Yup.string().required('Percentage is required'),
+    })
+  ),
+  co_investors: Yup.array().of(Yup.string()).required('Co-investors are required'),
+  deal_price: Yup.array().of(
+    Yup.object().shape({
+      title: Yup.string().required('Title is required'),
+      perc: Yup.string().required('Percentage is required'),
+      info: Yup.string().required('Information is required'),
+    })
+  ),
+  rules_of_allocation: Yup.array().of(Yup.string()).required('Rules of allocation are required'),
+  note: Yup.string().required('Note is required'),
+  read_qualification_criteria_link: Yup.string().required('Link is required'),
+});
+
+export type CreateDealTerms = Yup.InferType<typeof DealTermsScehma>;
+
 export const CreateDealSchema = Yup.object().shape({
   brand_name: Yup.string().required('Brand name  is required'),
   company_name: Yup.string().required('Company name is required'),
@@ -20,18 +75,7 @@ export const CreateDealSchema = Yup.object().shape({
     .required('Description is required')
     .min(100, 'Description must have a minimum of 100 words')
     .max(250, 'Description must have a maximum of 250 words'),
-  start_date: Yup.string()
-    .required('Start date is required')
-    .test((value, context) => {
-      const today = new Date();
-      const startDate = pDate(value);
-      if (startDate && isBefore(startDate, today)) {
-        return context.createError({
-          message: 'Start date must be in the future',
-        });
-      }
-      return true;
-    }),
+  start_date: Yup.string().required('Start date is required'),
   end_date: Yup.string()
     .required('End date is required')
     .test((value, context) => {
@@ -68,19 +112,53 @@ export const CreateDealSchema = Yup.object().shape({
   deal_name: Yup.string().required('Deal name is required'),
   cover_image: Yup.mixed().required('Cover image is required').nullable(),
   logo_link: Yup.mixed().required('Logo link is required').nullable(),
+  pitch_deck: Yup.mixed().required('Logo link is required').nullable(),
 });
 
 export type CreateDealRequest = Yup.InferType<typeof CreateDealSchema>;
+
+export const DataroomSchema = Yup.object().shape({
+  pitch_pdf_link: Yup.string().required(),
+  document_link: Yup.string().required(),
+});
 
 export type Round = {
   ask_from_ma?: string;
   is_active?: boolean;
   raised_in_perc?: string;
-  min_investment?: string;
-  externally_raised?: string;
+  min_investment?: number;
+  externally_raised?: number;
   round_size?: string;
   valuation?: string;
+  round_instrument?: RoundInstrument;
+  valuation_type?: string;
+  subscription_in_perc?: string;
+  floor?: string;
+  cap?: string;
+  cap_table: CapTableEntry[];
+  disc_matrix?: DiscountMatrixItem[];
+  co_investors?: string[];
   round_type?: RoundType;
+  deal_price?: DealPrice[];
+  rules_of_allocation?: string[];
+  note?: string;
+  read_qualification_criteria_link?: string;
+};
+
+export type DealPrice = {
+  title: string;
+  perc: string;
+  info: string;
+};
+
+export type CapTableEntry = {
+  name: string;
+  perc: string;
+};
+
+export type DiscountMatrixItem = {
+  total_months: string;
+  perc: string;
 };
 
 export type CreateDealResponse = {
@@ -116,9 +194,9 @@ export type BasicInfoMediaRequest = {
 export type Media = {
   link: string;
   description: string;
-  thumbnail_link: string;
-  type: 'video' | 'image';
-  priority: number;
+  thumbnail_link: string; // required when uploading video
+  type: 'video' | 'image' | 'pitch_video';
+  priority: number; // pitch_video priority is always -1
   is_published: string;
 };
 
@@ -159,19 +237,26 @@ export type Deal = {
   one_liner: string;
   description: string;
   start_date: Time;
+  pitch_deck: string;
   end_date: Time;
   closing_soon_date: Time;
   sector: Sector;
   deal_name: string;
   logo_link: string;
   stage: Stage;
+  dataroom: Dataroom;
   is_active: true;
   media: Media[];
-  rounds: Round[];
+  round: Round;
   pitch?: Pitch;
   deal_aggregation: DealAggregation;
   created_at: Time;
   updated_at: Time;
+};
+
+export type Dataroom = {
+  pitch_pdf_link: string;
+  document_link: string;
 };
 
 export type Highlight = {
@@ -206,14 +291,17 @@ export type Team = {
 };
 
 export type Investor = {
-  file: File;
+  image_link: string;
+  id: string;
   name: string;
   designation: string;
 };
 
 export type News = {
-  file: File;
   title: string;
+  id: string;
+  article_link: string;
+  thumbnail_link: string;
 };
 
 export type Pitch = {
@@ -351,4 +439,16 @@ export enum RoundType {
   SEED = 'seed',
   SERIES_A = 'series_a',
   SERIES_B = 'series_b',
+}
+
+export enum RoundInstrument {
+  CCPS = 'ccps',
+  CCD = 'ccd',
+  EQUITY = 'equity',
+  CONVERTIBLE_NOTE = 'convertible_note',
+}
+
+export enum ValuationType {
+  FIXED = 'fixed',
+  VARIABLE = 'variable',
 }

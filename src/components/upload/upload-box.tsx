@@ -1,15 +1,18 @@
 import { useDropzone } from 'react-dropzone';
 // @mui
-import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
+import { alpha } from '@mui/material/styles';
 //
+import { Typography } from '@mui/material';
 import Iconify from '../iconify';
 //
 import { UploadProps } from './types';
 
 // ----------------------------------------------------------------------
 
-export default function UploadBox({ placeholder, error, disabled, sx, ...other }: UploadProps) {
+export type Props = UploadProps & { file?: File };
+
+export default function UploadBox({ file, placeholder, error, disabled, sx, ...other }: Props) {
   const { getRootProps, getInputProps, isDragActive, isDragReject } = useDropzone({
     disabled,
     ...other,
@@ -53,7 +56,27 @@ export default function UploadBox({ placeholder, error, disabled, sx, ...other }
     >
       <input {...getInputProps()} />
 
-      {placeholder || <Iconify icon="eva:cloud-upload-fill" width={28} />}
+      <Box
+        sx={{
+          display: 'flex',
+          width: '100%',
+          px: 3,
+          justifyContent: file ? 'space-between' : 'center',
+        }}
+      >
+        {file ? (
+          <>
+            <Typography>{file.name}</Typography>
+            <Typography color="text.secondary">Click to re-upload</Typography>
+          </>
+        ) : (
+          placeholder || (
+            <Typography sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Iconify icon="eva:cloud-upload-fill" width={28} /> Upload here
+            </Typography>
+          )
+        )}
+      </Box>
     </Box>
   );
 }

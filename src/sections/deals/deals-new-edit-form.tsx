@@ -23,6 +23,7 @@ import FormProvider, {
   RHFTextField,
   RHFUpload,
   RHFUploadAvatar,
+  RHFUploadBox,
 } from 'src/components/hook-form';
 import { useSnackbar } from 'src/components/snackbar';
 import { useRouter } from 'src/routes/hook';
@@ -41,6 +42,7 @@ import {
   Tech,
 } from 'src/types/deals.types';
 import { convertToFD } from 'src/utils/convert-fd';
+import { convertUrlToFile } from 'src/utils/convert-url-to-file';
 import { fDate } from 'src/utils/format-time';
 import { handleError } from 'src/utils/handle-error';
 
@@ -66,13 +68,9 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
       company_name: currentDeal?.company_name || '',
       one_liner: currentDeal?.one_liner || '',
       description: currentDeal?.description || '',
-      start_date: currentDeal?.start_date?.seconds
-        ? fDate(currentDeal.start_date.seconds * 1000)
-        : '',
-      end_date: currentDeal?.end_date?.seconds ? fDate(currentDeal.end_date.seconds * 1000) : '',
-      closing_soon_date: currentDeal?.closing_soon_date?.seconds
-        ? fDate(currentDeal.closing_soon_date.seconds * 1000)
-        : '',
+      start_date: currentDeal?.start_date ? fDate(currentDeal.start_date) : '',
+      end_date: currentDeal?.end_date ? fDate(currentDeal.end_date) : '',
+      closing_soon_date: currentDeal?.closing_soon_date ? fDate(currentDeal.closing_soon_date) : '',
       sector: currentDeal?.sector || {
         model: [],
         tech: [],
@@ -83,6 +81,7 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
       deal_name: currentDeal?.deal_name || '',
       cover_image: null,
       logo_link: null,
+      pitch_deck: null,
     }),
     [currentDeal]
   );
@@ -106,8 +105,24 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
   useEffect(() => {
     if (currentDeal) {
       reset(defaultValues);
+      convertUrlToFile(currentDeal.cover_image)
+        .then((file) => {
+          setValue('cover_image', file);
+        })
+        .catch((err) => handleError(err, true));
+      convertUrlToFile(currentDeal.logo_link)
+        .then((file) => {
+          setValue('logo_link', file);
+        })
+        .catch((err) => handleError(err, true));
+
+      convertUrlToFile(currentDeal.pitch_deck)
+        .then((file) => {
+          setValue('pitch_deck', file);
+        })
+        .catch((err) => handleError(err, true));
     }
-  }, [currentDeal, defaultValues, reset]);
+  }, [currentDeal, defaultValues, reset, setValue]);
 
   const onSubmit = handleSubmit(async (data) => {
     try {
@@ -367,6 +382,36 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
 
   const sectionFour = (
     <>
+      {mdUp && (
+        <Grid md={4}>
+          <Typography variant="h6" sx={{ mb: 0.5 }}>
+            Pitch Deck
+          </Typography>
+          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+            Upload the pitch deck pdf here
+          </Typography>
+        </Grid>
+      )}
+
+      <Grid xs={12} md={8}>
+        <Card>
+          {!mdUp && <CardHeader title="Pitch Deck" />}
+          <Stack spacing={3} sx={{ p: 3 }}>
+            <RHFUploadBox
+              accept={{
+                'application/*': ['.pdf'],
+              }}
+              name="pitch_deck"
+              sx={{ width: '100%' }}
+            />
+          </Stack>
+        </Card>
+      </Grid>
+    </>
+  );
+
+  const lastSection = (
+    <>
       {mdUp && <Grid md={4} />}
       <Grid
         xs={12}
@@ -390,6 +435,8 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
         {sectionThree}
 
         {sectionFour}
+
+        {lastSection}
       </Grid>
     </FormProvider>
   );

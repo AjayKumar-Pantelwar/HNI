@@ -18,18 +18,14 @@ import Grid from '@mui/material/Unstable_Grid2';
 import { useResponsive } from 'src/hooks/use-responsive';
 // _mock
 // components
-import FormProvider, { RHFSwitch, RHFTextField, RHFUpload } from 'src/components/hook-form';
+import FormProvider, { RHFTextField, RHFUploadAvatar } from 'src/components/hook-form';
 import { useSnackbar } from 'src/components/snackbar';
 // types
 import { Button } from '@mui/material';
 import { dealApi } from 'src/redux/api/deal.api';
-import {
-  BasicInfoMediaRequest,
-  Deal,
-  HighlightsRequest,
-  PitchRequest,
-} from 'src/types/deals.types';
-import { convertToFD } from 'src/utils/convert-fd';
+import { Deal, HighlightsRequest } from 'src/types/deals.types';
+import { convertUrlToFile } from 'src/utils/convert-url-to-file';
+import { handleError } from 'src/utils/handle-error';
 
 // ----------------------------------------------------------------------
 
@@ -80,6 +76,14 @@ export default function DealHighlightForm({ currentDeal }: Props) {
   useEffect(() => {
     if (currentDeal) {
       reset(defaultValues);
+      currentDeal.pitch?.highlights?.forEach((highlight, index) => {
+        convertUrlToFile(highlight.icon_link)
+          .then((file) => {
+            // @ts-ignore
+            setValue(`icon_link_${index}`, file);
+          })
+          .catch(handleError);
+      });
     }
   }, [currentDeal, defaultValues, reset]);
 
@@ -95,9 +99,7 @@ export default function DealHighlightForm({ currentDeal }: Props) {
       reset();
       enqueueSnackbar(currentDeal ? 'Update success' : 'Create success', { variant: 'success' });
     } catch (error) {
-      enqueueSnackbar(error?.error || error?.message || 'Something went wrong', {
-        variant: 'error',
-      });
+      handleError(error);
     }
   });
 
@@ -124,7 +126,7 @@ export default function DealHighlightForm({ currentDeal }: Props) {
                 variant="outlined"
                 onClick={() => {
                   const newHighlights = [...(highlights || [])];
-                  newHighlights.unshift({
+                  newHighlights.push({
                     description: '',
                     title: '',
                   });
@@ -137,8 +139,8 @@ export default function DealHighlightForm({ currentDeal }: Props) {
             {highlights?.map((_, index) => (
               <Stack key={index}>
                 <Box sx={{ display: 'flex', gap: 1, alignItems: 'start' }}>
-                  <RHFTextField name={`highlights.${index}.description`} label="Description" />
                   <RHFTextField name={`highlights.${index}.title`} label="Title" />
+                  <RHFTextField name={`highlights.${index}.description`} label="Description" />
                   <Button
                     color="error"
                     onClick={() => {
@@ -150,7 +152,7 @@ export default function DealHighlightForm({ currentDeal }: Props) {
                     Delete
                   </Button>
                 </Box>
-                <RHFUpload
+                <RHFUploadAvatar
                   name={`icon_link_${index}`}
                   maxSize={3145728}
                   onDrop={(files) => {
@@ -162,13 +164,19 @@ export default function DealHighlightForm({ currentDeal }: Props) {
                     // @ts-ignore
                     setValue(`icon_link_${index}`, newFiles[0], { shouldValidate: true });
                   }}
-                  onRemove={(inputFile) =>
-                    setValue(
-                      // @ts-ignore
-                      `icon_link_${index}`,
-                      undefined,
-                      { shouldValidate: true }
-                    )
+                  helperText={
+                    <Typography
+                      variant="caption"
+                      sx={{
+                        mt: 3,
+                        mx: 'auto',
+                        display: 'block',
+                        textAlign: 'center',
+                        color: 'text.disabled',
+                      }}
+                    >
+                      Allowed *.jpeg, *.jpg, *.png, *.gif
+                    </Typography>
                   }
                 />
               </Stack>

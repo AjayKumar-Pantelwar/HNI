@@ -9,6 +9,8 @@ import { useParams } from 'src/routes/hook';
 import { paths } from 'src/routes/paths';
 
 import DealAccountInfoForm from '../deal-account-info-form';
+import DealInvestor from '../deal-investor-form';
+import DealNewsForm from '../deal-news-form';
 import DealTeamForm from '../deal-team-form';
 
 const DealsCompanyInfoView = () => {
@@ -43,6 +45,10 @@ const DealsCompanyInfoView = () => {
         {deals?.data?.deals?.[0] && <DealAccountInfoForm deal={deals?.data?.deals?.[0]} />}
         <Divider />
         {deals?.data?.deals?.[0] && <DealTeamForm currentDeal={deals?.data?.deals?.[0]} />}
+        <Divider />
+        {deals?.data?.deals?.[0] && <DealInvestor currentDeal={deals?.data?.deals?.[0]} />}
+        <Divider />
+        {deals?.data?.deals?.[0] && <DealNewsForm currentDeal={deals?.data?.deals?.[0]} />}
       </Stack>
     </Container>
   );
