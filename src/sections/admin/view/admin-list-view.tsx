@@ -37,12 +37,10 @@ import {
 } from 'src/components/table';
 // types
 //
+import { Box } from '@mui/material';
 import { adminApi } from 'src/redux/api/admin.api';
 import { Admin, AdminRequest } from 'src/types/admin.types';
-import { Box } from '@mui/material';
-import { filter } from 'lodash';
 import AdminFilters from '../admin-filters';
-import AdminSearch from '../admin-search';
 import AdminTableRow from '../admin-table-row';
 
 // ----------------------------------------------------------------------
@@ -147,7 +145,7 @@ export default function AdminListView() {
     <>
       <Container maxWidth={settings.themeStretch ? false : 'lg'}>
         <CustomBreadcrumbs
-          heading="List"
+          heading="Admin Users"
           links={[
             { name: 'Dashboard', href: paths.dashboard.root },
             { name: 'Admin', href: paths.dashboard.admin.list },
@@ -167,26 +165,28 @@ export default function AdminListView() {
             mb: { xs: 3, md: 5 },
           }}
         />
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', pb: 5 }}>
-          {/* <AdminSearch
+        {false && (
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', pb: 5 }}>
+            {/* <AdminSearch
             query={search.query}
             results={search.results}
             onSearch={handleSearch}
             hrefItem={(id: string) => paths.dashboard.admin.profile(id)}
           /> */}
-          <AdminFilters
-            open={openFilters.value}
-            onOpen={openFilters.onTrue}
-            onClose={openFilters.onFalse}
-            //
-            filters={filters}
-            defaultFilters={defaultFilters}
-            onFilters={handleFilters}
-            //
-            canReset={canReset}
-            onResetFilters={handleResetFilters}
-          />
-        </Box>
+            <AdminFilters
+              open={openFilters.value}
+              onOpen={openFilters.onTrue}
+              onClose={openFilters.onFalse}
+              //
+              filters={filters}
+              defaultFilters={defaultFilters}
+              onFilters={handleFilters}
+              //
+              canReset={canReset}
+              onResetFilters={handleResetFilters}
+            />
+          </Box>
+        )}
         <Card>
           <TableContainer sx={{ position: 'relative', overflow: 'unset' }}>
             <TableSelectedAction

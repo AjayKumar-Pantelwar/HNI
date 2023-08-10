@@ -53,7 +53,7 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
       }}
     >
       <Box sx={{ px: 3, py: 2 }}>
-        <img src="/logo/logo.png" alt="logo" style={{ height: 60 }} />
+        <img src="/logo/logo_icon.png" alt="logo" style={{ height: 60 }} />
       </Box>
 
       <NavSectionVertical

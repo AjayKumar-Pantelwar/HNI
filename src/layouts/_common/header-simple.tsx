@@ -1,18 +1,14 @@
 // @mui
-import { useTheme } from '@mui/material/styles';
-import Link from '@mui/material/Link';
-import Stack from '@mui/material/Stack';
 import AppBar from '@mui/material/AppBar';
+import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
+import { useTheme } from '@mui/material/styles';
 // theme
 import { bgBlur } from 'src/theme/css';
 // routes
-import { paths } from 'src/routes/paths';
 // hooks
 import { useOffSetTop } from 'src/hooks/use-off-set-top';
 // components
-import Logo from 'src/components/logo';
-import { RouterLink } from 'src/routes/components';
 //
 import { HEADER } from '../config-layout';
 import HeaderShadow from './header-shadow';
@@ -29,7 +25,7 @@ export default function HeaderSimple() {
     <AppBar>
       <Toolbar
         sx={{
-          justifyContent: 'space-between',
+          justifyContent: 'flex-end',
           height: {
             xs: HEADER.H_MOBILE,
             md: HEADER.H_DESKTOP,
@@ -48,7 +44,7 @@ export default function HeaderSimple() {
           }),
         }}
       >
-        <img src="/logo/logo.png" alt="logo" style={{ height: 60 }} />
+        {/* <img src="/logo/logo_icon.png" alt="logo" style={{ height: 60 }} /> */}
 
         <Stack direction="row" alignItems="center" spacing={1}>
           <SettingsButton />

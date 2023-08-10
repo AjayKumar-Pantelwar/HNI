@@ -1,13 +1,13 @@
 // @mui
-import { useTheme } from '@mui/material/styles';
+import AppBar from '@mui/material/AppBar';
+import Badge, { badgeClasses } from '@mui/material/Badge';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
-import AppBar from '@mui/material/AppBar';
-import Button from '@mui/material/Button';
 import Toolbar from '@mui/material/Toolbar';
-import Container from '@mui/material/Container';
-import Badge, { badgeClasses } from '@mui/material/Badge';
+import { useTheme } from '@mui/material/styles';
 // hooks
 import { useOffSetTop } from 'src/hooks/use-off-set-top';
 import { useResponsive } from 'src/hooks/use-responsive';
@@ -20,10 +20,10 @@ import Label from 'src/components/label';
 //
 import { HEADER } from '../config-layout';
 import { navConfig } from './config-navigation';
-import NavMobile from './nav/mobile';
 import NavDesktop from './nav/desktop';
+import NavMobile from './nav/mobile';
 //
-import { SettingsButton, HeaderShadow, LoginButton } from '../_common';
+import { HeaderShadow, LoginButton, SettingsButton } from '../_common';
 
 // ----------------------------------------------------------------------
 
@@ -79,7 +79,7 @@ export default function Header() {
               </Link>
             }
           >
-            <img src="/logo/logo.png" alt="logo" style={{ width: 60, height: 60 }} />
+            <img src="/logo/logo_icon.png" alt="logo" style={{ width: 60, height: 60 }} />
           </Badge>
 
           <Box sx={{ flexGrow: 1 }} />

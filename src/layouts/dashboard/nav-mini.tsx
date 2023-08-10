@@ -6,12 +6,11 @@ import { hideScroll } from 'src/theme/css';
 // hooks
 import { useMockedUser } from 'src/hooks/use-mocked-user';
 // components
-import Logo from 'src/components/logo';
 import { NavSectionMini } from 'src/components/nav-section';
 //
+import { NavToggleButton } from '../_common';
 import { NAV } from '../config-layout';
 import { useNavData } from './config-navigation';
-import { NavToggleButton } from '../_common';
 
 // ----------------------------------------------------------------------
 
@@ -47,11 +46,7 @@ export default function NavMini() {
       >
         {/* <Logo sx={{ mx: 'auto', my: 2 }} /> */}
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-          <img
-            src="/logo/logo.png"
-            alt="logo"
-            style={{ width: 45, height: 45, paddingBottom: 5 }}
-          />
+          <img src="/logo/logo_icon.png" alt="logo" style={{ width: 45, height: 45, padding: 5 }} />
         </Box>
 
         <NavSectionMini

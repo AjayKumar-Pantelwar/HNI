@@ -1,3 +1,5 @@
+'use client';
+
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
@@ -89,7 +91,7 @@ export default function AdminNewEditForm({ currentAdmin }: Props) {
 
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>
-      <Card sx={{ p: 3 }}>
+      <Card sx={{ p: 6 }}>
         <Box
           rowGap={3}
           columnGap={2}

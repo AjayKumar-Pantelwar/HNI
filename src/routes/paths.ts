@@ -52,7 +52,7 @@ export const paths = {
   },
   // AUTH
   auth: {
-    login: '/login',
+    login: '/auth/login',
     changePassword: '/change-password',
     activateTotp: '/activate-totp',
     amplify: {
