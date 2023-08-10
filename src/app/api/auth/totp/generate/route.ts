@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { ApiResponse } from 'src/types/api.types';
-import { GenerateTotpResponse } from 'src/types/auth';
+import { GenerateTotpResponse } from 'src/types/auth.types';
 
 export async function POST(
   req: Request

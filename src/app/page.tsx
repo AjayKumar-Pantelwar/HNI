@@ -1,9 +1,5 @@
-// sections
-
-// ----------------------------------------------------------------------
-
 export const metadata = {
-  title: 'Mumbai Angels',
+  title: 'Mumbai Angels Admin',
 };
 
 export default function HomePage() {

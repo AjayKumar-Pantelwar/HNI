@@ -23,8 +23,8 @@ import { useSnackbar } from 'src/components/snackbar';
 // types
 import { Button } from '@mui/material';
 import { dealApi } from 'src/redux/api/deal.api';
-import { BasicInfoMediaRequest, Deal, PitchRequest } from 'src/types/deals.types';
-import { convertToFD } from 'src/utils/convert-fd';
+import { BasicInfoMediaRequest, Deal } from 'src/types/deals.types';
+import { handleError } from 'src/utils/handle-error';
 
 // ----------------------------------------------------------------------
 
@@ -103,9 +103,7 @@ export default function DealsMediaForm({ currentDeal }: Props) {
       reset();
       enqueueSnackbar(currentDeal ? 'Update success' : 'Create success', { variant: 'success' });
     } catch (error) {
-      enqueueSnackbar(error?.error || error?.message || 'Something went wrong', {
-        variant: 'error',
-      });
+      handleError(error);
     }
   });
 

@@ -18,13 +18,14 @@ import FormProvider, { RHFTextField } from 'src/components/hook-form';
 import { useSnackbar } from 'src/components/snackbar';
 import { adminApi } from 'src/redux/api/admin.api';
 import { Admin, EditAdminRequest } from 'src/types/admin.types';
+import { handleError } from 'src/utils/handle-error';
 
 // ----------------------------------------------------------------------
 
 type Props = {
   open: boolean;
   onClose: VoidFunction;
-  currentAdmin?: Admin;
+  currentAdmin: Admin;
 };
 
 export default function AdminQuickEditForm({ currentAdmin, open, onClose }: Props) {
@@ -42,11 +43,11 @@ export default function AdminQuickEditForm({ currentAdmin, open, onClose }: Prop
 
   const defaultValues: EditAdminRequest = useMemo(
     () => ({
-      name: currentAdmin?.name || '',
-      email: currentAdmin?.email || '',
-      mobile_number: currentAdmin?.mobile_number || '',
-      username: currentAdmin?.username || '',
-      id: currentAdmin?.aid || '',
+      name: currentAdmin.name || '',
+      email: currentAdmin.email || '',
+      mobile_number: currentAdmin.mobile_number || '',
+      username: currentAdmin.username || '',
+      id: currentAdmin.aid || '',
     }),
     [currentAdmin]
   );
@@ -67,14 +68,14 @@ export default function AdminQuickEditForm({ currentAdmin, open, onClose }: Prop
       await editAdmin(data).unwrap();
       reset();
       onClose();
-      enqueueSnackbar('Update success!');
+      enqueueSnackbar('Update success!', { variant: 'success' });
     } catch (error) {
-      console.error(error);
+      handleError(error);
     }
   });
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => reset(), [open]);
+  useEffect(() => reset(defaultValues), [open]);
 
   return (
     <Dialog

@@ -1,6 +1,5 @@
 import * as Yup from 'yup';
 import { ApiResponse } from './api.types';
-import { RequiredOrUndefinedProperties, RequiredProperties } from './ts.types';
 
 export type Admin = {
   aid: string;
@@ -39,15 +38,17 @@ export type AdminRequest = {
   rid: string | undefined;
 };
 
-export type CreateAdminRequest = {
-  name: string;
-  username: string;
-  mobile_number: string;
-  email: string;
-  rid: string;
-  pwd: string;
-  is_pwd_change_required: boolean;
-};
+export const CreateAdminSchema = Yup.object().shape({
+  name: Yup.string().required('Name is required'),
+  email: Yup.string().required('Email is required').email('Email must be a valid email address'),
+  mobile_number: Yup.string().required('Phone number is required'),
+  username: Yup.string().required('Username is required'),
+  pwd: Yup.string().required('Password is required'),
+  is_pwd_change_required: Yup.boolean().required('Password is required'),
+  rid: Yup.string().required('Role is required'),
+});
+
+export type CreateAdminRequest = Yup.InferType<typeof CreateAdminSchema>;
 
 export type CreateAdminResponse = ApiResponse;
 

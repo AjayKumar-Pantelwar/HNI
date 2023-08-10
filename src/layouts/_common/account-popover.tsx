@@ -21,25 +21,7 @@ import CustomPopover, { usePopover } from 'src/components/custom-popover';
 import { useDispatch, useSelector } from 'src/redux/store';
 import { authSlice } from 'src/redux/slices/auth.slice';
 import { authService } from 'src/services/auth.service';
-
-// ----------------------------------------------------------------------
-
-const OPTIONS = [
-  {
-    label: 'Home',
-    linkTo: '/',
-  },
-  {
-    label: 'Profile',
-    linkTo: paths.dashboard.user.profile,
-  },
-  {
-    label: 'Settings',
-    linkTo: paths.dashboard.user.account,
-  },
-];
-
-// ----------------------------------------------------------------------
+import { handleError } from 'src/utils/handle-error';
 
 export default function AccountPopover() {
   const router = useRouter();
@@ -49,20 +31,16 @@ export default function AccountPopover() {
 
   const { loginData } = useSelector((state) => state.auth);
 
-  const { enqueueSnackbar } = useSnackbar();
-
   const popover = usePopover();
 
   const handleLogout = async () => {
     try {
       await authService.logout();
     } catch (error) {
-      console.error(error);
-      enqueueSnackbar('Unable to logout!', { variant: 'error' });
+      handleError(error);
     } finally {
-      dispatch(authSlice.actions.logout());
       popover.onClose();
-      router.replace('/');
+      dispatch(authSlice.actions.logout());
     }
   };
 

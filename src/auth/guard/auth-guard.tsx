@@ -1,20 +1,7 @@
 import { useEffect, useCallback, useState } from 'react';
-// routes
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hook';
-//
 import { useSelector } from 'src/redux/store';
-
-// ----------------------------------------------------------------------
-
-const loginPaths = {
-  jwt: paths.login,
-  auth0: paths.auth.auth0.login,
-  amplify: paths.auth.amplify.login,
-  firebase: paths.auth.firebase.login,
-};
-
-// ----------------------------------------------------------------------
 
 type Props = {
   children: React.ReactNode;
@@ -29,11 +16,7 @@ export default function AuthGuard({ children }: Props) {
   const check = useCallback(() => {
     if (!isAuthenticated) {
       const searchParams = new URLSearchParams({ returnTo: window.location.pathname }).toString();
-
-      const loginPath = loginPaths.jwt;
-
-      const href = `${loginPath}?${searchParams}`;
-
+      const href = `${paths.auth.login}?${searchParams}`;
       router.replace(href);
     } else {
       setChecked(true);

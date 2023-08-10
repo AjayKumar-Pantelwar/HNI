@@ -1,4 +1,5 @@
 // @mui
+import { Box } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
@@ -7,17 +8,16 @@ import MenuItem from '@mui/material/MenuItem';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 // hooks
-import { useBoolean } from 'src/hooks/use-boolean';
 // types
 // components
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
 import Iconify from 'src/components/iconify';
-import Label from 'src/components/label';
 //
-import { Admin } from 'src/types/admin.types';
-import { Deal } from 'src/types/deals.types';
 import { useRouter } from 'src/routes/hook';
 import { paths } from 'src/routes/paths';
+import { Deal } from 'src/types/deals.types';
+import { titleCase } from 'src/utils/change-case';
+import { fDateTime } from 'src/utils/format-time';
 
 // ----------------------------------------------------------------------
 
@@ -41,11 +41,32 @@ export default function DealTableRow({ row, selected, onEditRow, onSelectRow }: 
           </TableCell>
         )}
 
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{row.deal_name}</TableCell>
+        <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
+          <Avatar alt={row.deal_name} src={row.logo_link} sx={{ mr: 2 }} />
 
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{row.brand_name}</TableCell>
+          <ListItemText
+            primary={row.deal_name}
+            secondary={row.company_name}
+            primaryTypographyProps={{ typography: 'body2' }}
+            secondaryTypographyProps={{ component: 'span', color: 'text.disabled' }}
+          />
+        </TableCell>
 
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{row.company_name}</TableCell>
+        <TableCell>{titleCase(row.stage)}</TableCell>
+
+        <TableCell>
+          {!row.is_active ? (
+            <Iconify icon="humbleicons:times-circle" width={20} height={20} color="error.main" />
+          ) : (
+            <Iconify icon="gg:check-o" width={20} height={20} color="success.main" />
+          )}
+        </TableCell>
+
+        <TableCell>
+          <Box>Start Date: {fDateTime(row.start_date.seconds * 1000)}</Box>
+          <Box>End Date: {fDateTime(row.end_date.seconds * 1000)}</Box>
+        </TableCell>
+        <TableCell>{fDateTime(row.created_at.seconds * 1000)}</TableCell>
 
         <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
           <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
@@ -60,7 +81,7 @@ export default function DealTableRow({ row, selected, onEditRow, onSelectRow }: 
         arrow="right-top"
         sx={{ width: 140 }}
       >
-        {/* <MenuItem
+        <MenuItem
           onClick={() => {
             router.push(paths.dashboard.deals.edit(row.deal_id));
             popover.onClose();
@@ -68,7 +89,7 @@ export default function DealTableRow({ row, selected, onEditRow, onSelectRow }: 
         >
           <Iconify icon="solar:pen-bold" />
           Edit
-        </MenuItem> */}
+        </MenuItem>
         <MenuItem
           onClick={() => {
             router.push(paths.dashboard.deals.pitch(row.deal_id));

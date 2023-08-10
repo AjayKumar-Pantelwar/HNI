@@ -1,15 +1,15 @@
 // @mui
-import { alpha, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import { alpha, useTheme } from '@mui/material/styles';
 // auth
 import { useAuthContext } from 'src/auth/hooks';
 // routes
-import { paths } from 'src/routes/paths';
 import { RouterLink } from 'src/routes/components';
+import { paths } from 'src/routes/paths';
 // hooks
 import { useResponsive } from 'src/hooks/use-responsive';
 // theme
@@ -23,25 +23,25 @@ const METHODS = [
   {
     id: 'jwt',
     label: 'Jwt',
-    path: paths.auth.jwt.login,
+    path: paths.auth.login,
     icon: '/assets/icons/auth/ic_jwt.svg',
   },
   {
     id: 'firebase',
     label: 'Firebase',
-    path: paths.auth.firebase.login,
+    path: paths.auth.login,
     icon: '/assets/icons/auth/ic_firebase.svg',
   },
   {
     id: 'amplify',
     label: 'Amplify',
-    path: paths.auth.amplify.login,
+    path: paths.auth.login,
     icon: '/assets/icons/auth/ic_amplify.svg',
   },
   {
     id: 'auth0',
     label: 'Auth0',
-    path: paths.auth.auth0.login,
+    path: paths.auth.login,
     icon: '/assets/icons/auth/ic_auth0.svg',
   },
 ];

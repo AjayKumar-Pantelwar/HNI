@@ -38,6 +38,11 @@ export default function CssBaseline(theme: Theme) {
               WebkitAppearance: 'none',
             },
           },
+          // removing autofill color
+          '&:-webkit-autofill': {
+            WebkitBoxShadow: `0 0 0 100px ${theme.palette.background.paper} inset !important`,
+            WebkitTextFillColor: `${theme.palette.text.primary} !important`,
+          },
         },
         img: {
           maxWidth: '100%',

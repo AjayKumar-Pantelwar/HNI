@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { ApiResponse } from 'src/types/api.types';
-import { LoginResponse } from 'src/types/auth';
+import { LoginResponse } from 'src/types/auth.types';
 
 export async function POST(req: Request): Promise<NextResponse<ApiResponse<LoginResponse | null>>> {
   const body = await req.json();

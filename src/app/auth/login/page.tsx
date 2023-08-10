@@ -1,9 +1,7 @@
-// sections
 import LoginSection from 'src/sections/login/login';
-// ----------------------------------------------------------------------
 
 export const metadata = {
-  title: 'Login to Mumbai Angels',
+  title: 'Login: Mumbai Angels Admin',
 };
 
 export default function LoginPage() {

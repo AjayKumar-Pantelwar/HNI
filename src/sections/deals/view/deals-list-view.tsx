@@ -45,9 +45,11 @@ import DealTableRow from '../deal-table-row';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'deal_name', label: 'Deal Name' },
-  { id: 'brand_name', label: 'Brand Name' },
-  { id: 'company_name', label: 'Company Name' },
+  { id: 'deal', label: 'Deal', width: 80 },
+  { id: 'stage', label: 'Stage', width: 80 },
+  { id: 'published', label: 'Published', width: 80 },
+  { id: 'dates', label: 'Dates', width: 160 },
+  { id: 'created_at', label: 'Created At', width: 140 },
   { id: '', label: 'Actions', width: 80 },
 ];
 
