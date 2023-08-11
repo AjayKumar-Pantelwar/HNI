@@ -56,7 +56,7 @@ export default function DealsMediaForm({ currentDeal }: Props) {
 
   const defaultValues = useMemo<Yup.InferType<typeof NewMediaSchema>>(
     () => ({
-      media: currentDeal.media.map((m) => ({ ...m, media: null, thumbnail: null })) || [],
+      media: currentDeal?.media?.map((m) => ({ ...m, media: null, thumbnail: null })) || [],
     }),
     [currentDeal]
   );
@@ -137,6 +137,7 @@ export default function DealsMediaForm({ currentDeal }: Props) {
           setSelectedMedia(undefined);
         }}
         onMediaSubmit={(updatedMedia) => {
+          console.log('MEDIA', updateMedia);
           const newMedia = [...media];
           if (selectedId) {
             newMedia[selectedId] = updatedMedia;
@@ -173,6 +174,7 @@ export default function DealsMediaForm({ currentDeal }: Props) {
           }}
         >
           <Typography variant="h4">Pitch Video</Typography>
+          <pre>{JSON.stringify(media.length, null, 2)}</pre>
           <Button
             onClick={() => {
               setOpen(true);
