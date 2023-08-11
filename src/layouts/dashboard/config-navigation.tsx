@@ -102,6 +102,7 @@ export function useNavData() {
             children: [
               { title: t('list'), path: paths.dashboard.deals.list },
               { title: t('create'), path: paths.dashboard.deals.new },
+              { title: t('config'), path: paths.dashboard.deals.config },
             ],
           },
           //     // USER

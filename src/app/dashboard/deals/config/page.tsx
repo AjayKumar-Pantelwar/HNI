@@ -1,12 +1,12 @@
 // sections
-import { DealListView } from 'src/sections/deals/view/deals-list-view';
+import { DealsConfigView } from 'src/sections/deals/view/deals-config-view';
 
 // ----------------------------------------------------------------------
 
 export const metadata = {
-  title: 'Deals: List',
+  title: 'Deals: Configuration',
 };
 
 export default function DealListPage() {
-  return <DealListView />;
+  return <DealsConfigView />;
 }
