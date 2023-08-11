@@ -68,6 +68,13 @@ export const dealApi = createApi({
       }),
       invalidatesTags: ['Deal'],
     }),
+    dealOfTheWeek: builder.mutation<ApiResponse, string>({
+      query: (id) => ({
+        url: `/api/deal-of-the-week/${id}`,
+        method: 'POST',
+      }),
+      invalidatesTags: ['Deal'],
+    }),
     basicInfoMedia: builder.mutation<BasicInfoMediaResponse, { id: string; body: FormData }>({
       query: ({ id, body }) => ({
         url: `/api/deal/${id}/basic/media`,

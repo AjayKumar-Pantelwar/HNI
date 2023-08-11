@@ -137,9 +137,9 @@ export default function DealsMediaForm({ currentDeal }: Props) {
           setSelectedMedia(undefined);
         }}
         onMediaSubmit={(updatedMedia) => {
-          console.log('MEDIA', updateMedia);
+          console.log('MEDIA', updatedMedia);
           const newMedia = [...media];
-          if (selectedId) {
+          if (selectedId !== null) {
             newMedia[selectedId] = updatedMedia;
             setValue('media', newMedia);
           }
@@ -174,7 +174,6 @@ export default function DealsMediaForm({ currentDeal }: Props) {
           }}
         >
           <Typography variant="h4">Pitch Video</Typography>
-          <pre>{JSON.stringify(media.length, null, 2)}</pre>
           <Button
             onClick={() => {
               setOpen(true);
