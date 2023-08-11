@@ -48,6 +48,8 @@ const TABLE_HEAD = [
   { id: 'deal', label: 'Deal', width: 80 },
   { id: 'stage', label: 'Stage', width: 80 },
   { id: 'published', label: 'Published', width: 80 },
+  { id: 'is_deal_of_the_week', label: 'Deal of the Week', width: 80 },
+  { id: 'is_trending', label: 'Trending', width: 80 },
   { id: 'dates', label: 'Dates', width: 160 },
   { id: 'created_at', label: 'Created At', width: 140 },
   { id: '', label: 'Actions', width: 80 },

@@ -131,6 +131,7 @@ export const paths = {
     deals: {
       root: `${ROOTS.DASHBOARD}/deals/list`,
       new: `${ROOTS.DASHBOARD}/deals/new`,
+      config: `${ROOTS.DASHBOARD}/deals/config`,
       list: `${ROOTS.DASHBOARD}/deals/list`,
       edit: (id: string) => `${ROOTS.DASHBOARD}/deals/${id}/edit`,
       media: (id: string) => `${ROOTS.DASHBOARD}/deals/${id}/media`,

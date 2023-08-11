@@ -70,7 +70,7 @@ export const dealApi = createApi({
     }),
     dealOfTheWeek: builder.mutation<ApiResponse, string>({
       query: (id) => ({
-        url: `/api/deal-of-the-week/${id}`,
+        url: `/api/deal/deal-of-the-week/${id}`,
         method: 'POST',
       }),
       invalidatesTags: ['Deal'],
