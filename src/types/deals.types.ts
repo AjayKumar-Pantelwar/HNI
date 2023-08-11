@@ -205,6 +205,18 @@ export type PitchRequest = {
   info: string[];
   why_shortlist: string[];
   traction: Traction[];
+  project_revenue_graph_data: ProjectRevenueGraphEntry[];
+  usage_of_funds_data: FundData[];
+};
+
+export type FundData = {
+  title: string;
+  funds_in_perc: string;
+};
+
+export type ProjectRevenueGraphEntry = {
+  year: string;
+  revenue_in_inr: string;
 };
 
 export type Traction = {
@@ -252,6 +264,8 @@ export type Deal = {
   deal_aggregation: DealAggregation;
   created_at: Time;
   updated_at: Time;
+  project_revenue_graph_data: ProjectRevenueGraphEntry[];
+  usage_of_funds_data: FundData[];
 };
 
 export type Dataroom = {
@@ -309,6 +323,8 @@ export type Pitch = {
   why_shortlist: string[];
   traction: Traction[];
   highlights?: Highlight[];
+  project_revenue_graph_data: ProjectRevenueGraphEntry[];
+  usage_of_funds_data: FundData[];
 };
 
 export type GetDealRequest = {
