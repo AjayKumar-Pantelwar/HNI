@@ -61,6 +61,25 @@ export default function DealsPitchForm({ currentDeal }: Props) {
       .required()
       .min(2, 'Enter atleast 2 traction')
       .max(5, 'Maximum 5 traction values allowed'),
+    project_revenue_graph_data: Yup.array()
+      .of(
+        Yup.object().shape({
+          year: Yup.string().required(),
+          revenue_in_inr: Yup.string().required(),
+        })
+      )
+      .required()
+      .length(3, 'Graph data must be of 3 years'),
+    usage_of_funds_data: Yup.array()
+      .of(
+        Yup.object().shape({
+          title: Yup.string().required(),
+          funds_in_perc: Yup.string().required(),
+        })
+      )
+      .required()
+      .min(1, 'Enter atleast 1 entry')
+      .max(4, 'Usage of funds cannot exceed 4 values'),
   });
 
   const defaultValues = useMemo<PitchRequest>(
@@ -72,6 +91,8 @@ export default function DealsPitchForm({ currentDeal }: Props) {
         { key: '', value: '' },
         { key: '', value: '' },
       ],
+      project_revenue_graph_data: currentDeal?.project_revenue_graph_data || [],
+      usage_of_funds_data: currentDeal?.usage_of_funds_data || [],
     }),
     [currentDeal]
   );
@@ -92,6 +113,8 @@ export default function DealsPitchForm({ currentDeal }: Props) {
   const info = watch('info');
   const shortlist = watch('why_shortlist');
   const traction = watch('traction');
+  const usage_of_funds_data = watch('usage_of_funds_data');
+  const project_revenue_graph_data = watch('project_revenue_graph_data');
 
   useEffect(() => {
     if (currentDeal) {
@@ -209,6 +232,74 @@ export default function DealsPitchForm({ currentDeal }: Props) {
                     const newTraction = [...(traction || [])];
                     newTraction.splice(index, 1);
                     setValue('traction', newTraction);
+                  }}
+                >
+                  Delete
+                </Button>
+              </Box>
+            ))}
+          </Stack>
+          <Stack spacing={3} sx={{ p: 3 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Typography variant="h5">Project Revenue</Typography>
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  const newProjectRevenueGraphData = [...(project_revenue_graph_data || [])];
+                  newProjectRevenueGraphData.push({ key: '', value: '' });
+                  setValue('project_revenue_graph_data', newProjectRevenueGraphData);
+                }}
+              >
+                + Add
+              </Button>
+            </Box>
+            {project_revenue_graph_data?.map((_, index) => (
+              <Box sx={{ display: 'flex', gap: 1, alignItems: 'start' }} key={index}>
+                <RHFTextField name={`project_revenue_graph_data.${index}.year`} label="Year" />
+                <RHFTextField
+                  name={`project_revenue_graph_data.${index}.revenue_in_inr`}
+                  label="Revenue(in INR)"
+                />
+                <Button
+                  color="error"
+                  onClick={() => {
+                    const newProjectRevenueGraphData = [...(project_revenue_graph_data || [])];
+                    newProjectRevenueGraphData.splice(index, 1);
+                    setValue('project_revenue_graph_data', newProjectRevenueGraphData);
+                  }}
+                >
+                  Delete
+                </Button>
+              </Box>
+            ))}
+          </Stack>
+          <Stack spacing={3} sx={{ p: 3 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Typography variant="h5">Usage of funds data</Typography>
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  const newData = [...(usage_of_funds_data || [])];
+                  newData.push({ title: '', funds_in_perc: '' });
+                  setValue('usage_of_funds_data', newData);
+                }}
+              >
+                + Add
+              </Button>
+            </Box>
+            {usage_of_funds_data?.map((_, index) => (
+              <Box sx={{ display: 'flex', gap: 1, alignItems: 'start' }} key={index}>
+                <RHFTextField name={`usage_of_funds_data.${index}.title`} label="Title" />
+                <RHFTextField
+                  name={`usage_of_funds_data.${index}.funds_in_perc`}
+                  label="Funds in percentage"
+                />
+                <Button
+                  color="error"
+                  onClick={() => {
+                    const newData = [...(usage_of_funds_data || [])];
+                    newData.splice(index, 1);
+                    setValue('usage_of_funds_data', newData);
                   }}
                 >
                   Delete
