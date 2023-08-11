@@ -246,7 +246,7 @@ export default function DealsPitchForm({ currentDeal }: Props) {
                 variant="outlined"
                 onClick={() => {
                   const newProjectRevenueGraphData = [...(project_revenue_graph_data || [])];
-                  newProjectRevenueGraphData.push({ key: '', value: '' });
+                  newProjectRevenueGraphData.push({ year: '', revenue_in_inr: '' });
                   setValue('project_revenue_graph_data', newProjectRevenueGraphData);
                 }}
               >
