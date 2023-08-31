@@ -1,6 +1,5 @@
 'use client';
 
-// @mui
 import Avatar from '@mui/material/Avatar';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
@@ -8,45 +7,35 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
-// hooks
-import { useBoolean } from 'src/hooks/use-boolean';
-import { useRouter } from 'src/routes/hook';
-// types
-// components
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
 import Iconify from 'src/components/iconify';
 import Label from 'src/components/label';
-//
+import { useBoolean } from 'src/hooks/use-boolean';
 import { roleApi } from 'src/redux/api/role.api';
 import { Admin } from 'src/types/admin.types';
 import AdminBlockForm from './admin-block-form';
 import AdminQuickEditForm from './admin-quick-edit-form';
 
-// ----------------------------------------------------------------------
-
 interface Props {
   selected?: boolean;
-  onEditRow: VoidFunction;
   row: Admin;
   onSelectRow?: VoidFunction;
 }
 
-function getRole(id: string) {
-  const { data: rolesData } = roleApi.useRolesQuery();
-
-  return rolesData?.data?.roles.find((r) => r.rid === id)?.name.toLocaleUpperCase() || 'Admin';
-}
-
 export default function AdminTableRow(props: Props) {
-  const { row, selected, onEditRow, onSelectRow } = props;
+  const { row, selected, onSelectRow } = props;
 
-  const router = useRouter();
+  const { data: rolesData } = roleApi.useRolesQuery();
 
   const quickEdit = useBoolean();
 
   const block = useBoolean();
 
   const popover = usePopover();
+
+  function getRole(id: string) {
+    return rolesData?.data?.roles.find((r) => r.rid === id)?.name.toLocaleUpperCase() || 'Admin';
+  }
 
   return (
     <>
@@ -91,23 +80,8 @@ export default function AdminTableRow(props: Props) {
             <Iconify icon="gg:check-o" width={20} height={20} color="success.main" />
           )}
         </TableCell>
-        {/* <TableCell>
-          {!row.is_pwd_change_required && row.is_totp_activated
-            ? 'All good'
-            : !row.is_totp_activated && row.is_pwd_change_required
-            ? 'Password and TOTP change required'
-            : !row.is_totp_activated
-            ? 'TOTP activation required'
-            : 'Password change required'}
-        </TableCell> */}
 
         <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
-          {/* <Tooltip title="Quick Edit" placement="top" arrow>
-            <IconButton color={quickEdit.value ? 'inherit' : 'default'} onClick={quickEdit.onTrue}>
-              <Iconify icon="solar:pen-bold" />
-            </IconButton>
-          </Tooltip> */}
-
           <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
             <Iconify icon="eva:more-vertical-fill" />
           </IconButton>
@@ -116,6 +90,7 @@ export default function AdminTableRow(props: Props) {
 
       <AdminQuickEditForm currentAdmin={row} open={quickEdit.value} onClose={quickEdit.onFalse} />
       <AdminBlockForm currentAdmin={row} open={block.value} onClose={block.onFalse} />
+
       <CustomPopover
         open={popover.open}
         onClose={popover.onClose}
@@ -124,7 +99,6 @@ export default function AdminTableRow(props: Props) {
       >
         <MenuItem
           onClick={() => {
-            // router.push(paths.dashboard.admin.new);
             quickEdit.onTrue();
             popover.onClose();
           }}

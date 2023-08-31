@@ -1,29 +1,16 @@
 'use client';
 
-// @mui
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
-// routes
-import { useRouter } from 'src/routes/hook';
-import { paths } from 'src/routes/paths';
-// _mock
-// hooks
-import { useBoolean } from 'src/hooks/use-boolean';
-// components
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import { useSettingsContext } from 'src/components/settings';
-// types
-//
-import { dealApi } from 'src/redux/api/deal.api';
+import { useBoolean } from 'src/hooks/use-boolean';
+import { paths } from 'src/routes/paths';
 
 export function DealsConfigView() {
   const settings = useSettingsContext();
-  const router = useRouter();
-
   const confirm = useBoolean();
-
-  const { data } = dealApi.useDealQuery({});
 
   return (
     <>

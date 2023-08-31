@@ -1,23 +1,13 @@
-// @mui
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import ListItemText from '@mui/material/ListItemText';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import Tooltip from '@mui/material/Tooltip';
-// hooks
-import { useBoolean } from 'src/hooks/use-boolean';
-// types
-// components
-import { usePopover } from 'src/components/custom-popover';
-import Iconify from 'src/components/iconify';
-//
-import { Role } from 'src/types/role.types';
 import Link from 'next/link';
+import Iconify from 'src/components/iconify';
 import { paths } from 'src/routes/paths';
-import AdminQuickEditForm from './roles-quick-edit-form';
-
-// ----------------------------------------------------------------------
+import { Role } from 'src/types/role.types';
 
 type Props = {
   selected?: boolean;

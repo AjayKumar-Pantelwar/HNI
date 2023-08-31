@@ -1,4 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { enqueueSnackbar } from 'notistack';
+import { endpoints } from 'src/routes/endpoints';
 import {
   AdminRequest,
   AdminResponse,
@@ -8,13 +10,11 @@ import {
   EditAdminRequest,
   EditAdminResponse,
 } from 'src/types/admin.types';
-import { enqueueSnackbar } from 'notistack';
 import { ApiResponse } from 'src/types/api.types';
 import { authSlice } from '../slices/auth.slice';
 
 export const adminApi = createApi({
   reducerPath: 'admin',
-  // baseQuery: fetchBaseQuery({ baseUrl: process.env.NEXT_PUBLIC_API_URL, credentials: 'include' }),
   baseQuery: async (args, baseApi, extraOptions) => {
     const baseQuery = fetchBaseQuery({
       baseUrl: process.env.NEXT_PUBLIC_API_URL,
@@ -36,31 +36,19 @@ export const adminApi = createApi({
   tagTypes: ['Admin'],
   endpoints: (builder) => ({
     admin: builder.query<AdminResponse, AdminRequest>({
-      query: (params) => ({ url: '/api/admin', params }),
+      query: (params) => ({ ...endpoints.admin.list, params }),
       providesTags: ['Admin'],
     }),
     createAdmin: builder.mutation<CreateAdminResponse, CreateAdminRequest>({
-      query: (body) => ({
-        url: '/api/admin',
-        method: 'POST',
-        body,
-      }),
+      query: (body) => ({ ...endpoints.admin.create, body }),
       invalidatesTags: ['Admin'],
     }),
     editAdmin: builder.mutation<EditAdminResponse, EditAdminRequest>({
-      query: ({ id, ...body }) => ({
-        url: `/api/admin/${id}`,
-        method: 'PUT',
-        body,
-      }),
+      query: ({ id, ...body }) => ({ ...endpoints.admin.edit(id), body }),
       invalidatesTags: ['Admin'],
     }),
     blockAdmin: builder.mutation<ApiResponse, BlockAdminRequest>({
-      query: (body) => ({
-        url: `/api/admin/block`,
-        method: 'PUT',
-        body,
-      }),
+      query: (body) => ({ ...endpoints.admin.block, body }),
       invalidatesTags: ['Admin'],
     }),
   }),

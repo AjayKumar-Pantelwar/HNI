@@ -1,21 +1,9 @@
-// sections
-
-import { roleApi } from 'src/redux/api/role.api';
 import { AdminCreateView } from 'src/sections/admin/view';
 
-// ----------------------------------------------------------------------
-
 export const metadata = {
-  title: 'Create a new admin',
+  title: 'Create | Admin | Mumbai Angels',
 };
 
-export default async function UserCreatePage() {
-  // const rolesData = await getRoles();
+export default async function AdminCreatePage() {
   return <AdminCreateView />;
 }
-
-// export const getRoles = async () => {
-//   const { data: rolesData } = await roleApi.useRolesQuery();
-
-//   return rolesData?.data?.roles;
-// };

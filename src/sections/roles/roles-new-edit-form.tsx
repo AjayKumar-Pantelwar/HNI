@@ -1,20 +1,7 @@
 'use client';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import React, { useMemo } from 'react';
-import { useForm } from 'react-hook-form';
-import * as Yup from 'yup';
-// @mui
 import LoadingButton from '@mui/lab/LoadingButton';
-import Card from '@mui/material/Card';
-import Stack from '@mui/material/Stack';
-// utils
-// routes
-import { useRouter } from 'src/routes/hook';
-import { paths } from 'src/routes/paths';
-// types
-// assets
-// components
 import {
   Checkbox,
   Skeleton,
@@ -25,10 +12,17 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
+import Card from '@mui/material/Card';
+import Stack from '@mui/material/Stack';
+import React, { useMemo } from 'react';
+import { useForm } from 'react-hook-form';
 import FormProvider, { RHFTextField } from 'src/components/hook-form';
 import { useSnackbar } from 'src/components/snackbar';
 import { roleApi } from 'src/redux/api/role.api';
+import { useRouter } from 'src/routes/hook';
+import { paths } from 'src/routes/paths';
 import { Role } from 'src/types/role.types';
+import * as Yup from 'yup';
 
 // ----------------------------------------------------------------------
 
@@ -79,7 +73,7 @@ export default function RolesNewEditForm({ currentRole }: Props) {
       }));
       setValue('permission', perms);
     }
-  }, [apiPermissions, currentRole]);
+  }, [apiPermissions, currentRole, setValue]);
 
   const permissions = methods.watch('permission');
 

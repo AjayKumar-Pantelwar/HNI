@@ -1,6 +1,5 @@
 'use client';
 
-// @mui
 import { yupResolver } from '@hookform/resolvers/yup';
 import { MenuItem } from '@mui/material';
 import Badge from '@mui/material/Badge';
@@ -14,13 +13,8 @@ import Typography from '@mui/material/Typography';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import FormProvider, { RHFSelect, RHFTextField } from 'src/components/hook-form';
-// types
-// components
 import Iconify from 'src/components/iconify';
 import { AdminRequest, AdminRequestSchema } from 'src/types/admin.types';
-import * as Yup from 'yup';
-
-// ----------------------------------------------------------------------
 
 type Props = {
   open: boolean;
@@ -56,7 +50,7 @@ export default function AdminFilters({
 
   const methods = useForm({
     defaultValues,
-    resolver: yupResolver(AdminRequestSchema),
+    resolver: yupResolver<AdminRequest>(AdminRequestSchema),
   });
 
   const handleSubmit = methods.handleSubmit((values) => {

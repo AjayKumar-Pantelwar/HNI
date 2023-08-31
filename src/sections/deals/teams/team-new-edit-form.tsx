@@ -68,7 +68,7 @@ export default function TeamNewEditForm({ open, onClose, team, dealId }: Props) 
         })
         .catch(handleError);
     }
-  }, [team, defaultValues, reset]);
+  }, [team, defaultValues, reset, setValue]);
 
   const onSubmit = handleSubmit(async (data) => {
     try {

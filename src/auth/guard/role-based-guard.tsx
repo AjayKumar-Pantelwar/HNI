@@ -1,16 +1,10 @@
-import { m } from 'framer-motion';
-// @mui
-import { Theme, SxProps } from '@mui/material/styles';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-// hooks
-import { useMockedUser } from 'src/hooks/use-mocked-user';
-// assets
+import { SxProps, Theme } from '@mui/material/styles';
+import { m } from 'framer-motion';
 import { ForbiddenIllustration } from 'src/assets/illustrations';
-// components
 import { MotionContainer, varBounce } from 'src/components/animate';
-
-// ----------------------------------------------------------------------
+import { useSelector } from 'src/redux/store';
 
 type RoleBasedGuardProp = {
   hasContent?: boolean;
@@ -20,13 +14,11 @@ type RoleBasedGuardProp = {
 };
 
 export default function RoleBasedGuard({ hasContent, roles, children, sx }: RoleBasedGuardProp) {
-  // Logic here to get current user role
-  const { user } = useMockedUser();
+  const { user } = useSelector((state) => state.auth);
 
-  // const currentRole = 'user';
-  const currentRole = user?.role; // admin;
+  const currentRole = user?.username;
 
-  if (typeof roles !== 'undefined' && !roles.includes(currentRole)) {
+  if (currentRole && typeof roles !== 'undefined' && !roles.includes(currentRole)) {
     return hasContent ? (
       <Container component={MotionContainer} sx={{ textAlign: 'center', ...sx }}>
         <m.div variants={varBounce().in}>

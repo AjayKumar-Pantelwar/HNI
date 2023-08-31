@@ -1,6 +1,5 @@
 'use client';
 
-// @mui
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import Container from '@mui/material/Container';
@@ -9,13 +8,6 @@ import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
 import Tooltip from '@mui/material/Tooltip';
-// routes
-import { RouterLink } from 'src/routes/components';
-import { paths } from 'src/routes/paths';
-// _mock
-// hooks
-import { useBoolean } from 'src/hooks/use-boolean';
-// components
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import Iconify from 'src/components/iconify';
@@ -30,13 +22,11 @@ import {
   emptyRows,
   useTable,
 } from 'src/components/table';
-// types
-//
+import { useBoolean } from 'src/hooks/use-boolean';
 import { roleApi } from 'src/redux/api/role.api';
-import { Admin, AdminRequest } from 'src/types/admin.types';
+import { RouterLink } from 'src/routes/components';
+import { paths } from 'src/routes/paths';
 import RolesTableRow from '../roles-table-row';
-
-// ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Name' },
@@ -177,36 +167,4 @@ export default function RolesListView() {
       />
     </>
   );
-}
-
-// ----------------------------------------------------------------------
-
-function applyFilter({
-  inputData,
-  comparator,
-  filters,
-}: {
-  inputData: Admin[];
-  comparator: (a: any, b: any) => number;
-  filters: AdminRequest;
-}) {
-  const { name } = filters;
-
-  const stabilizedThis = inputData.map((el, index) => [el, index] as const);
-
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-
-  inputData = stabilizedThis.map((el) => el[0]);
-
-  if (name) {
-    inputData = inputData.filter(
-      (user) => user.name.toLowerCase().indexOf(name.toLowerCase()) !== -1
-    );
-  }
-
-  return inputData;
 }

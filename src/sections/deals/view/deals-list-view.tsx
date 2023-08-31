@@ -1,8 +1,6 @@
 'use client';
 
-import isEqual from 'lodash/isEqual';
-import { useCallback, useState } from 'react';
-// @mui
+import { Box } from '@mui/material';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import Container from '@mui/material/Container';
@@ -11,14 +9,8 @@ import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
 import Tooltip from '@mui/material/Tooltip';
-// routes
-import { RouterLink } from 'src/routes/components';
-import { useRouter } from 'src/routes/hook';
-import { paths } from 'src/routes/paths';
-// _mock
-// hooks
-import { useBoolean } from 'src/hooks/use-boolean';
-// components
+import isEqual from 'lodash/isEqual';
+import { useCallback, useState } from 'react';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import Iconify from 'src/components/iconify';
@@ -34,15 +26,13 @@ import {
   getComparator,
   useTable,
 } from 'src/components/table';
-// types
-//
-import { Box } from '@mui/material';
+import { useBoolean } from 'src/hooks/use-boolean';
 import { dealApi } from 'src/redux/api/deal.api';
-import { AdminRequest } from 'src/types/admin.types';
+import { RouterLink } from 'src/routes/components';
+import { useRouter } from 'src/routes/hook';
+import { paths } from 'src/routes/paths';
 import { Deal, GetDealRequest } from 'src/types/deals.types';
 import DealTableRow from '../deal-table-row';
-
-// ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
   { id: 'deal', label: 'Deal', width: 80 },
@@ -60,27 +50,18 @@ const defaultFilters: GetDealRequest = {
   deal_id: '',
 };
 
-// ----------------------------------------------------------------------
-
 export function DealListView() {
   const table = useTable();
 
   const settings = useSettingsContext();
 
-  const openFilters = useBoolean();
-
   const router = useRouter();
 
   const confirm = useBoolean();
 
-  const [filters, setFilters] = useState(defaultFilters);
+  const [filters] = useState(defaultFilters);
 
-  const [search, setSearch] = useState<{ query: string; results: Deal[] }>({
-    query: '',
-    results: [],
-  });
-
-  const { data } = dealApi.useDealQuery(filters);
+  const { data } = dealApi.useDealQuery(defaultFilters);
 
   const dataFiltered = applyFilter({
     inputData: data?.data?.deals || [],
@@ -88,23 +69,11 @@ export function DealListView() {
     filters,
   });
 
-  const dataInPage = dataFiltered.slice(
-    table.page * table.rowsPerPage,
-    table.page * table.rowsPerPage + table.rowsPerPage
-  );
-
   const denseHeight = table.dense ? 52 : 72;
 
   const canReset = !isEqual(defaultFilters, filters);
 
   const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
-
-  const handleFilters = useCallback((name: keyof AdminRequest, value: string) => {
-    setFilters((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  }, []);
 
   const handleEditRow = useCallback(
     (id: string) => {
@@ -113,32 +82,6 @@ export function DealListView() {
     [router]
   );
 
-  const handleResetFilters = useCallback(() => {
-    setFilters(defaultFilters);
-  }, []);
-
-  const handleSearch = useCallback(
-    (inputValue: string) => {
-      setSearch((prevState) => ({
-        ...prevState,
-        query: inputValue,
-      }));
-
-      if (inputValue) {
-        const results = data?.data?.deals?.filter(
-          (deal) => deal.deal_name.toLowerCase().indexOf(search.query.toLowerCase()) !== -1
-        );
-
-        if (results) {
-          setSearch((prevState) => ({
-            ...prevState,
-            results,
-          }));
-        }
-      }
-    },
-    [search.query, data?.data?.deals]
-  );
   return (
     <>
       <Container maxWidth={settings.themeStretch ? false : 'lg'}>

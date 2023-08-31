@@ -6,11 +6,10 @@ import {
 } from 'react-redux';
 import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, persistStore } from 'redux-persist';
 import { adminApi } from './api/admin.api';
-import { rootReducer } from './root-reducer';
-import { roleApi } from './api/role.api';
+import { companyApi } from './api/company.api';
 import { dealApi } from './api/deal.api';
-
-// ----------------------------------------------------------------------
+import { roleApi } from './api/role.api';
+import { rootReducer } from './root-reducer';
 
 export type RootState = ReturnType<typeof rootReducer>;
 
@@ -24,7 +23,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat([adminApi.middleware, roleApi.middleware, dealApi.middleware]),
+    }).concat([adminApi.middleware, roleApi.middleware, dealApi.middleware, companyApi.middleware]),
 });
 
 export const persistor = persistStore(store);

@@ -100,19 +100,16 @@ export const CreateDealSchema = Yup.object().shape({
       }
       return true;
     }),
-  sector: Yup.object()
-    .shape({
-      tech: Yup.array().of(Yup.string()).length(1, 'Tech is required'),
-      model: Yup.array().of(Yup.string()).length(1, 'Model is required'),
-      sector_1: Yup.array().of(Yup.string()).length(1, 'Sector 1 is required'),
-      sector_2: Yup.array().of(Yup.string()).length(1, 'Sector 2 is required'),
-      sector_3: Yup.array().of(Yup.string()).length(1, 'Sector 3 is required'),
-    })
-    .required('Sector is required'),
   deal_name: Yup.string().required('Deal name is required'),
   cover_image: Yup.mixed().required('Cover image is required').nullable(),
   logo_link: Yup.mixed().required('Logo link is required').nullable(),
   pitch_deck: Yup.mixed().required('Logo link is required').nullable(),
+  primary: Yup.string().required('Primary sector is required'),
+  sector_2: Yup.string(),
+  sector_3: Yup.string(),
+  tech: Yup.string().required('Tech is required'),
+  model: Yup.string().required('Model is required'),
+  company_id: Yup.string().required('Company is required'),
 });
 
 export type CreateDealRequest = Yup.InferType<typeof CreateDealSchema>;
@@ -252,7 +249,12 @@ export type Deal = {
   pitch_deck: string;
   end_date: Time;
   closing_soon_date: Time;
-  sector: Sector;
+  primary: string;
+  sector_2: string;
+  sector_3: string;
+  tech: string;
+  model: string;
+  company_id: string;
   deal_name: string;
   logo_link: string;
   stage: Stage;

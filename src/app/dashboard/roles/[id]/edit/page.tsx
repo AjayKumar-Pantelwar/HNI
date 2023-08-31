@@ -1,13 +1,9 @@
-// sections
-
-import { RolesCreateView, RolesEditView } from 'src/sections/roles/view';
-
-// ----------------------------------------------------------------------
+import { RolesEditView } from 'src/sections/roles/view';
 
 export const metadata = {
-  title: 'Edit role',
+  title: 'Edit | Role | Mumbai Angels',
 };
 
-export default function UserCreatePage() {
+export default function RoleEditPage() {
   return <RolesEditView />;
 }

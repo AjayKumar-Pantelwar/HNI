@@ -1,8 +1,6 @@
 'use client';
 
-import isEqual from 'lodash/isEqual';
-import { useCallback, useState } from 'react';
-// @mui
+import { Box } from '@mui/material';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import Container from '@mui/material/Container';
@@ -11,14 +9,8 @@ import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
 import Tooltip from '@mui/material/Tooltip';
-// routes
-import { RouterLink } from 'src/routes/components';
-import { useRouter } from 'src/routes/hook';
-import { paths } from 'src/routes/paths';
-// _mock
-// hooks
-import { useBoolean } from 'src/hooks/use-boolean';
-// components
+import isEqual from 'lodash/isEqual';
+import { useCallback, useState } from 'react';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import Iconify from 'src/components/iconify';
@@ -35,15 +27,13 @@ import {
   getComparator,
   useTable,
 } from 'src/components/table';
-// types
-//
-import { Box } from '@mui/material';
+import { useBoolean } from 'src/hooks/use-boolean';
 import { adminApi } from 'src/redux/api/admin.api';
+import { RouterLink } from 'src/routes/components';
+import { paths } from 'src/routes/paths';
 import { Admin, AdminRequest } from 'src/types/admin.types';
 import AdminFilters from '../admin-filters';
 import AdminTableRow from '../admin-table-row';
-
-// ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Name' },
@@ -59,13 +49,11 @@ const TABLE_HEAD = [
 const defaultFilters: AdminRequest = {
   name: '',
   email: '',
-  is_blocked: 'all',
+  is_blocked: '',
   mobile_number: '',
   rid: '',
   username: '',
 };
-
-// ----------------------------------------------------------------------
 
 export default function AdminListView() {
   const table = useTable();
@@ -74,16 +62,9 @@ export default function AdminListView() {
 
   const openFilters = useBoolean();
 
-  const router = useRouter();
-
   const confirm = useBoolean();
 
   const [filters, setFilters] = useState(defaultFilters);
-
-  const [search, setSearch] = useState<{ query: string; results: Admin[] }>({
-    query: '',
-    results: [],
-  });
 
   const { data, isLoading } = adminApi.useAdminQuery(filters);
 
@@ -92,11 +73,6 @@ export default function AdminListView() {
     comparator: getComparator(table.order, table.orderBy),
     filters,
   });
-
-  const dataInPage = dataFiltered.slice(
-    table.page * table.rowsPerPage,
-    table.page * table.rowsPerPage + table.rowsPerPage
-  );
 
   const denseHeight = table.dense ? 52 : 72;
 
@@ -108,39 +84,10 @@ export default function AdminListView() {
     setFilters(appliedFilters);
   }, []);
 
-  const handleEditRow = useCallback(
-    (id: string) => {
-      router.push(paths.dashboard.admin.edit(id));
-    },
-    [router]
-  );
-
   const handleResetFilters = useCallback(() => {
     setFilters(defaultFilters);
   }, []);
 
-  // const handleSearch = useCallback(
-  //   (inputValue: string) => {
-  //     setSearch((prevState) => ({
-  //       ...prevState,
-  //       query: inputValue,
-  //     }));
-
-  //     if (inputValue) {
-  //       const results = data?.data?.admins?.filter(
-  //         (admin) => admin.name.toLowerCase().indexOf(search.query.toLowerCase()) !== -1
-  //       );
-
-  //       if (results) {
-  //         setSearch((prevState) => ({
-  //           ...prevState,
-  //           results,
-  //         }));
-  //       }
-  //     }
-  //   },
-  //   [search.query, data?.data?.admins]
-  // );
   return (
     <>
       <Container maxWidth={settings.themeStretch ? false : 'lg'}>
@@ -167,21 +114,13 @@ export default function AdminListView() {
         />
         {false && (
           <Box sx={{ display: 'flex', justifyContent: 'space-between', pb: 5 }}>
-            {/* <AdminSearch
-            query={search.query}
-            results={search.results}
-            onSearch={handleSearch}
-            hrefItem={(id: string) => paths.dashboard.admin.profile(id)}
-          /> */}
             <AdminFilters
               open={openFilters.value}
               onOpen={openFilters.onTrue}
               onClose={openFilters.onFalse}
-              //
               filters={filters}
               defaultFilters={defaultFilters}
               onFilters={handleFilters}
-              //
               canReset={canReset}
               onResetFilters={handleResetFilters}
             />
@@ -214,9 +153,6 @@ export default function AdminListView() {
                   rowCount={data?.data?.admins?.length}
                   numSelected={table.selected.length}
                   onSort={table.onSort}
-                  // onSelectAllRows={(checked) =>
-                  //   table.onSelectAllRows(checked, data?.data?.admins?.map((row) => row.aid) || [])
-                  // }
                 />
 
                 <TableBody>
@@ -226,13 +162,7 @@ export default function AdminListView() {
                       table.page * table.rowsPerPage + table.rowsPerPage
                     )
                     .map((row) => (
-                      <AdminTableRow
-                        key={row.aid}
-                        row={row as Admin}
-                        // selected={table.selected.includes(row.aid)}
-                        // onSelectRow={() => table.onSelectRow(row.aid)}
-                        onEditRow={() => handleEditRow(row.aid)}
-                      />
+                      <AdminTableRow key={row.aid} row={row as Admin} />
                     ))}
 
                   <TableEmptyRows

@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { enqueueSnackbar } from 'notistack';
+import { endpoints } from 'src/routes/endpoints';
 import { ApiResponse } from 'src/types/api.types';
 import {
   BasicInfoMediaResponse,
@@ -41,158 +42,84 @@ export const dealApi = createApi({
   tagTypes: ['Deal'],
   endpoints: (builder) => ({
     deal: builder.query<GetDealResponse, GetDealRequest>({
-      query: (params) => ({ url: `/api/deal`, params }),
+      query: (params) => ({ ...endpoints.deal.list, params }),
       providesTags: ['Deal'],
     }),
     createDeal: builder.mutation<CreateDealResponse, FormData>({
-      query: (body) => ({
-        url: '/api/deal/basic',
-        method: 'POST',
-        body,
-      }),
+      query: (body) => ({ ...endpoints.deal.create, body }),
       invalidatesTags: ['Deal'],
     }),
     editDeal: builder.mutation<ApiResponse, { id: string; body: FormData }>({
-      query: ({ id, body }) => ({
-        url: `/api/deal/basic/${id}`,
-        method: 'POST',
-        body,
-      }),
+      query: ({ id, body }) => ({ ...endpoints.deal.edit(id), body }),
       invalidatesTags: ['Deal'],
     }),
     trendingDeal: builder.mutation<ApiResponse, TrendingDealsRequest>({
-      query: (body) => ({
-        url: `/api/deal/trending`,
-        method: 'POST',
-        body,
-      }),
+      query: (body) => ({ ...endpoints.deal.trending, body }),
       invalidatesTags: ['Deal'],
     }),
     dealOfTheWeek: builder.mutation<ApiResponse, string>({
-      query: (id) => ({
-        url: `/api/deal/deal-of-the-week/${id}`,
-        method: 'POST',
-      }),
+      query: (id) => endpoints.deal.dealOfTheWeek(id),
       invalidatesTags: ['Deal'],
     }),
     basicInfoMedia: builder.mutation<BasicInfoMediaResponse, { id: string; body: FormData }>({
-      query: ({ id, body }) => ({
-        url: `/api/deal/${id}/basic/media`,
-        method: 'POST',
-        body,
-      }),
+      query: ({ id, body }) => ({ ...endpoints.deal.media(id), body }),
       invalidatesTags: ['Deal'],
     }),
     pitch: builder.mutation<PitchResponse, PitchRequest>({
-      query: ({ deal_id, ...body }) => ({
-        url: `/api/deal/${deal_id}/pitch`,
-        method: 'POST',
-        body,
-      }),
+      query: ({ deal_id, ...body }) => ({ ...endpoints.deal.pitch(deal_id), body }),
       invalidatesTags: ['Deal'],
     }),
     highlights: builder.mutation<HighlightsResponse, { id: string; body: FormData }>({
-      query: ({ id, body }) => ({
-        url: `/api/deal/${id}/pitch/highlights`,
-        method: 'POST',
-        body,
-      }),
+      query: ({ id, body }) => ({ ...endpoints.deal.highlights(id), body }),
       invalidatesTags: ['Deal'],
     }),
     companyInfo: builder.mutation<ApiResponse, CompanyInfoRequest>({
-      query: ({ deal_id, ...body }) => ({
-        url: `/api/deal/${deal_id}/company-info`,
-        method: 'POST',
-        body,
-      }),
+      query: ({ deal_id, ...body }) => ({ ...endpoints.deal.companyInfo(deal_id), body }),
       invalidatesTags: ['Deal'],
     }),
     addTeam: builder.mutation<ApiResponse, { id: string; body: FormData }>({
-      query: ({ id, body }) => ({
-        url: `/api/deal/${id}/company-info/team`,
-        method: 'POST',
-        body,
-      }),
+      query: ({ id, body }) => ({ ...endpoints.deal.addTeam(id), body }),
       invalidatesTags: ['Deal'],
     }),
     editTeam: builder.mutation<ApiResponse, { id: string; mem_id: string; body: FormData }>({
-      query: ({ id, mem_id, body }) => ({
-        url: `/api/deal/${id}/company-info/team/${mem_id}`,
-        method: 'PUT',
-        body,
-      }),
+      query: ({ id, mem_id, body }) => ({ ...endpoints.deal.editTeam(id, mem_id), body }),
       invalidatesTags: ['Deal'],
     }),
     deleteTeam: builder.mutation<ApiResponse, DeleteTeamRequest>({
-      query: ({ deal_id, ...body }) => ({
-        url: `/api/deal/${deal_id}/company-info/team`,
-        method: 'DELETE',
-        body,
-      }),
+      query: ({ deal_id, ...body }) => ({ ...endpoints.deal.deleteTeam(deal_id), body }),
       invalidatesTags: ['Deal'],
     }),
     addInvestor: builder.mutation<ApiResponse, { id: string; body: FormData }>({
-      query: ({ id, body }) => ({
-        url: `/api/deal/${id}/company-info/current-investor`,
-        method: 'POST',
-        body,
-      }),
+      query: ({ id, body }) => ({ ...endpoints.deal.addInvestor(id), body }),
       invalidatesTags: ['Deal'],
     }),
     editInvestor: builder.mutation<ApiResponse, { id: string; mem_id: string; body: FormData }>({
-      query: ({ id, mem_id, body }) => ({
-        url: `/api/deal/${id}/company-info/current-investor/${mem_id}`,
-        method: 'PUT',
-        body,
-      }),
+      query: ({ id, mem_id, body }) => ({ ...endpoints.deal.editInvestor(id, mem_id), body }),
       invalidatesTags: ['Deal'],
     }),
     deleteInvestor: builder.mutation<ApiResponse, DeleteInvestorRequest>({
-      query: ({ deal_id, ...body }) => ({
-        url: `/api/deal/${deal_id}/company-info/current-investor`,
-        method: 'DELETE',
-        body,
-      }),
+      query: ({ deal_id, ...body }) => ({ ...endpoints.deal.deleteInvestor(deal_id), body }),
       invalidatesTags: ['Deal'],
     }),
     addNews: builder.mutation<ApiResponse, { id: string; body: FormData }>({
-      query: ({ id, body }) => ({
-        url: `/api/deal/${id}/company-info/news`,
-        method: 'POST',
-        body,
-      }),
+      query: ({ id, body }) => ({ ...endpoints.deal.addNews(id), body }),
       invalidatesTags: ['Deal'],
     }),
     editNews: builder.mutation<ApiResponse, { id: string; news_id: string; body: FormData }>({
-      query: ({ id, news_id, body }) => ({
-        url: `/api/deal/${id}/company-info/news/${news_id}`,
-        method: 'PUT',
-        body,
-      }),
+      query: ({ id, news_id, body }) => ({ ...endpoints.deal.editNews(id, news_id), body }),
       invalidatesTags: ['Deal'],
     }),
     deleteNews: builder.mutation<ApiResponse, DeleteNewsRequest>({
-      query: ({ deal_id, ...body }) => ({
-        url: `/api/deal/${deal_id}/company-info/news`,
-        method: 'DELETE',
-        body,
-      }),
+      query: ({ deal_id, ...body }) => ({ ...endpoints.deal.deleteNews(deal_id), body }),
       invalidatesTags: ['Deal'],
     }),
     dealTerms: builder.mutation<ApiResponse, CreateDealTerms & { id: string }>({
-      query: ({ id, ...body }) => ({
-        url: `/api/deal/${id}/terms`,
-        method: 'POST',
-        body,
-      }),
+      query: ({ id, ...body }) => ({ ...endpoints.deal.dealTerms(id), body }),
       invalidatesTags: ['Deal'],
     }),
     dataroom: builder.mutation<ApiResponse, any>({
-      query: ({ id, ...body }) => ({
-        url: `/api/deal/${id}/dataroom`,
-        method: 'POST',
-        body,
-      }),
+      query: ({ id, ...body }) => ({ ...endpoints.deal.dataroom(id), body }),
+      invalidatesTags: ['Deal'],
     }),
   }),
 });

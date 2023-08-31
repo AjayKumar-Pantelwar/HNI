@@ -1,7 +1,7 @@
 import DealsCompanyInfoView from 'src/sections/deals/view/deals-company-info-view';
 
 export const metadata = {
-  title: 'Deals Company Info',
+  title: 'Company Info | Deals | Mumbai Angels',
 };
 
 export default function DealsPage() {

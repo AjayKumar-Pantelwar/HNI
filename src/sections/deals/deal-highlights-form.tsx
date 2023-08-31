@@ -1,33 +1,24 @@
 'use client';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useEffect, useMemo } from 'react';
-import { useForm } from 'react-hook-form';
-import * as Yup from 'yup';
-// @mui
-
 import LoadingButton from '@mui/lab/LoadingButton';
+import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Unstable_Grid2';
-// routes
-// hooks
-import { useResponsive } from 'src/hooks/use-responsive';
-// _mock
-// components
+import { useEffect, useMemo } from 'react';
+import { useForm } from 'react-hook-form';
 import FormProvider, { RHFTextField, RHFUploadAvatar } from 'src/components/hook-form';
 import { useSnackbar } from 'src/components/snackbar';
-// types
-import { Button } from '@mui/material';
+import { useResponsive } from 'src/hooks/use-responsive';
 import { dealApi } from 'src/redux/api/deal.api';
 import { Deal, HighlightsRequest } from 'src/types/deals.types';
 import { convertUrlToFile } from 'src/utils/convert-url-to-file';
 import { handleError } from 'src/utils/handle-error';
-
-// ----------------------------------------------------------------------
+import * as Yup from 'yup';
 
 type Props = {
   currentDeal: Deal;
@@ -85,7 +76,7 @@ export default function DealHighlightForm({ currentDeal }: Props) {
           .catch(handleError);
       });
     }
-  }, [currentDeal, defaultValues, reset]);
+  }, [currentDeal, defaultValues, reset, setValue]);
 
   const onSubmit = handleSubmit(async (data) => {
     try {

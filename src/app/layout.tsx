@@ -36,12 +36,6 @@ import MotionLazy from 'src/components/animate/motion-lazy';
 import ProgressBar from 'src/components/progress-bar';
 import { SettingsDrawer, SettingsProvider } from 'src/components/settings';
 import SnackbarProvider from 'src/components/snackbar/snackbar-provider';
-// auth
-// import { AuthProvider, AuthConsumer } from 'src/auth/context/auth0';
-// import { AuthProvider, AuthConsumer } from 'src/auth/context/amplify';
-// import { AuthProvider, AuthConsumer } from 'src/auth/context/firebase';
-
-// ----------------------------------------------------------------------
 
 export const metadata = {
   title: 'Mumbai Angels',

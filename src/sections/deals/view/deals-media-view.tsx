@@ -1,21 +1,12 @@
 'use client';
 
-// @mui
 import Container from '@mui/material/Container';
-// routes
-import { paths } from 'src/routes/paths';
-// components
-import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
+import { useSettingsContext } from 'src/components/settings';
 import { dealApi } from 'src/redux/api/deal.api';
 import { useParams } from 'src/routes/hook';
-import DealsNewEditForm from '../deals-new-edit-form';
-import DealsPitchForm from '../deals-pitch-form';
+import { paths } from 'src/routes/paths';
 import DealsMediaForm from '../deal-media-form';
-import DealHighlightForm from '../deal-highlights-form';
-//
-
-// ----------------------------------------------------------------------
 
 export default function DealsMediaView() {
   const settings = useSettingsContext();

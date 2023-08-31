@@ -1,5 +1,5 @@
 export const metadata = {
-  title: 'Mumbai Angels Admin',
+  title: 'Admin | Mumbai Angels',
 };
 
 export default function HomePage() {

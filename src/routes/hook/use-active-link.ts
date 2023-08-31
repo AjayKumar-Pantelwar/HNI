@@ -11,6 +11,8 @@ export function useActiveLink(path: string, deep = true): ReturnType {
 
   const currentPath = path === '/' ? '/' : `${path}/`;
 
+  console.log({ currentPath, pathname });
+
   const normalActive = !checkPath && pathname === currentPath;
 
   const deepActive = !checkPath && pathname.includes(currentPath);

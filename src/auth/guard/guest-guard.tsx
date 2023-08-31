@@ -1,11 +1,7 @@
 import { useCallback, useEffect } from 'react';
-// routes
-import { paths } from 'src/routes/paths';
-import { useRouter } from 'src/routes/hook';
-//
 import { useSelector } from 'src/redux/store';
-
-// ----------------------------------------------------------------------
+import { useRouter } from 'src/routes/hook';
+import { paths } from 'src/routes/paths';
 
 type Props = {
   children: React.ReactNode;

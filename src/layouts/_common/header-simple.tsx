@@ -1,24 +1,15 @@
-// @mui
 import AppBar from '@mui/material/AppBar';
 import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
 import { useTheme } from '@mui/material/styles';
-// theme
-import { bgBlur } from 'src/theme/css';
-// routes
-// hooks
 import { useOffSetTop } from 'src/hooks/use-off-set-top';
-// components
-//
+import { bgBlur } from 'src/theme/css';
 import { HEADER } from '../config-layout';
 import HeaderShadow from './header-shadow';
 import SettingsButton from './settings-button';
 
-// ----------------------------------------------------------------------
-
 export default function HeaderSimple() {
   const theme = useTheme();
-
   const offsetTop = useOffSetTop(HEADER.H_DESKTOP);
 
   return (
@@ -44,19 +35,8 @@ export default function HeaderSimple() {
           }),
         }}
       >
-        {/* <img src="/logo/logo_icon.png" alt="logo" style={{ height: 60 }} /> */}
-
         <Stack direction="row" alignItems="center" spacing={1}>
           <SettingsButton />
-
-          {/* <Link
-            href={paths.faqs}
-            component={RouterLink}
-            color="inherit"
-            sx={{ typography: 'subtitle2' }}
-          >
-            Need help?
-          </Link> */}
         </Stack>
       </Toolbar>
 

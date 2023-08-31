@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { enqueueSnackbar } from 'notistack';
+import { endpoints } from 'src/routes/endpoints';
 import { ApiResponse } from 'src/types/api.types';
 import {
   CreateRoleRequest,
@@ -7,7 +8,6 @@ import {
   GetPermissionsResponse,
   GetRolesResponse,
 } from 'src/types/role.types';
-
 import { authSlice } from '../slices/auth.slice';
 
 export const roleApi = createApi({
@@ -32,30 +32,21 @@ export const roleApi = createApi({
     return result;
   },
   tagTypes: ['Role'],
-
   endpoints: (builder) => ({
     roles: builder.query<GetRolesResponse, void>({
-      query: (params) => ({ url: '/api/admin/role', params }),
+      query: (params) => ({ ...endpoints.role.list, params }),
       providesTags: ['Role'],
     }),
     createRole: builder.mutation<ApiResponse, CreateRoleRequest>({
-      query: (body) => ({
-        url: '/api/admin/role',
-        method: 'POST',
-        body,
-      }),
+      query: (body) => ({ ...endpoints.role.create, body }),
       invalidatesTags: ['Role'],
     }),
     editRole: builder.mutation<ApiResponse, EditRoleRequest>({
-      query: ({ id, ...body }) => ({
-        url: `/api/admin/role/${id}`,
-        method: 'PUT',
-        body,
-      }),
+      query: ({ id, ...body }) => ({ ...endpoints.role.edit(id), body }),
       invalidatesTags: ['Role'],
     }),
     permissions: builder.query<GetPermissionsResponse, void>({
-      query: () => ({ url: '/api/admin/role/permission' }),
+      query: () => endpoints.role.permissions,
     }),
   }),
 });

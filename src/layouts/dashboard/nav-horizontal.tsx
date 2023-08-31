@@ -1,25 +1,20 @@
-import { memo } from 'react';
-// @mui
-import { useTheme } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-// theme
-import { bgBlur } from 'src/theme/css';
-// hooks
-import { useMockedUser } from 'src/hooks/use-mocked-user';
-// components
+import { useTheme } from '@mui/material/styles';
+import { memo } from 'react';
 import { NavSectionHorizontal } from 'src/components/nav-section';
-//
+import { useSelector } from 'src/redux/store';
+import { bgBlur } from 'src/theme/css';
+import { HeaderShadow } from '../_common';
 import { HEADER } from '../config-layout';
 import { useNavData } from './config-navigation';
-import { HeaderShadow } from '../_common';
 
 // ----------------------------------------------------------------------
 
 function NavHorizontal() {
   const theme = useTheme();
 
-  const { user } = useMockedUser();
+  const { user } = useSelector((state) => state.auth);
 
   const navData = useNavData();
 
@@ -40,7 +35,7 @@ function NavHorizontal() {
         <NavSectionHorizontal
           data={navData}
           config={{
-            currentRole: user?.role || 'admin',
+            currentRole: user?.rid,
           }}
         />
       </Toolbar>

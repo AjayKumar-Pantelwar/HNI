@@ -1,24 +1,17 @@
 'use client';
 
-import { useEffect } from 'react';
-// @mui
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import Stack from '@mui/material/Stack';
-// hooks
-import { useResponsive } from 'src/hooks/use-responsive';
-// hooks
-import { useMockedUser } from 'src/hooks/use-mocked-user';
-// components
+import { useEffect } from 'react';
 import { NavSectionVertical } from 'src/components/nav-section';
 import Scrollbar from 'src/components/scrollbar';
+import { useResponsive } from 'src/hooks/use-responsive';
+import { useSelector } from 'src/redux/store';
 import { usePathname } from 'src/routes/hook';
-//
 import { NavToggleButton, NavUpgrade } from '../_common';
 import { NAV } from '../config-layout';
 import { useNavData } from './config-navigation';
-
-// ----------------------------------------------------------------------
 
 type Props = {
   openNav: boolean;
@@ -26,7 +19,7 @@ type Props = {
 };
 
 export default function NavVertical({ openNav, onCloseNav }: Props) {
-  const { user } = useMockedUser();
+  const { user } = useSelector((state) => state.auth);
 
   const pathname = usePathname();
 
@@ -59,7 +52,7 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
       <NavSectionVertical
         data={navData}
         config={{
-          currentRole: user?.role || 'admin',
+          currentRole: user?.rid || 'admin',
         }}
       />
 

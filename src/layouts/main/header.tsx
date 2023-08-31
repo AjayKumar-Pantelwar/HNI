@@ -1,4 +1,3 @@
-// @mui
 import AppBar from '@mui/material/AppBar';
 import Badge, { badgeClasses } from '@mui/material/Badge';
 import Box from '@mui/material/Box';
@@ -8,24 +7,15 @@ import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
 import { useTheme } from '@mui/material/styles';
-// hooks
+import Label from 'src/components/label';
 import { useOffSetTop } from 'src/hooks/use-off-set-top';
 import { useResponsive } from 'src/hooks/use-responsive';
-// theme
 import { bgBlur } from 'src/theme/css';
-// routes
-import { paths } from 'src/routes/paths';
-// components
-import Label from 'src/components/label';
-//
+import { HeaderShadow, LoginButton, SettingsButton } from '../_common';
 import { HEADER } from '../config-layout';
 import { navConfig } from './config-navigation';
 import NavDesktop from './nav/desktop';
 import NavMobile from './nav/mobile';
-//
-import { HeaderShadow, LoginButton, SettingsButton } from '../_common';
-
-// ----------------------------------------------------------------------
 
 export default function Header() {
   const theme = useTheme();
@@ -66,13 +56,7 @@ export default function Header() {
               },
             }}
             badgeContent={
-              <Link
-                href={paths.changelog}
-                target="_blank"
-                rel="noopener"
-                underline="none"
-                sx={{ ml: 1 }}
-              >
+              <Link href="#" target="_blank" rel="noopener" underline="none" sx={{ ml: 1 }}>
                 <Label color="info" sx={{ textTransform: 'unset', height: 22, px: 0.5 }}>
                   v5.1.0
                 </Label>
@@ -87,7 +71,7 @@ export default function Header() {
           {mdUp && <NavDesktop offsetTop={offsetTop} data={navConfig} />}
 
           <Stack alignItems="center" direction={{ xs: 'row', md: 'row-reverse' }}>
-            <Button variant="contained" target="_blank" rel="noopener" href={paths.minimalUI}>
+            <Button variant="contained" target="_blank" rel="noopener" href="#">
               Purchase Now
             </Button>
 

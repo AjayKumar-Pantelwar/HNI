@@ -1,13 +1,6 @@
-// sections
+import { redirect } from 'next/navigation';
+import { paths } from 'src/routes/paths';
 
-import { AdminProfileView } from 'src/sections/admin/view';
-
-// ----------------------------------------------------------------------
-
-export const metadata = {
-  title: 'Dashboard: Admin Profile',
-};
-
-export default function UserProfilePage() {
-  return <AdminProfileView />;
+export default function AdminPage() {
+  redirect(paths.dashboard.admin.list);
 }

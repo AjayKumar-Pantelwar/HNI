@@ -29,14 +29,7 @@ export const AdminRequestSchema = Yup.object()
   })
   .required();
 
-export type AdminRequest = {
-  username: string | undefined;
-  email: string | undefined;
-  mobile_number: string | undefined;
-  is_blocked: string | undefined;
-  name: string | undefined;
-  rid: string | undefined;
-};
+export type AdminRequest = Yup.InferType<typeof AdminRequestSchema>;
 
 export const CreateAdminSchema = Yup.object().shape({
   name: Yup.string().required('Name is required'),

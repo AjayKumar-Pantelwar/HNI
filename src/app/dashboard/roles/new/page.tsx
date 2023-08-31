@@ -1,13 +1,9 @@
-// sections
-
 import { RolesCreateView } from 'src/sections/roles/view';
 
-// ----------------------------------------------------------------------
-
 export const metadata = {
-  title: 'Create a new role',
+  title: 'Create | Role | Mumbai Angels',
 };
 
-export default function UserCreatePage() {
+export default function RoleCreatePage() {
   return <RolesCreateView />;
 }
