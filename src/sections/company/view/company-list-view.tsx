@@ -37,6 +37,7 @@ const TABLE_HEAD = [
   { id: 'name', label: 'Name', width: 180 },
   { id: 'branch_name', label: 'Branch Name', width: 120 },
   { id: 'form', label: 'Form', width: 120 },
+  { id: 'incorporated_date', label: 'Incorporated Date', width: 120 },
   { id: 'location.city', label: 'Location', width: 180 },
   { id: '', label: 'Actions', width: 80 },
 ];

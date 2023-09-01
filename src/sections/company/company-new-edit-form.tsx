@@ -52,12 +52,16 @@ export default function CompanyNewEditForm({ currentCompany }: Props) {
   const methods = useForm({
     resolver: yupResolver(CompanyRequestSchema),
     defaultValues,
+    mode: 'onTouched',
   });
 
   const {
+    watch,
     handleSubmit,
     formState: { isSubmitting },
   } = methods;
+
+  const description = watch('description');
 
   const onSubmit = handleSubmit(async (data) => {
     try {
@@ -78,7 +82,14 @@ export default function CompanyNewEditForm({ currentCompany }: Props) {
       <Card sx={{ p: 6 }}>
         <RHFTextField name="legal_name" label="Legal Name" />
         <RHFTextField name="branch_name" label="Branch Name" />
-        <RHFTextField name="description" label="Description" minRows={3} multiline />
+        <RHFTextField
+          name="description"
+          label="Description"
+          minRows={3}
+          multiline
+          sx={{ mb: 2 }}
+          helperText={`${description.length} / 250`}
+        />
         <RHFTextField name="website_link" label="Website Link" />
         <RHFDateField name="incorporated_date" label="Incorporated Date" />
         <RHFSelect name="form" label="Form">

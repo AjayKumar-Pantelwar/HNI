@@ -1,4 +1,3 @@
-// @mui
 import { Box } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Checkbox from '@mui/material/Checkbox';
@@ -7,13 +6,9 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
-// hooks
-// types
-// components
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
 import Iconify from 'src/components/iconify';
 import { useBoolean } from 'src/hooks/use-boolean';
-//
 import { useRouter } from 'src/routes/hook';
 import { paths } from 'src/routes/paths';
 import { Deal } from 'src/types/deals.types';
@@ -21,8 +16,6 @@ import { titleCase } from 'src/utils/change-case';
 import { fDateTime } from 'src/utils/format-time';
 import { DotwDialog } from './dotw-dialog';
 import { TrendingDialog } from './trending-dialog';
-
-// ----------------------------------------------------------------------
 
 type Props = {
   selected?: boolean;
@@ -48,15 +41,17 @@ export default function DealTableRow({ row, selected, onEditRow, onSelectRow }: 
           </TableCell>
         )}
 
-        <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
-          <Avatar alt={row.deal_name} src={row.logo_link} sx={{ mr: 2 }} />
+        <TableCell>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Avatar alt={row.deal_name} src={row.logo_link} sx={{ mr: 2 }} />
 
-          <ListItemText
-            primary={row.deal_name}
-            secondary={row.company_name}
-            primaryTypographyProps={{ typography: 'body2' }}
-            secondaryTypographyProps={{ component: 'span', color: 'text.disabled' }}
-          />
+            <ListItemText
+              primary={row.deal_name}
+              secondary={row.company_name}
+              primaryTypographyProps={{ typography: 'body2' }}
+              secondaryTypographyProps={{ component: 'span', color: 'text.disabled' }}
+            />
+          </Box>
         </TableCell>
 
         <TableCell>{titleCase(row.stage)}</TableCell>

@@ -36,7 +36,10 @@ export const CompanyRequestSchema = Yup.object().shape({
   }),
   website_link: Yup.string().required('Website link is required'),
   branch_name: Yup.string().required('Branch name is required'),
-  description: Yup.string().required('Description is required'),
+  description: Yup.string()
+    .required('Description is required')
+    .min(100, 'Please enter at least 100 characters')
+    .max(250, 'Please enter at most 250 characters'),
 });
 
 export type AddCompanyRequest = Yup.InferType<typeof CompanyRequestSchema>;

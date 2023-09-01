@@ -1,6 +1,5 @@
 'use client';
 
-import Avatar from '@mui/material/Avatar';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import ListItemText from '@mui/material/ListItemText';
@@ -12,6 +11,8 @@ import CustomPopover, { usePopover } from 'src/components/custom-popover';
 import Iconify from 'src/components/iconify';
 import { paths } from 'src/routes/paths';
 import { Company } from 'src/types/company.types';
+import { capitalize } from 'src/utils/change-case';
+import { fDate } from 'src/utils/format-time';
 
 interface Props {
   selected?: boolean;
@@ -33,9 +34,7 @@ export default function CompanyTableRow(props: Props) {
           </TableCell>
         )}
 
-        <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
-          <Avatar alt={row.legal_name} sx={{ mr: 2 }} />
-
+        <TableCell>
           <ListItemText
             primary={row.legal_name}
             secondary={row.description}
@@ -46,9 +45,11 @@ export default function CompanyTableRow(props: Props) {
 
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{row.branch_name}</TableCell>
 
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{row.form}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{capitalize(row.form)}</TableCell>
 
-        <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{fDate(row.incorporated_date)}</TableCell>
+
+        <TableCell>
           <ListItemText
             primary={row.location.city}
             secondary={`${row.location.state}, ${row.location.country}`}
