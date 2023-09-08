@@ -26,6 +26,7 @@ import {
   getComparator,
   useTable,
 } from 'src/components/table';
+import { useRoleAdmin } from 'src/hooks/admin/use-role-admin';
 import { useBoolean } from 'src/hooks/use-boolean';
 import { dealApi } from 'src/redux/api/deal.api';
 import { RouterLink } from 'src/routes/components';
@@ -38,8 +39,7 @@ const TABLE_HEAD = [
   { id: 'deal', label: 'Deal', width: 80 },
   { id: 'stage', label: 'Stage', width: 80 },
   { id: 'published', label: 'Published', width: 80 },
-  { id: 'is_deal_of_the_week', label: 'Deal of the Week', width: 80 },
-  { id: 'is_trending', label: 'Trending', width: 80 },
+  { id: 'dm_id', label: 'Deal Manager', width: 80 },
   { id: 'dates', label: 'Dates', width: 160 },
   { id: 'created_at', label: 'Created At', width: 140 },
   { id: '', label: 'Actions', width: 80 },
@@ -62,6 +62,8 @@ export function DealListView() {
   const [filters] = useState(defaultFilters);
 
   const { data } = dealApi.useDealQuery(defaultFilters);
+
+  const { data: adminData } = useRoleAdmin('deal_manager');
 
   const dataFiltered = applyFilter({
     inputData: data?.data?.deals || [],
@@ -171,8 +173,7 @@ export function DealListView() {
                       <DealTableRow
                         key={row.deal_id}
                         row={row}
-                        // selected={table.selected.includes(row.deal_id)}
-                        // onSelectRow={() => table.onSelectRow(row.deal_id)}
+                        dealManagers={adminData?.data?.admins}
                         onEditRow={() => handleEditRow(row.deal_id)}
                       />
                     ))}

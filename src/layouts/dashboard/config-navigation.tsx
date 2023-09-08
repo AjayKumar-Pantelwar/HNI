@@ -19,6 +19,7 @@ const ICONS = {
   admin: icon('ic_user'),
   company: icon('ic_banking'),
   dashboard: icon('ic_dashboard'),
+  investors: icon('tdesign:member', true),
 };
 
 export function useNavData() {
@@ -64,6 +65,12 @@ export function useNavData() {
               { title: t('list'), path: paths.dashboard.company.list },
               { title: t('create'), path: paths.dashboard.company.new },
             ],
+          },
+          {
+            title: t('Investors'),
+            path: paths.dashboard.investors.root,
+            icon: ICONS.investors,
+            children: [{ title: t('list'), path: paths.dashboard.investors.list }],
           },
         ],
       },

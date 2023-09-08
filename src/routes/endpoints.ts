@@ -15,6 +15,9 @@ export const endpoints = {
     edit: (id: string) => p(`PUT`, `/api/deal/basic/${id}`),
     media: (id: string) => p(`POST`, `/api/deal/${id}/basic/media`),
     trending: p('POST', '/api/deal/trending'),
+    stage: (id: string) => p('POST', `/api/deal/stage/${id}`),
+    status: (id: string) => p('POST', `/api/deal/${id}/status`),
+    assignDM: (id: string) => p('POST', `/api/deal/manager/${id}`),
     dealOfTheWeek: (id: string) => p('POST', `/api/deal/deal-of-the-week/${id}`),
     pitch: (id: string) => p(`POST`, `/api/deal/${id}/pitch`),
     highlights: (id: string) => p(`POST`, `/api/deal/${id}/pitch/highlights`),
@@ -45,4 +48,9 @@ export const endpoints = {
     create: p('POST', '/api/company'),
     edit: (id: string) => p(`PUT`, `/api/company/${id}`),
   },
+  investors: {
+    list: p('GET', '/api/investor'),
+    assignRM: p('POST', '/api/investor/rm'),
+  },
+  constant: p('GET', '/constant'),
 };

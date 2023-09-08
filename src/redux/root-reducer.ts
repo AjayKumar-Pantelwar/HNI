@@ -3,7 +3,9 @@ import { persistReducer } from 'redux-persist';
 import createWebStorage from 'redux-persist/lib/storage/createWebStorage';
 import { adminApi } from './api/admin.api';
 import { companyApi } from './api/company.api';
+import { constantApi } from './api/constant.api';
 import { dealApi } from './api/deal.api';
+import { investorApi } from './api/investor.api';
 import { roleApi } from './api/role.api';
 import { authSlice } from './slices/auth.slice';
 
@@ -34,4 +36,6 @@ export const rootReducer = combineReducers({
   [adminApi.reducerPath]: adminApi.reducer,
   [roleApi.reducerPath]: roleApi.reducer,
   [dealApi.reducerPath]: dealApi.reducer,
+  [constantApi.reducerPath]: constantApi.reducer,
+  [investorApi.reducerPath]: investorApi.reducer,
 });

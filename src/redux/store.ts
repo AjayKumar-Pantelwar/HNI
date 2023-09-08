@@ -7,7 +7,9 @@ import {
 import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, persistStore } from 'redux-persist';
 import { adminApi } from './api/admin.api';
 import { companyApi } from './api/company.api';
+import { constantApi } from './api/constant.api';
 import { dealApi } from './api/deal.api';
+import { investorApi } from './api/investor.api';
 import { roleApi } from './api/role.api';
 import { rootReducer } from './root-reducer';
 
@@ -19,11 +21,17 @@ export const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      // serializableCheck: false,
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat([adminApi.middleware, roleApi.middleware, dealApi.middleware, companyApi.middleware]),
+    }).concat([
+      adminApi.middleware,
+      roleApi.middleware,
+      dealApi.middleware,
+      companyApi.middleware,
+      constantApi.middleware,
+      investorApi.middleware,
+    ]),
 });
 
 export const persistor = persistStore(store);

@@ -1,5 +1,4 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { enqueueSnackbar } from 'notistack';
+import { createApi } from '@reduxjs/toolkit/query/react';
 import { endpoints } from 'src/routes/endpoints';
 import {
   AddCompanyRequest,
@@ -9,28 +8,11 @@ import {
   EditCompanyRequest,
   EditCompanyResponse,
 } from 'src/types/company.types';
-import { authSlice } from '../slices/auth.slice';
+import { baseQuery } from './base-query';
 
 export const companyApi = createApi({
   reducerPath: 'company',
-  baseQuery: async (args, baseApi, extraOptions) => {
-    const baseQuery = fetchBaseQuery({
-      baseUrl: process.env.NEXT_PUBLIC_API_URL,
-      credentials: 'include',
-    });
-
-    const result = await baseQuery(args, baseApi, extraOptions);
-    /*
-     * If response is 401, that means the user is not authenticated.
-     * In that case, we redirect to the login page.
-     */
-    if (result.meta?.response?.status === 401) {
-      enqueueSnackbar('Your session is expired, please login again', { variant: 'error' });
-      baseApi.dispatch(authSlice.actions.logout());
-    }
-
-    return result;
-  },
+  baseQuery,
   tagTypes: ['Company'],
   endpoints: (builder) => ({
     company: builder.query<CompanyResponse, CompanyRequest>({
