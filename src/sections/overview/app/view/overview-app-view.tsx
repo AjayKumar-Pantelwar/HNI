@@ -1,46 +1,27 @@
 'use client';
 
-// @mui
-import { useTheme } from '@mui/material/styles';
-import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
-// hooks
-import { useMockedUser } from 'src/hooks/use-mocked-user';
-// _mock
-import { _appFeatured, _appAuthors, _appInstalled, _appRelated, _appInvoices } from 'src/_mock';
-// components
-import { useSettingsContext } from 'src/components/settings';
-// assets
+import { useTheme } from '@mui/material/styles';
 import { SeoIllustration } from 'src/assets/illustrations';
-//
-import AppWidget from '../app-widget';
+import { useSelector } from 'src/redux/store';
 import AppWelcome from '../app-welcome';
-import AppFeatured from '../app-featured';
-import AppNewInvoice from '../app-new-invoice';
-import AppTopAuthors from '../app-top-authors';
-import AppTopRelated from '../app-top-related';
-import AppAreaInstalled from '../app-area-installed';
 import AppWidgetSummary from '../app-widget-summary';
-import AppCurrentDownload from '../app-current-download';
-import AppTopInstalledCountries from '../app-top-installed-countries';
 
 // ----------------------------------------------------------------------
 
 export default function OverviewAppView() {
-  const { user } = useMockedUser();
+  const { user } = useSelector((state) => state.auth);
 
   const theme = useTheme();
-
-  const settings = useSettingsContext();
 
   return (
     <Container sx={{ width: '100%' }}>
       <Grid container spacing={3}>
         <Grid xs={12} md={8}>
           <AppWelcome
-            title={`Welcome back 👋 \n ${user?.displayName}`}
+            title={`Welcome back 👋 \n ${user?.username}`}
             img={<SeoIllustration />}
             action={
               <Button variant="contained" color="primary">
@@ -48,10 +29,6 @@ export default function OverviewAppView() {
               </Button>
             }
           />
-        </Grid>
-
-        <Grid xs={12} md={4}>
-          <AppFeatured list={_appFeatured} />
         </Grid>
 
         <Grid xs={12} md={4}>

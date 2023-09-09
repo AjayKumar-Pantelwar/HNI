@@ -47,12 +47,9 @@ export default function DealDataroomForm({ currentDeal }: Props) {
 
   const {
     reset,
-    watch,
     handleSubmit,
     formState: { isSubmitting },
   } = methods;
-
-  const values = watch();
 
   useEffect(() => {
     if (currentDeal) {

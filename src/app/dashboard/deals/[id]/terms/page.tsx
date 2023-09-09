@@ -1,7 +1,7 @@
 import DealsTermsView from 'src/sections/deals/view/deals-terms-view';
 
 export const metadata = {
-  title: 'Deals: Edit',
+  title: 'Terms | Deals | Mumbai Angels',
 };
 
 export default function DealsPage() {

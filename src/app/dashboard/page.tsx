@@ -1,10 +1,7 @@
-// sections
 import { OverviewAppView } from 'src/sections/overview/app/view';
 
-// ----------------------------------------------------------------------
-
 export const metadata = {
-  title: 'Dashboard: App',
+  title: 'Dashboard | Mumbai Angels',
 };
 
 export default function OverviewAppPage() {

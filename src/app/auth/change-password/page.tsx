@@ -1,10 +1,7 @@
-// sections
-// ----------------------------------------------------------------------
-
-import ChangePasswordSection from 'src/sections/change-password/change-password-section';
+import ChangePasswordSection from 'src/sections/auth/change-password-view';
 
 export const metadata = {
-  title: 'Change Password: Mumbai Angels Admin',
+  title: 'Change Password | Mumbai Angels',
 };
 
 export default function ChangePasswordPage() {

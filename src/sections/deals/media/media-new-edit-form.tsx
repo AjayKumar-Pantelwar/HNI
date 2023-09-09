@@ -52,7 +52,7 @@ export default function MediaNewEditForm({
       media: null,
       thumbnail: null,
     }),
-    [media]
+    [media, isPitch]
   );
 
   const methods = useForm({

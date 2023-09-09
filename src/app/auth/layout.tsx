@@ -3,8 +3,6 @@
 import { GuestGuard } from 'src/auth/guard';
 import AuthModernCompactLayout from 'src/layouts/auth/modern-compact';
 
-// ----------------------------------------------------------------------
-
 type Props = {
   children: React.ReactNode;
 };

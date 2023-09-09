@@ -7,6 +7,7 @@ export type LoginResponse = {
   is_pwd_change_required: boolean;
   is_totp_activated: boolean;
   req_token: string;
+  rid: string;
 };
 
 export type GenerateTotpRequest = {
@@ -26,7 +27,7 @@ export type ActivateTotpRequest = {
   totp: string;
 };
 
-export type ActivateTotpResponse = never;
+export type ActivateTotpResponse = unknown;
 
 export type ValidateTotpRequest = {
   username: string;
@@ -34,7 +35,7 @@ export type ValidateTotpRequest = {
   totp: string;
 };
 
-export type ValidateTotpResponse = never;
+export type ValidateTotpResponse = unknown;
 
 export type ChangePasswordRequest = {
   username: string;
@@ -45,4 +46,8 @@ export type ChangePasswordRequest = {
 export type ChangePasswordResponse = {
   is_pwd_change_required: boolean;
   is_totp_activated: boolean;
+};
+
+export type User = LoginResponse & {
+  username: string;
 };

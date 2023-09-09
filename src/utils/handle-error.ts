@@ -15,5 +15,5 @@ export const handleError = (error: any, silent = false) => {
     errorMessage = error.message;
   }
 
-  if (!silent) enqueueSnackbar(errorMessage, { variant: 'error' });
+  if (!silent && typeof window !== 'undefined') enqueueSnackbar(errorMessage, { variant: 'error' });
 };

@@ -1,11 +1,7 @@
-// sections
 import { NotFoundView } from 'src/sections/error';
-// layouts
-
-// ----------------------------------------------------------------------
 
 export const metadata = {
-  title: '404 Page Not Found!',
+  title: '404 | Mumbai Angels',
 };
 
 export default function NotFoundPage() {

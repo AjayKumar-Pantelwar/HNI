@@ -64,7 +64,7 @@ export default function InvestorNewEditForm({ open, onClose, investor, dealId }:
         })
         .catch(handleError);
     }
-  }, [investor, defaultValues, reset]);
+  }, [investor, defaultValues, reset, setValue]);
 
   const onSubmit = handleSubmit(async (data) => {
     try {

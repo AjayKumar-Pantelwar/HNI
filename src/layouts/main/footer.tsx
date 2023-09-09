@@ -1,32 +1,22 @@
 // @mui
-import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+import Divider from '@mui/material/Divider';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
-import Divider from '@mui/material/Divider';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Unstable_Grid2';
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-// routes
-import { paths } from 'src/routes/paths';
-import { usePathname } from 'src/routes/hook';
-import { RouterLink } from 'src/routes/components';
-// _mock
-import { _socials } from 'src/_mock';
-// components
+import Grid from '@mui/material/Unstable_Grid2';
 import Logo from 'src/components/logo';
-import Iconify from 'src/components/iconify';
-
-// ----------------------------------------------------------------------
+import { RouterLink } from 'src/routes/components';
+import { usePathname } from 'src/routes/hook';
 
 const LINKS = [
   {
     headline: 'Minimal',
     children: [
-      { name: 'About us', href: paths.about },
-      { name: 'Contact us', href: paths.contact },
-      { name: 'FAQs', href: paths.faqs },
+      { name: 'About us', href: '#' },
+      { name: 'Contact us', href: '#' },
+      { name: 'FAQs', href: '#' },
     ],
   },
   {
@@ -41,8 +31,6 @@ const LINKS = [
     children: [{ name: 'support@minimals.cc', href: '#' }],
   },
 ];
-
-// ----------------------------------------------------------------------
 
 export default function Footer() {
   const pathname = usePathname();
@@ -117,7 +105,7 @@ export default function Footer() {
                 mb: { xs: 5, md: 0 },
               }}
             >
-              {_socials.map((social) => (
+              {/* {_socials.map((social) => (
                 <IconButton
                   key={social.name}
                   sx={{
@@ -128,7 +116,7 @@ export default function Footer() {
                 >
                   <Iconify color={social.color} icon={social.icon} />
                 </IconButton>
-              ))}
+              ))} */}
             </Stack>
           </Grid>
 

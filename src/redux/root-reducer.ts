@@ -1,14 +1,13 @@
 import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
 import createWebStorage from 'redux-persist/lib/storage/createWebStorage';
-// slices
-import checkoutReducer from './slices/checkout';
-import { authSlice } from './slices/auth.slice';
 import { adminApi } from './api/admin.api';
-import { roleApi } from './api/role.api';
+import { companyApi } from './api/company.api';
+import { constantApi } from './api/constant.api';
 import { dealApi } from './api/deal.api';
-
-// ----------------------------------------------------------------------
+import { investorApi } from './api/investor.api';
+import { roleApi } from './api/role.api';
+import { authSlice } from './slices/auth.slice';
 
 export const createNoopStorage = () => ({
   getItem(_key: string) {
@@ -25,22 +24,18 @@ export const createNoopStorage = () => ({
 export const storage =
   typeof window !== 'undefined' ? createWebStorage('local') : createNoopStorage();
 
-const checkoutPersistConfig = {
-  key: 'checkout',
-  storage,
-  keyPrefix: 'redux-',
-};
-
-const authPersistConfig = {
-  key: 'auth',
-  storage,
-  keyPrefix: 'redux-',
-};
-
 export const rootReducer = combineReducers({
-  checkout: persistReducer(checkoutPersistConfig, checkoutReducer),
-  [authSlice.name]: persistReducer(authPersistConfig, authSlice.reducer),
+  [authSlice.name]: persistReducer(
+    {
+      key: 'auth',
+      storage,
+    },
+    authSlice.reducer
+  ),
+  [companyApi.reducerPath]: companyApi.reducer,
   [adminApi.reducerPath]: adminApi.reducer,
   [roleApi.reducerPath]: roleApi.reducer,
   [dealApi.reducerPath]: dealApi.reducer,
+  [constantApi.reducerPath]: constantApi.reducer,
+  [investorApi.reducerPath]: investorApi.reducer,
 });

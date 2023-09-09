@@ -1,10 +1,6 @@
-// @mui
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-//
 import { HeaderSimple as Header } from '../_common';
-
-// ----------------------------------------------------------------------
 
 type Props = {
   children: React.ReactNode;
@@ -14,7 +10,6 @@ export default function AuthModernCompactLayout({ children }: Props) {
   return (
     <>
       <Header />
-
       <Box
         component="main"
         sx={{
@@ -40,16 +35,7 @@ export default function AuthModernCompactLayout({ children }: Props) {
           },
         }}
       >
-        <Card
-          sx={{
-            py: 5,
-            px: 3,
-            minWidth: "min(450px, 90%)",
-            maxWidth : "450px"
-          }}
-        >
-          {children}
-        </Card>
+        <Card sx={{ py: 5, px: 3, width: 'min(450px, 90%)' }}>{children}</Card>
       </Box>
     </>
   );

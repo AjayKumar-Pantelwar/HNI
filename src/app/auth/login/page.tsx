@@ -1,7 +1,7 @@
-import LoginSection from 'src/sections/login/login';
+import LoginSection from 'src/sections/auth/login-view';
 
 export const metadata = {
-  title: 'Login: Mumbai Angels Admin',
+  title: 'Login | Mumbai Angels',
 };
 
 export default function LoginPage() {

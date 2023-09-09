@@ -64,7 +64,7 @@ export default function NewsNewEditForm({ open, onClose, news, dealId }: Props) 
         })
         .catch(handleError);
     }
-  }, [news, defaultValues, reset]);
+  }, [news, defaultValues, reset, setValue]);
 
   const onSubmit = handleSubmit(async (data) => {
     try {

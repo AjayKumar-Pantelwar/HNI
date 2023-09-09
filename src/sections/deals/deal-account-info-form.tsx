@@ -1,16 +1,13 @@
-import { useMemo } from 'react';
-
-import { Box, Card, CardHeader, Grid, MenuItem, Stack, Typography } from '@mui/material';
-
-import { dealApi } from 'src/redux/api/deal.api';
-
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoadingButton } from '@mui/lab';
+import { Box, Card, CardHeader, Grid, MenuItem, Stack, Typography } from '@mui/material';
 import { enqueueSnackbar } from 'notistack';
+import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import FormProvider, { RHFSelect, RHFTextField } from 'src/components/hook-form';
 import RHFDateField from 'src/components/hook-form/rhf-date-field';
 import { useResponsive } from 'src/hooks/use-responsive';
+import { dealApi } from 'src/redux/api/deal.api';
 import { CompanyInfoRequest, Deal } from 'src/types/deals.types';
 import { fDate } from 'src/utils/format-time';
 import * as Yup from 'yup';
@@ -66,8 +63,6 @@ const DealAccountInfoForm = ({ deal }: Props) => {
     handleSubmit,
     formState: { isSubmitting },
   } = methods;
-
-  const values = methods.watch();
 
   const onSubmit = handleSubmit(async (data) => {
     try {

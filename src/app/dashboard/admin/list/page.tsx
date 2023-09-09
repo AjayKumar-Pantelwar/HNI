@@ -1,12 +1,9 @@
-// sections
 import { AdminListView } from 'src/sections/admin/view';
 
-// ----------------------------------------------------------------------
-
 export const metadata = {
-  title: 'Admin List',
+  title: 'Admins | Mumbai Angels',
 };
 
-export default function AdminListPage() {
+export default async function AdminListPage() {
   return <AdminListView />;
 }

@@ -1,30 +1,16 @@
-// @mui
-import { useTheme } from '@mui/material/styles';
-import Stack from '@mui/material/Stack';
 import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
-// theme
-import { bgBlur } from 'src/theme/css';
-// hooks
+import Stack from '@mui/material/Stack';
+import Toolbar from '@mui/material/Toolbar';
+import { useTheme } from '@mui/material/styles';
+import Logo from 'src/components/logo';
+import { useSettingsContext } from 'src/components/settings';
+import SvgColor from 'src/components/svg-color';
 import { useOffSetTop } from 'src/hooks/use-off-set-top';
 import { useResponsive } from 'src/hooks/use-responsive';
-// components
-import Logo from 'src/components/logo';
-import SvgColor from 'src/components/svg-color';
-import { useSettingsContext } from 'src/components/settings';
-//
+import { bgBlur } from 'src/theme/css';
+import { AccountPopover, Searchbar, SettingsButton } from '../_common';
 import { HEADER, NAV } from '../config-layout';
-import {
-  Searchbar,
-  AccountPopover,
-  SettingsButton,
-  LanguagePopover,
-  ContactsPopover,
-  NotificationsPopover,
-} from '../_common';
-
-// ----------------------------------------------------------------------
 
 type Props = {
   onOpenNav?: VoidFunction;

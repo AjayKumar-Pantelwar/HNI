@@ -1,7 +1,7 @@
 import DealsCreateView from 'src/sections/deals/view/deals-create-view';
 
 export const metadata = {
-  title: 'Deals: Create',
+  title: 'Create | Deal | Mumbai Angels',
 };
 
 export default function DealsPage() {

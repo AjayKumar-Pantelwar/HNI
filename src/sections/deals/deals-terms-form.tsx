@@ -24,13 +24,13 @@ import { LoadingButton } from '@mui/lab';
 import { Box, Button, Divider, IconButton, MenuItem } from '@mui/material';
 import EmptyContent from 'src/components/empty-content/empty-content';
 import Iconify from 'src/components/iconify/iconify';
+import { constantApi } from 'src/redux/api/constant.api';
 import { dealApi } from 'src/redux/api/deal.api';
 import {
   CreateDealTerms,
   Deal,
   DealTermsScehma,
   RoundInstrument,
-  RoundType,
   ValuationType,
 } from 'src/types/deals.types';
 import { titleCase } from 'src/utils/change-case';
@@ -48,6 +48,8 @@ export default function DealsTermsForm({ currentDeal }: Props) {
   const { enqueueSnackbar } = useSnackbar();
 
   const [updateDealTerms] = dealApi.useDealTermsMutation();
+
+  const { data: constantData } = constantApi.useConstantsQuery();
 
   const defaultValues = useMemo<CreateDealTerms>(
     () => ({
@@ -176,20 +178,24 @@ export default function DealsTermsForm({ currentDeal }: Props) {
           {!mdUp && <CardHeader title="Round Info" />}
 
           <Stack spacing={2} sx={{ p: 3 }}>
-            <RHFSelect name="round_type" label="Round Type">
-              {Object.values(RoundType).map((value) => (
-                <MenuItem key={value} value={value}>
-                  {titleCase(value)}
-                </MenuItem>
-              ))}
-            </RHFSelect>
-            <RHFSelect name="valuation_type" label="Valuation Type">
-              {Object.values(ValuationType).map((value) => (
-                <MenuItem key={value} value={value}>
-                  {titleCase(value)}
-                </MenuItem>
-              ))}
-            </RHFSelect>
+            {constantData?.data?.round_type && (
+              <RHFSelect name="round_type" label="Round Type">
+                {Object.values(constantData?.data?.round_type).map((type) => (
+                  <MenuItem key={type.value} value={type.value}>
+                    {type.label}
+                  </MenuItem>
+                ))}
+              </RHFSelect>
+            )}
+            {constantData?.data?.valuation_type && (
+              <RHFSelect name="valuation_type" label="Valuation Type">
+                {Object.values(constantData?.data?.valuation_type).map((value) => (
+                  <MenuItem key={value} value={value}>
+                    {titleCase(value)}
+                  </MenuItem>
+                ))}
+              </RHFSelect>
+            )}
 
             {!values.valuation_type ? null : values.valuation_type === ValuationType.FIXED ? (
               <RHFTextField name="valuation" label="Valuation" />
