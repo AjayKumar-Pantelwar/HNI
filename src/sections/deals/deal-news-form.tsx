@@ -59,10 +59,10 @@ export default function DealNewsForm({ currentDeal }: Props) {
         newsIds={selectedIds}
       />
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-        {!currentDeal?.company_info?.news || currentDeal?.company_info?.news?.length === 0 ? (
+        {!currentDeal?.news || currentDeal?.news?.length === 0 ? (
           <EmptyContent filled title="No News Added" sx={{ py: 10 }} />
         ) : (
-          currentDeal?.company_info?.news?.map((news) => (
+          currentDeal?.news?.map((news) => (
             <Card key={news.id} sx={{ p: 2, width: 450 }}>
               <Box sx={{ display: 'flex', gap: 2 }}>
                 <img
