@@ -60,12 +60,12 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
       start_date: currentDeal?.start_date ? fDate(currentDeal.start_date) : '',
       end_date: currentDeal?.end_date ? fDate(currentDeal.end_date) : '',
       closing_soon_date: currentDeal?.closing_soon_date ? fDate(currentDeal.closing_soon_date) : '',
-      primary: currentDeal?.primary || '',
-      sector_2: currentDeal?.sector_2 || '',
-      sector_3: currentDeal?.sector_3 || '',
+      primary: currentDeal?.sector.primary?.at(0) || '',
+      sector_2: currentDeal?.sector.sector_2?.at(0) || '',
+      sector_3: currentDeal?.sector.sector_3?.at(0) || '',
       company_id: currentDeal?.company_id || '',
-      model: currentDeal?.model || '',
-      tech: currentDeal?.tech || '',
+      model: currentDeal?.sector?.model?.at(0) || '',
+      tech: currentDeal?.sector?.tech?.at(0) || '',
       deal_name: currentDeal?.deal_name || '',
       cover_image: null,
       logo_link: null,
@@ -74,6 +74,7 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
     [currentDeal]
   );
 
+  console.log(currentDeal);
   const methods = useForm({
     resolver: yupResolver<CreateDealRequest>(CreateDealSchema),
     defaultValues,

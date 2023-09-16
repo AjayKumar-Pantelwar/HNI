@@ -164,11 +164,12 @@ export type CreateDealResponse = {
   };
 };
 export type Sector = {
-  sector_1: string[];
-  sector_2: string[];
-  sector_3: string[];
-  tech: string[];
-  model: string[];
+  primary: string;
+  sector_1: string;
+  sector_2: string;
+  sector_3: string;
+  tech: string;
+  model: string;
 };
 
 export type TechPlaceholder = {
@@ -250,11 +251,7 @@ export type Deal = {
   pitch_deck: string;
   end_date: Time;
   closing_soon_date: Time;
-  primary: string;
-  sector_2: string;
-  sector_3: string;
-  tech: string;
-  model: string;
+  sector: Sector;
   company_id: string;
   deal_name: string;
   logo_link: string;

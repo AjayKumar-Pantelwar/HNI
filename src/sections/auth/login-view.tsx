@@ -85,14 +85,32 @@ export default function LoginSection() {
        * use it in the next request for validate totp, and we open
        * the validate totp dialog
        */
-      dispatch(authSlice.actions.setUser({ ...response.data.data, username: data.username }));
-      setOpen(true);
+      // dispatch(authSlice.actions.setUser({ ...response.data.data, username: data.username }));
+      // setOpen(true);
+      if (response?.data?.data?.is_pwd_change_required) {
+        dispatch(authSlice.actions.setUser({ ...response.data.data, username: data.username }));
+        // enqueueSnackbar(error.response.data.error, { variant: 'error' });
+        router.push(paths.auth.changePassword);
+      } else if (response.data?.data?.is_totp_activated === false) {
+        dispatch(authSlice.actions.setUser({ ...response.data.data, username: data.username }));
+        // enqueueSnackbar(error.response.data.error, { variant: 'error' });
+
+        router.push(paths.auth.activateTotp);
+      } else if (
+        response.data?.data?.is_pwd_change_required === false &&
+        response.data?.data?.is_totp_activated
+      ) {
+        dispatch(authSlice.actions.setUser({ ...response.data.data, username: data.username }));
+        setOpen(true);
+      } else {
+      }
     } catch (error) {
       const { response } = error;
       /*
        * if login is not successful, we need to store the req_token to
        * use it in the next request for change password and activate totp
        */
+      console.log(response.data.data.is_pwd_change_required);
       if (response?.data?.data?.is_pwd_change_required) {
         dispatch(authSlice.actions.setUser({ ...response.data.data, username: data.username }));
         enqueueSnackbar(error.response.data.error, { variant: 'error' });
