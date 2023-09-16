@@ -15,5 +15,6 @@ export const handleError = (error: any, silent = false) => {
     errorMessage = error.message;
   }
 
-  if (!silent && typeof window !== 'undefined') enqueueSnackbar(errorMessage, { variant: 'error' });
+  if (!silent && typeof window !== 'undefined')
+    enqueueSnackbar(errorMessage || 'Something went wrong', { variant: 'error' });
 };
