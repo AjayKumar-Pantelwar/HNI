@@ -61,11 +61,10 @@ export default function DealInvestor({ currentDeal }: Props) {
         investorIds={selectedIds}
       />
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-        {!currentDeal?.company_info?.investors ||
-        currentDeal?.company_info?.investors?.length === 0 ? (
+        {!currentDeal?.investors || currentDeal?.investors?.length === 0 ? (
           <EmptyContent filled title="No Investors Added" sx={{ py: 10 }} />
         ) : (
-          currentDeal?.company_info?.investors?.map((investor) => (
+          currentDeal?.investors?.map((investor) => (
             <Card key={investor.id} sx={{ p: 2 }}>
               <Stack>
                 <img

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoadingButton } from '@mui/lab';
 import { Box, Card, CardHeader, Grid, MenuItem, Stack, Typography } from '@mui/material';

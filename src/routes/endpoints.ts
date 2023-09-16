@@ -12,7 +12,7 @@ export const endpoints = {
   deal: {
     list: p('GET', '/api/deal'),
     create: p('POST', '/api/deal/basic'),
-    edit: (id: string) => p(`PUT`, `/api/deal/basic/${id}`),
+    edit: (id: string) => p(`POST`, `/api/deal/basic/${id}`),
     media: (id: string) => p(`POST`, `/api/deal/${id}/basic/media`),
     trending: p('POST', '/api/deal/trending'),
     stage: (id: string) => p('POST', `/api/deal/stage/${id}`),

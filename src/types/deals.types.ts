@@ -243,7 +243,9 @@ export type Deal = {
   is_deal_of_the_week: boolean;
   is_deal_trending: boolean;
   company_name: string;
-  company_info?: CompanyInfo;
+  team: Team[];
+  investors: Investor[];
+  news: News[];
   one_liner: string;
   description: string;
   deal_manager: string[] | null;
@@ -277,23 +279,6 @@ export type Highlight = {
   title: string;
   description: string;
   icon_link: string;
-};
-
-export type CompanyInfo = {
-  form: string;
-  incorporated_date: Time;
-  legal_name: string;
-  location: {
-    city: string;
-    state: string;
-    country: string;
-  };
-  website_link: string;
-  team: Team[];
-  investors: Investor[];
-  news: News[];
-  company_name: string;
-  cover_image: string;
 };
 
 export type Team = {

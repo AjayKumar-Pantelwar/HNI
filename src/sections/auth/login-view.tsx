@@ -102,7 +102,6 @@ export default function LoginSection() {
       ) {
         dispatch(authSlice.actions.setUser({ ...response.data.data, username: data.username }));
         setOpen(true);
-      } else {
       }
     } catch (error) {
       const { response } = error;
@@ -110,7 +109,6 @@ export default function LoginSection() {
        * if login is not successful, we need to store the req_token to
        * use it in the next request for change password and activate totp
        */
-      console.log(response.data.data.is_pwd_change_required);
       if (response?.data?.data?.is_pwd_change_required) {
         dispatch(authSlice.actions.setUser({ ...response.data.data, username: data.username }));
         enqueueSnackbar(error.response.data.error, { variant: 'error' });
@@ -126,7 +124,9 @@ export default function LoginSection() {
          * password and totp, then we need to show the error and keep the
          * user on login page, for example, incorrect credentials
          */
-        setErrorMsg(typeof error === 'string' ? error : error.response.data.error);
+        setErrorMsg(
+          typeof error === 'string' ? error : error.response?.data?.error || 'Something went wrong'
+        );
       }
     }
   });

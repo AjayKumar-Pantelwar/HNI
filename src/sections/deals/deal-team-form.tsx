@@ -71,10 +71,10 @@ export default function DealTeamForm({ currentDeal }: Props) {
         teamIds={selectedIds}
       />
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-        {!currentDeal?.company_info?.team || currentDeal?.company_info?.team?.length === 0 ? (
+        {!currentDeal?.team || currentDeal?.team?.length === 0 ? (
           <EmptyContent filled title="No Team Members Added" sx={{ py: 10 }} />
         ) : (
-          currentDeal?.company_info?.team?.map((team) => (
+          currentDeal?.team?.map((team) => (
             <Card key={team.id} sx={{ p: 2 }}>
               <Stack>
                 <img
