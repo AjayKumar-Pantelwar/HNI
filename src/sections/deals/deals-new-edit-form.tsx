@@ -10,8 +10,9 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Unstable_Grid2';
 import Link from 'next/link';
-import { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
+import { EditDialog } from 'src/components/edit-dialog';
 import FormProvider, {
   RHFSelect,
   RHFTextField,
@@ -50,6 +51,9 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
 
   const [createDeal] = dealApi.useCreateDealMutation();
   const [editDeal] = dealApi.useEditDealMutation();
+
+  const [coverImageDetails, setCoverImageDetails] = React.useState<File>();
+  const [logoLinkDetails, setLogoLinkDetails] = React.useState<File>();
 
   const defaultValues = useMemo<CreateDealRequest>(
     () => ({
@@ -90,6 +94,8 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
   } = methods;
 
   const description = watch('description');
+  const coverImage = watch('cover_image');
+  const logo = watch('logo_link');
 
   useEffect(() => {
     if (currentDeal) {
@@ -137,7 +143,12 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
         })
       );
 
-      setValue(key, newFiles[0], { shouldValidate: true });
+      // setValue(key, newFiles[0], { shouldValidate: true });
+      if (key === 'cover_image') {
+        setCoverImageDetails(newFiles[0]);
+      } else if (key === 'logo_link') {
+        setLogoLinkDetails(newFiles[0]);
+      }
     },
     [setValue]
   );
@@ -234,6 +245,31 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
               onRemove={handleRemoveFile}
               onRemoveAll={handleRemoveAllFiles}
             />
+
+            {coverImageDetails && (
+              <EditDialog
+                open
+                base64={URL.createObjectURL(coverImageDetails)}
+                filename={coverImageDetails.name}
+                onChange={(file) => {
+                  setValue('cover_image', file);
+                }}
+                onClose={() => setCoverImageDetails(undefined)}
+                aspectRatio={4 / 3}
+              />
+            )}
+            {logoLinkDetails && (
+              <EditDialog
+                open
+                base64={URL.createObjectURL(logoLinkDetails)}
+                filename={logoLinkDetails.name}
+                onChange={(file) => {
+                  setValue('logo_link', file);
+                }}
+                onClose={() => setLogoLinkDetails(undefined)}
+                aspectRatio={1 / 1}
+              />
+            )}
 
             <Box sx={{ pt: 10, pb: 10 }}>
               <RHFUploadAvatar
