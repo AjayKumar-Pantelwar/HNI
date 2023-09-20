@@ -356,3 +356,11 @@ export type DealStatusRequest = {
 };
 
 export type DealStatusResponse = unknown;
+
+export type SaveInvestedRequest = {
+  deal_id: string;
+  cid: string;
+  amount: string;
+};
+
+export type SaveInvestedResponse = unknown;
