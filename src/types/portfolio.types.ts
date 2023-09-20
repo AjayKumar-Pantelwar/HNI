@@ -1,7 +1,7 @@
 import { Pagination } from './api.types';
 
 export type GetPortfolioRequest = {
-  cid: string;
+  cid?: string;
 } & Pagination;
 
 export interface GetPortfolioResponse {

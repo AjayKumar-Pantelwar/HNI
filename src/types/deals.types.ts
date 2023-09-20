@@ -360,7 +360,7 @@ export type DealStatusResponse = unknown;
 export type SaveInvestedRequest = {
   deal_id: string;
   cid: string;
-  amount: string;
+  amount: number;
 };
 
 export type SaveInvestedResponse = unknown;

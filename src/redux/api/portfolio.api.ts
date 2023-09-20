@@ -13,7 +13,7 @@ export const portfolioApi = createApi({
   baseQuery,
   tagTypes: ['Portfolio', 'Transactions'],
   endpoints: (builder) => ({
-    protfolio: builder.query<GetPortfolioResponse, GetPortfolioRequest>({
+    portfolio: builder.query<GetPortfolioResponse, GetPortfolioRequest>({
       query: (params) => ({ ...endpoints.portfolio.list, params }),
       providesTags: ['Portfolio'],
     }),

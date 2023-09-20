@@ -11,6 +11,7 @@ import Tabs, { tabsClasses } from '@mui/material/Tabs';
 import Iconify from 'src/components/iconify';
 import ProfileCover from './profile-cover';
 import BasicDetails from './tabs/basic-details';
+
 import PortfolioDetails from './tabs/portfolio-details';
 import QuestionnaireDetails from './tabs/questionnaire-details';
 import RMDetails from './tabs/rm-details';
@@ -94,7 +95,7 @@ export default function InvestorProfile(props: Props) {
 
       {currentTab === 'questionnaire' && <QuestionnaireDetails />}
 
-      {currentTab === 'portfolio' && <PortfolioDetails />}
+      {currentTab === 'portfolio' && <PortfolioDetails investor={investor} />}
     </>
   );
 }
