@@ -6,7 +6,7 @@ import { useSettingsContext } from 'src/components/settings';
 import { investorApi } from 'src/redux/api/investor.api';
 import { useParams } from 'src/routes/hook';
 import { paths } from 'src/routes/paths';
-import { InvestorProfile } from '../investor-profile';
+import InvestorProfile from '../profile/investor-profile';
 
 export function InvestorProfileView() {
   const settings = useSettingsContext();
@@ -17,11 +17,11 @@ export function InvestorProfileView() {
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
       <CustomBreadcrumbs
-        heading="List"
+        heading="Profile"
         links={[
           { name: 'Dashboard', href: paths.dashboard.root },
           { name: 'Investor', href: paths.dashboard.investors.list },
-          { name: 'List' },
+          { name: 'Profile' },
         ]}
         sx={{
           mb: { xs: 3, md: 5 },

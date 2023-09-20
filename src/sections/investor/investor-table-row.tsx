@@ -5,9 +5,11 @@ import ListItemText from '@mui/material/ListItemText';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import { format } from 'date-fns';
+import Link from 'next/link';
 import Iconify from 'src/components/iconify';
 import Label from 'src/components/label';
 import { useBoolean } from 'src/hooks/use-boolean';
+import { paths } from 'src/routes/paths';
 import { Admin } from 'src/types/admin.types';
 import { Investor } from 'src/types/investor.types';
 import { titleCase } from 'src/utils/change-case';
@@ -78,6 +80,11 @@ export default function DealTableRow({ row, rms, selected }: Props) {
               typography: 'caption',
             }}
           />
+        </TableCell>
+        <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
+          <IconButton LinkComponent={Link} href={paths.dashboard.investors.profile(row.cid)}>
+            <Iconify icon="carbon:view-filled" />
+          </IconButton>
         </TableCell>
       </TableRow>
 

@@ -94,7 +94,6 @@ export default function LoginSection() {
       } else if (response.data?.data?.is_totp_activated === false) {
         dispatch(authSlice.actions.setUser({ ...response.data.data, username: data.username }));
         // enqueueSnackbar(error.response.data.error, { variant: 'error' });
-
         router.push(paths.auth.activateTotp);
       } else if (
         response.data?.data?.is_pwd_change_required === false &&
@@ -113,7 +112,7 @@ export default function LoginSection() {
         dispatch(authSlice.actions.setUser({ ...response.data.data, username: data.username }));
         enqueueSnackbar(error.response.data.error, { variant: 'error' });
         router.push(paths.auth.changePassword);
-      } else if (response.data?.data?.is_totp_activated === false) {
+      } else if (response?.data?.data?.is_totp_activated === false) {
         dispatch(authSlice.actions.setUser({ ...response.data.data, username: data.username }));
         enqueueSnackbar(error.response.data.error, { variant: 'error' });
 
@@ -125,7 +124,7 @@ export default function LoginSection() {
          * user on login page, for example, incorrect credentials
          */
         setErrorMsg(
-          typeof error === 'string' ? error : error.response?.data?.error || 'Something went wrong'
+          typeof error === 'string' ? error : error?.response?.data?.error || 'Something went wrong'
         );
       }
     }

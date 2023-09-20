@@ -50,6 +50,7 @@ export const paths = {
     investors: {
       root: `${ROOTS.DASHBOARD}/investors`,
       list: `${ROOTS.DASHBOARD}/investors/list`,
+      profile: (id: string) => `${ROOTS.DASHBOARD}/investors/${id}`,
     },
   },
 };
