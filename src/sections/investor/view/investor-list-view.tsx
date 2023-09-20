@@ -38,6 +38,7 @@ const TABLE_HEAD = [
   { id: 'stage', label: 'Stage', width: 80 },
   { id: 'irm_id', label: 'RM', width: 80 },
   { id: 'created_at', label: 'Created At', width: 140 },
+  { id: 'actions', label: 'Actions', width: 140, align: 'right' },
 ];
 
 const defaultFilters: GetInvestorsRequest = {

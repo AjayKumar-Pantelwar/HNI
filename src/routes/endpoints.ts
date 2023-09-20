@@ -36,6 +36,8 @@ export const endpoints = {
     deleteNews: (id: string) => p(`DELETE`, `/api/deal/${id}/company-info/news`),
     dealTerms: (id: string) => p(`POST`, `/api/deal/${id}/terms`),
     dataroom: (id: string) => p(`POST`, `/api/deal/${id}/dataroom`),
+    saveInvested: (dealId: string) => p(`POST`, `/api/deal/${dealId}/invest`),
+    ddReport: (dealId: string) => p(`POST`, `/api/deal/${dealId}/dd-report`),
   },
   role: {
     list: p('GET', '/api/admin/role'),
@@ -51,6 +53,10 @@ export const endpoints = {
   investors: {
     list: p('GET', '/api/investor'),
     assignRM: p('POST', '/api/investor/rm'),
+  },
+  portfolio: {
+    list: p('GET', '/api/portfolio'),
+    transactions: p('GET', '/api/portfolio/txn'),
   },
   constant: p('GET', '/constant'),
 };

@@ -7,40 +7,40 @@ import CardHeader from '@mui/material/CardHeader';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Unstable_Grid2';
+import { useRouter } from 'src/routes/hook';
+
 import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import FormProvider, { RHFTextField } from 'src/components/hook-form';
+import { RHFTextField } from 'src/components/hook-form';
+import FormProvider from 'src/components/hook-form/form-provider';
 import { useSnackbar } from 'src/components/snackbar';
 import { useResponsive } from 'src/hooks/use-responsive';
 import { dealApi } from 'src/redux/api/deal.api';
-import { useRouter } from 'src/routes/hook';
 import { paths } from 'src/routes/paths';
-import { DataroomSchema, Deal } from 'src/types/deals.types';
+
+import { DDReportSchema, Deal } from 'src/types/deals.types';
 import { handleError } from 'src/utils/handle-error';
 
 type Props = {
   currentDeal: Deal;
 };
-
-export default function DealDataroomForm({ currentDeal }: Props) {
-  const router = useRouter();
-
+const DealDDReportForm = ({ currentDeal }: Props) => {
   const mdUp = useResponsive('up', 'md');
+  const router = useRouter();
 
   const { enqueueSnackbar } = useSnackbar();
 
-  const [updateDataroom] = dealApi.useDataroomMutation();
+  const [updateDDReport] = dealApi.useUpdateDDReportMutation();
 
   const defaultValues = useMemo(
     () => ({
-      pitch_pdf_link: currentDeal?.dataroom?.pitch_pdf_link || '',
-      document_link: currentDeal?.dataroom?.document_link || '',
+      dd_report_link: currentDeal?.dd_report || '',
     }),
     [currentDeal]
   );
 
   const methods = useForm({
-    resolver: yupResolver(DataroomSchema),
+    resolver: yupResolver(DDReportSchema),
     defaultValues,
     mode: 'onTouched',
   });
@@ -59,9 +59,9 @@ export default function DealDataroomForm({ currentDeal }: Props) {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      await updateDataroom({ id: currentDeal.deal_id, ...data }).unwrap();
+      await updateDDReport({ deal_id: currentDeal.deal_id, ...data }).unwrap();
       reset();
-      enqueueSnackbar('Update success', { variant: 'success' });
+      enqueueSnackbar('DD Report updated successfully', { variant: 'success' });
       router.push(paths.dashboard.deals.list);
     } catch (error) {
       handleError(error);
@@ -73,10 +73,10 @@ export default function DealDataroomForm({ currentDeal }: Props) {
       {mdUp && (
         <Grid md={4}>
           <Typography variant="h6" sx={{ mb: 0.5 }}>
-            Dataroom Links
+            DD Report Link
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            Enter links here
+            Enter the DD Report link here
           </Typography>
         </Grid>
       )}
@@ -84,10 +84,8 @@ export default function DealDataroomForm({ currentDeal }: Props) {
       <Grid xs={12} md={8}>
         <Card>
           {!mdUp && <CardHeader title="Dataroom Links" />}
-
           <Stack spacing={3} sx={{ p: 3 }}>
-            <RHFTextField name="pitch_pdf_link" label="Pitch PDF Link" />
-            <RHFTextField name="document_link" label="Document Link" />
+            <RHFTextField name="dd_report_link" label="DD Report Link" />
           </Stack>
         </Card>
       </Grid>
@@ -103,7 +101,7 @@ export default function DealDataroomForm({ currentDeal }: Props) {
         sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}
       >
         <LoadingButton type="submit" variant="contained" size="large" loading={isSubmitting}>
-          Update Dataroom
+          Update DD Report
         </LoadingButton>
       </Grid>
     </>
@@ -117,4 +115,6 @@ export default function DealDataroomForm({ currentDeal }: Props) {
       </Grid>
     </FormProvider>
   );
-}
+};
+
+export default DealDDReportForm;

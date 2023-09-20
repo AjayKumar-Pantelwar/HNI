@@ -20,6 +20,10 @@ import {
   HighlightsResponse,
   PitchRequest,
   PitchResponse,
+  SaveInvestedRequest,
+  SaveInvestedResponse,
+  UpdateDDReportRequest,
+  UpdateDDReportResponse,
 } from 'src/types/deals.types';
 import { TrendingDealsRequest } from 'src/types/deals/basic.types';
 import { baseQuery } from './base-query';
@@ -119,6 +123,14 @@ export const dealApi = createApi({
     }),
     dataroom: builder.mutation<ApiResponse, any>({
       query: ({ id, ...body }) => ({ ...endpoints.deal.dataroom(id), body }),
+      invalidatesTags: ['Deal'],
+    }),
+    saveInvest: builder.mutation<SaveInvestedResponse, SaveInvestedRequest>({
+      query: ({ deal_id, ...body }) => ({ ...endpoints.deal.saveInvested(deal_id), body }),
+      invalidatesTags: ['Deal'],
+    }),
+    updateDDReport: builder.mutation<UpdateDDReportResponse, UpdateDDReportRequest>({
+      query: ({ deal_id, ...body }) => ({ ...endpoints.deal.ddReport(deal_id), body }),
       invalidatesTags: ['Deal'],
     }),
   }),

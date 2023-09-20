@@ -6,6 +6,7 @@ import { companyApi } from './api/company.api';
 import { constantApi } from './api/constant.api';
 import { dealApi } from './api/deal.api';
 import { investorApi } from './api/investor.api';
+import { portfolioApi } from './api/portfolio.api';
 import { roleApi } from './api/role.api';
 import { authSlice } from './slices/auth.slice';
 
@@ -38,4 +39,5 @@ export const rootReducer = combineReducers({
   [dealApi.reducerPath]: dealApi.reducer,
   [constantApi.reducerPath]: constantApi.reducer,
   [investorApi.reducerPath]: investorApi.reducer,
+  [portfolioApi.reducerPath]: portfolioApi.reducer,
 });
