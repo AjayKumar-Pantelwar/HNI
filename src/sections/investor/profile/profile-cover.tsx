@@ -31,6 +31,7 @@ export default function ProfileCover({ investor }: Props) {
       }}
     >
       <Stack
+        alignItems="center"
         direction={{ xs: 'column', md: 'row' }}
         sx={{
           left: { md: 24 },

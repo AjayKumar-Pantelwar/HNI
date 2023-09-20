@@ -19,7 +19,7 @@ export type Investor = {
   cid: string;
   otp_details: OtpDetails;
   t_and_c_consent: boolean;
-  stage: string;
+  stage: InvestorStage;
   mobile_number: string;
   dial_code: string;
   email_info: EmailInfo;
@@ -87,3 +87,11 @@ export type PanDetails = {
 export type AssignRMRequest = { cid: string; irm_id: string };
 
 export type AssignRMResponse = ApiResponse<unknown>;
+
+export enum InvestorStage {
+  SUBSCRIBED = 'subscribed',
+  PAN_VERIFIED = 'pan_verified',
+  EMAIL_VERIFIED = 'email_verified',
+  LOCATION_VERIFIED = 'location_verified',
+  ONBOARDED = 'onboarded',
+}
