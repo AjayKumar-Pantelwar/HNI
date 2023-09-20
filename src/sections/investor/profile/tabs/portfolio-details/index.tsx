@@ -1,4 +1,4 @@
-import { Box, Card, CircularProgress, Stack, Typography } from '@mui/material';
+import { Box, Card, CircularProgress, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useEffect, useState } from 'react';
 import AppWidget from 'src/components/app/app-widget';
@@ -60,7 +60,7 @@ const PortfolioDetails = (props: Props) => {
             total={`Total Committed : ${format(portfolio.total_commited)}`}
             icon="solar:user-rounded-bold"
             chart={{
-              series: totalCommittedPercentage,
+              series: !Number.isNaN(totalCommittedPercentage) ? totalCommittedPercentage : 0,
             }}
             sx={{ flex: 1 }}
             color="info"
@@ -70,18 +70,16 @@ const PortfolioDetails = (props: Props) => {
             total={`Total Invested : ${format(portfolio.total_invested)}`}
             icon="solar:user-rounded-bold"
             chart={{
-              series: totalInvestedPercentage,
+              series: !Number.isNaN(totalInvestedPercentage) ? totalInvestedPercentage : 0,
             }}
             sx={{ flex: 1 }}
           />
         </Box>
       ) : (
         <StyledCard>
-          <Stack>
-            <Typography variant="h6" color="text.secondary">
-              No Portfolio details found
-            </Typography>
-          </Stack>
+          <Typography variant="h6" color="text.secondary">
+            No Portfolio details found
+          </Typography>
         </StyledCard>
       )}
       <Box>

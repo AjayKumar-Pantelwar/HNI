@@ -1,3 +1,4 @@
+import LoadingButton from '@mui/lab/LoadingButton';
 import {
   Box,
   Button,
@@ -12,6 +13,7 @@ import {
 import Avatar from '@mui/material/Avatar';
 import { enqueueSnackbar } from 'notistack';
 
+import { styled } from '@mui/material/styles';
 import React from 'react';
 import Iconify from 'src/components/iconify';
 import { dealApi } from 'src/redux/api/deal.api';
@@ -22,6 +24,16 @@ import { fDate } from 'src/utils/format-time';
 import { handleError } from 'src/utils/handle-error';
 import { format } from 'src/utils/number-format';
 
+export const StyledCard = styled(Card)(() => ({
+  marginTop: 3,
+  padding: 4,
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  minHeight: '250px',
+  width: '100%',
+}));
+
 interface TProps {
   transaction: Txn;
 }
@@ -31,6 +43,7 @@ const TransactionDetailsCard = (props: TProps) => {
   const dispatch = useDispatch();
   const { data } = dealApi.useDealQuery({ deal_id: transaction.deal_id });
   const [open, setOpen] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
   const [amount, setAmount] = React.useState<number>();
 
   const [saveInvest] = dealApi.useSaveInvestMutation();
@@ -94,29 +107,31 @@ const TransactionDetailsCard = (props: TProps) => {
               setAmount(+e.target.value);
             }}
           />
-          <Button
-            disabled={!amount}
+          <LoadingButton
             variant="contained"
+            disabled={!amount}
+            loading={isLoading}
             onClick={async () => {
               if (amount) {
                 try {
+                  setIsLoading(true);
                   const res = await saveInvest({
                     deal_id: transaction.deal_id,
                     amount,
                     cid: transaction.cid,
                   }).unwrap();
-
                   dispatch(portfolioApi.util.invalidateTags(['Portfolio', 'Transactions']));
-
                   enqueueSnackbar('Updated your invested', { variant: 'success' });
                 } catch (error) {
                   handleError(error);
+                } finally {
+                  setIsLoading(false);
                 }
               }
             }}
           >
             Submit
-          </Button>
+          </LoadingButton>
         </Stack>
       </Dialog>
     </Card>
@@ -145,18 +160,27 @@ const TransactionDetails = (props: Props) => {
     }
   }, [cid]);
 
+  console.log(txns);
+
   return (
     <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
       {isLoading ? (
         <CircularProgress />
-      ) : txns?.length === 0 ? (
-        <Typography variant="subtitle2">No Data Found</Typography>
+      ) : txns === null ? (
+        <StyledCard>
+          {' '}
+          <Typography variant="h6" color="text.secondary">
+            No Transaction details found
+          </Typography>
+        </StyledCard>
       ) : (
-        <Stack sx={{ width: '100%', gap: 2 }}>
-          {txns?.map((t) => (
-            <TransactionDetailsCard transaction={t} key={t.cid} />
-          ))}
-        </Stack>
+        txns?.length !== 0 && (
+          <Stack sx={{ width: '100%', gap: 2 }}>
+            {txns?.map((t) => (
+              <TransactionDetailsCard transaction={t} key={t.cid} />
+            ))}
+          </Stack>
+        )
       )}
     </Box>
   );
