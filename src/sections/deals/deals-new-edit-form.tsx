@@ -54,7 +54,7 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
   const defaultValues = useMemo<CreateDealRequest>(
     () => ({
       brand_name: currentDeal?.brand_name || '',
-      company_name: currentDeal?.company_name || '',
+      releasing_soon_tag: currentDeal?.releasing_soon_tag || '',
       one_liner: currentDeal?.one_liner || '',
       description: currentDeal?.description || '',
       start_date: currentDeal?.start_date ? fDate(currentDeal.start_date) : '',
@@ -172,7 +172,7 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
 
           <Stack spacing={3} sx={{ p: 3 }}>
             <RHFTextField name="brand_name" label="Brand Name" />
-            <RHFTextField name="company_name" label="Company Name" />
+            <RHFTextField name="releasing_soon_tag" label="Releasing Soon Tag" />
             <RHFSelect name="company_id" label="Company">
               {!companiesData?.data?.company || companiesData?.data?.company?.length === 0 ? (
                 <MenuItem LinkComponent={Link} href={paths.dashboard.company.new}>
