@@ -10,6 +10,7 @@ import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 import { useSettingsContext } from 'src/components/settings';
 import { dealApi } from 'src/redux/api/deal.api';
 import { useParams } from 'src/routes/hook';
+import DealDDReportForm from '../deal-dd-report-form';
 import DealDataroomForm from '../deals-dataroom-form';
 //
 
@@ -41,7 +42,12 @@ export default function DealsDataroomView() {
         }}
       />
       <Stack gap={4}>
-        {data?.data?.deals?.[0] && <DealDataroomForm currentDeal={data?.data?.deals?.[0]} />}
+        {data?.data?.deals?.[0] && (
+          <>
+            <DealDataroomForm currentDeal={data?.data?.deals?.[0]} />
+            <DealDDReportForm currentDeal={data?.data?.deals?.[0]} />
+          </>
+        )}
       </Stack>
     </Container>
   );

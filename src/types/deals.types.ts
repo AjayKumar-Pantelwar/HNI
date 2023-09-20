@@ -119,6 +119,10 @@ export const DataroomSchema = Yup.object().shape({
   document_link: Yup.string().required(),
 });
 
+export const DDReportSchema = Yup.object().shape({
+  dd_report_link: Yup.string().required(),
+});
+
 export type Round = {
   ask_from_ma?: string;
   is_active?: boolean;
@@ -268,6 +272,7 @@ export type Deal = {
   updated_at: Time;
   project_revenue_graph_data: ProjectRevenueGraphEntry[];
   usage_of_funds_data: FundData[];
+  dd_report: string;
 };
 
 export type Dataroom = {
@@ -364,3 +369,10 @@ export type SaveInvestedRequest = {
 };
 
 export type SaveInvestedResponse = unknown;
+
+export type UpdateDDReportRequest = {
+  dd_report_link: string;
+  deal_id: string;
+};
+
+export type UpdateDDReportResponse = unknown;
