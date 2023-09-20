@@ -69,7 +69,7 @@ export type CreateDealTerms = Yup.InferType<typeof DealTermsScehma>;
 
 export const CreateDealSchema = Yup.object().shape({
   brand_name: Yup.string().required('Brand name  is required'),
-  company_name: Yup.string().required('Company name is required'),
+  releasing_soon_tag: Yup.string().required('Releasing soon tag name is required'),
   one_liner: Yup.string().required('One liner is required'),
   description: Yup.string()
     .required('Description is required')
@@ -246,7 +246,7 @@ export type Deal = {
   cover_image: string;
   is_deal_of_the_week: boolean;
   is_deal_trending: boolean;
-  company_name: string;
+  releasing_soon_tag: string;
   team: Team[];
   investors: Investor[];
   news: News[];

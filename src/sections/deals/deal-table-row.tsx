@@ -11,6 +11,7 @@ import CustomPopover, { usePopover } from 'src/components/custom-popover';
 import Iconify from 'src/components/iconify';
 import Label from 'src/components/label';
 import { useBoolean } from 'src/hooks/use-boolean';
+import { companyApi } from 'src/redux/api/company.api';
 import { useRouter } from 'src/routes/hook';
 import { paths } from 'src/routes/paths';
 import { Admin } from 'src/types/admin.types';
@@ -48,6 +49,9 @@ export default function DealTableRow({
   const assignDm = useBoolean();
   const stage = useBoolean();
 
+  const { data } = companyApi.useCompanyQuery({ company_id: row.company_id });
+  const company = data?.data?.company?.[0];
+
   return (
     <>
       <TableRow hover selected={selected}>
@@ -60,10 +64,9 @@ export default function DealTableRow({
         <TableCell>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Avatar alt={row.deal_name} src={row.logo_link} sx={{ mr: 2 }} />
-
             <ListItemText
               primary={row.deal_name}
-              secondary={row.company_name}
+              secondary={company?.legal_name}
               primaryTypographyProps={{ typography: 'body2' }}
               secondaryTypographyProps={{ component: 'span', color: 'text.disabled' }}
             />
