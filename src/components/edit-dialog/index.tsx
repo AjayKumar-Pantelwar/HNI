@@ -1,6 +1,14 @@
-import { Box, Button, CircularProgress, Dialog, IconButton, Typography } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Button,
+  CircularProgress,
+  Dialog,
+  IconButton,
+  Typography,
+} from '@mui/material';
 import Compress from 'compress.js';
-import 'cropperjs/dist/cropper.css';
+// import 'cropper.js/dist/cropper.css';
 import * as React from 'react';
 import type { ReactCropperElement } from 'react-cropper';
 import Cropper from 'react-cropper';
@@ -14,7 +22,7 @@ interface Props {
   open: boolean;
   onChange: (file: File | null, base64: string | null) => void;
   onClose: () => void;
-  aspectRatio: number;
+  aspectRatio: string;
 }
 
 const compressOptions = {
@@ -88,8 +96,15 @@ export const EditDialog = ({ open, filename, base64, onClose, onChange, aspectRa
           src={base64}
           viewMode={2}
           style={{ height: 300 }}
-          aspectRatio={aspectRatio}
+          // eslint-disable-next-line no-eval
+          aspectRatio={eval(aspectRatio)}
         />
+      </Box>
+      <Box sx={{ mt: 2 }}>
+        <Alert severity="info">
+          Please maintain an aspect ratio of{' '}
+          <span style={{ fontWeight: 'bold' }}>{aspectRatio.replace('/', ':')}</span>
+        </Alert>
       </Box>
       <Box
         sx={{

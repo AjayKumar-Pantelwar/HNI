@@ -150,7 +150,7 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
         setLogoLinkDetails(newFiles[0]);
       }
     },
-    [setValue]
+    []
   );
 
   const handleRemoveFile = useCallback(
@@ -252,10 +252,14 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
                 base64={URL.createObjectURL(coverImageDetails)}
                 filename={coverImageDetails.name}
                 onChange={(file) => {
+                  if (file === null) return;
+                  Object.assign(file, {
+                    preview: URL.createObjectURL(file),
+                  });
                   setValue('cover_image', file);
                 }}
                 onClose={() => setCoverImageDetails(undefined)}
-                aspectRatio={4 / 3}
+                aspectRatio="4 / 3"
               />
             )}
             {logoLinkDetails && (
@@ -264,10 +268,14 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
                 base64={URL.createObjectURL(logoLinkDetails)}
                 filename={logoLinkDetails.name}
                 onChange={(file) => {
+                  if (file === null) return;
+                  Object.assign(file, {
+                    preview: URL.createObjectURL(file),
+                  });
                   setValue('logo_link', file);
                 }}
                 onClose={() => setLogoLinkDetails(undefined)}
-                aspectRatio={1 / 1}
+                aspectRatio="1 / 1"
               />
             )}
 

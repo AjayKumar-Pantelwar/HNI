@@ -5,8 +5,9 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { Box, Dialog } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
+import { EditDialog } from 'src/components/edit-dialog';
 import FormProvider, { RHFTextField, RHFUpload } from 'src/components/hook-form';
 import { Media } from 'src/types/deals.types';
 import { convertUrlToFile } from 'src/utils/convert-url-to-file';
@@ -41,6 +42,8 @@ export default function MediaNewEditForm({
     thumbnail: Yup.mixed().required().nullable(),
   });
 
+  const [mediaDetails, setMediaDetails] = React.useState<File>();
+
   const defaultValues = useMemo(
     () => ({
       link: '',
@@ -61,11 +64,14 @@ export default function MediaNewEditForm({
   });
 
   const {
+    watch,
     reset,
     setValue,
     handleSubmit,
     formState: { isSubmitting },
   } = methods;
+
+  const watchedMedia = watch('media');
 
   useEffect(() => {
     if (media) {
@@ -105,65 +111,47 @@ export default function MediaNewEditForm({
           preview: URL.createObjectURL(file),
         })
       );
-      setValue(key, newFiles[0], { shouldValidate: true });
+      // setValue(key, newFiles[0], { shouldValidate: true });
+      setMediaDetails(newFiles[0]);
     },
-    [setValue]
+
+    []
   );
 
+  console.log(mediaDetails);
+
   return (
-    <Dialog
-      fullWidth
-      maxWidth={false}
-      open={open}
-      onClose={onClose}
-      PaperProps={{
-        sx: { maxWidth: 720 },
-      }}
-    >
-      <FormProvider methods={methods} onSubmit={onSubmit}>
-        <Stack gap={1} p={2}>
-          <Typography variant="h5" sx={{ mb: 2 }}>
-            {media ? 'Edit Media' : 'Add Media'}
-          </Typography>
-          <Box sx={{ display: 'flex', gap: 2 }}>
-            <Box flex={1}>
-              <Typography variant="subtitle2">{isPitch ? 'Video' : 'Image'}</Typography>
-              <RHFUpload
-                name="media"
-                maxSize={5 * 1024 * 1024}
-                accept={
-                  isPitch
-                    ? {
-                        'video/mp4': ['.mp4', '.MP4'],
-                      }
-                    : {
-                        'image/*': ['.jpeg', '.jpg', '.png', '.gif'],
-                      }
-                }
-                onDrop={handleDrop('media')}
-                helperText={
-                  <Typography
-                    variant="caption"
-                    sx={{
-                      mt: 3,
-                      mx: 'auto',
-                      display: 'block',
-                      textAlign: 'center',
-                      color: 'text.disabled',
-                    }}
-                  >
-                    Allowed {isPitch ? '*.mp4' : '*.jpeg, *.jpg, *.png, *.gif'}
-                  </Typography>
-                }
-              />
-            </Box>
-            {isPitch && (
+    <>
+      <Dialog
+        fullWidth
+        maxWidth={false}
+        open={open}
+        onClose={onClose}
+        PaperProps={{
+          sx: { maxWidth: 720 },
+        }}
+      >
+        <FormProvider methods={methods} onSubmit={onSubmit}>
+          <Stack gap={1} p={2}>
+            <Typography variant="h5" sx={{ mb: 2 }}>
+              {media ? 'Edit Media' : 'Add Media'}
+            </Typography>
+            <Box sx={{ display: 'flex', gap: 2 }}>
               <Box flex={1}>
-                <Typography variant="subtitle2">Thumbnail</Typography>
+                <Typography variant="subtitle2">{isPitch ? 'Video' : 'Image'}</Typography>
                 <RHFUpload
-                  name="thumbnail"
-                  maxSize={3 * 1024 * 1024}
-                  onDrop={handleDrop('thumbnail')}
+                  name="media"
+                  maxSize={5 * 1024 * 1024}
+                  accept={
+                    isPitch
+                      ? {
+                          'video/mp4': ['.mp4', '.MP4'],
+                        }
+                      : {
+                          'image/*': ['.jpeg', '.jpg', '.png', '.gif'],
+                        }
+                  }
+                  onDrop={handleDrop('media')}
                   helperText={
                     <Typography
                       variant="caption"
@@ -175,25 +163,65 @@ export default function MediaNewEditForm({
                         color: 'text.disabled',
                       }}
                     >
-                      Allowed *.jpeg, *.jpg, *.png, *.gif
+                      Allowed {isPitch ? '*.mp4' : '*.jpeg, *.jpg, *.png, *.gif'}
                     </Typography>
                   }
                 />
               </Box>
-            )}
-          </Box>
-          <RHFTextField name="description" label="Description" />
-          <LoadingButton
-            sx={{ mt: 2 }}
-            type="submit"
-            variant="contained"
-            size="large"
-            loading={isSubmitting}
-          >
-            {!media ? 'Add Media' : 'Save Changes'}
-          </LoadingButton>
-        </Stack>
-      </FormProvider>
-    </Dialog>
+              {isPitch && (
+                <Box flex={1}>
+                  <Typography variant="subtitle2">Thumbnail</Typography>
+                  <RHFUpload
+                    name="thumbnail"
+                    maxSize={3 * 1024 * 1024}
+                    onDrop={handleDrop('thumbnail')}
+                    helperText={
+                      <Typography
+                        variant="caption"
+                        sx={{
+                          mt: 3,
+                          mx: 'auto',
+                          display: 'block',
+                          textAlign: 'center',
+                          color: 'text.disabled',
+                        }}
+                      >
+                        Allowed *.jpeg, *.jpg, *.png, *.gif
+                      </Typography>
+                    }
+                  />
+                </Box>
+              )}
+            </Box>
+            <RHFTextField name="description" label="Description" />
+            <LoadingButton
+              sx={{ mt: 2 }}
+              type="submit"
+              variant="contained"
+              size="large"
+              loading={isSubmitting}
+            >
+              {!media ? 'Add Media' : 'Save Changes'}
+            </LoadingButton>
+          </Stack>
+        </FormProvider>
+      </Dialog>
+      {mediaDetails && (
+        <EditDialog
+          open
+          base64={URL.createObjectURL(mediaDetails)}
+          filename={mediaDetails.name}
+          onChange={(file) => {
+            if (file === null) return;
+            Object.assign(file, {
+              preview: URL.createObjectURL(file),
+            });
+            setValue('media', file);
+          }}
+          onClose={() => setMediaDetails(undefined)}
+          aspectRatio="4 / 3"
+        />
+      )}
+    </>
   );
 }
