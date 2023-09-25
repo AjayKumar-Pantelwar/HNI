@@ -1,16 +1,21 @@
 'use client';
 
 import { Box } from '@mui/material';
+
+import Label from 'src/components/label';
+
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
+import Tab from '@mui/material/Tab';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
+import Tabs from '@mui/material/Tabs';
 import Tooltip from '@mui/material/Tooltip';
 import isEqual from 'lodash/isEqual';
-import { useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import Iconify from 'src/components/iconify';
@@ -23,7 +28,6 @@ import {
   TablePaginationCustom,
   TableSelectedAction,
   emptyRows,
-  getComparator,
   useTable,
 } from 'src/components/table';
 import { useRoleAdmin } from 'src/hooks/admin/use-role-admin';
@@ -44,6 +48,11 @@ const TABLE_HEAD = [
   { id: 'created_at', label: 'Created At', width: 140 },
   { id: '', label: 'Actions', width: 80 },
 ];
+const status = [
+  { value: 'all', label: 'All' },
+  { value: 'published', label: 'Published' },
+  { value: 'unpublished', label: 'Draft' },
+];
 
 const defaultFilters: GetDealRequest = {
   name: '',
@@ -59,23 +68,52 @@ export function DealListView() {
 
   const confirm = useBoolean();
 
-  const [filters] = useState(defaultFilters);
+  const [dealData, setDealData] = React.useState<Deal[]>([]);
 
   const { data } = dealApi.useDealQuery(defaultFilters);
 
   const { data: adminData } = useRoleAdmin('deal_manager');
 
-  const dataFiltered = applyFilter({
-    inputData: data?.data?.deals || [],
-    comparator: getComparator(table.order, table.orderBy),
-    filters,
-  });
+  const [filters] = useState(defaultFilters);
+  const [selectedFilter, setSelectedFilter] = useState('all');
+
+  console.log(data?.data?.deals);
+
+  // const handleFilters = useCallback(
+  //   (name: string, value: GetDealRequest) => {
+  //     table.onResetPage();
+  //     setFilters((prevState) => ({
+  //       ...prevState,
+  //       [name]: value,
+  //     }));
+  //   },
+  //   [table]
+  // );
+
+  React.useEffect(() => {
+    if (data) setDealData(data?.data?.deals);
+  }, [data]);
+
+  const handleFilters = (event: React.SyntheticEvent, newValue: string) => {
+    if (data) {
+      setSelectedFilter(newValue);
+      let filteredData = data?.data?.deals;
+
+      if (newValue === 'published') {
+        filteredData = filteredData.filter((d) => d.is_active === true);
+      } else if (newValue === 'unpublished') {
+        filteredData = filteredData.filter((d) => !d.is_active);
+      }
+
+      setDealData(filteredData);
+    }
+  };
 
   const denseHeight = table.dense ? 52 : 72;
 
   const canReset = !isEqual(defaultFilters, filters);
 
-  const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
+  const notFound = (!dealData.length && canReset) || !dealData.length;
 
   const handleEditRow = useCallback(
     (id: string) => {
@@ -130,6 +168,39 @@ export function DealListView() {
         </Box>
         <Card>
           <TableContainer sx={{ position: 'relative', overflow: 'unset' }}>
+            <Tabs
+              value={selectedFilter}
+              onChange={handleFilters}
+              sx={{
+                pl: 2.5,
+              }}
+            >
+              {status.map((item) => (
+                <Tab
+                  key={item.value}
+                  iconPosition="end"
+                  sx={{
+                    pl: 1,
+                  }}
+                  icon={
+                    <Label
+                      variant={
+                        ((item.value === 'published' || item.value === filters.name) && 'filled') ||
+                        'soft'
+                      }
+                      color={
+                        (item.value === 'published' && 'success') ||
+                        (item.value === 'unpublished' && 'error') ||
+                        (item.value === 'all' && 'secondary') ||
+                        'default'
+                      }
+                    />
+                  }
+                  value={item.value}
+                  label={item.label}
+                />
+              ))}
+            </Tabs>
             <TableSelectedAction
               dense={table.dense}
               numSelected={table.selected.length}
@@ -164,7 +235,7 @@ export function DealListView() {
                 />
 
                 <TableBody>
-                  {dataFiltered
+                  {dealData
                     .slice(
                       table.page * table.rowsPerPage,
                       table.page * table.rowsPerPage + table.rowsPerPage
@@ -194,7 +265,7 @@ export function DealListView() {
           </TableContainer>
 
           <TablePaginationCustom
-            count={dataFiltered.length}
+            count={dealData.length}
             page={table.page}
             rowsPerPage={table.rowsPerPage}
             onPageChange={table.onChangePage}

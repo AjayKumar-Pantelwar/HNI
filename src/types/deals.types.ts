@@ -320,6 +320,7 @@ export type Pitch = {
 export type GetDealRequest = {
   name?: string;
   deal_id?: string;
+  is_active?: boolean;
 };
 
 export enum RoundType {
