@@ -9,8 +9,9 @@ import CardHeader from '@mui/material/CardHeader';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Unstable_Grid2';
-import { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
+import { EditDialog } from 'src/components/edit-dialog';
 import FormProvider, { RHFTextField, RHFUploadAvatar } from 'src/components/hook-form';
 import { useSnackbar } from 'src/components/snackbar';
 import { useResponsive } from 'src/hooks/use-responsive';
@@ -31,6 +32,8 @@ export default function DealHighlightForm({ currentDeal }: Props) {
 
   const [addHighlights] = dealApi.useHighlightsMutation();
 
+  const [logoLinkDetails, setLogoLinkDetails] = React.useState<File>();
+
   const NewMediaSchema = Yup.object().shape({
     highlights: Yup.array()
       .of(
@@ -45,6 +48,9 @@ export default function DealHighlightForm({ currentDeal }: Props) {
   const defaultValues = useMemo<HighlightsRequest>(
     () => ({
       highlights: currentDeal.pitch?.highlights || [{ description: '', title: '' }],
+      cover_image: null,
+      logo_link: null,
+      pitch_deck: null,
     }),
     [currentDeal]
   );
@@ -152,8 +158,7 @@ export default function DealHighlightForm({ currentDeal }: Props) {
                         preview: URL.createObjectURL(file),
                       })
                     );
-                    // @ts-ignore
-                    setValue(`icon_link_${index}`, newFiles[0], { shouldValidate: true });
+                    setLogoLinkDetails(newFiles[0]);
                   }}
                   helperText={
                     <Typography
@@ -170,6 +175,23 @@ export default function DealHighlightForm({ currentDeal }: Props) {
                     </Typography>
                   }
                 />
+                {logoLinkDetails && (
+                  <EditDialog
+                    open
+                    base64={URL.createObjectURL(logoLinkDetails)}
+                    filename={logoLinkDetails.name}
+                    onChange={(file) => {
+                      if (file === null) return;
+                      Object.assign(file, {
+                        preview: URL.createObjectURL(file),
+                      });
+                      // @ts-ignore
+                      setValue(`icon_link_${index}`, file);
+                    }}
+                    onClose={() => setLogoLinkDetails(undefined)}
+                    aspectRatio="1 / 1"
+                  />
+                )}
               </Stack>
             ))}
           </Stack>

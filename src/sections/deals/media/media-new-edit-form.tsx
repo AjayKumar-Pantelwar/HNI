@@ -64,14 +64,11 @@ export default function MediaNewEditForm({
   });
 
   const {
-    watch,
     reset,
     setValue,
     handleSubmit,
     formState: { isSubmitting },
   } = methods;
-
-  const watchedMedia = watch('media');
 
   useEffect(() => {
     if (media) {

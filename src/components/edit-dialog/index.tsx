@@ -8,7 +8,8 @@ import {
   Typography,
 } from '@mui/material';
 import Compress from 'compress.js';
-// import 'cropper.js/dist/cropper.css';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import 'cropperjs/dist/cropper.css';
 import * as React from 'react';
 import type { ReactCropperElement } from 'react-cropper';
 import Cropper from 'react-cropper';
