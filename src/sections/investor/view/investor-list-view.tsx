@@ -1,6 +1,9 @@
 'use client';
 
 import { Box } from '@mui/material';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
+
 import Card from '@mui/material/Card';
 import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
@@ -9,10 +12,11 @@ import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
 import Tooltip from '@mui/material/Tooltip';
 import isEqual from 'lodash/isEqual';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 import FilterResult from 'src/components/filter-result';
 import Iconify from 'src/components/iconify';
+import Label from 'src/components/label';
 import Scrollbar from 'src/components/scrollbar';
 import { useSettingsContext } from 'src/components/settings';
 import {
@@ -28,7 +32,7 @@ import { useRoleAdmin } from 'src/hooks/admin/use-role-admin';
 import { useBoolean } from 'src/hooks/use-boolean';
 import { investorApi } from 'src/redux/api/investor.api';
 import { paths } from 'src/routes/paths';
-import { GetInvestorsRequest } from 'src/types/investor.types';
+import { GetInvestorsRequest, Investor } from 'src/types/investor.types';
 import { getRawFilters } from 'src/utils/raw-filters';
 import InvestorFilters from '../investor-list-filters';
 import DealTableRow from '../investor-table-row';
@@ -40,7 +44,11 @@ const TABLE_HEAD = [
   { id: 'created_at', label: 'Created At', width: 140 },
   { id: 'actions', label: 'Actions', width: 140, align: 'right' },
 ];
-
+const status = [
+  { value: 'all', label: 'All' },
+  { value: 'is_subscribed', label: 'Subscribed' },
+  { value: 'not_subscribed', label: 'Unsubscribed' },
+];
 const defaultFilters: GetInvestorsRequest = {
   page_no: 1,
   no_of_records: 10,
@@ -73,6 +81,26 @@ export function InvestorListView() {
 
   const notFound = (!data?.data?.investors?.length && canReset) || !data?.data?.investors?.length;
 
+  const [selectedFilter, setSelectedFilter] = useState('all');
+
+  const [investorData, setInvestorData] = React.useState<Investor[]>([]);
+  console.log(data);
+
+  React.useEffect(() => {
+    if (data) setInvestorData(data?.data?.investors);
+  }, [data]);
+  const handleFilters = (event: React.SyntheticEvent, newValue: string) => {
+    if (data) {
+      setSelectedFilter(newValue);
+      let filteredData = data?.data?.investors;
+      if (newValue === 'is_subscribed') {
+        filteredData = filteredData.filter((d) => d.is_subscribed === true);
+      } else if (newValue === 'not_subscribed') {
+        filteredData = filteredData.filter((d) => !d.is_subscribed);
+      }
+      setInvestorData(filteredData);
+    }
+  };
   const handleResetFilters = () => {
     setFilters(defaultFilters);
   };
@@ -113,6 +141,45 @@ export function InvestorListView() {
 
       <Card>
         <TableContainer sx={{ position: 'relative', overflow: 'unset' }}>
+          <Tabs
+            value={selectedFilter}
+            onChange={handleFilters}
+            sx={{
+              pl: 2.5,
+            }}
+          >
+            {status.map((item) => (
+              <Tab
+                key={item.value}
+                iconPosition="end"
+                sx={{
+                  pl: 1,
+                }}
+                icon={
+                  <Label
+                    variant={
+                      ((item.value === 'all' || item.value === selectedFilter) && 'filled') ||
+                      'soft'
+                    }
+                    color={
+                      (item.value === 'is_subscribed' && 'success') ||
+                      (item.value === 'not_subscribed' && 'error') ||
+                      (item.value === 'all' && 'default') ||
+                      'default'
+                    }
+                  >
+                    {item.value === 'is_subscribed' &&
+                      data?.data?.investors?.filter((d) => d.is_subscribed === true).length}
+                    {item.value === 'not_subscribed' &&
+                      data?.data?.investors?.filter((d) => !d.is_subscribed).length}
+                    {item.value === 'all' && data?.data?.investors?.length}
+                  </Label>
+                }
+                value={item.value}
+                label={item.label}
+              />
+            ))}
+          </Tabs>
           <TableSelectedAction
             dense={table.dense}
             numSelected={table.selected.length}
@@ -141,7 +208,7 @@ export function InvestorListView() {
               />
 
               <TableBody>
-                {data?.data?.investors?.map((row) => (
+                {investorData?.map((row) => (
                   <DealTableRow key={row.cid} row={row} rms={adminData?.data?.admins} />
                 ))}
 
