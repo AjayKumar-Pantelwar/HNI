@@ -98,13 +98,11 @@ export function DealListView() {
     if (data) {
       setSelectedFilter(newValue);
       let filteredData = data?.data?.deals;
-
       if (newValue === 'published') {
         filteredData = filteredData.filter((d) => d.is_active === true);
       } else if (newValue === 'unpublished') {
         filteredData = filteredData.filter((d) => !d.is_active);
       }
-
       setDealData(filteredData);
     }
   };
@@ -176,6 +174,7 @@ export function DealListView() {
               }}
             >
               {status.map((item) => (
+                // Calculate the count for each tab
                 <Tab
                   key={item.value}
                   iconPosition="end"
@@ -194,13 +193,20 @@ export function DealListView() {
                         (item.value === 'all' && 'secondary') ||
                         'default'
                       }
-                    />
+                    >
+                      {item.value === 'published' &&
+                        data?.data?.deals?.filter((d) => d.is_active === true).length}
+                      {item.value === 'unpublished' &&
+                        data?.data?.deals?.filter((d) => !d.is_active).length}
+                      {item.value === 'all' && data?.data?.deals?.length}
+                    </Label>
                   }
                   value={item.value}
                   label={item.label}
                 />
               ))}
             </Tabs>
+
             <TableSelectedAction
               dense={table.dense}
               numSelected={table.selected.length}
