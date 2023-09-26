@@ -108,11 +108,11 @@ export default function MediaNewEditForm({
           preview: URL.createObjectURL(file),
         })
       );
-      setValue(key, newFiles[0], { shouldValidate: true });
+      // setValue(key, newFiles[0], { shouldValidate: true });
       setMediaDetails(newFiles[0]);
     },
 
-    [setValue]
+    []
   );
 
   console.log(mediaDetails);
@@ -121,7 +121,6 @@ export default function MediaNewEditForm({
     <>
       <Dialog
         fullWidth
-        maxWidth={false}
         open={open}
         onClose={onClose}
         PaperProps={{
@@ -138,7 +137,7 @@ export default function MediaNewEditForm({
                 <Typography variant="subtitle2">{isPitch ? 'Video' : 'Image'}</Typography>
                 <RHFUpload
                   name="media"
-                  maxSize={5 * 1024 * 1024}
+                  maxSize={15 * 1024 * 1024}
                   accept={
                     isPitch
                       ? {

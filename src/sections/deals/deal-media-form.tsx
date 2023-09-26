@@ -216,10 +216,10 @@ export default function DealsMediaForm({ currentDeal }: Props) {
                   />
                 </Box>
                 <Box sx={{ display: 'flex', flex: 1, p: 3 }}>
-                  <Typography sx={{ display: 'flex' }}>
-                    <span style={{ fontWeight: 'bold' }}>Description:</span>
-                    {pitchVideo.description}
+                  <Typography component="span" sx={{ fontWeight: 'bold' }}>
+                    Description:{' '}
                   </Typography>
+                  <Typography sx={{ display: 'flex' }}>{pitchVideo.description}</Typography>
                 </Box>
               </Box>
 
