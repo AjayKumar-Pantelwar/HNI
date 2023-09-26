@@ -108,11 +108,11 @@ export default function MediaNewEditForm({
           preview: URL.createObjectURL(file),
         })
       );
-      // setValue(key, newFiles[0], { shouldValidate: true });
+      setValue(key, newFiles[0], { shouldValidate: true });
       setMediaDetails(newFiles[0]);
     },
 
-    []
+    [setValue]
   );
 
   console.log(mediaDetails);

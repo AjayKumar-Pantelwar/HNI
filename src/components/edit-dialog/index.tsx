@@ -104,7 +104,9 @@ export const EditDialog = ({ open, filename, base64, onClose, onChange, aspectRa
       <Box sx={{ mt: 2 }}>
         <Alert severity="info">
           Please maintain an aspect ratio of{' '}
-          <span style={{ fontWeight: 'bold' }}>{aspectRatio.replace('/', ':')}</span>
+          <Typography component="span" sx={{ fontWeight: 'bold' }}>
+            {aspectRatio.replace('/', ':')}
+          </Typography>
         </Alert>
       </Box>
       <Box
