@@ -94,8 +94,6 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
   } = methods;
 
   const description = watch('description');
-  const coverImage = watch('cover_image');
-  const logo = watch('logo_link');
 
   useEffect(() => {
     if (currentDeal) {
