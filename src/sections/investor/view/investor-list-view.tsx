@@ -16,7 +16,6 @@ import React, { useState } from 'react';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 import FilterResult from 'src/components/filter-result';
 import Iconify from 'src/components/iconify';
-import Label from 'src/components/label';
 import Scrollbar from 'src/components/scrollbar';
 import { useSettingsContext } from 'src/components/settings';
 import {
@@ -151,23 +150,6 @@ export function InvestorListView() {
                 sx={{
                   pl: 1,
                 }}
-                icon={
-                  <Label
-                    variant={
-                      ((item.value === 'all' || item.value === selectedFilter) && 'filled') ||
-                      'soft'
-                    }
-                    color={
-                      (item.value === 'is_subscribed' && 'success') ||
-                      (item.value === 'not_subscribed' && 'error') ||
-                      (item.value === 'all' && 'default') ||
-                      'default'
-                    }
-                  >
-                    {/* {item.value === 'all' && data?.data?.investors?.length} */}
-                    {item.value === 'all' && data?.data?.total_records}
-                  </Label>
-                }
                 value={item.value}
                 label={item.label}
               />

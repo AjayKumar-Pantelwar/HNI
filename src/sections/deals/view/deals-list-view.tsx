@@ -36,7 +36,7 @@ import { dealApi } from 'src/redux/api/deal.api';
 import { RouterLink } from 'src/routes/components';
 import { useRouter } from 'src/routes/hook';
 import { paths } from 'src/routes/paths';
-import { Deal, GetDealRequest } from 'src/types/deals.types';
+import { GetDealRequest } from 'src/types/deals.types';
 import DealTableRow from '../deal-table-row';
 
 const TABLE_HEAD = [
@@ -48,11 +48,12 @@ const TABLE_HEAD = [
   { id: 'created_at', label: 'Created At', width: 140 },
   { id: '', label: 'Actions', width: 80 },
 ];
-const status = [
-  { value: 'all', label: 'All' },
-  { value: 'published', label: 'Published' },
-  { value: 'unpublished', label: 'Draft' },
-];
+
+enum Status {
+  All = 'all',
+  Published = 'published',
+  Unpublished = 'unpublished',
+}
 
 const defaultFilters: GetDealRequest = {
   name: '',
@@ -68,42 +69,17 @@ export function DealListView() {
 
   const confirm = useBoolean();
 
-  const [dealData, setDealData] = React.useState<Deal[]>([]);
-
   const { data } = dealApi.useDealQuery(defaultFilters);
 
   const { data: adminData } = useRoleAdmin('deal_manager');
 
   const [filters] = useState(defaultFilters);
+
   const [selectedFilter, setSelectedFilter] = useState('all');
-
-  console.log(data?.data?.deals);
-
-  // const handleFilters = useCallback(
-  //   (name: string, value: GetDealRequest) => {
-  //     table.onResetPage();
-  //     setFilters((prevState) => ({
-  //       ...prevState,
-  //       [name]: value,
-  //     }));
-  //   },
-  //   [table]
-  // );
-
-  React.useEffect(() => {
-    if (data) setDealData(data?.data?.deals);
-  }, [data]);
 
   const handleFilters = (event: React.SyntheticEvent, newValue: string) => {
     if (data) {
       setSelectedFilter(newValue);
-      let filteredData = data?.data?.deals;
-      if (newValue === 'published') {
-        filteredData = filteredData.filter((d) => d.is_active === true);
-      } else if (newValue === 'unpublished') {
-        filteredData = filteredData.filter((d) => !d.is_active);
-      }
-      setDealData(filteredData);
     }
   };
 
@@ -111,7 +87,7 @@ export function DealListView() {
 
   const canReset = !isEqual(defaultFilters, filters);
 
-  const notFound = (!dealData.length && canReset) || !dealData.length;
+  const notFound = (!data?.data.deals.length && canReset) || !data?.data.deals.length;
 
   const handleEditRow = useCallback(
     (id: string) => {
@@ -119,6 +95,16 @@ export function DealListView() {
     },
     [router]
   );
+
+  const dealData = data?.data?.deals
+    .filter((f) =>
+      selectedFilter === 'published'
+        ? f.is_active
+        : selectedFilter === 'unpublished'
+        ? !f.is_active
+        : true
+    )
+    .slice(table.page * table.rowsPerPage, table.page * table.rowsPerPage + table.rowsPerPage);
 
   return (
     <>
@@ -173,10 +159,10 @@ export function DealListView() {
                 pl: 2.5,
               }}
             >
-              {status.map((item) => (
+              {Object.entries(Status).map(([label, item]) => (
                 // Calculate the count for each tab
                 <Tab
-                  key={item.value}
+                  key={item}
                   iconPosition="end"
                   sx={{
                     pl: 1,
@@ -184,25 +170,24 @@ export function DealListView() {
                   icon={
                     <Label
                       variant={
-                        ((item.value === 'all' || item.value === selectedFilter) && 'filled') ||
-                        'soft'
+                        ((item === Status.All || item === selectedFilter) && 'filled') || 'soft'
                       }
                       color={
-                        (item.value === 'published' && 'success') ||
-                        (item.value === 'unpublished' && 'error') ||
-                        (item.value === 'all' && 'default') ||
+                        (item === Status.Published && 'success') ||
+                        (item === Status.Unpublished && 'error') ||
+                        (item === Status.All && 'default') ||
                         'default'
                       }
                     >
-                      {item.value === 'published' &&
+                      {item === Status.Published &&
                         data?.data?.deals?.filter((d) => d.is_active === true).length}
-                      {item.value === 'unpublished' &&
+                      {item === Status.Unpublished &&
                         data?.data?.deals?.filter((d) => !d.is_active).length}
-                      {item.value === 'all' && data?.data?.deals?.length}
+                      {item === Status.All && data?.data?.deals?.length}
                     </Label>
                   }
-                  value={item.value}
-                  label={item.label}
+                  value={item}
+                  label={label}
                 />
               ))}
             </Tabs>
@@ -241,19 +226,14 @@ export function DealListView() {
                 />
 
                 <TableBody>
-                  {dealData
-                    .slice(
-                      table.page * table.rowsPerPage,
-                      table.page * table.rowsPerPage + table.rowsPerPage
-                    )
-                    .map((row) => (
-                      <DealTableRow
-                        key={row.deal_id}
-                        row={row}
-                        dealManagers={adminData?.data?.admins}
-                        onEditRow={() => handleEditRow(row.deal_id)}
-                      />
-                    ))}
+                  {dealData?.map((row) => (
+                    <DealTableRow
+                      key={row.deal_id}
+                      row={row}
+                      dealManagers={adminData?.data?.admins}
+                      onEditRow={() => handleEditRow(row.deal_id)}
+                    />
+                  ))}
 
                   <TableEmptyRows
                     height={denseHeight}
@@ -271,7 +251,7 @@ export function DealListView() {
           </TableContainer>
 
           <TablePaginationCustom
-            count={dealData.length}
+            count={data ? data.data.deals.length : 0}
             page={table.page}
             rowsPerPage={table.rowsPerPage}
             onPageChange={table.onChangePage}
