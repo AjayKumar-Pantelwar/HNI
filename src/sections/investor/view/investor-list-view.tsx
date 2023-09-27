@@ -44,9 +44,9 @@ const TABLE_HEAD = [
   { id: 'actions', label: 'Actions', width: 140, align: 'right' },
 ];
 const status = [
-  { value: 'all', label: 'All' },
-  { value: 'is_subscribed', label: 'Subscribed' },
-  { value: 'not_subscribed', label: 'Unsubscribed' },
+  { value: '', label: 'All' },
+  { value: 'true', label: 'Subscribed' },
+  { value: 'false', label: 'Not Subscribed' },
 ];
 const defaultFilters: GetInvestorsRequest = {
   page_no: 1,
@@ -80,20 +80,9 @@ export function InvestorListView() {
 
   const notFound = (!data?.data?.investors?.length && canReset) || !data?.data?.investors?.length;
 
-  const [selectedFilter, setSelectedFilter] = useState('all');
-
-  console.log(data);
-
   const handleFilters = (event: React.SyntheticEvent, newValue: string) => {
     if (data) {
-      setSelectedFilter(newValue);
-      if (newValue === 'is_subscribed') {
-        setFilters((prev) => ({ ...prev, is_subscribed: 'true' }));
-      } else if (newValue === 'not_subscribed') {
-        setFilters((prev) => ({ ...prev, is_subscribed: 'false' }));
-      } else if (filters.is_subscribed) {
-        setFilters((prev) => ({ ...prev, is_subscribed: '' }));
-      }
+      setFilters((prev) => ({ ...prev, is_subscribed: newValue }));
     }
   };
   const handleResetFilters = () => {
@@ -137,7 +126,7 @@ export function InvestorListView() {
       <Card>
         <TableContainer sx={{ position: 'relative', overflow: 'unset' }}>
           <Tabs
-            value={selectedFilter}
+            value={filters.is_subscribed}
             onChange={handleFilters}
             sx={{
               pl: 2.5,
