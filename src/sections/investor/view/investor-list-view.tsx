@@ -168,11 +168,8 @@ export function InvestorListView() {
                       'default'
                     }
                   >
-                    {item.value === 'is_subscribed' &&
-                      data?.data?.investors?.filter((d) => d.is_subscribed === true).length}
-                    {item.value === 'not_subscribed' &&
-                      data?.data?.investors?.filter((d) => !d.is_subscribed).length}
-                    {item.value === 'all' && data?.data?.investors?.length}
+                    {/* {item.value === 'all' && data?.data?.investors?.length} */}
+                    {item.value === 'all' && data?.data?.total_records}
                   </Label>
                 }
                 value={item.value}
