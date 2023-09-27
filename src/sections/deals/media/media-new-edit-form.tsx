@@ -42,7 +42,8 @@ export default function MediaNewEditForm({
     thumbnail: Yup.mixed().required().nullable(),
   });
 
-  const [logoLinkDetails, setLogoLinkDetails] = React.useState<File>();
+  const [thumbnailDetails, setThumbnailDetails] = React.useState<File>();
+  const [mediaImg, setMediaImg] = React.useState<File>();
 
   const defaultValues = useMemo(
     () => ({
@@ -109,9 +110,16 @@ export default function MediaNewEditForm({
         })
       );
       if (key === 'thumbnail') {
-        setLogoLinkDetails(newFiles[0]);
+        setThumbnailDetails(newFiles[0]);
       }
-      setValue(key, newFiles[0], { shouldValidate: true });
+
+      if (key === 'media') {
+        if (newFiles[0].type.includes('video')) {
+          setValue(key, newFiles[0], { shouldValidate: true });
+        } else {
+          setMediaImg(newFiles[0]);
+        }
+      }
     },
     [setValue]
   );
@@ -187,11 +195,11 @@ export default function MediaNewEditForm({
                 />
               </Box>
             )}
-            {logoLinkDetails && (
+            {thumbnailDetails && (
               <EditDialog
                 open
-                base64={URL.createObjectURL(logoLinkDetails)}
-                filename={logoLinkDetails.name}
+                base64={URL.createObjectURL(thumbnailDetails)}
+                filename={thumbnailDetails.name}
                 onChange={(file) => {
                   if (file === null) return;
                   Object.assign(file, {
@@ -199,7 +207,23 @@ export default function MediaNewEditForm({
                   });
                   setValue('thumbnail', file);
                 }}
-                onClose={() => setLogoLinkDetails(undefined)}
+                onClose={() => setThumbnailDetails(undefined)}
+                aspectRatio="1 / 1"
+              />
+            )}
+            {mediaImg && (
+              <EditDialog
+                open
+                base64={URL.createObjectURL(mediaImg)}
+                filename={mediaImg.name}
+                onChange={(file) => {
+                  if (file === null) return;
+                  Object.assign(file, {
+                    preview: URL.createObjectURL(file),
+                  });
+                  setValue('media', file);
+                }}
+                onClose={() => setMediaImg(undefined)}
                 aspectRatio="1 / 1"
               />
             )}
