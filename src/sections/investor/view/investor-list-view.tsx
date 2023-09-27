@@ -32,7 +32,7 @@ import { useRoleAdmin } from 'src/hooks/admin/use-role-admin';
 import { useBoolean } from 'src/hooks/use-boolean';
 import { investorApi } from 'src/redux/api/investor.api';
 import { paths } from 'src/routes/paths';
-import { GetInvestorsRequest, Investor } from 'src/types/investor.types';
+import { GetInvestorsRequest } from 'src/types/investor.types';
 import { getRawFilters } from 'src/utils/raw-filters';
 import InvestorFilters from '../investor-list-filters';
 import DealTableRow from '../investor-table-row';
@@ -83,22 +83,18 @@ export function InvestorListView() {
 
   const [selectedFilter, setSelectedFilter] = useState('all');
 
-  const [investorData, setInvestorData] = React.useState<Investor[]>([]);
   console.log(data);
 
-  React.useEffect(() => {
-    if (data) setInvestorData(data?.data?.investors);
-  }, [data]);
   const handleFilters = (event: React.SyntheticEvent, newValue: string) => {
     if (data) {
       setSelectedFilter(newValue);
-      let filteredData = data?.data?.investors;
       if (newValue === 'is_subscribed') {
-        filteredData = filteredData.filter((d) => d.is_subscribed === true);
+        setFilters((prev) => ({ ...prev, is_subscribed: 'true' }));
       } else if (newValue === 'not_subscribed') {
-        filteredData = filteredData.filter((d) => !d.is_subscribed);
+        setFilters((prev) => ({ ...prev, is_subscribed: 'false' }));
+      } else if (filters.is_subscribed) {
+        setFilters((prev) => ({ ...prev, is_subscribed: '' }));
       }
-      setInvestorData(filteredData);
     }
   };
   const handleResetFilters = () => {
@@ -205,7 +201,7 @@ export function InvestorListView() {
               />
 
               <TableBody>
-                {investorData?.map((row) => (
+                {data?.data?.investors?.map((row) => (
                   <DealTableRow key={row.cid} row={row} rms={adminData?.data?.admins} />
                 ))}
 
