@@ -64,7 +64,7 @@ export default function Upload({
           >
             browse
           </Box>
-          thorough your machine
+          through your machine
         </Typography>
       </Stack>
     </Stack>

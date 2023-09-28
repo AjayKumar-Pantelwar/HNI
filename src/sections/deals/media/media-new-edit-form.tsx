@@ -5,8 +5,9 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { Box, Dialog } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
+import { EditDialog } from 'src/components/edit-dialog';
 import FormProvider, { RHFTextField, RHFUpload } from 'src/components/hook-form';
 import { Media } from 'src/types/deals.types';
 import { convertUrlToFile } from 'src/utils/convert-url-to-file';
@@ -40,6 +41,9 @@ export default function MediaNewEditForm({
     media: Yup.mixed().required().nullable(),
     thumbnail: Yup.mixed().required().nullable(),
   });
+
+  const [thumbnailDetails, setThumbnailDetails] = React.useState<File>();
+  const [mediaImg, setMediaImg] = React.useState<File>();
 
   const defaultValues = useMemo(
     () => ({
@@ -105,7 +109,17 @@ export default function MediaNewEditForm({
           preview: URL.createObjectURL(file),
         })
       );
-      setValue(key, newFiles[0], { shouldValidate: true });
+      if (key === 'thumbnail') {
+        setThumbnailDetails(newFiles[0]);
+      }
+
+      if (key === 'media') {
+        if (newFiles[0].type.includes('video')) {
+          setValue(key, newFiles[0], { shouldValidate: true });
+        } else {
+          setMediaImg(newFiles[0]);
+        }
+      }
     },
     [setValue]
   );
@@ -130,7 +144,7 @@ export default function MediaNewEditForm({
               <Typography variant="subtitle2">{isPitch ? 'Video' : 'Image'}</Typography>
               <RHFUpload
                 name="media"
-                maxSize={5 * 1024 * 1024}
+                maxSize={15 * 1024 * 1024}
                 accept={
                   isPitch
                     ? {
@@ -180,6 +194,38 @@ export default function MediaNewEditForm({
                   }
                 />
               </Box>
+            )}
+            {thumbnailDetails && (
+              <EditDialog
+                open
+                base64={URL.createObjectURL(thumbnailDetails)}
+                filename={thumbnailDetails.name}
+                onChange={(file) => {
+                  if (file === null) return;
+                  Object.assign(file, {
+                    preview: URL.createObjectURL(file),
+                  });
+                  setValue('thumbnail', file);
+                }}
+                onClose={() => setThumbnailDetails(undefined)}
+                aspectRatio="1 / 1"
+              />
+            )}
+            {mediaImg && (
+              <EditDialog
+                open
+                base64={URL.createObjectURL(mediaImg)}
+                filename={mediaImg.name}
+                onChange={(file) => {
+                  if (file === null) return;
+                  Object.assign(file, {
+                    preview: URL.createObjectURL(file),
+                  });
+                  setValue('media', file);
+                }}
+                onClose={() => setMediaImg(undefined)}
+                aspectRatio="1 / 1"
+              />
             )}
           </Box>
           <RHFTextField name="description" label="Description" />

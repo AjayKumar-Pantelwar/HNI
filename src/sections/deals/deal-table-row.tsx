@@ -1,6 +1,5 @@
-import { Box, Button, Stack, Tooltip, Typography } from '@mui/material';
+import { Box, Button, Checkbox, Stack, Tooltip, Typography } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
-import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
@@ -67,7 +66,7 @@ export default function DealTableRow({
             <ListItemText
               primary={row.deal_name}
               secondary={company?.legal_name}
-              primaryTypographyProps={{ typography: 'body2' }}
+              primaryTypographyProps={{ typography: 'body2', noWrap: true }}
               secondaryTypographyProps={{ component: 'span', color: 'text.disabled' }}
             />
           </Box>
@@ -147,7 +146,7 @@ export default function DealTableRow({
           )}
         </TableCell>
 
-        <TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>
           <Box>Start: {fDate(row.start_date)}</Box>
           <Box>End: {fDate(row.end_date)}</Box>
         </TableCell>

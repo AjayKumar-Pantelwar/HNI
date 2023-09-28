@@ -2,7 +2,7 @@
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { Button, Card, Stack } from '@mui/material';
+import { Button, Card, Divider, Stack } from '@mui/material';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import React, { useEffect, useMemo } from 'react';
@@ -190,35 +190,50 @@ export default function DealsMediaForm({ currentDeal }: Props) {
         {!pitchVideo ? (
           <EmptyContent filled title="No Pitch Video Added" sx={{ py: 10 }} />
         ) : (
-          <Card sx={{ p: 2, width: '100%' }}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 2 }}>
-              <img
-                src={(media[pitchVideoIndex]?.thumbnail as any)?.preview}
-                height="150px"
-                alt={media[pitchVideoIndex].description}
-              />
-              <video
-                src={(media[pitchVideoIndex]?.media as any)?.preview}
-                style={{ height: '100%', maxHeight: '330px' }}
-                controls
-                loop
-              />
-              <Stack sx={{ height: '10%%', justifyContent: 'space-between' }}>
-                <Typography>{pitchVideo.description}</Typography>
-                <Box sx={{ display: 'flex', justifyContent: 'end' }}>
-                  <Button
-                    color="error"
-                    onClick={() => {
-                      setDeleteOpen(true);
-                      setSelectedId(pitchVideoIndex);
-                    }}
-                  >
-                    <Iconify icon="solar:trash-bin-trash-bold" />
-                    Delete
-                  </Button>
+          <Card sx={{ p: 2 }}>
+            <Stack sx={{ gap: 3 }}>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 2 }}>
+                <Box
+                  sx={{ display: 'flex', gap: 4, p: 3, width: '100%', justifyContent: 'center' }}
+                >
+                  {/* <Typography sx={{ fontWeight: 'bold' }}>Video:</Typography> */}
+                  <video
+                    src={(media[pitchVideoIndex]?.media as any)?.preview}
+                    style={{ height: '100%', maxHeight: '330px' }}
+                    controls
+                    loop
+                  />
                 </Box>
-              </Stack>
-            </Box>
+              </Box>
+              <Divider />
+              <Box sx={{ display: 'flex' }}>
+                <Box sx={{ display: 'flex', flex: 1, p: 3 }}>
+                  <img
+                    src={(media[pitchVideoIndex]?.thumbnail as any)?.preview}
+                    alt={media[pitchVideoIndex].description}
+                    width="200px"
+                    height="200px"
+                  />
+                </Box>
+                <Box sx={{ display: 'flex', flex: 1, p: 3 }}>
+                  <Typography component="span" sx={{ fontWeight: 'bold' }}>
+                    Description:{' '}
+                  </Typography>
+                  <Typography sx={{ display: 'flex' }}>{pitchVideo.description}</Typography>
+                </Box>
+              </Box>
+
+              <Button
+                color="error"
+                onClick={() => {
+                  setDeleteOpen(true);
+                  setSelectedId(pitchVideoIndex);
+                }}
+              >
+                <Iconify icon="solar:trash-bin-trash-bold" />
+                Delete
+              </Button>
+            </Stack>
           </Card>
         )}
         <Box
