@@ -1,6 +1,9 @@
 'use client';
 
 import { Box } from '@mui/material';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
+
 import Card from '@mui/material/Card';
 import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
@@ -9,7 +12,7 @@ import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
 import Tooltip from '@mui/material/Tooltip';
 import isEqual from 'lodash/isEqual';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 import FilterResult from 'src/components/filter-result';
 import Iconify from 'src/components/iconify';
@@ -40,7 +43,11 @@ const TABLE_HEAD = [
   { id: 'created_at', label: 'Created At', width: 140 },
   { id: 'actions', label: 'Actions', width: 140, align: 'right' },
 ];
-
+const status = [
+  { value: '', label: 'All' },
+  { value: 'true', label: 'Subscribed' },
+  { value: 'false', label: 'Not Subscribed' },
+];
 const defaultFilters: GetInvestorsRequest = {
   page_no: 1,
   no_of_records: 10,
@@ -73,6 +80,11 @@ export function InvestorListView() {
 
   const notFound = (!data?.data?.investors?.length && canReset) || !data?.data?.investors?.length;
 
+  const handleFilters = (event: React.SyntheticEvent, newValue: string) => {
+    if (data) {
+      setFilters((prev) => ({ ...prev, is_subscribed: newValue }));
+    }
+  };
   const handleResetFilters = () => {
     setFilters(defaultFilters);
   };
@@ -113,6 +125,25 @@ export function InvestorListView() {
 
       <Card>
         <TableContainer sx={{ position: 'relative', overflow: 'unset' }}>
+          <Tabs
+            value={filters.is_subscribed}
+            onChange={handleFilters}
+            sx={{
+              pl: 2.5,
+            }}
+          >
+            {status.map((item) => (
+              <Tab
+                key={item.value}
+                iconPosition="end"
+                sx={{
+                  pl: 1,
+                }}
+                value={item.value}
+                label={item.label}
+              />
+            ))}
+          </Tabs>
           <TableSelectedAction
             dense={table.dense}
             numSelected={table.selected.length}

@@ -37,7 +37,7 @@ export default function CompanyTableRow(props: Props) {
         <TableCell>
           <ListItemText
             primary={row.legal_name}
-            secondary={row.description}
+            // secondary={row.description}
             primaryTypographyProps={{ typography: 'body2' }}
             secondaryTypographyProps={{ component: 'span', color: 'text.disabled' }}
           />
