@@ -2,7 +2,7 @@
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { Button, Card, Divider, Stack } from '@mui/material';
+import { Button, Card, Stack } from '@mui/material';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import React, { useEffect, useMemo } from 'react';
@@ -174,55 +174,19 @@ export default function DealsMediaForm({ currentDeal }: Props) {
           }}
         >
           <Typography variant="h4">Pitch Video</Typography>
-          <Button
-            onClick={() => {
-              setOpen(true);
-              setIsPitch(true);
-              setSelectedId(media.length);
-            }}
-            disabled={!!pitchVideo}
-            variant="outlined"
-            color="success"
-          >
-            Add Pitch Video
-          </Button>
-        </Box>
-        {!pitchVideo ? (
-          <EmptyContent filled title="No Pitch Video Added" sx={{ py: 10 }} />
-        ) : (
-          <Card sx={{ p: 2 }}>
-            <Stack sx={{ gap: 3 }}>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 2 }}>
-                <Box
-                  sx={{ display: 'flex', gap: 4, p: 3, width: '100%', justifyContent: 'center' }}
-                >
-                  {/* <Typography sx={{ fontWeight: 'bold' }}>Video:</Typography> */}
-                  <video
-                    src={(media[pitchVideoIndex]?.media as any)?.preview}
-                    style={{ height: '100%', maxHeight: '330px' }}
-                    controls
-                    loop
-                  />
-                </Box>
-              </Box>
-              <Divider />
-              <Box sx={{ display: 'flex' }}>
-                <Box sx={{ display: 'flex', flex: 1, p: 3 }}>
-                  <img
-                    src={(media[pitchVideoIndex]?.thumbnail as any)?.preview}
-                    alt={media[pitchVideoIndex].description}
-                    width="200px"
-                    height="200px"
-                  />
-                </Box>
-                <Box sx={{ display: 'flex', flex: 1, p: 3 }}>
-                  <Typography component="span" sx={{ fontWeight: 'bold' }}>
-                    Description:{' '}
-                  </Typography>
-                  <Typography sx={{ display: 'flex' }}>{pitchVideo.description}</Typography>
-                </Box>
-              </Box>
-
+          {pitchVideo ? (
+            <Box sx={{ display: 'flex', justifyContent: 'end' }}>
+              <Button
+                color="inherit"
+                onClick={() => {
+                  setOpen(true);
+                  setIsPitch(true);
+                  setSelectedId(pitchVideoIndex);
+                }}
+              >
+                <Iconify icon="tabler:edit" />
+                Edit
+              </Button>
               <Button
                 color="error"
                 onClick={() => {
@@ -233,6 +197,70 @@ export default function DealsMediaForm({ currentDeal }: Props) {
                 <Iconify icon="solar:trash-bin-trash-bold" />
                 Delete
               </Button>
+            </Box>
+          ) : (
+            <Button
+              onClick={() => {
+                setOpen(true);
+                setIsPitch(true);
+                setSelectedId(media.length);
+              }}
+              variant="outlined"
+              color="success"
+            >
+              Add Pitch Video
+            </Button>
+          )}
+        </Box>
+
+        {!pitchVideo ? (
+          <EmptyContent filled title="No Pitch Video Added" sx={{ py: 10 }} />
+        ) : (
+          <Card sx={{ p: 2 }}>
+            <Stack sx={{ gap: 3 }}>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 2, width: '100%' }}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    gap: 4,
+                    flex: 1,
+                    height: '400px',
+                    justifyContent: 'center',
+                    backgroundColor: 'black',
+                  }}
+                >
+                  <video
+                    src={(media[pitchVideoIndex]?.media as any)?.preview}
+                    controls
+                    loop
+                    style={{ width: '100%' }}
+                  />
+                </Box>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    gap: 4,
+                    flex: 1,
+                    height: '400px',
+                    backgroundColor: 'black',
+                    justifyContent: 'center',
+                    backgroundImage: `url(${(media[pitchVideoIndex]?.thumbnail as any)?.preview})`,
+                    backgroundRepeat: 'no-repeat',
+                    backgroundSize: 'contain',
+                    backgroundPosition: 'center',
+                  }}
+                />
+              </Box>
+              <Box sx={{ display: 'flex', width: '100%' }}>
+                <Typography component="span" sx={{ fontWeight: 'bold' }}>
+                  Description
+                </Typography>
+              </Box>
+              <Box sx={{ display: 'flex', width: '100%' }}>
+                <Typography sx={{ display: 'flex', whiteSpace: 'pre-line' }}>
+                  {pitchVideo.description}
+                </Typography>
+              </Box>
             </Stack>
           </Card>
         )}

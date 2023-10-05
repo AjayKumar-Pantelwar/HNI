@@ -257,7 +257,7 @@ export default function DealsNewEditForm({ currentDeal }: Props) {
                   setValue('cover_image', file);
                 }}
                 onClose={() => setCoverImageDetails(undefined)}
-                aspectRatio="4 / 3"
+                aspectRatio="3.5/2"
               />
             )}
             {logoLinkDetails && (

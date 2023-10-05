@@ -5,8 +5,9 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { Dialog } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
+import { EditDialog } from 'src/components/edit-dialog';
 import FormProvider, { RHFTextField, RHFUploadAvatar } from 'src/components/hook-form';
 import { useSnackbar } from 'src/components/snackbar';
 import { dealApi } from 'src/redux/api/deal.api';
@@ -27,6 +28,8 @@ export default function InvestorNewEditForm({ open, onClose, investor, dealId }:
 
   const [addInvestor] = dealApi.useAddInvestorMutation();
   const [editInvestor] = dealApi.useEditInvestorMutation();
+
+  const [mediaDetails, setMediaDetails] = React.useState<File>();
 
   const NewInvestorSchema = Yup.object().shape({
     designation: Yup.string().required('Designation is required'),
@@ -87,18 +90,16 @@ export default function InvestorNewEditForm({ open, onClose, investor, dealId }:
     }
   });
 
-  const handleDrop = useCallback(
-    (acceptedFiles: File[]) => {
-      const newFiles = acceptedFiles.map((file) =>
-        Object.assign(file, {
-          preview: URL.createObjectURL(file),
-        })
-      );
+  const handleDrop = useCallback((acceptedFiles: File[]) => {
+    const newFiles = acceptedFiles.map((file) =>
+      Object.assign(file, {
+        preview: URL.createObjectURL(file),
+      })
+    );
 
-      setValue('file', newFiles[0], { shouldValidate: true });
-    },
-    [setValue]
-  );
+    // setValue('file', newFiles[0], { shouldValidate: true });
+    setMediaDetails(newFiles[0]);
+  }, []);
 
   return (
     <Dialog
@@ -147,6 +148,22 @@ export default function InvestorNewEditForm({ open, onClose, investor, dealId }:
           </LoadingButton>
         </Stack>
       </FormProvider>
+      {mediaDetails && (
+        <EditDialog
+          open
+          base64={URL.createObjectURL(mediaDetails)}
+          filename={mediaDetails.name}
+          onChange={(file) => {
+            if (file === null) return;
+            Object.assign(file, {
+              preview: URL.createObjectURL(file),
+            });
+            setValue('file', file);
+          }}
+          onClose={() => setMediaDetails(undefined)}
+          aspectRatio="1/1"
+        />
+      )}
     </Dialog>
   );
 }

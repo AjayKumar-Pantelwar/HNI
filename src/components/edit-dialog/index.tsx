@@ -7,11 +7,13 @@ import {
   IconButton,
   Typography,
 } from '@mui/material';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import Compress from 'compress.js';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import 'cropperjs/dist/cropper.css';
 import * as React from 'react';
 import type { ReactCropperElement } from 'react-cropper';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import Cropper from 'react-cropper';
 import { convertBase64ToFile } from 'src/utils/file';
 import { handleError } from 'src/utils/handle-error';
@@ -23,7 +25,7 @@ interface Props {
   open: boolean;
   onChange: (file: File | null, base64: string | null) => void;
   onClose: () => void;
-  aspectRatio: string;
+  aspectRatio?: string;
 }
 
 const compressOptions = {
@@ -98,17 +100,19 @@ export const EditDialog = ({ open, filename, base64, onClose, onChange, aspectRa
           viewMode={2}
           style={{ height: 300 }}
           // eslint-disable-next-line no-eval
-          aspectRatio={eval(aspectRatio)}
+          aspectRatio={aspectRatio ? eval(aspectRatio) : undefined}
         />
       </Box>
-      <Box sx={{ mt: 2 }}>
-        <Alert severity="info">
-          Please maintain an aspect ratio of{' '}
-          <Typography component="span" sx={{ fontWeight: 'bold' }}>
-            {aspectRatio.replace('/', ':')}
-          </Typography>
-        </Alert>
-      </Box>
+      {aspectRatio && (
+        <Box sx={{ mt: 2 }}>
+          <Alert severity="info">
+            Please maintain an aspect ratio of{' '}
+            <Typography component="span" sx={{ fontWeight: 'bold' }}>
+              {aspectRatio?.replace('/', ':')}
+            </Typography>
+          </Alert>
+        </Box>
+      )}
       <Box
         sx={{
           display: 'flex',

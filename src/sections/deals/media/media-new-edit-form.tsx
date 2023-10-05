@@ -224,7 +224,6 @@ export default function MediaNewEditForm({
                   setValue('media', file);
                 }}
                 onClose={() => setMediaImg(undefined)}
-                aspectRatio="1 / 1"
               />
             )}
           </Box>

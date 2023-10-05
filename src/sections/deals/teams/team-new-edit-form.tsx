@@ -174,7 +174,7 @@ export default function TeamNewEditForm({ open, onClose, team, dealId, media }: 
             setValue('file', file);
           }}
           onClose={() => setMediaDetails(undefined)}
-          aspectRatio="4/3"
+          aspectRatio="1/1"
         />
       )}
     </>
