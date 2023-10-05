@@ -5,8 +5,9 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { Dialog } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
+import { EditDialog } from 'src/components/edit-dialog';
 import FormProvider, { RHFTextField, RHFUploadAvatar } from 'src/components/hook-form';
 import { useSnackbar } from 'src/components/snackbar';
 import { dealApi } from 'src/redux/api/deal.api';
@@ -27,6 +28,8 @@ export default function NewsNewEditForm({ open, onClose, news, dealId }: Props) 
 
   const [addNews] = dealApi.useAddNewsMutation();
   const [editNews] = dealApi.useEditNewsMutation();
+
+  const [mediaDetails, setMediaDetails] = React.useState<File>();
 
   const NewsSchema = Yup.object().shape({
     file: Yup.mixed().required('File is required').nullable(),
@@ -87,18 +90,16 @@ export default function NewsNewEditForm({ open, onClose, news, dealId }: Props) 
     }
   });
 
-  const handleDrop = useCallback(
-    (acceptedFiles: File[]) => {
-      const newFiles = acceptedFiles.map((file) =>
-        Object.assign(file, {
-          preview: URL.createObjectURL(file),
-        })
-      );
+  const handleDrop = useCallback((acceptedFiles: File[]) => {
+    const newFiles = acceptedFiles.map((file) =>
+      Object.assign(file, {
+        preview: URL.createObjectURL(file),
+      })
+    );
 
-      setValue('file', newFiles[0], { shouldValidate: true });
-    },
-    [setValue]
-  );
+    // setValue('file', newFiles[0], { shouldValidate: true });
+    setMediaDetails(newFiles[0]);
+  }, []);
 
   return (
     <Dialog
@@ -147,6 +148,22 @@ export default function NewsNewEditForm({ open, onClose, news, dealId }: Props) 
           </LoadingButton>
         </Stack>
       </FormProvider>
+      {mediaDetails && (
+        <EditDialog
+          open
+          base64={URL.createObjectURL(mediaDetails)}
+          filename={mediaDetails.name}
+          onChange={(file) => {
+            if (file === null) return;
+            Object.assign(file, {
+              preview: URL.createObjectURL(file),
+            });
+            setValue('file', file);
+          }}
+          onClose={() => setMediaDetails(undefined)}
+          aspectRatio="5/4"
+        />
+      )}
     </Dialog>
   );
 }
