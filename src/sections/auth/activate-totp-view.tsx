@@ -7,6 +7,7 @@ import {
   Divider,
   IconButton,
   InputAdornment,
+  Link,
   Skeleton,
   TextField,
   Tooltip,
@@ -24,10 +25,10 @@ import React, { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import FormProvider, { RHFCode } from 'src/components/hook-form';
-import Link from 'src/components/link';
 import { useCopyToClipboard } from 'src/hooks/use-copy-to-clipboard';
 import { authSlice } from 'src/redux/slices/auth.slice';
 import { useSelector } from 'src/redux/store';
+import { RouterLink } from 'src/routes/components';
 import { paths } from 'src/routes/paths';
 import { authService } from 'src/services';
 import { handleError } from 'src/utils/handle-error';
@@ -143,6 +144,7 @@ export default function ActivateTotpView() {
       <Stack sx={{ width: '100%', gap: 2, mt: 2 }}>
         <Divider />
         <Link
+          component={RouterLink}
           href={paths.auth.login}
           sx={{
             alignItems: 'center',

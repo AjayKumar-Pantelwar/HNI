@@ -7,17 +7,9 @@ import {
 import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, persistStore } from 'redux-persist';
 
 import { adminApi } from './api/admin.api';
-<<<<<<< Updated upstream
-import { companyApi } from './api/company.api';
-import { constantApi } from './api/constant.api';
-import { dealApi } from './api/deal.api';
-import { investorApi } from './api/investor.api';
-import { portfolioApi } from './api/portfolio.api';
-=======
-import { bondsApi } from './api/bonds.api';
-import { carouselApi } from './api/carousel.api';
-import { mldsApi } from './api/mlds.api';
->>>>>>> Stashed changes
+// import { bondsApi } from './api/bonds.api';
+// import { carouselApi } from './api/carousel.api';
+// import { mldsApi } from './api/mlds.api';
 import { roleApi } from './api/role.api';
 import { rootReducer } from './root-reducer';
 
@@ -34,22 +26,14 @@ export const store = configureStore({
       },
     }).concat([
       roleApi.middleware,
-<<<<<<< Updated upstream
-      dealApi.middleware,
-      companyApi.middleware,
-      constantApi.middleware,
-      investorApi.middleware,
-      portfolioApi.middleware,
-=======
       adminApi.middleware,
-      carouselApi.middleware,
-      bondsApi.middleware,
-      mldsApi.middleware,
+      // carouselApi.middleware,
+      // bondsApi.middleware,
+      // mldsApi.middleware,
       // dealApi.middleware,
       // companyApi.middleware,
       // constantApi.middleware,
       // investorApi.middleware,
->>>>>>> Stashed changes
     ]),
 });
 

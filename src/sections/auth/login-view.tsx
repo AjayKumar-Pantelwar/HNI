@@ -4,7 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import LoadingButton from '@mui/lab/LoadingButton';
 
-import { Alert, Box, Dialog } from '@mui/material';
+import { Alert, Box, Dialog, Divider, Link } from '@mui/material';
 
 import IconButton from '@mui/material/IconButton';
 
@@ -32,6 +32,7 @@ import { useBoolean } from 'src/hooks/use-boolean';
 import { authSlice } from 'src/redux/slices/auth.slice';
 
 import { useDispatch, useSelector } from 'src/redux/store';
+import { RouterLink } from 'src/routes/components';
 
 import { paths } from 'src/routes/paths';
 
@@ -133,7 +134,7 @@ export default function LoginSection() {
   });
 
   const renderForm = (
-    <Stack spacing={8}>
+    <Stack spacing={2}>
       {!!errorMsg && <Alert severity="error">{errorMsg}</Alert>}
       <Stack spacing={3} sx={{ alignItems: 'end', mb: 2 }}>
         <RHFTextField name="username" label="Username" />
@@ -152,7 +153,6 @@ export default function LoginSection() {
             ),
           }}
         />
-
         <LoadingButton
           fullWidth
           size="large"
@@ -163,12 +163,18 @@ export default function LoginSection() {
           Login
         </LoadingButton>
       </Stack>
+      <Divider />
+      <Box sx={{ display: 'flex', justifyContent: 'start' }}>
+        <Link component={RouterLink} href={paths.auth.changePassword}>
+          Forgot Password?
+        </Link>
+      </Box>
     </Stack>
   );
 
   const renderHead = (
-    <Stack sx={{ mb: 5, display: 'flex', alignItems: 'center', gap: 2 }}>
-      <img src="/logo/360-one.png" alt="logo" style={{ width: 60 }} />
+    <Stack sx={{ mb: 5, display: 'flex', alignItems: 'center' }}>
+      <img src="/logo/360logo.png" alt="logo" style={{ width: 60, marginBottom: 24 }} />
       <Typography variant="h4">Login</Typography>
       <Typography variant="body2" color="text.secondary">
         Sign in on the 360ONE Wealth Mobile CMS

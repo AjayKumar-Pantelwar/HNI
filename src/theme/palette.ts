@@ -35,11 +35,11 @@ const GREY = {
 
 const PRIMARY = {
   lighter: '#C8FAD6',
-  light: '#fd9266',
-  main: '#fd7740',
+  light: '#FF8C63',
+  main: '#FD7740',
   dark: '#D25021',
   darker: '#FA6530',
-  contrastText: '#FFFFFF',
+  contrastText: '#07090F',
 };
 
 const SECONDARY = {
@@ -81,7 +81,7 @@ const WARNING = {
 const ERROR = {
   lighter: '#FFE9D5',
   light: '#FFAC82',
-  main: '#FF5630',
+  main: '#F64047',
   dark: '#B71D18',
   darker: '#7A0916',
   contrastText: '#FFFFFF',
