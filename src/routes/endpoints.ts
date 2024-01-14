@@ -1,0 +1,79 @@
+import { HTTP_METHOD } from 'next/dist/server/web/http';
+
+const p = (method: HTTP_METHOD, url: string) => ({ method, url });
+
+export const endpoints = {
+  admin: {
+    list: p('GET', '/manage/admins'),
+    create: p('POST', '/manage/admin'),
+    edit: (id: string) => p(`PUT`, `/manage/admin/${id}`),
+    block: (id: string) => p(`POST`, `/manage/admin/${id}/block`),
+    action: (id: string) => p(`PUT`, `/manage/admin/${id}/role`),
+  },
+  deal: {
+    list: p('GET', '/api/deal'),
+    create: p('POST', '/api/deal/basic'),
+    edit: (id: string) => p(`POST`, `/api/deal/basic/${id}`),
+    media: (id: string) => p(`POST`, `/api/deal/${id}/basic/media`),
+    trending: p('POST', '/api/deal/trending'),
+    stage: (id: string) => p('POST', `/api/deal/stage/${id}`),
+    status: (id: string) => p('POST', `/api/deal/${id}/status`),
+    assignDM: (id: string) => p('POST', `/api/deal/manager/${id}`),
+    dealOfTheWeek: (id: string) => p('POST', `/api/deal/deal-of-the-week/${id}`),
+    pitch: (id: string) => p(`POST`, `/api/deal/${id}/pitch`),
+    highlights: (id: string) => p(`POST`, `/api/deal/${id}/pitch/highlights`),
+    companyInfo: (id: string) => p(`POST`, `/api/deal/${id}/company-info`),
+    addTeam: (id: string) => p(`POST`, `/api/deal/${id}/company-info/team`),
+    editTeam: (id: string, mem_id: string) =>
+      p(`PUT`, `/api/deal/${id}/company-info/team/${mem_id}`),
+    deleteTeam: (id: string) => p(`DELETE`, `/api/deal/${id}/company-info/team`),
+    addInvestor: (id: string) => p(`POST`, `/api/deal/${id}/company-info/current-investor`),
+    editInvestor: (id: string, mem_id: string) =>
+      p(`PUT`, `/api/deal/${id}/company-info/current-investor/${mem_id}`),
+    deleteInvestor: (id: string) => p(`DELETE`, `/api/deal/${id}/company-info/current-investor`),
+    addNews: (id: string) => p(`POST`, `/api/deal/${id}/company-info/news`),
+    editNews: (id: string, mem_id: string) =>
+      p(`PUT`, `/api/deal/${id}/company-info/news/${mem_id}`),
+    deleteNews: (id: string) => p(`DELETE`, `/api/deal/${id}/company-info/news`),
+    dealTerms: (id: string) => p(`POST`, `/api/deal/${id}/terms`),
+    dataroom: (id: string) => p(`POST`, `/api/deal/${id}/dataroom`),
+    saveInvested: (dealId: string) => p(`POST`, `/api/deal/${dealId}/invest`),
+    ddReport: (dealId: string) => p(`POST`, `/api/deal/${dealId}/dd-report`),
+  },
+  role: {
+    list: p('GET', '/manage/roles'),
+    create: p('POST', '/manage/role'),
+    edit: (id: string) => p(`PUT`, `/manage/role/${id}`),
+    allPermissions: p('GET', '/manage/modules'),
+    permissions: (id: string) => p('GET', `/manage/policies/${id}`),
+  },
+  bonds: {
+    list: p('GET', '/bonds'),
+    create: p('POST', '/bonds'),
+    edit: (id: string) => p(`PUT`, `/bonds/${id}`),
+  },
+  mlds: {
+    list: p('GET', '/mlds'),
+    create: p('POST', '/mlds'),
+    edit: (id: string) => p(`PUT`, `/cms/mlds/${id}`),
+  },
+  company: {
+    list: p('GET', '/api/company'),
+    create: p('POST', '/api/company'),
+    edit: (id: string) => p(`PUT`, `/api/company/${id}`),
+  },
+  investors: {
+    list: p('GET', '/api/investor'),
+    assignRM: p('POST', '/api/investor/rm'),
+  },
+  portfolio: {
+    list: p('GET', '/api/portfolio'),
+    transactions: p('GET', '/api/portfolio/txn'),
+  },
+  constant: p('GET', '/constant'),
+  carousel: {
+    list: p('GET', '/cms/carousels'),
+    insert: p('POST', '/cms/carousel'),
+    edit: (id: string) => p(`PUT`, `/cms/carousels/${id}`),
+  },
+};
