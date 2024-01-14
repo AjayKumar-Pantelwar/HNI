@@ -74,6 +74,6 @@ export const endpoints = {
   carousel: {
     list: p('GET', '/cms/carousels'),
     insert: p('POST', '/cms/carousel'),
-    edit: p(`PUT`, `/cms/carousels`),
+    edit: (id: string) => p(`PUT`, `/cms/carousels/${id}`),
   },
 };

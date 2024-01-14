@@ -3,8 +3,8 @@ import { persistReducer } from 'redux-persist';
 import createWebStorage from 'redux-persist/lib/storage/createWebStorage';
 
 import { adminApi } from './api/admin.api';
-// import { carouselApi } from './api/carousel.api';
 import { bondsApi } from './api/bonds.api';
+import { carouselApi } from './api/carousel.api';
 import { mldsApi } from './api/mlds.api';
 import { roleApi } from './api/role.api';
 import { authSlice } from './slices/auth.slice';
@@ -35,7 +35,7 @@ export const rootReducer = combineReducers({
   // [companyApi.reducerPath]: companyApi.reducer,
   [adminApi.reducerPath]: adminApi.reducer,
   [roleApi.reducerPath]: roleApi.reducer,
-  // [carouselApi.reducerPath]: carouselApi.reducer,
+  [carouselApi.reducerPath]: carouselApi.reducer,
   [bondsApi.reducerPath]: bondsApi.reducer,
   [mldsApi.reducerPath]: mldsApi.reducer,
   // [dealApi.reducerPath]: dealApi.reducer,

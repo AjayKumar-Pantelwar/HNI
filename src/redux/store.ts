@@ -8,7 +8,7 @@ import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, persistStore } from 
 
 import { adminApi } from './api/admin.api';
 import { bondsApi } from './api/bonds.api';
-// import { carouselApi } from './api/carousel.api';
+import { carouselApi } from './api/carousel.api';
 import { mldsApi } from './api/mlds.api';
 import { roleApi } from './api/role.api';
 import { rootReducer } from './root-reducer';
@@ -27,7 +27,7 @@ export const store = configureStore({
     }).concat([
       roleApi.middleware,
       adminApi.middleware,
-      // carouselApi.middleware,
+      carouselApi.middleware,
       bondsApi.middleware,
       mldsApi.middleware,
       // dealApi.middleware,

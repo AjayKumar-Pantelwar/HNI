@@ -1,7 +1,7 @@
 import ChangePasswordSection from 'src/sections/auth/change-password-view';
 
 export const metadata = {
-  title: 'Change Password | Mumbai Angels',
+  title: 'Change Password | HNI - Mid Markert',
 };
 
 export default function ChangePasswordPage() {

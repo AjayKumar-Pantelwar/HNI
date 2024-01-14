@@ -19,6 +19,7 @@ import { Admin } from 'src/types/admin.types';
 import { titleCase } from 'src/utils/change-case';
 import AdminBlockForm from './admin-block-form';
 import AdminQuickEditForm from './admin-quick-edit-form';
+import AdminRoleForm from './admin-role-form';
 
 interface Props {
   selected?: boolean;
@@ -105,7 +106,12 @@ export default function AdminTableRow(props: Props) {
         </TableCell>
       </TableRow>
 
-      {/* <AdminRoleForm currentAdmin={row} open={rolePopover.value} onClose={rolePopover.onFalse} /> */}
+      <AdminRoleForm
+        currentAdmin={row}
+        open={rolePopover.value}
+        onClose={rolePopover.onFalse}
+        roles={rolesData}
+      />
 
       <AdminQuickEditForm
         currentAdmin={row}

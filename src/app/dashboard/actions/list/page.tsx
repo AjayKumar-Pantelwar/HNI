@@ -1,7 +1,7 @@
 import { ActionListView } from 'src/sections/actions/view/action-list-view';
 
 export const metadata = {
-  title: 'Actions | Mumbai Angels',
+  title: 'Actions | HNI - MID Market',
 };
 
 export default function ActionView() {
