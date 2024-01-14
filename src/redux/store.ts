@@ -7,9 +7,9 @@ import {
 import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, persistStore } from 'redux-persist';
 
 import { adminApi } from './api/admin.api';
-// import { bondsApi } from './api/bonds.api';
+import { bondsApi } from './api/bonds.api';
 // import { carouselApi } from './api/carousel.api';
-// import { mldsApi } from './api/mlds.api';
+import { mldsApi } from './api/mlds.api';
 import { roleApi } from './api/role.api';
 import { rootReducer } from './root-reducer';
 
@@ -28,8 +28,8 @@ export const store = configureStore({
       roleApi.middleware,
       adminApi.middleware,
       // carouselApi.middleware,
-      // bondsApi.middleware,
-      // mldsApi.middleware,
+      bondsApi.middleware,
+      mldsApi.middleware,
       // dealApi.middleware,
       // companyApi.middleware,
       // constantApi.middleware,

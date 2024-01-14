@@ -55,7 +55,7 @@ export const endpoints = {
   mlds: {
     list: p('GET', '/mlds'),
     create: p('POST', '/mlds'),
-    edit: (id: string) => p(`PUT`, `/mlds/${id}`),
+    edit: (id: string) => p(`PUT`, `/cms/mlds/${id}`),
   },
   company: {
     list: p('GET', '/api/company'),

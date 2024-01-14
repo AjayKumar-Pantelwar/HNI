@@ -1,6 +1,5 @@
 'use client';
 
-import { Box } from '@mui/material';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import Container from '@mui/material/Container';
@@ -9,11 +8,8 @@ import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
 import Tooltip from '@mui/material/Tooltip';
-import isEqual from 'lodash/isEqual';
-import { useCallback, useState } from 'react';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 import { ConfirmDialog } from 'src/components/custom-dialog';
-import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 import { useSettingsContext } from 'src/components/settings';
 import {
@@ -22,151 +18,135 @@ import {
   TableNoData,
   TablePaginationCustom,
   TableSelectedAction,
-  TableSkeleton,
   emptyRows,
-  getComparator,
   useTable,
 } from 'src/components/table';
 import { useBoolean } from 'src/hooks/use-boolean';
 // import { usePerm } from 'src/hooks/use-perm';
-
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import { mldsApi } from 'src/redux/api/mlds.api';
 import { RouterLink } from 'src/routes/components';
 import { paths } from 'src/routes/paths';
-
-import { adminApi } from 'src/redux/api/admin.api';
-import { Admin, AdminRequest } from 'src/types/admin.types';
-import AdminFilters from '../admin-filters';
-import AdminTableRow from '../admin-table-row';
+import MLDsTableRow from '../mlds-table-row';
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name' },
-  { id: 'username', label: 'Username', width: 220 },
-  { id: 'role', label: 'Role', width: 220 },
-  { id: 'status', label: 'Status', width: 100 },
-  { id: 'password', label: 'Password', width: 80 },
-  { id: 'totp', label: 'TOTP', width: 80 },
-  { id: '', label: 'Actions', width: 80 },
+  { id: 'mld_name', label: 'MLD Name' },
+  { id: 'min_investment', label: 'Min Investment' },
+  { id: 'yield', label: 'Yield' },
+  { id: 'description', label: 'Description' },
+  { id: 'maturity_date', label: 'Maturity Date' },
+  { id: 'edit', label: 'Actions', width: 80 },
 ];
 
-const defaultFilters: AdminRequest = {
-  name: '',
-  email: '',
-  is_blocked: '',
-  aid: '',
-  username: '',
-};
-
-export default function AdminListView() {
+export default function MLDsListView() {
   const table = useTable();
 
   const settings = useSettingsContext();
-
-  const openFilters = useBoolean();
 
   // const { adminManagementPerm } = usePerm();
 
   const confirm = useBoolean();
 
-  const [filters, setFilters] = useState(defaultFilters);
+  const { data } = mldsApi.useMldsQuery();
 
-  const { data, isLoading } = adminApi.useAdminQuery(filters);
-
-  const dataFiltered = applyFilter({
-    inputData: (data?.data?.admins !== null && data?.data?.admins) || [],
-    comparator: getComparator(table.order, table.orderBy),
-    filters,
-  });
+  // const data = {
+  //   data: {
+  //     mlds: [
+  //       {
+  //         id: 'INE027E07BZ9',
+  //         mld_name: 'adipisicing minim',
+  //         min_investment: 937,
+  //         yield: 'Market Linked',
+  //         rating: 'AAA',
+  //         issue_date: '2022-07-27T00:00:00Z',
+  //         description: 'amet eiusmod laboris ea',
+  //         underlying: '',
+  //         maturity_date: '2024-08-27T00:00:00Z',
+  //         sec_identifier: 'something',
+  //         principal_protected: true,
+  //         issuer_name: 'L&T FINANCE LIMITED',
+  //         is_activated: false,
+  //         is_certified: false,
+  //         offer_close_date: '2023-12-31T00:00:00Z',
+  //         updated_at: '2024-01-08T13:01:27.682183Z',
+  //         created_at: '2024-01-08T12:58:20.089001Z',
+  //       },
+  //     ],
+  //   },
+  // };
 
   const denseHeight = table.dense ? 52 : 72;
-
-  const canReset = !isEqual(defaultFilters, filters);
-
-  const notFound =
-    (!dataFiltered.length && canReset) || !dataFiltered.length || data?.data?.admins === null;
-
-  const handleFilters = useCallback((appliedFilters: AdminRequest) => {
-    setFilters(appliedFilters);
-  }, []);
-
-  const handleResetFilters = useCallback(() => {
-    setFilters(defaultFilters);
-  }, []);
 
   return (
     <>
       <Container maxWidth={settings.themeStretch ? false : 'lg'}>
         <CustomBreadcrumbs
-          heading="Admin Users"
+          heading="List"
           links={[
             { name: 'Dashboard', href: paths.dashboard.root },
-            { name: 'Admin', href: paths.dashboard.admin.list },
+            { name: 'MLDs', href: paths.dashboard.mlds.list },
             { name: 'List' },
           ]}
           action={
             <Button
               component={RouterLink}
-              href={paths.dashboard.admin.new}
+              href={paths.dashboard.mlds.new}
               variant="contained"
-              startIcon={<Iconify icon="mingcute:add-line" />}
+              startIcon={<AddRoundedIcon />}
             >
-              New Admin
+              New MLD
             </Button>
           }
           sx={{
             mb: { xs: 3, md: 5 },
           }}
         />
-        {false && (
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', pb: 5 }}>
-            <AdminFilters
-              open={openFilters.value}
-              onOpen={openFilters.onTrue}
-              onClose={openFilters.onFalse}
-              filters={filters}
-              defaultFilters={defaultFilters}
-              onFilters={handleFilters}
-              canReset={canReset}
-              onResetFilters={handleResetFilters}
-            />
-          </Box>
-        )}
+
         <Card>
           <TableContainer sx={{ position: 'relative', overflow: 'unset' }}>
             <TableSelectedAction
               dense={table.dense}
               numSelected={table.selected.length}
-              rowCount={data?.data?.admins?.length || 0}
+              rowCount={data?.data?.mlds?.length || 0}
               onSelectAllRows={(checked) =>
-                table.onSelectAllRows(checked, data?.data?.admins?.map((row) => row.aid) || [])
+                table.onSelectAllRows(checked, data?.data?.mlds?.map((row) => row.id) || [])
               }
               action={
                 <Tooltip title="Delete">
                   <IconButton color="primary" onClick={confirm.onTrue}>
-                    <Iconify icon="solar:trash-bin-trash-bold" />
+                    <AddRoundedIcon />
                   </IconButton>
                 </Tooltip>
               }
             />
 
             <Scrollbar>
-              <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
+              <Table size={table.dense ? 'small' : 'medium'}>
                 <TableHeadCustom
                   order={table.order}
                   orderBy={table.orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={data?.data?.admins?.length}
+                  rowCount={data?.data?.mlds?.length}
                   numSelected={table.selected.length}
                   onSort={table.onSort}
+                  // onSelectAllRows={(checked) =>
+                  //   table.onSelectAllRows(checked, data?.data?.mlds?.roles?.map((row) => row.rid) || [])
+                  // }
                 />
 
                 <TableBody>
-                  {dataFiltered
+                  {[...(data?.data?.mlds || [])]
                     .slice(
                       table.page * table.rowsPerPage,
                       table.page * table.rowsPerPage + table.rowsPerPage
                     )
                     .map((row) => (
-                      <AdminTableRow key={row.aid} row={row as Admin} />
+                      <MLDsTableRow
+                        key={row.id}
+                        row={row}
+                        // selected={table.selected.includes(row.rid)}
+                        // onSelectRow={() => table.onSelectRow(row.rid)}
+                      />
                     ))}
 
                   <TableEmptyRows
@@ -174,26 +154,18 @@ export default function AdminListView() {
                     emptyRows={emptyRows(
                       table.page,
                       table.rowsPerPage,
-                      data?.data?.admins?.length || 0
+                      data?.data?.mlds?.length || 0
                     )}
                   />
-                  {isLoading ? (
-                    <>
-                      <TableSkeleton />
-                      <TableSkeleton />
-                      <TableSkeleton />
-                      <TableSkeleton />
-                    </>
-                  ) : (
-                    <TableNoData notFound={notFound} />
-                  )}
+
+                  <TableNoData notFound={!data?.data?.mlds?.length} />
                 </TableBody>
               </Table>
             </Scrollbar>
           </TableContainer>
 
           <TablePaginationCustom
-            count={dataFiltered.length}
+            count={data?.data?.mlds?.length || 0}
             page={table.page}
             rowsPerPage={table.rowsPerPage}
             onPageChange={table.onChangePage}
@@ -228,36 +200,4 @@ export default function AdminListView() {
       />
     </>
   );
-}
-
-// ----------------------------------------------------------------------
-
-function applyFilter({
-  inputData,
-  comparator,
-  filters,
-}: {
-  inputData: Admin[];
-  comparator: (a: any, b: any) => number;
-  filters: AdminRequest;
-}) {
-  const { name } = filters;
-
-  const stabilizedThis = inputData.map((el, index) => [el, index] as const);
-
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-
-  inputData = stabilizedThis.map((el) => el[0]);
-
-  if (name) {
-    inputData = inputData.filter(
-      (user) => user.name.toLowerCase().indexOf(name.toLowerCase()) !== -1
-    );
-  }
-
-  return inputData;
 }

@@ -13,13 +13,12 @@ import CustomPopover, { usePopover } from 'src/components/custom-popover';
 import Iconify from 'src/components/iconify';
 import Label from 'src/components/label';
 import { useBoolean } from 'src/hooks/use-boolean';
-import { usePerm } from 'src/hooks/use-perm';
+// import { usePerm } from 'src/hooks/use-perm';
 import { roleApi } from 'src/redux/api/role.api';
 import { Admin } from 'src/types/admin.types';
 import { titleCase } from 'src/utils/change-case';
 import AdminBlockForm from './admin-block-form';
 import AdminQuickEditForm from './admin-quick-edit-form';
-import AdminRoleForm from './admin-role-form';
 
 interface Props {
   selected?: boolean;
@@ -34,7 +33,7 @@ export default function AdminTableRow(props: Props) {
 
   const quickEdit = useBoolean();
 
-  const { adminManagementPerm } = usePerm();
+  // const { adminManagementPerm } = usePerm();
 
   const block = useBoolean();
 
@@ -106,7 +105,7 @@ export default function AdminTableRow(props: Props) {
         </TableCell>
       </TableRow>
 
-      <AdminRoleForm currentAdmin={row} open={rolePopover.value} onClose={rolePopover.onFalse} />
+      {/* <AdminRoleForm currentAdmin={row} open={rolePopover.value} onClose={rolePopover.onFalse} /> */}
 
       <AdminQuickEditForm
         currentAdmin={row}
@@ -122,17 +121,17 @@ export default function AdminTableRow(props: Props) {
         arrow="right-top"
         sx={{ width: 140 }}
       >
-        {adminManagementPerm?.edit && (
-          <MenuItem
-            onClick={() => {
-              quickEdit.onTrue();
-              popover.onClose();
-            }}
-          >
-            <Iconify icon="solar:pen-bold" />
-            Edit
-          </MenuItem>
-        )}
+        {/* {adminManagementPerm?.edit && ( */}
+        <MenuItem
+          onClick={() => {
+            quickEdit.onTrue();
+            popover.onClose();
+          }}
+        >
+          <Iconify icon="solar:pen-bold" />
+          Edit
+        </MenuItem>
+        {/* )} */}
         <MenuItem
           onClick={() => {
             block.onTrue();

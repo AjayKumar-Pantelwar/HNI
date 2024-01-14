@@ -1,7 +1,6 @@
-import { useEffect, useCallback, useState } from 'react';
-import { paths } from 'src/routes/paths';
+import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'src/routes/hook';
-import { useSelector } from 'src/redux/store';
+import { paths } from 'src/routes/paths';
 
 type Props = {
   children: React.ReactNode;
@@ -9,7 +8,8 @@ type Props = {
 
 export default function AuthGuard({ children }: Props) {
   const router = useRouter();
-  const { isAuthenticated } = useSelector((state) => state.auth);
+  // const { isAuthenticated } = useSelector((state) => state.auth);
+  const isAuthenticated = true;
 
   const [checked, setChecked] = useState(false);
 

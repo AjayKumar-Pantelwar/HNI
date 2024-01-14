@@ -1,25 +1,24 @@
 'use client';
 
-import KeyRoundedIcon from '@mui/icons-material/KeyRounded';
 import ModeEditOutlineRoundedIcon from '@mui/icons-material/ModeEditOutlineRounded';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
-import ListItemText from '@mui/material/ListItemText';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import Tooltip from '@mui/material/Tooltip';
 import Link from 'next/link';
 // import { usePerm } from 'src/hooks/use-perm';
 import { paths } from 'src/routes/paths';
-import { Role } from 'src/types/role.types';
+import { MLD } from 'src/types/mlds.types';
+import { fDate } from 'src/utils/format-time';
 
 type Props = {
   selected?: boolean;
-  row: Role;
+  row: MLD;
   onSelectRow?: VoidFunction;
 };
 
-export default function RolesTableRow({ row, selected, onSelectRow }: Props) {
+export default function MLDsTableRow({ row, selected, onSelectRow }: Props) {
   // const { adminManagementPerm } = usePerm();
 
   return (
@@ -30,19 +29,15 @@ export default function RolesTableRow({ row, selected, onSelectRow }: Props) {
         </TableCell>
       )}
 
-      <TableCell sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-        <KeyRoundedIcon width={18} height={18} />
-
-        <ListItemText
-          primary={row.rname}
-          primaryTypographyProps={{ typography: 'body2' }}
-          secondaryTypographyProps={{ component: 'span', color: 'text.disabled' }}
-        />
-      </TableCell>
+      <TableCell>{row?.mld_name}</TableCell>
+      <TableCell>{row?.min_investment}</TableCell>
+      <TableCell>{row?.yield}</TableCell>
+      <TableCell>{row?.description}</TableCell>
+      <TableCell>{fDate(row?.maturity_date)}</TableCell>
 
       <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
         <Tooltip title="Quick Edit" placement="top" arrow>
-          <IconButton component={Link} href={paths.dashboard.roles.edit(row.rid)} sx={{ py: 0 }}>
+          <IconButton component={Link} href={paths.dashboard.mlds.edit(row.id)} sx={{ py: 0 }}>
             <ModeEditOutlineRoundedIcon />
           </IconButton>
         </Tooltip>
