@@ -11,17 +11,30 @@ import Link from 'next/link';
 import { paths } from 'src/routes/paths';
 import { Carousel } from 'src/types/carousel.types';
 
-type Props = {
+interface Props {
   selected?: boolean;
   row: Carousel;
   onSelectRow?: VoidFunction;
-};
+  index: number;
+  isEditing: boolean;
+  onDragStart: (e: React.DragEvent<HTMLTableRowElement>, index: number) => void;
+  onDragOver: (e: React.DragEvent<HTMLTableRowElement>) => void;
+  onDrop: (e: React.DragEvent<HTMLTableRowElement>, index: number) => void;
+}
 
-export default function CarouselTableRow({ row, selected, onSelectRow }: Props) {
-  // const { adminManagementPerm } = usePerm();
+export default function CarouselTableRow(props: Props) {
+  const { row, selected, onSelectRow, index, isEditing, onDragStart, onDragOver, onDrop } = props;
 
   return (
-    <TableRow hover selected={selected}>
+    <TableRow
+      hover
+      selected={selected}
+      key={row.id}
+      draggable={!isEditing} // Disable dragging when editing
+      onDragStart={(e) => onDragStart(e, index)}
+      onDragOver={onDragOver}
+      onDrop={(e) => onDrop(e, index)}
+    >
       {selected && onSelectRow && (
         <TableCell padding="checkbox">
           <Checkbox checked={selected} onClick={onSelectRow} />

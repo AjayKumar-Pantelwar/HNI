@@ -11,8 +11,6 @@ import ListIcon from '@mui/icons-material/List';
 import { Box, Stack, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { useCallback, useState } from 'react';
 import EmptyContent from 'src/components/empty-content';
-import { useTable } from 'src/components/table';
-import { carouselApi } from 'src/redux/api/carousel.api';
 import { RouterLink } from 'src/routes/components';
 import { paths } from 'src/routes/paths';
 import CarouselGridView from './carousel-grid-view';
@@ -20,9 +18,49 @@ import CarouselListView from './carousel-list-view';
 
 const CarouselView = () => {
   const settings = useSettingsContext();
-  const table = useTable();
 
-  const { data } = carouselApi.useCarouselsQuery();
+  // const { data } = carouselApi.useCarouselsQuery();
+  const [isGlobalEdit, setIsGlobalEdit] = useState(false);
+
+  const data = {
+    message: 'successfully found all the carousels',
+    status: 'success',
+    data: [
+      {
+        id: 1,
+        priority: 1,
+        title: {
+          normal: 'g',
+          bold: 'g',
+        },
+        subtitle: {
+          number: 6,
+          suffix: 'g',
+          data: 'h',
+        },
+        media_url:
+          'https://images.pexels.com/photos/210600/pexels-photo-210600.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+        icon: 'https://w7.pngwing.com/pngs/308/74/png-transparent-computer-icons-setting-icon-cdr-svg-setting-icon.png',
+        is_active: true,
+      },
+      {
+        id: 1,
+        priority: 1,
+        title: {
+          normal: 'k',
+          bold: 'j',
+        },
+        subtitle: {
+          number: 6,
+          suffix: 'hii',
+          data: 'hello',
+        },
+        media_url: 'https://images.pexels.com/photos/342942/pexels-photo-342942.jpeg',
+        icon: 'https://w7.pngwing.com/pngs/308/74/png-transparent-computer-icons-setting-icon-cdr-svg-setting-icon.png',
+        is_active: true,
+      },
+    ],
+  };
 
   const [view, setView] = useState('list');
 
@@ -59,16 +97,27 @@ const CarouselView = () => {
         }}
       />
       <Stack gap={3}>
-        <Box>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <ToggleButtonGroup size="small" value={view} exclusive onChange={handleChangeView}>
             <ToggleButton value="list">
               <ListIcon />
             </ToggleButton>
-
             <ToggleButton value="grid">
               <GridViewIcon />
             </ToggleButton>
           </ToggleButtonGroup>
+          {view === 'list' && (
+            <Box>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  setIsGlobalEdit((prev) => !prev);
+                }}
+              >
+                {isGlobalEdit ? 'Cancel' : 'Edit'}
+              </Button>
+            </Box>
+          )}
         </Box>
         <Stack>
           {!data ? (
@@ -82,7 +131,7 @@ const CarouselView = () => {
           ) : (
             <>
               {view === 'list' ? (
-                <CarouselListView data={data} />
+                <CarouselListView data={data} isGlobalEdit={isGlobalEdit} />
               ) : (
                 <CarouselGridView data={data} />
               )}

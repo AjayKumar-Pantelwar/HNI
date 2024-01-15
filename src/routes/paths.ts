@@ -17,6 +17,8 @@ export const paths = {
       root: `${ROOTS.DASHBOARD}/carousel`,
       list: `${ROOTS.DASHBOARD}/carousel/list`,
       edit: `${ROOTS.DASHBOARD}/carousel/edit`,
+      new: `${ROOTS.DASHBOARD}/carousel/new`,
+
     },
     actions: {
       root: `${ROOTS.DASHBOARD}/actions`,

@@ -2,65 +2,78 @@
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import LoadingButton from '@mui/lab/LoadingButton';
-import {
-  Box,
-  Checkbox,
-  Skeleton,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import FormProvider, { RHFTextField } from 'src/components/hook-form';
+import { EditDialog } from 'src/components/edit-dialog';
+import FormProvider, {
+  RHFSwitch,
+  RHFTextField,
+  RHFUpload,
+  RHFUploadAvatar,
+} from 'src/components/hook-form';
 import { useSnackbar } from 'src/components/snackbar';
-import { roleApi } from 'src/redux/api/role.api';
+import { carouselApi } from 'src/redux/api/carousel.api';
 import { useRouter } from 'src/routes/hook';
 import { paths } from 'src/routes/paths';
-import { PermissionsData, Role } from 'src/types/role.types';
+import { Carousel } from 'src/types/carousel.types';
+import { convertToFD } from 'src/utils/convert-fd';
 import * as Yup from 'yup';
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  currentRole?: Role;
-  currentPermissions?: PermissionsData[];
+  currentCarousel?: Carousel;
 };
 
-export default function RolesNewEditForm({ currentRole, currentPermissions }: Props) {
+export default function CarouselNewEditForm({ currentCarousel }: Props) {
   const router = useRouter();
 
-  const [createRole] = roleApi.useCreateRoleMutation();
-  const [editRole] = roleApi.useEditRoleMutation();
+  const [insertCarousel] = carouselApi.useInsertCarouselMutation();
+  const [editCarousel] = carouselApi.useEditCarouselMutation();
+
+  const [icon, setIcon] = React.useState<File>();
+  const [media, setMedia] = React.useState<File>();
 
   const { enqueueSnackbar } = useSnackbar();
-  const { data: apiPermissions } = roleApi.useAllPermissionsQuery();
 
-  const RolesSchema = Yup.object().shape({
-    rname: Yup.string().required('Name is required'),
-    policies: Yup.array().required('Permission is required'),
+  const CarouselSchema = Yup.object().shape({
+    title: Yup.object().shape({
+      normal: Yup.string().required('Title is required'),
+      bold: Yup.string().required('Title is required'),
+    }),
+    subtitle: Yup.object().shape({
+      number: Yup.number().required('Subtitle is required'),
+      data: Yup.string().required('Subtitle is required'),
+      suffix: Yup.string().required('Subtitle is required'),
+    }),
+    icon: Yup.mixed<any>().nullable().required('Icon is required'),
+    media_url: Yup.mixed<any>().nullable().required('Media URL is required'),
+    is_active: Yup.bool().required('Is Active is required'),
   });
 
   const defaultValues = useMemo(
     () => ({
-      rname: currentRole?.rname || '',
-      policies: Object.values(currentPermissions || {}).map((module) => ({
-        view: module.view || false,
-        edit: module.edit || false,
-        publish: module.publish || false,
-        module_name: module.module_name,
-      })),
+      title: {
+        normal: currentCarousel?.title?.normal || '',
+        bold: currentCarousel?.title?.bold || '',
+      },
+      subtitle: {
+        number: currentCarousel?.subtitle?.number || 0,
+        data: currentCarousel?.subtitle?.data || '',
+        suffix: currentCarousel?.subtitle?.suffix || '',
+      },
+      icon: currentCarousel?.icon || '',
+      media_url: currentCarousel?.media_url || '',
+      is_active: currentCarousel?.is_active || true,
     }),
-    [currentPermissions, currentRole]
+    [currentCarousel]
   );
 
   const methods = useForm({
-    resolver: yupResolver(RolesSchema),
+    resolver: yupResolver(CarouselSchema),
     defaultValues,
     mode: 'onChange',
   });
@@ -73,29 +86,15 @@ export default function RolesNewEditForm({ currentRole, currentPermissions }: Pr
     watch,
   } = methods;
 
-  React.useEffect(() => {
-    if (apiPermissions && !currentRole) {
-      const perms = Object.values(apiPermissions.data).map((module) => ({
-        view: false,
-        edit: false,
-        publish: false,
-        module_name: module.value,
-      }));
-
-      setValue('policies', perms);
-    }
-  }, [apiPermissions, currentRole, setValue]);
-
-  const permissions = watch('policies');
-
   const onSubmit = handleSubmit(async (data) => {
+    const formData = convertToFD(data);
     try {
-      if (currentRole) {
-        await editRole({ id: currentRole.rid, ...data }).unwrap();
+      if (currentCarousel) {
+        await editCarousel({ id: currentCarousel.id.toString(), body: formData }).unwrap();
       } else {
-        await createRole(data).unwrap();
+        await insertCarousel(formData).unwrap();
       }
-      enqueueSnackbar(currentRole ? 'Update success!' : 'Create success!');
+      enqueueSnackbar(currentCarousel ? 'Update success!' : 'Create success!');
       router.push(paths.dashboard.roles.list);
     } catch (error) {
       enqueueSnackbar(error.error, { variant: 'error' });
@@ -103,118 +102,119 @@ export default function RolesNewEditForm({ currentRole, currentPermissions }: Pr
     }
   });
 
-  // React.useEffect(() => {
-  //   formPermissions.forEach((f) => {
-  //     if (f.module_name === Permissions.DEAL_STAGE && f.edit) {
-  //       setValue('permission', [
-  //         ...formPermissions,
-  //         {
-  //           module: Permissions.DEAL,
-  //           view: true,
-  //           edit: false,
-  //         },
-  //       ]);
-  //     }
-  //   });
-  // }, []);
+  const handleDrop = useCallback(
+    (key: string) => (acceptedFiles: File[]) => {
+      const newFiles = acceptedFiles.map((file) =>
+        Object.assign(file, {
+          preview: URL.createObjectURL(file),
+        })
+      );
+      if (key === 'media_url') {
+        setMedia(newFiles[0]);
+      } else if (key === 'icon') {
+        setIcon(newFiles[0]);
+      }
+    },
+    []
+  );
+
+  const handleRemoveFile = useCallback(
+    (inputFile: File | string) => {
+      setValue('media_url', null);
+    },
+    [setValue]
+  );
+
+  const handleRemoveAllFiles = useCallback(() => {
+    setValue('media_url', null);
+  }, [setValue]);
 
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>
       <Card sx={{ p: 3 }}>
-        <Stack sx={{ pb: 3 }}>
-          <RHFTextField name="rname" label="Choose a name" fullWidth />
+        <Stack sx={{ gap: 3 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <RHFSwitch name="is_active" label="Is Active" />
+          </Box>
+          <Box sx={{ display: 'flex', gap: 3 }}>
+            <RHFTextField name="title.bold" label="Choose title bold" fullWidth />
+            <RHFTextField name="title.normal" label="Choose title normal" fullWidth />
+          </Box>
+          <Box sx={{ display: 'flex', gap: 3 }}>
+            <RHFTextField
+              name="subtitle.number"
+              label="Choose subtitle number"
+              type="number"
+              fullWidth
+            />
+            <RHFTextField name="subtitle.suffix" label="Choose subtitle suffix" fullWidth />
+          </Box>
+          <RHFTextField name="subtitle.data" label="Choose subtitle data" fullWidth />
+          <RHFUploadAvatar
+            name="icon"
+            maxSize={3145728}
+            onDrop={handleDrop('icon')}
+            helperText={
+              <Typography
+                variant="caption"
+                sx={{
+                  mt: 3,
+                  mb: 3,
+                  mx: 'auto',
+                  display: 'block',
+                  textAlign: 'center',
+                  color: 'text.disabled',
+                }}
+              >
+                Allowed *.jpeg, *.jpg, *.png, *.gif
+              </Typography>
+            }
+          />
+          <RHFUpload
+            thumbnail
+            name="media_url"
+            maxSize={3145728}
+            onDrop={handleDrop('media_url')}
+            onRemove={handleRemoveFile}
+            onRemoveAll={handleRemoveAllFiles}
+          />
         </Stack>
-        <TableContainer>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Permissions</TableCell>
-                <TableCell>View</TableCell>
-                <TableCell>Edit</TableCell>
-                <TableCell>Publish</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {apiPermissions ? (
-                Object.values(apiPermissions.data).map((permission) => (
-                  <TableRow key={permission.value}>
-                    <TableCell>{permission.placeholder}</TableCell>
-                    <TableCell>
-                      <Box sx={{ width: '40px' }}>
-                        <Box>
-                          <Checkbox
-                            checked={
-                              permissions.find((perm) => perm.module_name === permission.value)
-                                ?.view || false
-                            }
-                            onChange={(_e, checked) => {
-                              const index = permissions.findIndex(
-                                (perm) => perm.module_name === permission.value
-                              );
-                              const newPermissions = [...permissions];
-                              newPermissions[index].view = checked;
-                              setValue('policies', newPermissions);
-                            }}
-                          />
-                        </Box>
-                      </Box>
-                    </TableCell>
-                    <TableCell>
-                      <Box sx={{ width: '40px' }}>
-                        <Box>
-                          <Checkbox
-                            checked={
-                              permissions.find((perm) => perm.module_name === permission.value)
-                                ?.edit || false
-                            }
-                            onChange={(e, checked) => {
-                              const index = permissions.findIndex(
-                                (perm) => perm.module_name === permission.value
-                              );
-                              const newPermissions = [...permissions];
-                              newPermissions[index].edit = checked;
-                              setValue('policies', newPermissions);
-                            }}
-                          />
-                        </Box>
-                      </Box>
-                    </TableCell>
-                    <TableCell>
-                      <Box sx={{ width: '40px' }}>
-                        <Box>
-                          <Checkbox
-                            checked={
-                              permissions.find((perm) => perm.module_name === permission.value)
-                                ?.publish || false
-                            }
-                            onChange={(e, checked) => {
-                              const index = permissions.findIndex(
-                                (perm) => perm.module_name === permission.value
-                              );
-                              const newPermissions = [...permissions];
-                              newPermissions[index].publish = checked;
-                              setValue('policies', newPermissions);
-                            }}
-                          />
-                        </Box>
-                      </Box>
-                    </TableCell>
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={4}>
-                    <Skeleton width="100%" height={100} />
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
 
+        {icon && (
+          <EditDialog
+            open
+            base64={URL.createObjectURL(icon)}
+            filename={icon.name}
+            onChange={(file) => {
+              if (file === null) return;
+              Object.assign(file, {
+                preview: URL.createObjectURL(file),
+              });
+              setValue('icon', file);
+            }}
+            onClose={() => setIcon(undefined)}
+            aspectRatio="1 / 1"
+          />
+        )}
+        {media && (
+          <EditDialog
+            open
+            base64={URL.createObjectURL(media)}
+            filename={media.name}
+            onChange={(file) => {
+              if (file === null) return;
+              Object.assign(file, {
+                preview: URL.createObjectURL(file),
+              });
+              setValue('media_url', file);
+            }}
+            onClose={() => setMedia(undefined)}
+            aspectRatio="3.5/2"
+          />
+        )}
         <Stack alignItems="flex-end" sx={{ mt: 3 }}>
           <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-            {!currentRole ? 'Create Role' : 'Save Changes'}
+            {!currentCarousel ? 'Create Carousel' : 'Save Changes'}
           </LoadingButton>
         </Stack>
       </Card>

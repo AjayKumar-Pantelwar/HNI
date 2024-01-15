@@ -1,3 +1,7 @@
-export { default as RolesCreateView } from './roles-create-view';
-export { default as RolesEditView } from './roles-edit-view';
-export { default as RolesListView } from './roles-list-view';
+export { default as CarouselCreateView } from './carousel-create-view';
+export { default as CarouselEditView } from './carousel-edit-view';
+export { default as CarouselGridView } from './carousel-grid-view';
+export { default as CarouselListView } from './carousel-list-view';
+export { default as CarouselView } from './carousel-view';
+
+

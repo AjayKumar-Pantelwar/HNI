@@ -72,7 +72,10 @@ export function useNavData() {
             title: t('Carousel'),
             path: paths.dashboard.carousel.root,
             Icon: MIcons.carousel,
-            children: [{ title: t('list'), path: paths.dashboard.carousel.list }],
+            children: [
+              { title: t('list'), path: paths.dashboard.carousel.list },
+              { title: t('create'), path: paths.dashboard.carousel.new },
+            ],
           },
           {
             title: t('Bonds'),

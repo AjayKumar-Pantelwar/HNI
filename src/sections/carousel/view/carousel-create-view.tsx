@@ -5,37 +5,37 @@ import Container from '@mui/material/Container';
 // routes
 import { paths } from 'src/routes/paths';
 // components
-import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
-import RolesNewEditForm from '../roles-new-edit-form';
+import { useSettingsContext } from 'src/components/settings';
+import CarouselNewEditForm from '../carousel-new-edit-form';
 //
 
 // ----------------------------------------------------------------------
 
-export default function RolesCreateView() {
+export default function CarouselCreateView() {
   const settings = useSettingsContext();
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
       <CustomBreadcrumbs
-        heading="Create a new Role"
+        heading="Create a new Carousel"
         links={[
           {
             name: 'Dashboard',
             href: paths.dashboard.root,
           },
           {
-            name: 'Roles',
-            href: paths.dashboard.roles.list,
+            name: 'Carousel',
+            href: paths.dashboard.carousel.list,
           },
-          { name: 'New Role' },
+          { name: 'New Carousel' },
         ]}
         sx={{
           mb: { xs: 3, md: 5 },
         }}
       />
 
-      <RolesNewEditForm />
+      <CarouselNewEditForm />
     </Container>
   );
 }

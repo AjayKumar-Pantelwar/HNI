@@ -1,9 +1,9 @@
-import { RolesCreateView } from 'src/sections/roles/view';
+import { CarouselCreateView } from 'src/sections/carousel/view';
 
 export const metadata = {
-  title: 'Create | Role | Mid Market',
+  title: 'Create | Carousel | Mid Market',
 };
 
 export default function RoleCreatePage() {
-  return <RolesCreateView />;
+  return <CarouselCreateView />;
 }

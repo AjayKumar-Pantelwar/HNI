@@ -3,28 +3,21 @@
 import Container from '@mui/material/Container';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 import { useSettingsContext } from 'src/components/settings';
-import { roleApi } from 'src/redux/api/role.api';
+import { carouselApi } from 'src/redux/api/carousel.api';
 import { useParams } from 'src/routes/hook';
 import { paths } from 'src/routes/paths';
-import RolesNewEditForm from '../roles-new-edit-form';
+import CarouselNewEditForm from '../carousel-new-edit-form';
 
-export default function RolesEditView() {
+export default function CarouselEditView() {
   const settings = useSettingsContext();
 
   const params = useParams();
 
   const { id } = params;
 
-  const { data } = roleApi.useRolesQuery();
+  const { data } = carouselApi.useCarouselsQuery();
 
-  const currentRole = data?.data?.find((role) => role.rid === id);
-
-  const { data: currentPermissions } = roleApi.usePermissionsQuery(
-    { id: currentRole?.rid || '' },
-    {
-      skip: !currentRole?.rid,
-    }
-  );
+  const currentCarousel = data?.data?.find((c) => c.id.toString() === id);
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
@@ -36,19 +29,17 @@ export default function RolesEditView() {
             href: paths.dashboard.root,
           },
           {
-            name: 'Roles',
+            name: 'Carousel',
             href: paths.dashboard.roles.list,
           },
-          { name: currentRole?.rname },
+          { name: currentCarousel?.title.bold },
         ]}
         sx={{
           mb: { xs: 3, md: 5 },
         }}
       />
 
-      {currentRole && currentPermissions && (
-        <RolesNewEditForm currentRole={currentRole} currentPermissions={currentPermissions?.data} />
-      )}
+      {currentCarousel && <CarouselNewEditForm currentCarousel={currentCarousel} />}
     </Container>
   );
 }
