@@ -9,6 +9,7 @@ export const endpoints = {
     edit: (id: string) => p(`PUT`, `/manage/admin/${id}`),
     block: (id: string) => p(`POST`, `/manage/admin/${id}/block`),
     action: (id: string) => p(`PUT`, `/manage/admin/${id}/role`),
+    actions: p(`GET`, `/manage/admin/actions`),
   },
   deal: {
     list: p('GET', '/api/deal'),

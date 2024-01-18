@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
 import { ApiResponse, Pagination } from './api.types';
+import { Permission } from './role.types';
 
 export type Admin = {
   id: number;
@@ -149,5 +150,6 @@ export type AdminActionRequest = {
 
 export type UpdateRoleRequest = {
   aid: string;
-  rid: string;
+  rname: string;
+  policies: Permission[];
 };

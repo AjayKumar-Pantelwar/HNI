@@ -29,7 +29,7 @@ export default function CarouselTableRow(props: Props) {
     <TableRow
       hover
       selected={selected}
-      key={row.id}
+      key={index}
       draggable={!isEditing} // Disable dragging when editing
       onDragStart={(e) => onDragStart(e, index)}
       onDragOver={onDragOver}
@@ -47,7 +47,7 @@ export default function CarouselTableRow(props: Props) {
         <Tooltip title="Quick Edit" placement="top" arrow>
           <IconButton
             component={Link}
-            href={paths.dashboard.roles.edit(row.id.toString())}
+            href={paths.dashboard.carousel.edit(row.id.toString())}
             sx={{ py: 0 }}
           >
             <ModeEditOutlineRoundedIcon />

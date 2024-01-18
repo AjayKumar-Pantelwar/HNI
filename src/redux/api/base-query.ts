@@ -6,7 +6,6 @@ import {
 } from '@reduxjs/toolkit/dist/query';
 import { QueryReturnValue } from '@reduxjs/toolkit/dist/query/baseQueryTypes';
 import { enqueueSnackbar } from 'notistack';
-import { authSlice } from '../slices/auth.slice';
 
 type BaseQuery = (
   args: any,
@@ -39,7 +38,7 @@ export const baseQuery: BaseQuery = async (args, baseApi, extraOptions) => {
    */
   if (result.meta?.response?.status === 401) {
     enqueueSnackbar('Your session is expired, please login again', { variant: 'error' });
-    baseApi.dispatch(authSlice.actions.logout());
+    // baseApi.dispatch(authSlice.actions.logout());
   }
 
   return result;

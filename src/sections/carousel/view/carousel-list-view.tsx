@@ -86,13 +86,6 @@ export default function CarouselListView({ data, isGlobalEdit }: Props) {
     setIsOrderChanged(true);
   };
 
-  const handleSave = () => {
-    // Call your API to save the updated row order
-    // You can use the 'rows' state to send the updated order to the server
-    console.log('Saving rows:', rows);
-    setIsOrderChanged(false);
-  };
-
   return (
     <>
       <Card>
@@ -128,24 +121,19 @@ export default function CarouselListView({ data, isGlobalEdit }: Props) {
               />
 
               <TableBody>
-                {[...(data?.data || [])]
-                  .slice(
-                    table.page * table.rowsPerPage,
-                    table.page * table.rowsPerPage + table.rowsPerPage
-                  )
-                  .map((row, index) => (
-                    <CarouselTableRow
-                      key={row.id}
-                      row={row}
-                      index={index}
-                      isEditing={isGlobalEdit}
-                      onDragStart={handleDragStart}
-                      onDragOver={handleDragOver}
-                      onDrop={handleDrop}
-                      // selected={table.selected.includes(row.rid)}
-                      // onSelectRow={() => table.onSelectRow(row.rid)}
-                    />
-                  ))}
+                {rows?.map((row, index) => (
+                  <CarouselTableRow
+                    key={index}
+                    row={row}
+                    index={index}
+                    isEditing={isGlobalEdit}
+                    onDragStart={handleDragStart}
+                    onDragOver={handleDragOver}
+                    onDrop={handleDrop}
+                    // selected={table.selected.includes(row.rid)}
+                    // onSelectRow={() => table.onSelectRow(row.rid)}
+                  />
+                ))}
 
                 <TableEmptyRows
                   height={denseHeight}

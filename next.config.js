@@ -1,5 +1,5 @@
+/** @type {import('next').NextConfig} */
 module.exports = {
-  trailingSlash: true,
   modularizeImports: {
     '@mui/material': {
       transform: '@mui/material/{{member}}',

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { useSelector } from 'src/redux/store';
 import { useRouter } from 'src/routes/hook';
 import { paths } from 'src/routes/paths';
 
@@ -8,8 +9,8 @@ type Props = {
 
 export default function AuthGuard({ children }: Props) {
   const router = useRouter();
-  // const { isAuthenticated } = useSelector((state) => state.auth);
-  const isAuthenticated = true;
+  const { isAuthenticated } = useSelector((state) => state.auth);
+  // const isAuthenticated = true;
 
   const [checked, setChecked] = useState(false);
 
