@@ -9,12 +9,13 @@ import InputAdornment from '@mui/material/InputAdornment';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import RemoveRedEyeRoundedIcon from '@mui/icons-material/RemoveRedEyeRounded';
 import VisibilityOffRoundedIcon from '@mui/icons-material/VisibilityOffRounded';
+import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { useSnackbar } from 'notistack';
 import { useForm } from 'react-hook-form';
 import FormProvider, { RHFTextField } from 'src/components/hook-form';
-import Link from 'src/components/link';
+
 import { useBoolean } from 'src/hooks/use-boolean';
 import { useSelector } from 'src/redux/store';
 import { useRouter } from 'src/routes/hook/use-router';
@@ -22,6 +23,7 @@ import { paths } from 'src/routes/paths';
 import { authService } from 'src/services';
 import { handleError } from 'src/utils/handle-error';
 
+import { RouterLink } from 'src/routes/components';
 import * as Yup from 'yup';
 
 export default function ChangePasswordView() {
@@ -118,6 +120,7 @@ export default function ChangePasswordView() {
       <Stack sx={{ width: '100%', gap: 2, mt: 2 }}>
         <Divider />
         <Link
+          component={RouterLink}
           href={paths.auth.login}
           sx={{
             alignItems: 'center',

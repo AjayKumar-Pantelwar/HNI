@@ -145,7 +145,7 @@ export default function AdminTableRow(props: Props) {
           }}
         >
           <Iconify icon="carbon:warning-filled" />
-          Block
+          {row?.is_blocked ? 'Unblock' : 'Block'}
         </MenuItem>
       </CustomPopover>
     </>

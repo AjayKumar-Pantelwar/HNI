@@ -60,9 +60,7 @@ export const ActionListView: React.FC = () => {
 
   const [filters, setFilters] = useState(defaultFilters);
 
-  const res = adminApi.useAdminActionsQuery(filters);
-
-  const { data } = res;
+  const { data } = adminApi.useAdminActionsQuery(filters);
 
   const denseHeight = table.dense ? 52 : 72;
 
@@ -81,6 +79,8 @@ export const ActionListView: React.FC = () => {
     inputData: data?.data?.actions || [],
     comparator: getComparator(table.order, table.orderBy),
   });
+
+  console.log({ data });
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>

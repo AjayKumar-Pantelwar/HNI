@@ -13,7 +13,6 @@ import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import FormProvider, { RHFAutocomplete } from 'src/components/hook-form';
 import { adminApi } from 'src/redux/api/admin.api';
-import { roleApi } from 'src/redux/api/role.api';
 import { paths } from 'src/routes/paths';
 import { Admin } from 'src/types/admin.types';
 import { GetRolesResponse } from 'src/types/role.types';
@@ -36,31 +35,16 @@ const AdminRoleForm = (props: Props) => {
 
   const [updateRole] = adminApi.useUpdateRoleMutation();
 
-  const { data: currentPermissions } = roleApi.usePermissionsQuery(
-    { id: currentAdmin?.rid || '' },
-    {
-      skip: !currentAdmin?.rid,
-    }
-  );
-
-  function getRoleName(rid: string) {
-    return rolesData?.data?.find((r) => r.rid === rid)?.rname.toLocaleUpperCase() || 'Admin';
-  }
-
-  const role = getRoleName(currentAdmin.rid);
-
   const UpdateAdminRoleSchema = Yup.object().shape({
-    rname: Yup.string().required('Role name is required'),
+    rid: Yup.string().required('Role name is required'),
   });
 
   const defaultValues = useMemo(
     () => ({
-      rname: role || '',
+      rid: currentAdmin?.rid || '',
     }),
     [currentAdmin]
   );
-
-  //   const currentRole = rolesData?.data?.find((role) => role.rid === currentAdmin?.rid);
 
   const methods = useForm({
     resolver: yupResolver(UpdateAdminRoleSchema),
@@ -77,28 +61,17 @@ const AdminRoleForm = (props: Props) => {
   } = methods;
 
   const onSubmit = handleSubmit(async (data) => {
-    const policies =
-      currentPermissions?.data
-        ?.filter((r) => r.rid === data.rname)
-        .map((c) => ({
-          module_name: c.module_name,
-          view: c.view,
-          edit: c.edit,
-          publish: c.publish,
-        })) || [];
-    console.log('here..', policies);
-
     try {
-      await updateRole({ aid: currentAdmin?.aid, policies, rname: data.rname }).unwrap();
+      await updateRole({ aid: currentAdmin?.aid, rid: data.rid }).unwrap();
       reset();
       enqueueSnackbar(currentAdmin ? 'Update success!' : 'Create success!');
       router.push(paths.dashboard.admin.list);
     } catch (error) {
       handleError(error);
+    } finally {
+      onClose();
     }
   });
-
-  console.log('roles', getValues('rname'), { role });
 
   return (
     <Dialog
@@ -113,37 +86,21 @@ const AdminRoleForm = (props: Props) => {
       <FormProvider methods={methods} onSubmit={onSubmit}>
         <DialogTitle>Change Admin Role</DialogTitle>
 
-        <DialogContent>
+        <DialogContent sx={{ gap: 2, display: 'flex', flexDirection: 'column' }}>
           <Typography>Please select role for this admin?</Typography>
           {rolesData?.data && (
             <RHFAutocomplete
               name="rid"
-              // label="Role"
-              // options={rolesData?.data?.map((r) => r.rid) || []}
-              // getOptionLabel={(option) => {
-              //   const found = rolesData?.data?.find((r) => r.rid === option);
-              //   if (!found) return option;
-              //   return found.rname.toLocaleUpperCase();
-              // }}
-              // isOptionEqualToValue={(option, value) => option === value}
-              // renderOption={(optionProps, option) => {
-              //   const found = rolesData?.data?.find((r) => r.rid === option);
-              //   if (!found) return null;
-              //   return (
-              //     <li {...optionProps} key={found.rid}>
-              //       {found.rname.toLocaleUpperCase()}
-              //     </li>
-              //   );
-              // }}
+              label="Role"
               options={rolesData?.data?.map((r) => r.rid) || []}
               getOptionLabel={(option) => {
-                const found = rolesData?.data?.find((r) => r.rname.toLocaleLowerCase() === option);
+                const found = rolesData?.data?.find((r) => r.rid === option);
                 if (!found) return option;
                 return found.rname.toLocaleUpperCase();
               }}
               isOptionEqualToValue={(option, value) => option === value}
               renderOption={(optionProps, option) => {
-                const found = rolesData?.data?.find((r) => r.rname.toLocaleLowerCase() === option);
+                const found = rolesData?.data?.find((r) => r.rid === option);
                 if (!found) return null;
                 return (
                   <li {...optionProps} key={found.rid}>
@@ -151,6 +108,22 @@ const AdminRoleForm = (props: Props) => {
                   </li>
                 );
               }}
+              // options={rolesData?.data?.map((r) => r.rid) || []}
+              // getOptionLabel={(option) => {
+              //   const found = rolesData?.data?.find((r) => r.rname.toLocaleLowerCase() === option);
+              //   if (!found) return option;
+              //   return found.rname.toLocaleUpperCase();
+              // }}
+              // isOptionEqualToValue={(option, value) => option === value}
+              // renderOption={(optionProps, option) => {
+              //   const found = rolesData?.data?.find((r) => r.rname.toLocaleLowerCase() === option);
+              //   if (!found) return null;
+              //   return (
+              //     <li {...optionProps} key={found.rid}>
+              //       {found.rname.toLocaleUpperCase()}
+              //     </li>
+              //   );
+              // }}
             />
           )}
         </DialogContent>

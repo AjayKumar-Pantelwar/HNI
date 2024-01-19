@@ -63,8 +63,6 @@ export default function AdminListView() {
 
   const openFilters = useBoolean();
 
-  // const { adminManagementPerm } = usePerm();
-
   const confirm = useBoolean();
 
   const [filters, setFilters] = useState(defaultFilters);

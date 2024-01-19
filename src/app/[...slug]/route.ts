@@ -45,7 +45,7 @@ export async function PUT(request: NextRequest) {
   return fetch(`${proxy}${pathname}${nextUrl.search}`, {
     headers,
     body,
-    method: 'POST',
+    method: 'PUT',
     // @ts-ignore
     duplex: 'half',
   });
