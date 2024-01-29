@@ -2,8 +2,7 @@
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { Box } from '@mui/material';
-import Card from '@mui/material/Card';
+import { Box, Button, Dialog, Typography } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import { useForm } from 'react-hook-form';
 import FormProvider, { RHFSwitch, RHFTextField } from 'src/components/hook-form';
@@ -14,13 +13,13 @@ import { paths } from 'src/routes/paths';
 import { MLD } from 'src/types/mlds.types';
 import * as Yup from 'yup';
 
-// ----------------------------------------------------------------------
-
 type Props = {
   currentMLD?: MLD;
+  open: boolean;
+  onClose: () => void;
 };
-
-export default function MLDsNewEditForm({ currentMLD }: Props) {
+const MLDEditDailog = (props: Props) => {
+  const { currentMLD, open, onClose } = props;
   const router = useRouter();
 
   const [createMLD] = mldsApi.useCreateMLDMutation();
@@ -61,7 +60,6 @@ export default function MLDsNewEditForm({ currentMLD }: Props) {
     getValues,
     watch,
   } = methods;
-
   const onSubmit = handleSubmit(async (data) => {
     try {
       if (currentMLD) {
@@ -76,33 +74,52 @@ export default function MLDsNewEditForm({ currentMLD }: Props) {
       console.error(error);
     }
   });
-
   return (
-    <FormProvider methods={methods} onSubmit={onSubmit}>
-      <Card sx={{ p: 3 }}>
-        <Stack sx={{ gap: 3 }}>
-          <Box sx={{ display: 'flex', gap: 3 }}>
-            <RHFTextField name="name" label="MLD name" fullWidth />
-            <RHFTextField name="min_investment" label="Min Investment" fullWidth type="nummber" />
-          </Box>
-          <Box sx={{ display: 'flex', gap: 3 }}>
-            <RHFTextField name="yield" label="Yield" fullWidth />
-            <RHFTextField name="sec_identifier" label="Security Identifier" fullWidth />
-          </Box>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      PaperProps={{
+        sx: {
+          p: 4,
+          minWidth: 'min(100%, 700px)',
+        },
+      }}
+      sx={{ mx: 2 }}
+    >
+      <FormProvider methods={methods} onSubmit={onSubmit}>
+        <Typography variant="h6" sx={{ mb: 4 }}>
+          Edit Bond
+        </Typography>
+        <Box>
+          <Stack sx={{ gap: 3 }}>
+            <Box sx={{ display: 'flex', gap: 3 }}>
+              <RHFTextField name="name" label="Bond name" fullWidth />
+              <RHFTextField name="min_investment" label="Min Investment" fullWidth type="nummber" />
+            </Box>
+            <Box sx={{ display: 'flex', gap: 3 }}>
+              <RHFTextField name="yield" label="Yield" fullWidth />
+              <RHFTextField name="security" label="Security" fullWidth />
+            </Box>
 
-          <RHFTextField name="description" label="Description" fullWidth />
-          <Box sx={{ display: 'flex', gap: 3 }}>
-            <RHFSwitch name="is_activated" label="Is Activated" />
-            <RHFSwitch name="is_certified" label="Is Certified" />
-          </Box>
-        </Stack>
+            <RHFTextField name="description" label="Description" fullWidth />
+            <Box sx={{ display: 'flex', gap: 3 }}>
+              <RHFSwitch name="is_activated" label="Is Activated" />
+              <RHFSwitch name="is_certified" label="Is Certified" />
+            </Box>
+          </Stack>
 
-        <Stack alignItems="flex-end" sx={{ mt: 3 }}>
-          <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-            {!currentMLD ? 'Create MLD' : 'Save Changes'}
-          </LoadingButton>
-        </Stack>
-      </Card>
-    </FormProvider>
+          <Stack sx={{ mt: 3, flexDirection: 'row', gap: 2, ml: 'auto', justifyContent: 'end' }}>
+            <Button variant="contained" onClick={onClose}>
+              Cancel
+            </Button>
+            <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
+              {!currentMLD ? 'Create Bond' : 'Save Changes'}
+            </LoadingButton>
+          </Stack>
+        </Box>
+      </FormProvider>
+    </Dialog>
   );
-}
+};
+
+export default MLDEditDailog;

@@ -21,5 +21,9 @@ export const mldsApi = createApi({
       query: ({ id, ...body }) => ({ ...endpoints.mlds.edit(id), body }),
       invalidatesTags: ['MLDs'],
     }),
+    editAMC: builder.mutation<ApiResponse, { mld_id: string; body: FormData }>({
+      query: ({ mld_id, ...body }) => ({ ...endpoints.bonds.editAMC(mld_id), body }),
+      invalidatesTags: ['MLDs'],
+    }),
   }),
 });

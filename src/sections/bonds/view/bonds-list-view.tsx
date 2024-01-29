@@ -24,7 +24,6 @@ import {
 import { useBoolean } from 'src/hooks/use-boolean';
 // import { usePerm } from 'src/hooks/use-perm';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
-import { bondsApi } from 'src/redux/api/bonds.api';
 import { RouterLink } from 'src/routes/components';
 import { paths } from 'src/routes/paths';
 import BondsTableRow from '../bonds-table-row';
@@ -33,7 +32,7 @@ const TABLE_HEAD = [
   { id: 'bond_name', label: 'Bond Name' },
   { id: 'min_investment', label: 'Min Investment' },
   { id: 'yield', label: 'Yield' },
-  { id: 'description', label: 'Description' },
+  // { id: 'description', label: 'Description' },
   { id: 'maturity_date', label: 'Maturity Date' },
   { id: 'edit', label: 'Actions', width: 80 },
 ];
@@ -47,33 +46,150 @@ export default function BondsListView() {
 
   const confirm = useBoolean();
 
-  const { data } = bondsApi.useBondsQuery();
+  // const { data } = bondsApi.useBondsQuery();
 
-  // const data = {
-  //   data: {
-  //     mlds: [
-  //       {
-  //         id: 'INE027E07BZ9',
-  //         mld_name: 'adipisicing minim',
-  //         min_investment: 937,
-  //         yield: 'Market Linked',
-  //         rating: 'AAA',
-  //         issue_date: '2022-07-27T00:00:00Z',
-  //         description: 'amet eiusmod laboris ea',
-  //         underlying: '',
-  //         maturity_date: '2024-08-27T00:00:00Z',
-  //         sec_identifier: 'something',
-  //         principal_protected: true,
-  //         issuer_name: 'L&T FINANCE LIMITED',
-  //         is_activated: false,
-  //         is_certified: false,
-  //         offer_close_date: '2023-12-31T00:00:00Z',
-  //         updated_at: '2024-01-08T13:01:27.682183Z',
-  //         created_at: '2024-01-08T12:58:20.089001Z',
-  //       },
-  //     ],
-  //   },
-  // };
+  const data = {
+    data: {
+      bonds: [
+        {
+          bond: {
+            bond_name: 'Axis Finance Limited',
+            min_investment: 2500000,
+            yield: 8.5,
+            security: 'Secured',
+            description:
+              'The investment portfolio curates a standardised conservative multi-asset class portfolio that is in line with your values and risk profile',
+            rating: 'AAA',
+            bond_id: 'INE891K07689',
+            maturity_date: '2024-09-09T00:00:00Z',
+            issue_date: '2021-09-09T00:00:00Z',
+            next_interest_date: '0001-01-01T00:00:00Z',
+            coupon_payout: 'Not Available',
+            amc_id: 'fe316c49-add1-4abf-8dd7-f177b2b92fac',
+            face_value: 1000000,
+            type: 'Zero Coupon Bonds',
+            is_certified: true,
+            is_activated: true,
+            offer_close_date: '2023-12-31T00:00:00Z',
+            created_at: '2024-01-12T09:16:47.580748Z',
+            updated_at: '2024-01-22T06:37:20.314141Z',
+          },
+          amc: {
+            amc_id: 'fe316c49-add1-4abf-8dd7-f177b2b92fac',
+            amc_name: 'AXIS FINANCE LIMITED',
+            amc_description: '',
+            amc_logo: '',
+            amc_type: '',
+            amc_home_page: '',
+            created_at: '2024-01-12T09:16:47.580748Z',
+            updated_at: '2024-01-12T09:16:47.580748Z',
+          },
+        },
+        {
+          bond: {
+            bond_name: 'State Bank of India',
+            min_investment: 2500000,
+            yield: 8.100000381469727,
+            security: 'Secured',
+            description:
+              'The investment portfolio curates a standardised conservative multi-asset class portfolio that is in line with your values and risk profile',
+            rating: 'AA+',
+            bond_id: 'INE062A08223',
+            maturity_date: '2024-11-22T00:00:00Z',
+            issue_date: '2019-11-22T00:00:00Z',
+            next_interest_date: '0001-01-01T00:00:00Z',
+            coupon_payout: 'ANNUAL',
+            amc_id: '7b569c13-ad2c-464e-9081-4e8f99f8633e',
+            face_value: 1000000,
+            type: 'Perpetual Bonds',
+            is_certified: true,
+            is_activated: true,
+            offer_close_date: '2023-12-31T00:00:00Z',
+            created_at: '2024-01-12T09:16:47.580748Z',
+            updated_at: '2024-01-22T06:37:20.314141Z',
+          },
+          amc: {
+            amc_id: '7b569c13-ad2c-464e-9081-4e8f99f8633e',
+            amc_name: 'STATE BANK OF INDIA',
+            amc_description: 'ea',
+            amc_logo: 'dolor',
+            amc_type: 'qui ullamco Ut ut',
+            amc_home_page: 'id veniam ex',
+            created_at: '2024-01-12T09:16:47.580748Z',
+            updated_at: '2024-01-12T09:40:37.163132Z',
+          },
+        },
+        {
+          bond: {
+            bond_name: 'Tata Capital Housing Finance Limited',
+            min_investment: 2500000,
+            yield: 8.100000381469727,
+            security: 'Secured',
+            description:
+              'The investment portfolio curates a standardised conservative multi-asset class portfolio that is in line with your values and risk profile',
+            rating: 'AAA',
+            bond_id: 'INE033L07HG9',
+            maturity_date: '2024-09-23T00:00:00Z',
+            issue_date: '2021-06-23T00:00:00Z',
+            next_interest_date: '0001-01-01T00:00:00Z',
+            coupon_payout: 'Not Available',
+            amc_id: '64eb2115-9a18-4efc-a8aa-7b35a678079f',
+            face_value: 1000000,
+            type: 'Zero Coupon Bonds',
+            is_certified: true,
+            is_activated: true,
+            offer_close_date: '2023-12-31T00:00:00Z',
+            created_at: '2024-01-12T09:16:47.580748Z',
+            updated_at: '2024-01-22T06:37:20.314141Z',
+          },
+          amc: {
+            amc_id: '64eb2115-9a18-4efc-a8aa-7b35a678079f',
+            amc_name: 'TATA CAPITAL HOUSING FINANCE LIMITED',
+            amc_description: '',
+            amc_logo: '',
+            amc_type: '',
+            amc_home_page: '',
+            created_at: '2024-01-12T09:16:47.580748Z',
+            updated_at: '2024-01-12T09:16:47.580748Z',
+          },
+        },
+        {
+          bond: {
+            bond_name: 'Bank Of Baroda',
+            min_investment: 2500000,
+            yield: 8.699999809265137,
+            security: 'Secured',
+            description:
+              'The investment portfolio curates a standardised conservative multi-asset class portfolio that is in line with your values and risk profile',
+            rating: 'AA+',
+            bond_id: 'INE028A08174',
+            maturity_date: '2024-11-28T00:00:00Z',
+            issue_date: '2019-11-28T00:00:00Z',
+            next_interest_date: '0001-01-01T00:00:00Z',
+            coupon_payout: 'ANNUAL',
+            amc_id: '07f769f0-549d-4b49-afc0-3305363ecf70',
+            face_value: 1000000,
+            type: 'Perpetual Bonds',
+            is_certified: true,
+            is_activated: true,
+            offer_close_date: '2023-12-31T00:00:00Z',
+            created_at: '2024-01-12T09:16:47.580748Z',
+            updated_at: '2024-01-22T06:37:20.314141Z',
+          },
+          amc: {
+            amc_id: '07f769f0-549d-4b49-afc0-3305363ecf70',
+            amc_name: 'BANK OF BARODA',
+            amc_description: '',
+            amc_logo: '',
+            amc_type: '',
+            amc_home_page: '',
+            created_at: '2024-01-12T09:16:47.580748Z',
+            updated_at: '2024-01-12T09:16:47.580748Z',
+          },
+        },
+      ],
+    },
+  };
 
   const denseHeight = table.dense ? 52 : 72;
 
@@ -109,7 +225,10 @@ export default function BondsListView() {
               numSelected={table.selected.length}
               rowCount={data?.data?.bonds?.length || 0}
               onSelectAllRows={(checked) =>
-                table.onSelectAllRows(checked, data?.data?.bonds?.map((row) => row.bond_id) || [])
+                table.onSelectAllRows(
+                  checked,
+                  data?.data?.bonds?.map((row) => row?.bond?.bond_id) || []
+                )
               }
               action={
                 <Tooltip title="Delete">
@@ -142,7 +261,7 @@ export default function BondsListView() {
                     )
                     .map((row) => (
                       <BondsTableRow
-                        key={row.bond_id}
+                        key={row.bond.bond_id}
                         row={row}
                         // selected={table.selected.includes(row.rid)}
                         // onSelectRow={() => table.onSelectRow(row.rid)}

@@ -18,7 +18,7 @@ export default function MLDsEditView() {
 
   const { data } = bondsApi.useBondsQuery();
 
-  const currentBond = data?.data?.bonds?.find((bond) => bond.bond_id === id);
+  const currentBond = data?.data?.bonds?.find((bond) => bond.bond.bond_id === id);
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
@@ -33,14 +33,14 @@ export default function MLDsEditView() {
             name: 'Bonds',
             href: paths.dashboard.bonds.list,
           },
-          { name: currentBond?.bond_name },
+          { name: currentBond?.bond.bond_id },
         ]}
         sx={{
           mb: { xs: 3, md: 5 },
         }}
       />
 
-      {currentBond && <BondsNewEditForm currentBond={currentBond} />}
+      {currentBond && <BondsNewEditForm currentBond={currentBond?.bond} />}
     </Container>
   );
 }

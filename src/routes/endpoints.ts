@@ -52,11 +52,13 @@ export const endpoints = {
     list: p('GET', '/bonds'),
     create: p('POST', '/bonds'),
     edit: (id: string) => p(`PUT`, `/bonds/${id}`),
+    editAMC: (id: string) => p(`PUT`, `/bonds/amc/${id}`),
   },
   mlds: {
     list: p('GET', '/mlds'),
     create: p('POST', '/mlds'),
     edit: (id: string) => p(`PUT`, `/cms/mlds/${id}`),
+    editAMC: (id: string) => p(`PUT`, `/mlds/amc/${id}`),
   },
   company: {
     list: p('GET', '/api/company'),

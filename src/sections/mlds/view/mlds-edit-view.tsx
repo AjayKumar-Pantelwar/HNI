@@ -17,7 +17,7 @@ export default function MLDsEditView() {
 
   const { data } = mldsApi.useMldsQuery();
 
-  const currentMLD = data?.data?.mlds?.find((mld) => mld.id === id);
+  const currentMLD = data?.data?.mlds?.find((mld) => mld.mld.mld_id === id);
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
@@ -32,14 +32,14 @@ export default function MLDsEditView() {
             name: 'MLDs',
             href: paths.dashboard.mlds.list,
           },
-          { name: currentMLD?.mld_name },
+          { name: currentMLD?.mld.mld_id },
         ]}
         sx={{
           mb: { xs: 3, md: 5 },
         }}
       />
 
-      {currentMLD && <MLDsNewEditForm currentMLD={currentMLD} />}
+      {currentMLD && <MLDsNewEditForm currentMLD={currentMLD?.mld} />}
     </Container>
   );
 }

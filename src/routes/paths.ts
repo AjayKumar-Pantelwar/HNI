@@ -29,12 +29,14 @@ export const paths = {
       new: `${ROOTS.DASHBOARD}/bonds/new`,
       list: `${ROOTS.DASHBOARD}/bonds/list`,
       edit: (id: string) => `${ROOTS.DASHBOARD}/bonds/${id}/edit`,
+      view: (id: string) => `${ROOTS.DASHBOARD}/bonds/${id}/view`,
     },
     mlds: {
       root: `${ROOTS.DASHBOARD}/mlds`,
       new: `${ROOTS.DASHBOARD}/mlds/new`,
       list: `${ROOTS.DASHBOARD}/mlds/list`,
       edit: (id: string) => `${ROOTS.DASHBOARD}/mlds/${id}/edit`,
+      view: (id: string) => `${ROOTS.DASHBOARD}/mlds/${id}/view`,
     },
     admin: {
       root: `${ROOTS.DASHBOARD}/admin`,

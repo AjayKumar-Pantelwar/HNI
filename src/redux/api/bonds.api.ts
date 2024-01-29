@@ -21,5 +21,9 @@ export const bondsApi = createApi({
       query: ({ bond_id, ...body }) => ({ ...endpoints.bonds.edit(bond_id), body }),
       invalidatesTags: ['Bonds'],
     }),
+    editAMC: builder.mutation<ApiResponse, { bond_id: string; body: FormData }>({
+      query: ({ bond_id, ...body }) => ({ ...endpoints.bonds.editAMC(bond_id), body }),
+      invalidatesTags: ['Bonds'],
+    }),
   }),
 });

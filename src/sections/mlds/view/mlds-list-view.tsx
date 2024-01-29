@@ -24,7 +24,6 @@ import {
 import { useBoolean } from 'src/hooks/use-boolean';
 // import { usePerm } from 'src/hooks/use-perm';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
-import { mldsApi } from 'src/redux/api/mlds.api';
 import { RouterLink } from 'src/routes/components';
 import { paths } from 'src/routes/paths';
 import MLDsTableRow from '../mlds-table-row';
@@ -33,7 +32,7 @@ const TABLE_HEAD = [
   { id: 'mld_name', label: 'MLD Name' },
   { id: 'min_investment', label: 'Min Investment' },
   { id: 'yield', label: 'Yield' },
-  { id: 'description', label: 'Description' },
+  // { id: 'description', label: 'Description' },
   { id: 'maturity_date', label: 'Maturity Date' },
   { id: 'edit', label: 'Actions', width: 80 },
 ];
@@ -47,33 +46,45 @@ export default function MLDsListView() {
 
   const confirm = useBoolean();
 
-  const { data } = mldsApi.useMldsQuery();
+  // const { data } = mldsApi.useMldsQuery();s
 
-  // const data = {
-  //   data: {
-  //     mlds: [
-  //       {
-  //         id: 'INE027E07BZ9',
-  //         mld_name: 'adipisicing minim',
-  //         min_investment: 937,
-  //         yield: 'Market Linked',
-  //         rating: 'AAA',
-  //         issue_date: '2022-07-27T00:00:00Z',
-  //         description: 'amet eiusmod laboris ea',
-  //         underlying: '',
-  //         maturity_date: '2024-08-27T00:00:00Z',
-  //         sec_identifier: 'something',
-  //         principal_protected: true,
-  //         issuer_name: 'L&T FINANCE LIMITED',
-  //         is_activated: false,
-  //         is_certified: false,
-  //         offer_close_date: '2023-12-31T00:00:00Z',
-  //         updated_at: '2024-01-08T13:01:27.682183Z',
-  //         created_at: '2024-01-08T12:58:20.089001Z',
-  //       },
-  //     ],
-  //   },
-  // };
+  const data = {
+    data: {
+      mlds: [
+        {
+          amc: {
+            created_at: '2024-01-17T09:17:28.81973Z',
+            updated_at: '2024-01-17T10:55:54.23354Z',
+            amc_id: '52f3afaf-8abb-49a8-99e8-a5b3a940d718',
+            amc_name: 'L&T FINANCE LIMITED',
+            amc_description: 'eiusmod',
+            amc_logo: 'eiusmod',
+            amc_type: 'minim sunt Lorem',
+            amc_home_page: 'sunt',
+          },
+          mld: {
+            maturity_date: '2024-08-27T00:00:00Z',
+            issuer_date: '2022-07-27T00:00:00Z',
+            updated_at: '2024-01-22T06:42:03.566852Z',
+            created_at: '2024-01-17T09:17:28.81973Z',
+            offer_close_date: '2023-12-31T00:00:00Z',
+            underlying: '',
+            mld_id: 'INE027E07BZ9',
+            description:
+              'This investment portfolio curates a standardised conservative multi-asset class portfolio that is in line with your values and risk profile',
+            amc_id: '52f3afaf-8abb-49a8-99e8-a5b3a940d718',
+            name: 'L&T Finance Limited',
+            rating: 'AAA',
+            yield: 'NA',
+            min_investment: 2500000,
+            principal_protected: true,
+            is_certified: true,
+            is_activated: true,
+          },
+        },
+      ],
+    },
+  };
 
   const denseHeight = table.dense ? 52 : 72;
 
@@ -109,7 +120,7 @@ export default function MLDsListView() {
               numSelected={table.selected.length}
               rowCount={data?.data?.mlds?.length || 0}
               onSelectAllRows={(checked) =>
-                table.onSelectAllRows(checked, data?.data?.mlds?.map((row) => row.id) || [])
+                table.onSelectAllRows(checked, data?.data?.mlds?.map((row) => row.mld.amc_id) || [])
               }
               action={
                 <Tooltip title="Delete">
@@ -142,7 +153,7 @@ export default function MLDsListView() {
                     )
                     .map((row) => (
                       <MLDsTableRow
-                        key={row.id}
+                        key={row.mld.mld_id}
                         row={row}
                         // selected={table.selected.includes(row.rid)}
                         // onSelectRow={() => table.onSelectRow(row.rid)}
