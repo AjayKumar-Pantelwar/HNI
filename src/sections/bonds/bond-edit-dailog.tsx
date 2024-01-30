@@ -2,7 +2,7 @@
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { Box, Button, Dialog, Typography } from '@mui/material';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import { useForm } from 'react-hook-form';
 import FormProvider, { RHFSwitch, RHFTextField } from 'src/components/hook-form';
@@ -76,22 +76,10 @@ const BondEditDailog = (props: Props) => {
     }
   });
   return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      PaperProps={{
-        sx: {
-          p: 4,
-          minWidth: 'min(100%, 700px)',
-        },
-      }}
-      sx={{ mx: 2 }}
-    >
+    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <FormProvider methods={methods} onSubmit={onSubmit}>
-        <Typography variant="h6" sx={{ mb: 4 }}>
-          Edit Bond
-        </Typography>
-        <Box>
+        <DialogTitle>Edit Bond</DialogTitle>
+        <DialogContent dividers sx={{ pt: 2 }}>
           <Stack sx={{ gap: 3 }}>
             <Box sx={{ display: 'flex', gap: 3 }}>
               <RHFTextField name="name" label="Bond name" fullWidth />
@@ -108,16 +96,17 @@ const BondEditDailog = (props: Props) => {
               <RHFSwitch name="is_certified" label="Is Certified" />
             </Box>
           </Stack>
-
-          <Stack sx={{ mt: 3, flexDirection: 'row', gap: 2, ml: 'auto', justifyContent: 'end' }}>
-            <Button variant="contained" onClick={onClose}>
-              Cancel
-            </Button>
-            <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-              {!currentBond ? 'Create Bond' : 'Save Changes'}
-            </LoadingButton>
-          </Stack>
-        </Box>
+        </DialogContent>
+        <DialogActions
+          sx={{ mt: 3, flexDirection: 'row', gap: 2, ml: 'auto', justifyContent: 'end' }}
+        >
+          <Button variant="contained" onClick={onClose}>
+            Cancel
+          </Button>
+          <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
+            {!currentBond ? 'Create Bond' : 'Save Changes'}
+          </LoadingButton>
+        </DialogActions>
       </FormProvider>
     </Dialog>
   );

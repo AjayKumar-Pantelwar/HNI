@@ -2,7 +2,15 @@
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { Box, Button, Dialog, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Typography,
+} from '@mui/material';
 import Stack from '@mui/material/Stack';
 import React, { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
@@ -88,19 +96,19 @@ const MLDAMCEditDailog = (props: Props) => {
     <Dialog
       open={open}
       onClose={onClose}
-      PaperProps={{
-        sx: {
-          p: 4,
-          minWidth: 'min(100%, 700px)',
-        },
-      }}
-      sx={{ mx: 2 }}
+      // PaperProps={{
+      //   sx: {
+      //     p: 4,
+      //     minWidth: 'min(100%, 700px)',
+      //   },
+      // }}
+      // sx={{ mx: 2 }}
+      maxWidth="sm"
+      fullWidth
     >
       <FormProvider methods={methods} onSubmit={onSubmit}>
-        <Typography variant="h6" sx={{ mb: 4 }}>
-          Edit AMC
-        </Typography>
-        <Box>
+        <DialogTitle>Edit AMC</DialogTitle>
+        <DialogContent dividers>
           <Stack sx={{ gap: 3 }}>
             <RHFUploadAvatar
               name="logo"
@@ -144,15 +152,15 @@ const MLDAMCEditDailog = (props: Props) => {
             </Box>
             <RHFTextField name="description" label="Description" fullWidth />
           </Stack>
-          <Stack sx={{ mt: 3, flexDirection: 'row', gap: 2, ml: 'auto', justifyContent: 'end' }}>
-            <Button variant="contained" onClick={onClose}>
-              Cancel
-            </Button>
-            <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-              Save Changes
-            </LoadingButton>
-          </Stack>
-        </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="contained" onClick={onClose}>
+            Cancel
+          </Button>
+          <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
+            Save Changes
+          </LoadingButton>
+        </DialogActions>
       </FormProvider>
     </Dialog>
   );
