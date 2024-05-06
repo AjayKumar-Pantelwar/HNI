@@ -1,4 +1,5 @@
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import BuildIcon from '@mui/icons-material/Build';
 import GroupIcon from '@mui/icons-material/Group';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
@@ -40,6 +41,7 @@ const MIcons = {
   mlds: SettingsEthernetIcon,
   actions: BuildIcon,
   investors: PeopleAltIcon,
+  user: AccountCircleIcon,
 };
 
 export function useNavData() {
@@ -105,6 +107,11 @@ export function useNavData() {
                 path: paths.dashboard.actions.list,
               },
             ],
+          },
+          {
+            title: t('User'),
+            path: paths.dashboard.user.root,
+            Icon: MIcons.user,
           },
         ],
       },

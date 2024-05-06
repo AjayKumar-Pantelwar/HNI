@@ -24,6 +24,9 @@ export const paths = {
       list: `${ROOTS.DASHBOARD}/actions/list`,
       view: `${ROOTS.DASHBOARD}/actions/view`,
     },
+    user: {
+      root: `${ROOTS.DASHBOARD}/user`,
+    },
     bonds: {
       root: `${ROOTS.DASHBOARD}/bonds`,
       new: `${ROOTS.DASHBOARD}/bonds/new`,
