@@ -19,6 +19,14 @@ export const paths = {
       edit: (id: string) => `${ROOTS.DASHBOARD}/carousel/${id}/edit`,
       new: `${ROOTS.DASHBOARD}/carousel/new`,
     },
+    contentManagement: {
+      riskProfile: {
+        list: `${ROOTS.DASHBOARD}/content-management/risk-profile/list`,
+        edit: (id: string) => `${ROOTS.DASHBOARD}/content-management/risk-profile/${id}/edit`,
+        new: `${ROOTS.DASHBOARD}/content-management/risk-profile/new`,
+      },
+    },
+
     actions: {
       root: `${ROOTS.DASHBOARD}/actions`,
       list: `${ROOTS.DASHBOARD}/actions/list`,

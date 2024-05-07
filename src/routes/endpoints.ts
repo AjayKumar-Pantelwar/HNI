@@ -11,6 +11,11 @@ export const endpoints = {
     action: (id: string) => p(`PUT`, `/manage/admin/${id}/role`),
     actions: p(`GET`, `/manage/admin/actions`),
   },
+  riskprofile: {
+    list: p('GET', '/cms/rps'),
+    create: p('POST', '/cms/rps'),
+    edit: (id: string) => p('POST', `/cms/rps`),
+  },
   deal: {
     list: p('GET', '/api/deal'),
     create: p('POST', '/api/deal/basic'),

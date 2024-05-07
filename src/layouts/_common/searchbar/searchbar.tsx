@@ -1,31 +1,31 @@
 'use client';
 
-import { useState, memo, useCallback } from 'react';
-import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
+import parse from 'autosuggest-highlight/parse';
+import { memo, useCallback, useState } from 'react';
 // @mui
-import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import List from '@mui/material/List';
-import Stack from '@mui/material/Stack';
-import InputBase from '@mui/material/InputBase';
+import Dialog, { dialogClasses } from '@mui/material/Dialog';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
-import Dialog, { dialogClasses } from '@mui/material/Dialog';
+import InputBase from '@mui/material/InputBase';
+import List from '@mui/material/List';
+import Stack from '@mui/material/Stack';
+import { useTheme } from '@mui/material/styles';
 // hooks
 import { useBoolean } from 'src/hooks/use-boolean';
-import { useResponsive } from 'src/hooks/use-responsive';
 import { useEventListener } from 'src/hooks/use-event-listener';
+import { useResponsive } from 'src/hooks/use-responsive';
 // components
-import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
+import Label from 'src/components/label';
 import Scrollbar from 'src/components/scrollbar';
-import { useRouter } from 'src/routes/hook';
 import SearchNotFound from 'src/components/search-not-found';
+import { useRouter } from 'src/routes/hook';
 //
-import ResultItem from './result-item';
 import { useNavData } from '../../dashboard/config-navigation';
-import { applyFilter, groupedData, getAllItems } from './utils';
+import ResultItem from './result-item';
+import { applyFilter, getAllItems, groupedData } from './utils';
 
 // ----------------------------------------------------------------------
 
@@ -92,6 +92,8 @@ function Searchbar() {
             const partsTitle = parse(title, match(title, searchQuery));
 
             const partsPath = parse(path, match(path, searchQuery));
+
+            console.log(partsPath, partsTitle);
 
             return (
               <ResultItem

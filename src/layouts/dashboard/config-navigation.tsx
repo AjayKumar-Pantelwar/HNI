@@ -6,6 +6,7 @@ import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import SecurityIcon from '@mui/icons-material/Security';
 import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet';
+import SourceIcon from '@mui/icons-material/Source';
 import ViewCarouselIcon from '@mui/icons-material/ViewCarousel';
 import { useMemo } from 'react';
 import Iconify from 'src/components/iconify';
@@ -42,6 +43,7 @@ const MIcons = {
   actions: BuildIcon,
   investors: PeopleAltIcon,
   user: AccountCircleIcon,
+  contentManagement: SourceIcon,
 };
 
 export function useNavData() {
@@ -105,6 +107,17 @@ export function useNavData() {
               {
                 title: t('list'),
                 path: paths.dashboard.actions.list,
+              },
+            ],
+          },
+          {
+            title: t('Content Management'),
+            Icon: MIcons.contentManagement,
+            path: paths.dashboard.contentManagement.riskProfile.list,
+            children: [
+              {
+                title: t('Risk Profile'),
+                path: paths.dashboard.contentManagement.riskProfile.list,
               },
             ],
           },
