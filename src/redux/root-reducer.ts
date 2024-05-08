@@ -7,6 +7,7 @@ import { bondsApi } from './api/bonds.api';
 import { carouselApi } from './api/carousel.api';
 import { mldsApi } from './api/mlds.api';
 import { roleApi } from './api/role.api';
+import { userApi } from './api/user.api';
 import { authSlice } from './slices/auth.slice';
 
 export const createNoopStorage = () => ({
@@ -38,6 +39,7 @@ export const rootReducer = combineReducers({
   [carouselApi.reducerPath]: carouselApi.reducer,
   [bondsApi.reducerPath]: bondsApi.reducer,
   [mldsApi.reducerPath]: mldsApi.reducer,
+  [userApi.reducerPath]: userApi.reducer,
   // [dealApi.reducerPath]: dealApi.reducer,
   // [constantApi.reducerPath]: constantApi.reducer,
   // [investorApi.reducerPath]: investorApi.reducer,

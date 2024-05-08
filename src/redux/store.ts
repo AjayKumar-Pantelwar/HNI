@@ -11,6 +11,7 @@ import { bondsApi } from './api/bonds.api';
 import { carouselApi } from './api/carousel.api';
 import { mldsApi } from './api/mlds.api';
 import { roleApi } from './api/role.api';
+import { userApi } from './api/user.api';
 import { rootReducer } from './root-reducer';
 
 export type RootState = ReturnType<typeof rootReducer>;
@@ -30,6 +31,7 @@ export const store = configureStore({
       carouselApi.middleware,
       bondsApi.middleware,
       mldsApi.middleware,
+      userApi.middleware,
       // dealApi.middleware,
       // companyApi.middleware,
       // constantApi.middleware,

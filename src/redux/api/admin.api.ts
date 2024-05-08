@@ -41,7 +41,7 @@ export const adminApi = createApi({
       invalidatesTags: ['Admin'],
     }),
     adminActions: builder.query<AdminActionResponse, AdminActionRequest>({
-      query: (body) => ({ ...endpoints.admin.actions, body }),
+      query: (params) => ({ ...endpoints.admin.actions, params }),
       providesTags: ['Admin'],
     }),
   }),

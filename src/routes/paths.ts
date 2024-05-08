@@ -26,14 +26,13 @@ export const paths = {
         new: `${ROOTS.DASHBOARD}/content-management/risk-profile/new`,
       },
     },
-
     actions: {
       root: `${ROOTS.DASHBOARD}/actions`,
       list: `${ROOTS.DASHBOARD}/actions/list`,
-      view: `${ROOTS.DASHBOARD}/actions/view`,
     },
     user: {
       root: `${ROOTS.DASHBOARD}/user`,
+      list: `${ROOTS.DASHBOARD}/user/list`,
     },
     bonds: {
       root: `${ROOTS.DASHBOARD}/bonds`,

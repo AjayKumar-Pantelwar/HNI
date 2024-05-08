@@ -101,7 +101,7 @@ export function useNavData() {
           },
           {
             title: t('Actions'),
-            path: paths.dashboard.actions.list,
+            path: paths.dashboard.actions.root,
             Icon: MIcons.actions,
             children: [
               {
@@ -125,6 +125,7 @@ export function useNavData() {
             title: t('User'),
             path: paths.dashboard.user.root,
             Icon: MIcons.user,
+            children: [{ title: t('list'), path: paths.dashboard.user.list }],
           },
         ],
       },
