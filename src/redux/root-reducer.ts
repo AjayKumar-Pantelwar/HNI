@@ -6,6 +6,7 @@ import { adminApi } from './api/admin.api';
 import { bondsApi } from './api/bonds.api';
 import { carouselApi } from './api/carousel.api';
 import { mldsApi } from './api/mlds.api';
+import { notificationsApi } from './api/notifications.api';
 import { roleApi } from './api/role.api';
 import { userApi } from './api/user.api';
 import { authSlice } from './slices/auth.slice';
@@ -40,6 +41,8 @@ export const rootReducer = combineReducers({
   [bondsApi.reducerPath]: bondsApi.reducer,
   [mldsApi.reducerPath]: mldsApi.reducer,
   [userApi.reducerPath]: userApi.reducer,
+  [notificationsApi.reducerPath]: notificationsApi.reducer,
+
   // [dealApi.reducerPath]: dealApi.reducer,
   // [constantApi.reducerPath]: constantApi.reducer,
   // [investorApi.reducerPath]: investorApi.reducer,

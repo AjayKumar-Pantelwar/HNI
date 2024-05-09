@@ -3,6 +3,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import BuildIcon from '@mui/icons-material/Build';
 import GroupIcon from '@mui/icons-material/Group';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import SecurityIcon from '@mui/icons-material/Security';
 import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet';
@@ -44,6 +45,7 @@ const MIcons = {
   investors: PeopleAltIcon,
   user: AccountCircleIcon,
   contentManagement: SourceIcon,
+  notifications: NotificationsIcon,
 };
 
 export function useNavData() {
@@ -71,6 +73,11 @@ export function useNavData() {
               { title: t('list'), path: paths.dashboard.roles.list },
               { title: t('create'), path: paths.dashboard.roles.new },
             ],
+          },
+          {
+            title: t('Notifications'),
+            path: paths.dashboard.notifications.root,
+            Icon: MIcons.notifications,
           },
           {
             title: t('Carousel'),

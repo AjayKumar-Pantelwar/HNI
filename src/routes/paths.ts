@@ -30,6 +30,9 @@ export const paths = {
       root: `${ROOTS.DASHBOARD}/actions`,
       list: `${ROOTS.DASHBOARD}/actions/list`,
     },
+    notifications: {
+      root: `${ROOTS.DASHBOARD}/notifications`,
+    },
     user: {
       root: `${ROOTS.DASHBOARD}/user`,
       list: `${ROOTS.DASHBOARD}/user/list`,

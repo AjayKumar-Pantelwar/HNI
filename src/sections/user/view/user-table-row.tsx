@@ -38,7 +38,17 @@ const UserTableRow = (props: Props) => {
   console.log(open);
 
   return (
-    <TableRow hover selected={selected}>
+    <TableRow
+      hover
+      selected={selected}
+      sx={{
+        ...(row?.is_blocked && {
+          borderLeft: '2px solid',
+          borderColor: 'error.main',
+          borderRadius: 1,
+        }),
+      }}
+    >
       {selected && onSelectRow && (
         <TableCell padding="checkbox">
           <Checkbox checked={selected} onClick={onSelectRow} />
