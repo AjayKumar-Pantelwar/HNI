@@ -120,8 +120,12 @@ export function useNavData() {
           {
             title: t('Content Management'),
             Icon: MIcons.contentManagement,
-            path: paths.dashboard.contentManagement.riskProfile.list,
+            path: paths.dashboard.contentManagement.root,
             children: [
+              {
+                title: t('Research'),
+                path: paths.dashboard.contentManagement.reasearch.list,
+              },
               {
                 title: t('Risk Profile'),
                 path: paths.dashboard.contentManagement.riskProfile.list,

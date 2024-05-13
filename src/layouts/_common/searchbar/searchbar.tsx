@@ -93,8 +93,6 @@ function Searchbar() {
 
             const partsPath = parse(path, match(path, searchQuery));
 
-            console.log(partsPath, partsTitle);
-
             return (
               <ResultItem
                 path={partsPath}

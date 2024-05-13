@@ -35,7 +35,6 @@ const UserTableRow = (props: Props) => {
   const handleClose = () => {
     setOpen(false);
   };
-  console.log(open);
 
   return (
     <TableRow

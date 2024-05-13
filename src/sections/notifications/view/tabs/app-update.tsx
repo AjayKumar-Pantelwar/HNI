@@ -31,7 +31,7 @@ const AppUpdate = () => {
       .max(86, 'Button 2 must be less than 86 characters'),
     app_link: Yup.string().required('App link is required'),
     app_version: Yup.string().required('App version is required'),
-    app_mandatory: Yup.boolean().required('App mandatory is required'),
+    app_mandatory: Yup.string().required('App mandatory is required'),
     type: Yup.string()
       .required('Type is required')
       .oneOf(['android', 'ios'], 'Type must be either android or ios'),
@@ -45,7 +45,7 @@ const AppUpdate = () => {
     type: APPType.ANDROID,
     app_link: '',
     app_version: '',
-    app_mandatory: false,
+    app_mandatory: 'yes',
   };
 
   const methods = useForm({
@@ -71,7 +71,7 @@ const AppUpdate = () => {
         button2: appMandate ? '' : data.button2,
         ...(type === APPType.ANDROID
           ? {
-              android_mandatory: app_mandatory,
+              android_mandatory: app_mandatory === 'yes',
               android_version: app_version,
               play_store_url: app_link,
             }
@@ -82,7 +82,7 @@ const AppUpdate = () => {
             }),
         ...(type === APPType.IOS
           ? {
-              ios_mandatory: app_mandatory,
+              ios_mandatory: app_mandatory === 'yes',
               ios_version: app_version,
               app_store_url: app_link,
             }
@@ -112,7 +112,7 @@ const AppUpdate = () => {
                 <RHFTextField name="title" label="Title" maxLimitCharacters={86} />
                 <RHFTextField name="subtitle" label="Subtitle" maxLimitCharacters={150} />
                 <RHFTextField name="button1" label="Button1" maxLimitCharacters={86} />
-                {!appMandate && (
+                {(appMandate as unknown as string) === 'false' && (
                   <RHFTextField name="button2" label="Button2" maxLimitCharacters={86} />
                 )}
               </Stack>

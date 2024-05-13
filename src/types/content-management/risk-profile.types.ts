@@ -1,4 +1,4 @@
-import { ApiResponse } from './api.types';
+import { ApiResponse } from '../api.types';
 
 export type GetQuestionsResponse = ApiResponse<Question[]>;
 

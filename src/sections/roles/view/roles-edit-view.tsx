@@ -26,7 +26,7 @@ export default function RolesEditView() {
     }
   );
 
-  console.log({ currentPermissions });
+  // console.log({ currentPermissions });
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
