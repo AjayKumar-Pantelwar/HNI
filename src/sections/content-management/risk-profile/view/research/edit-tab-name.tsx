@@ -1,7 +1,7 @@
 import Close from '@mui/icons-material/Close';
 import { Box, Button, Divider, IconButton, Stack, TextField, Typography } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface Props {
   open: boolean;
@@ -12,7 +12,13 @@ interface Props {
 const EditTabName = (props: Props) => {
   const { onClose, open, tabName } = props;
 
-  const [value, setValue] = useState(tabName);
+  const [value, setValue] = useState('');
+
+  useEffect(() => {
+    if (tabName) {
+      setValue(tabName);
+    }
+  }, [tabName]);
 
   return (
     <Dialog

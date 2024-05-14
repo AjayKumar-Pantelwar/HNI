@@ -25,7 +25,6 @@ import {
 import { useBoolean } from 'src/hooks/use-boolean';
 import { ResearchData } from 'src/types/content-management/research.types';
 import SubTabsInternal from '../../../sub-tabs';
-import AddReportModal from './add-report-modal';
 import { Tab1TableRow } from './table-row';
 
 // import { Tab1TableRow } from './table-row';
@@ -41,7 +40,7 @@ interface Props {
   data: ResearchData;
 }
 
-const ResearchTab1 = (props: Props) => {
+const ResearchTab2 = (props: Props) => {
   const { data } = props;
 
   const [tab, setTab] = useState(1);
@@ -52,7 +51,7 @@ const ResearchTab1 = (props: Props) => {
 
   const denseHeight = table.dense ? 52 : 72;
 
-  const cards = data?.page[tab - 1]?.cards;
+  const cards = data?.page[tab - 1].cards;
 
   const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTab(newValue);
@@ -67,20 +66,20 @@ const ResearchTab1 = (props: Props) => {
               <Typography variant="body1" color="text.secondary">
                 Downloadable
               </Typography>
-              <Checkbox checked={data?.page[tab - 1]?.is_downloadable} />
+              <Checkbox checked={data?.page[0]?.is_downloadable} />
             </Stack>
             <Divider sx={{ height: '100px' }} orientation="vertical" variant="fullWidth" />
             <Stack sx={{ alignItems: 'start' }}>
               <Typography variant="body1" color="text.secondary">
                 Shareable
               </Typography>
-              <Checkbox checked={data?.page[tab - 1]?.is_shareable} />
+              <Checkbox checked={data?.page[0]?.is_shareable} />
             </Stack>
           </Box>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
             {data?.page?.length > 1 && <SubTabsInternal tab={tab} handleChange={handleChange} />}
             <Button onClick={addNew.onTrue} startIcon={<AddCircleIcon />} variant="contained">
-              Add new Report
+              Add new Video
             </Button>
           </Box>
         </Box>
@@ -138,9 +137,9 @@ const ResearchTab1 = (props: Props) => {
           onChangeDense={table.onChangeDense}
         />
       </Stack>
-      <AddReportModal open={addNew.value} onClose={addNew.onFalse} />
+      {/* <AddReportModal open={addNew.value} onClose={addNew.onFalse} /> */}
     </Box>
   );
 };
 
-export default ResearchTab1;
+export default ResearchTab2;

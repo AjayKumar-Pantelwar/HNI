@@ -3,8 +3,8 @@ import { SubTabs } from 'src/types/content-management/research.types';
 import { capitalize } from 'src/utils/change-case';
 
 interface Props {
-  tab: SubTabs;
-  handleChange: (event: React.SyntheticEvent, newValue: SubTabs) => void;
+  tab: number;
+  handleChange: (event: React.SyntheticEvent, newValue: number) => void;
 }
 
 const SubTabsInternal = (props: Props) => {
@@ -47,7 +47,7 @@ const SubTabsInternal = (props: Props) => {
             py: '0',
           }}
           key={d}
-          value={d}
+          value={i + 1}
         />
       ))}
     </Tabs>
