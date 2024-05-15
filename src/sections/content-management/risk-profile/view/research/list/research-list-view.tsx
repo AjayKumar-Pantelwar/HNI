@@ -14,8 +14,8 @@ import EditTabName from '../edit-tab-name';
 import ResearchTab1 from './tabs/tab1/tab1';
 
 import ResearchTab2 from './tabs/tab2/tab2';
-import ResearchTab3 from './tabs/tab3';
-import ResearchTab4 from './tabs/tab4';
+import ResearchTab3 from './tabs/tab3/tab3';
+import ResearchTab4 from './tabs/tab4/tab4';
 
 interface TabProps {
   tab: ResearchData;
