@@ -6,6 +6,8 @@ import { useForm } from 'react-hook-form';
 import { RHFTextField } from 'src/components/hook-form';
 import FormProvider from 'src/components/hook-form/form-provider';
 import RHFDateField from 'src/components/hook-form/rhf-date-field';
+import { PreviewFile } from 'src/components/preview-file';
+import { UploadFile } from 'src/components/upload-file';
 import { ResearchCard } from 'src/types/content-management/research.types';
 import * as Yup from 'yup';
 
@@ -46,9 +48,16 @@ const AddNewsModal = (props: Props) => {
     handleSubmit,
     formState: { errors, isSubmitting },
     watch,
+    setValue,
   } = methods;
 
   const onSubmit = handleSubmit(async (data) => {});
+
+  const image = watch('image');
+
+  const handleFileChangePerm = (file: File | null) => {
+    setValue('image', file as any);
+  };
 
   return (
     <Dialog
@@ -80,6 +89,19 @@ const AddNewsModal = (props: Props) => {
                   multiline
                   rows={3}
                 />
+                {!image ? (
+                  <UploadFile
+                    uploadAs="JPG"
+                    maxFile={2}
+                    label="Upload Image"
+                    handleFileChange={handleFileChangePerm}
+                  />
+                ) : (
+                  <PreviewFile
+                    selectedFile={image as any}
+                    handleFileChange={handleFileChangePerm}
+                  />
+                )}
               </Stack>
             </Grid>
             <Grid item md={6} xs={12}>

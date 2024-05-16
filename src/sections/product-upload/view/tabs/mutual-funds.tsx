@@ -1,0 +1,23 @@
+import { useState } from 'react';
+import ProductLayout from '../../product-layout';
+
+const MutualFunds = () => {
+  const [isUpload, setIsUpload] = useState(false);
+
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+
+  const handleFileChange = (file: File | null) => {
+    setUploadedFile(file);
+  };
+
+  return (
+    <ProductLayout
+      handleFileChange={handleFileChange}
+      isUpload={isUpload}
+      setIsUpload={setIsUpload}
+      uploadedFile={uploadedFile}
+    />
+  );
+};
+
+export default MutualFunds;

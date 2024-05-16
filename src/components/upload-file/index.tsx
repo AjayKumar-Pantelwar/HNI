@@ -19,7 +19,7 @@ export const UploadFile = (props: Props) => {
       </Typography>
       <Box
         border="1px dashed"
-        borderColor="text.secondary"
+        borderColor="divider"
         borderRadius={1}
         p={1}
         alignItems="center"

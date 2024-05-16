@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Card, Tab, Tabs, Typography } from '@mui/material';
+import { Box, Card, Container, Tab, Tabs, Typography } from '@mui/material';
 import { useState } from 'react';
 import Announcement from './tabs/announcement';
 import AppUpdate from './tabs/app-update';
@@ -33,7 +33,7 @@ const NotificationsView = () => {
   };
 
   return (
-    <Box>
+    <Container>
       <Typography variant="h4">Notification</Typography>
       <Card sx={{ width: '100%', mt: 3 }}>
         <Box sx={{ borderBottom: 1, px: 2, borderColor: 'divider' }}>
@@ -44,7 +44,7 @@ const NotificationsView = () => {
         </Box>
         {tabContent(tab)}
       </Card>
-    </Box>
+    </Container>
   );
 };
 

@@ -37,6 +37,9 @@ export const paths = {
     notifications: {
       root: `${ROOTS.DASHBOARD}/notifications`,
     },
+    productUpload: {
+      root: `${ROOTS.DASHBOARD}/product-upload`,
+    },
     user: {
       root: `${ROOTS.DASHBOARD}/user`,
       list: `${ROOTS.DASHBOARD}/user/list`,

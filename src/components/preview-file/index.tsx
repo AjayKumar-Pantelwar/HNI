@@ -39,14 +39,15 @@ export const PreviewFile = (props: Props) => {
             p: 1,
             height: '56px',
             border: '1px solid',
-            borderColor: 'text.secondary',
+            borderColor: 'divider',
             borderRadius: 1,
           }}
         >
           <InsertDriveFileIcon />
           <Box sx={{ flex: 1 }}>
             <Typography
-              variant="h6"
+              variant="subtitle1"
+              color="text.secondary"
               fontWeight={400}
               sx={{
                 whiteSpace: 'nowrap',
