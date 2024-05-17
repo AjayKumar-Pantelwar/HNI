@@ -1,3 +1,5 @@
+import { ApiResponse } from './api.types';
+
 export interface UpdateAppVerionRequest {
   android_version: string;
   ios_version: string;
@@ -15,4 +17,27 @@ export interface UpdateAppVerionRequest {
 export enum APPType {
   ANDROID = 'android',
   IOS = 'ios',
+}
+
+export type GetNotificationsResponse = ApiResponse<Notifications[]>;
+
+export interface Notifications {
+  id: string;
+  title: string;
+  subtitle: string;
+  is_active: boolean;
+  from_date: string;
+  to_date: string;
+}
+
+export interface CreateNotificationRequest {
+  title: string;
+  subtitle: string;
+  from_date: string;
+  to_date: string;
+}
+
+export interface UpdateNotificationRequest {
+  id: string;
+  is_active: boolean;
 }

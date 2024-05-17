@@ -22,30 +22,33 @@ export default function RHFDateField<TDate extends Date>({
     <Controller
       name={name}
       control={control}
-      render={({ field, fieldState: { error } }) => (
-        <Stack>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Typography variant="caption" color="text.secondary">
-              {label}
-            </Typography>
-          </Box>
-          <DatePicker
-            {...field}
-            format="dd/MM/yyyy"
-            // @ts-ignore
-            value={pDate(field.value)}
-            onChange={(value) => field.onChange(fDate(value))}
-            slotProps={{
-              textField: {
-                fullWidth: true,
-                error: !!error,
-                helperText: error ? error?.message : helperText,
-              },
-            }}
-            {...other}
-          />
-        </Stack>
-      )}
+      render={({ field, fieldState: { error } }) => {
+        console.log(field.value, pDate(field.value), fDate(field.value));
+        return (
+          <Stack>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Typography variant="caption" color="text.secondary">
+                {label}
+              </Typography>
+            </Box>
+            <DatePicker
+              {...field}
+              format="dd/MM/yyyy"
+              // @ts-ignore
+              value={pDate(field.value)}
+              onChange={(value) => field.onChange(fDate(value))}
+              slotProps={{
+                textField: {
+                  fullWidth: true,
+                  error: !!error,
+                  helperText: error ? error?.message : helperText,
+                },
+              }}
+              {...other}
+            />
+          </Stack>
+        );
+      }}
     />
   );
 }

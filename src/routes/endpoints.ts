@@ -18,6 +18,10 @@ export const endpoints = {
   },
   notifications: {
     updateAPP: p('PUT', '/versions/update'),
+    list: p('GET', '/notifications'),
+    create: p('POST', '/notifications/create'),
+    edit: p('PUT', `/notifications/update`),
+    activeList: p('GET', '/notifications/active'),
   },
 
   users: {

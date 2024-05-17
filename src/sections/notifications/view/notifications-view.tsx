@@ -2,7 +2,7 @@
 
 import { Box, Card, Container, Tab, Tabs, Typography } from '@mui/material';
 import { useState } from 'react';
-import Announcement from './tabs/announcement';
+import Announcement from './tabs/announcements/announcement';
 import AppUpdate from './tabs/app-update';
 
 export enum NotificationTabs {

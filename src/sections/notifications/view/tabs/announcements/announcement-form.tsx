@@ -7,11 +7,19 @@ import { RHFSwitch, RHFTextField } from 'src/components/hook-form';
 import FormProvider from 'src/components/hook-form/form-provider';
 import RHFDateField from 'src/components/hook-form/rhf-date-field';
 import { notificationsApi } from 'src/redux/api/notifications.api';
+import { Notifications } from 'src/types/notifications.types';
+import { handleError } from 'src/utils/handle-error';
 import * as Yup from 'yup';
 
-const Announcement = () => {
+interface Props {
+  notification?: Notifications;
+}
+
+const AnnouncementForm = (props: Props) => {
+  const { notification } = props;
   const { enqueueSnackbar } = useSnackbar();
-  const [updateAPPVersion] = notificationsApi.useUpdateAppVersionMutation();
+  const [createNotication] = notificationsApi.useCreateNotificationMutation();
+  const [updateNotication] = notificationsApi.useUpdateNotificationMutation();
 
   const announcementSchema = Yup.object().shape({
     title: Yup.string()
@@ -26,11 +34,11 @@ const Announcement = () => {
   });
 
   const defaultValues = {
-    title: '',
-    description: '',
-    fromDate: '',
-    toDate: '',
-    active: false,
+    title: notification?.title || '',
+    description: notification?.subtitle || '',
+    fromDate: notification?.from_date || '',
+    toDate: notification?.to_date || '',
+    active: notification?.is_active || false,
   };
 
   const methods = useForm({
@@ -46,50 +54,44 @@ const Announcement = () => {
   } = methods;
 
   const onSubmit = handleSubmit(async (data) => {
-    // const { type, app_link, app_mandatory, app_version, ...rest } = data;
-    // try {
-    //   await updateAPPVersion({
-    //     ...rest,
-    //     type: type as APPType,
-    //     ...(type === APPType.ANDROID
-    //       ? {
-    //           android_mandatory: app_mandatory,
-    //           android_version: app_version,
-    //           play_store_url: app_link,
-    //         }
-    //       : {
-    //           android_mandatory: false,
-    //           android_version: '',
-    //           play_store_url: '',
-    //         }),
-    //     ...(type === APPType.IOS
-    //       ? {
-    //           ios_mandatory: app_mandatory,
-    //           ios_version: app_version,
-    //           app_store_url: app_link,
-    //         }
-    //       : {
-    //           ios_mandatory: false,
-    //           ios_version: '',
-    //           app_store_url: '',
-    //         }),
-    //   }).unwrap();
-    //   reset();
-    //   enqueueSnackbar('Update success!', { variant: 'success' });
-    // } catch (error) {
-    //   handleError(error);
-    // }
+    const { toDate, active, description, ...rest } = data;
+    try {
+      if (notification) {
+        await updateNotication({
+          id: notification.id,
+          is_active: active,
+        });
+        enqueueSnackbar('Update success!', { variant: 'success' });
+      } else {
+        await createNotication({
+          from_date: rest.fromDate,
+          title: rest.title,
+          subtitle: description,
+          to_date: toDate,
+        });
+        enqueueSnackbar('Created success!', { variant: 'success' });
+      }
+      reset();
+    } catch (error) {
+      handleError(error);
+    }
   });
 
   return (
-    <Box sx={{ p: 3 }}>
+    <Box>
       <FormProvider methods={methods} onSubmit={onSubmit}>
         <Stack gap={1}>
           <Grid container spacing={4}>
             <Grid item xs={12} sm={6}>
               <Stack gap={3}>
-                <RHFTextField name="title" label="Title" maxLimitCharacters={86} />
                 <RHFTextField
+                  disabled={!!notification?.title}
+                  name="title"
+                  label="Title"
+                  maxLimitCharacters={86}
+                />
+                <RHFTextField
+                  disabled={!!notification?.subtitle}
                   multiline
                   rows={3}
                   name="description"
@@ -100,7 +102,11 @@ const Announcement = () => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <Stack gap={3}>
-                <RHFDateField name="fromDate" label="From Date" />
+                <RHFDateField
+                  name="fromDate"
+                  disabled={!!notification?.from_date}
+                  label="From Date"
+                />
                 <RHFDateField name="toDate" label="To Date" />
                 <RHFSwitch label="Active" name="active" />
               </Stack>
@@ -117,4 +123,4 @@ const Announcement = () => {
   );
 };
 
-export default Announcement;
+export default AnnouncementForm;
