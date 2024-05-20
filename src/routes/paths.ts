@@ -30,6 +30,12 @@ export const paths = {
         list: `${ROOTS.DASHBOARD}/content-management/research/list`,
       },
     },
+    universe: {
+      root: `${ROOTS.DASHBOARD}/360one-universe`,
+      vas: {
+        root: `${ROOTS.DASHBOARD}/360one-universe/vas`,
+      },
+    },
     actions: {
       root: `${ROOTS.DASHBOARD}/actions`,
       list: `${ROOTS.DASHBOARD}/actions/list`,

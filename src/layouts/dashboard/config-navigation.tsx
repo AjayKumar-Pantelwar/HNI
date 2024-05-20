@@ -2,6 +2,7 @@ import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import BuildIcon from '@mui/icons-material/Build';
 import GroupIcon from '@mui/icons-material/Group';
+import LanguageIcon from '@mui/icons-material/Language';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
@@ -48,6 +49,7 @@ const MIcons = {
   contentManagement: SourceIcon,
   notifications: NotificationsIcon,
   productUpload: SignalCellularAltIcon,
+  universe: LanguageIcon,
 };
 
 export function useNavData() {
@@ -136,6 +138,17 @@ export function useNavData() {
               {
                 title: t('Risk Profile'),
                 path: paths.dashboard.contentManagement.riskProfile.list,
+              },
+            ],
+          },
+          {
+            title: t('360one Universe'),
+            Icon: MIcons.universe,
+            path: paths.dashboard.contentManagement.root,
+            children: [
+              {
+                title: t('Value Added Services'),
+                path: paths.dashboard.universe.root,
               },
             ],
           },
