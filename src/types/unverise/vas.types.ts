@@ -8,7 +8,7 @@ export interface VASData {
   product_id: string;
   product_label: string;
   nbfc_specializations?: NbfcSpecializations;
-  items?: DatumItem[];
+  items?: VASItem[];
   why_immigration?: NbfcSpecializations;
   preferred_by_hni?: PreferredByHni;
   pdfs?: Pdfs;
@@ -187,7 +187,7 @@ export interface Intro {
   company_logo: string;
 }
 
-export interface DatumItem {
+export interface VASItem {
   logo: string;
   title: string;
   sub_title: string;

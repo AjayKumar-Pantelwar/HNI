@@ -7,7 +7,7 @@ import CustomPopover, { usePopover } from 'src/components/custom-popover';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useBoolean } from 'src/hooks/use-boolean';
 import { ResearchCard } from 'src/types/content-management/research.types';
-import AddReportModal from './add-report-modal';
+import AddReportModal from './edit-items-modal';
 
 export const Tab1TableRow = (card: ResearchCard) => {
   const popover = usePopover();

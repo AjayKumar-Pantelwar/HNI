@@ -72,8 +72,13 @@ const VASView = () => {
         }}
       />
       <Card sx={{ width: '100%', mt: 3 }}>
-        <Box sx={{ borderBottom: 1, px: 2, borderColor: 'divider' }}>
-          <Tabs value={tab} onChange={handleChange} aria-label="notification tabs">
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs
+            allowScrollButtonsMobile
+            value={tab}
+            onChange={handleChange}
+            aria-label="notification tabs"
+          >
             {data.map((d, i) => (
               <Tab
                 key={i}
