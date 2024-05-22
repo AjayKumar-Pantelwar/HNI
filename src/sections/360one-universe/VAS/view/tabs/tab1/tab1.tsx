@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  Card,
   Grid,
   IconButton,
   List,
@@ -17,7 +16,9 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from 'src/assets/icons/delete-icon';
 import EditIcon from 'src/assets/icons/edit-icon';
 import { VASData, VASItem } from 'src/types/unverise/vas.types';
+import EditTitle from '../../edit-title';
 import EditItemsModal from './edit-items-modal';
+import EditSpecificationsModal from './edit-specifications-modal';
 
 // import { Tab1TableRow } from './table-row';
 
@@ -36,6 +37,7 @@ const VASTab1 = (props: Props) => {
   const { data } = props;
 
   const addItem = useBoolean();
+  const editTitle = useBoolean();
 
   const addSpecifications = useBoolean();
 
@@ -45,7 +47,7 @@ const VASTab1 = (props: Props) => {
     <Stack sx={{ p: 3, gap: 3 }}>
       <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
         <Typography variant="h5">{data?.product_label}</Typography>
-        <IconButton onClick={() => addSpecifications.onTrue()}>
+        <IconButton onClick={() => editTitle.onTrue()}>
           <EditIcon />
         </IconButton>
       </Box>
@@ -53,17 +55,29 @@ const VASTab1 = (props: Props) => {
         <Box sx={{ border: '1px solid', borderColor: 'divider', borderRadius: 1, p: 2 }}>
           <img src="/logo/360logo.png" alt="360One" width={40} height={40} />
         </Box>
-        <List
-          component={Stack}
-          sx={{ border: '1px solid', borderColor: 'divider', borderRadius: 1, flex: 1 }}
+        <Box
+          sx={{
+            border: '1px solid',
+            borderColor: 'divider',
+            borderRadius: 1,
+            display: 'flex',
+            alignItems: 'end',
+            gap: 1,
+            flex: 1,
+          }}
         >
-          {data?.nbfc_specializations?.items?.map((c, i) => (
-            <ListItem key={i}>
-              <ListItemIcon sx={{ fontSize: 20 }}>*</ListItemIcon>
-              <Typography>{c}</Typography>
-            </ListItem>
-          ))}
-        </List>
+          <List component={Stack} sx={{ flex: 1 }}>
+            {data?.nbfc_specializations?.items?.map((c, i) => (
+              <ListItem key={i}>
+                <ListItemIcon sx={{ fontSize: 20 }}>*</ListItemIcon>
+                <Typography>{c}</Typography>
+              </ListItem>
+            ))}
+          </List>
+          <IconButton onClick={() => addSpecifications.onTrue()}>
+            <EditIcon />
+          </IconButton>
+        </Box>
       </Box>
       <Grid container spacing={3}>
         {data?.items?.map((c, i) => (
@@ -76,6 +90,16 @@ const VASTab1 = (props: Props) => {
         </Button>
       </Box>
       <EditItemsModal open={addItem.value} onClose={addItem.onFalse} />
+      <EditSpecificationsModal
+        onClose={addSpecifications.onFalse}
+        open={addSpecifications.value}
+        card={data?.nbfc_specializations?.items}
+      />
+      <EditTitle
+        open={editTitle.value}
+        onClose={editTitle.onFalse}
+        title={data?.product_label || ''}
+      />
     </Stack>
   );
 };
@@ -92,7 +116,17 @@ const VASItemCard = (props: ItemProps) => {
 
   return (
     <Grid item xs={12} lg={6}>
-      <Card sx={{ p: 2, display: 'flex', alignItems: 'end' }}>
+      <Box
+        sx={{
+          boxShadow: 'none',
+          border: '1px solid',
+          borderColor: 'divider',
+          p: 2,
+          display: 'flex',
+          alignItems: 'end',
+          borderRadius: 1,
+        }}
+      >
         <Stack sx={{ gap: 2 }}>
           <img src={item?.logo} height={30} width={30} alt={item?.title} />
           <Typography variant="subtitle1">{item?.title}</Typography>
@@ -108,7 +142,7 @@ const VASItemCard = (props: ItemProps) => {
             <DeleteIcon />
           </IconButton>
         </Box>
-      </Card>
+      </Box>
       <EditItemsModal card={item} open={addNew.value} onClose={addNew.onFalse} />
     </Grid>
   );
