@@ -9,7 +9,7 @@ const Step1Form = () => {
 
   return (
     <div>
-      <RHFTextField name="insurance_name" label="Insurance Name" fullWidth />
+      <RHFTextField name="field1" label="Insurance Name" fullWidth />
     </div>
   );
 };

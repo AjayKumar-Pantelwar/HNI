@@ -154,6 +154,24 @@ export interface Insurance {
   items: InsuranceItem[];
 }
 
+export enum InsuranceFormSteps {
+  INSURANCE_NAME = 'Insurance Name',
+  INTRODUCTION = 'Introduction',
+  KEY_FEATURES = 'Key Features',
+  BENEFITS = 'Benefits',
+  FOOTER = 'Footer',
+}
+
+export interface InsuranceFormValues {
+  insurance_name: string | undefined;
+  insurance_icon: string | undefined;
+  insurance_section1_title?: string | undefined;
+  insurance_logo?: string | undefined;
+  insurance_section2_title?: string | undefined;
+  plan_benefit?: PlanBenefit[] | undefined;
+  benefits?: Benefit[] | undefined;
+  insurance_footer?: string | undefined;
+}
 export interface InsuranceItem {
   insurance_icon: string;
   insurance_name: string;
