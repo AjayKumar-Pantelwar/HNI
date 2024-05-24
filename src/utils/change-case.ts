@@ -23,3 +23,7 @@ export function titleCase(str: string) {
     .map((word) => capitalize(word))
     .join(' ');
 }
+
+export default function kebabToCapitalize(str: string) {
+  return str?.toString().split('-').map(capitalize).join(' ').split('_').map(capitalize).join(' ');
+}

@@ -7,7 +7,6 @@ import { useTheme } from '@mui/material/styles';
 import { SeoIllustration } from 'src/assets/illustrations';
 import { useSelector } from 'src/redux/store';
 import AppWelcome from '../app-welcome';
-import AppWidgetSummary from '../app-widget-summary';
 
 // ----------------------------------------------------------------------
 
@@ -19,7 +18,7 @@ export default function OverviewAppView() {
   return (
     <Container sx={{ width: '100%' }}>
       <Grid container spacing={3}>
-        <Grid xs={12} md={8}>
+        <Grid xs={12}>
           <AppWelcome
             title={`Welcome back 👋 \n ${user?.username}`}
             img={<SeoIllustration />}
@@ -31,7 +30,7 @@ export default function OverviewAppView() {
           />
         </Grid>
 
-        <Grid xs={12} md={4}>
+        {/* <Grid xs={12} md={4}>
           <AppWidgetSummary
             title="Total Active Users"
             percent={2.6}
@@ -40,9 +39,9 @@ export default function OverviewAppView() {
               series: [5, 18, 12, 51, 68, 11, 39, 37, 27, 20],
             }}
           />
-        </Grid>
+        </Grid> */}
 
-        <Grid xs={12} md={4}>
+        {/* <Grid xs={12} md={4}>
           <AppWidgetSummary
             title="Total Investors"
             percent={0.2}
@@ -64,7 +63,7 @@ export default function OverviewAppView() {
               series: [8, 9, 31, 8, 16, 37, 8, 33, 46, 31],
             }}
           />
-        </Grid>
+        </Grid> */}
 
         {/* <Grid xs={12} md={6} lg={4}>
           <AppCurrentDownload

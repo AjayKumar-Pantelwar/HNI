@@ -6,8 +6,8 @@ export function identifyFile(urlString: string) {
 }
 
 export function identifyFilename(urlString: string) {
-  if (!urlString) return 'doc.pdf';
+  if (!urlString) return 'no file found';
   const url = new URL(urlString);
   const filename = url.pathname.substring(url.pathname.lastIndexOf('/') + 1);
-  return filename ?? 'doc.pdf';
+  return filename ?? 'no file found';
 }

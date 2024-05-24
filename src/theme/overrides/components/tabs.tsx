@@ -13,7 +13,7 @@ export default function Tabs(theme: Theme) {
       },
       styleOverrides: {
         indicator: {
-          backgroundColor: theme.palette.text.primary,
+          backgroundColor: theme.palette.primary.main,
         },
         scrollButtons: {
           width: 48,

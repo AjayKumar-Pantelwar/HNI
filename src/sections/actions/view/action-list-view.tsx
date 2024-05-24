@@ -28,6 +28,7 @@ import {
 } from 'src/components/table';
 import { useBoolean } from 'src/hooks/use-boolean';
 import { adminApi } from 'src/redux/api/admin.api';
+import { useSelector } from 'src/redux/store';
 import { paths } from 'src/routes/paths';
 import { Action, AdminActionRequest } from 'src/types/admin.types';
 import { getRawFilters } from 'src/utils/raw-filters';
@@ -35,24 +36,27 @@ import ActionsFilters from '../action-list-filters';
 import { ActionTableRow } from '../action-table-row';
 
 const TABLE_HEAD = [
-  { id: 'username', label: 'Username', width: 500 },
+  // { id: 'username', label: 'Username', width: 500 },
   { id: 'event_type', label: 'Event Type', width: 500 },
   { id: 'created_at', label: 'Created at', width: 500 },
-  { id: 'response', label: 'Response', width: 500 },
+
   { id: 'actions', label: 'Actions', width: 50 },
 ];
 const defaultFilters: AdminActionRequest = {
-  aid: '',
   action_id: '',
   event_type: '',
   page_no: 1,
   no_of_records: 10,
+  source_id: '',
+  aid: '',
 };
 
 export const ActionListView: React.FC = () => {
   const table = useTable();
 
   const settings = useSettingsContext();
+
+  const aid = useSelector((state) => state.auth.user?.aid);
 
   const confirm = useBoolean();
 
@@ -79,8 +83,6 @@ export const ActionListView: React.FC = () => {
     inputData: data?.data?.actions || [],
     comparator: getComparator(table.order, table.orderBy),
   });
-
-  console.log({ data });
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
@@ -126,7 +128,7 @@ export const ActionListView: React.FC = () => {
           <TableSelectedAction
             dense={table.dense}
             numSelected={table.selected.length}
-            rowCount={data?.data.actions?.length || 0}
+            rowCount={data?.data?.actions?.length || 0}
             onSelectAllRows={(checked) =>
               table.onSelectAllRows(checked, data?.data.actions?.map((row) => row.aid) || [])
             }
@@ -145,7 +147,7 @@ export const ActionListView: React.FC = () => {
                 order={table.order}
                 orderBy={table.orderBy}
                 headLabel={TABLE_HEAD}
-                rowCount={data?.data.actions?.length}
+                rowCount={data?.data?.actions?.length}
                 numSelected={table.selected.length}
                 onSort={table.onSort}
               />

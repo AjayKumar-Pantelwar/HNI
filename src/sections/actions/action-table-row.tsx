@@ -6,9 +6,8 @@ import {
   Button,
   Dialog,
   DialogActions,
-  DialogContent,
-  DialogTitle,
   ListItemText,
+  Stack,
   TableCell,
   TableRow,
   Typography,
@@ -54,9 +53,6 @@ export const ActionTableRow = ({ action }: Props) => {
           }}
         />
       </TableCell>
-      <TableCell>
-        <pre>{JSON.stringify(action?.response || action?.response || [], null, 2)}</pre>
-      </TableCell>
 
       <>
         <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
@@ -71,18 +67,21 @@ export const ActionTableRow = ({ action }: Props) => {
           PaperProps={{
             sx: {
               width: 'min(100%,600px)',
+              p: 3,
             },
           }}
         >
-          <DialogTitle>
-            <Typography variant="h4">Request JSON</Typography>
-          </DialogTitle>
-          <DialogContent sx={{ p: 4 }}>
-            {/* <pre style={{ whiteSpace: 'pre-wrap' }}>
-              {JSON.stringify(transformRequest(action?.event_detail?.Request as any), null, 2)}
-            </pre> */}
-            <ReactJson src={action?.request as any} />
-          </DialogContent>
+          <Stack gap={4}>
+            <Stack gap={3}>
+              <Typography variant="h4">Request JSON</Typography>
+              <ReactJson src={JSON.parse(action?.request) as any} />
+            </Stack>
+            <Stack gap={3}>
+              <Typography variant="h4">Response JSON</Typography>
+              <ReactJson src={JSON.parse(action?.response) as any} />
+            </Stack>
+          </Stack>
+
           <DialogActions>
             <Button onClick={handleCloseDialog} variant="outlined" color="primary">
               Close

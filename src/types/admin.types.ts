@@ -141,10 +141,10 @@ export type Action = {
 };
 
 export type AdminActionRequest = {
-  aid?: string;
-  action_id?: string;
-  source_id?: string;
-  event_type?: string;
+  aid: string;
+  action_id: string;
+  source_id: string;
+  event_type: string;
 } & Pagination;
 
 export type UpdateRoleRequest = {

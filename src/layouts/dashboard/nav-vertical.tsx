@@ -1,5 +1,6 @@
 'use client';
 
+import { Divider, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import Stack from '@mui/material/Stack';
@@ -45,8 +46,13 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
         },
       }}
     >
-      <Box sx={{ px: 3, py: 2 }}>
+      <Box sx={{ px: 3, py: 2, display: 'flex', gap: 2, alignItems: 'center' }}>
         <img src="/logo/360logo.png" alt="logo" style={{ height: 60 }} />
+        <Divider orientation="vertical" />
+        <Stack>
+          <Typography variant="h6">Admin</Typography>
+          <Typography variant="h6">Portal</Typography>
+        </Stack>
       </Box>
 
       <NavSectionVertical

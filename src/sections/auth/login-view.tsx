@@ -136,7 +136,7 @@ export default function LoginSection() {
   const renderForm = (
     <Stack spacing={2}>
       {!!errorMsg && <Alert severity="error">{errorMsg}</Alert>}
-      <Stack spacing={3} sx={{ alignItems: 'end', mb: 2 }}>
+      <Stack spacing={3} sx={{ mb: 2 }}>
         <RHFTextField name="username" label="Username" />
 
         <RHFTextField

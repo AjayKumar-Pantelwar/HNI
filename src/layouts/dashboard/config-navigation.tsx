@@ -2,10 +2,14 @@ import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import BuildIcon from '@mui/icons-material/Build';
 import GroupIcon from '@mui/icons-material/Group';
+import LanguageIcon from '@mui/icons-material/Language';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import SecurityIcon from '@mui/icons-material/Security';
 import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet';
+import SignalCellularAltIcon from '@mui/icons-material/SignalCellularAlt';
+import SourceIcon from '@mui/icons-material/Source';
 import ViewCarouselIcon from '@mui/icons-material/ViewCarousel';
 import { useMemo } from 'react';
 import Iconify from 'src/components/iconify';
@@ -42,6 +46,10 @@ const MIcons = {
   actions: BuildIcon,
   investors: PeopleAltIcon,
   user: AccountCircleIcon,
+  contentManagement: SourceIcon,
+  notifications: NotificationsIcon,
+  productUpload: SignalCellularAltIcon,
+  universe: LanguageIcon,
 };
 
 export function useNavData() {
@@ -69,6 +77,16 @@ export function useNavData() {
               { title: t('list'), path: paths.dashboard.roles.list },
               { title: t('create'), path: paths.dashboard.roles.new },
             ],
+          },
+          {
+            title: t('Notifications'),
+            path: paths.dashboard.notifications.root,
+            Icon: MIcons.notifications,
+          },
+          {
+            title: t('Product Upload'),
+            path: paths.dashboard.productUpload.root,
+            Icon: MIcons.productUpload,
           },
           {
             title: t('Carousel'),
@@ -99,7 +117,7 @@ export function useNavData() {
           },
           {
             title: t('Actions'),
-            path: paths.dashboard.actions.list,
+            path: paths.dashboard.actions.root,
             Icon: MIcons.actions,
             children: [
               {
@@ -109,9 +127,36 @@ export function useNavData() {
             ],
           },
           {
+            title: t('Content Management'),
+            Icon: MIcons.contentManagement,
+            path: paths.dashboard.contentManagement.root,
+            children: [
+              {
+                title: t('Research'),
+                path: paths.dashboard.contentManagement.reasearch.list,
+              },
+              {
+                title: t('Risk Profile'),
+                path: paths.dashboard.contentManagement.riskProfile.list,
+              },
+            ],
+          },
+          {
+            title: t('360one Universe'),
+            Icon: MIcons.universe,
+            path: paths.dashboard.contentManagement.root,
+            children: [
+              {
+                title: t('Value Added Services'),
+                path: paths.dashboard.universe.root,
+              },
+            ],
+          },
+          {
             title: t('User'),
             path: paths.dashboard.user.root,
             Icon: MIcons.user,
+            children: [{ title: t('list'), path: paths.dashboard.user.list }],
           },
         ],
       },

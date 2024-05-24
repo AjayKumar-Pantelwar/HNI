@@ -97,8 +97,6 @@ export default function ActivateTotpView() {
   );
 
   React.useEffect(() => {
-    console.log({ user });
-
     if (user === null) return;
     setTimeout(() => {
       authService

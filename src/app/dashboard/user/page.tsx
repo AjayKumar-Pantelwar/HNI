@@ -1,5 +1,6 @@
-import UserView from 'src/sections/user/view/user-view';
+import { redirect } from 'next/navigation';
+import { paths } from 'src/routes/paths';
 
-const user = () => <UserView />;
-
-export default user;
+export default function UserPage() {
+  redirect(paths.dashboard.user.list);
+}

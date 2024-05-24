@@ -50,8 +50,8 @@ export default function AppWidget({
       type: 'gradient',
       gradient: {
         colorStops: [
-          { offset: 0, color: theme.palette[color].light },
-          { offset: 100, color: theme.palette[color].main },
+          { offset: 0, color: theme.palette[color].light, opacity: 0.5 },
+          { offset: 100, color: theme.palette[color].main, opacity: 0.5 },
         ],
       },
     },

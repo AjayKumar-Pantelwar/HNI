@@ -1,9 +1,8 @@
 import { m } from 'framer-motion';
 // @mui
-import { alpha } from '@mui/material/styles';
 import Box, { BoxProps } from '@mui/material/Box';
+import { alpha } from '@mui/material/styles';
 //
-import Logo from '../logo';
 
 // ----------------------------------------------------------------------
 
@@ -38,7 +37,7 @@ export default function SplashScreen({ sx, ...other }: BoxProps) {
             repeat: Infinity,
           }}
         >
-          <Logo disabledLink sx={{ width: 64, height: 64 }} />
+          <img src="/logo/360logo.png" alt="logo" style={{ height: 60 }} />
         </m.div>
 
         <Box

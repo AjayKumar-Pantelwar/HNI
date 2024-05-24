@@ -19,7 +19,7 @@ module.exports = {
     return [
       {
         source: '/',
-        destination: '/auth/login',
+        destination: '/authentication/login',
         permanent: true,
       },
     ];
