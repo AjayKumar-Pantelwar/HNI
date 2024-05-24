@@ -21,7 +21,7 @@ type Props = NavItemProps & {
 
 const NavItem = forwardRef<HTMLDivElement, Props>(
   ({ item, depth, open, active, externalLink, config, ...other }, ref) => {
-    const { title, path, icon, info, children, disabled, caption, roles } = item;
+    const { title, path, Icon, info, children, disabled, caption, roles } = item;
 
     const subItem = depth !== 1;
 
@@ -36,14 +36,14 @@ const NavItem = forwardRef<HTMLDivElement, Props>(
         config={config}
         {...other}
       >
-        {icon && (
+        {Icon && (
           <StyledIcon
             size={config.iconSize}
             sx={{
               ...(subItem && { mr: 1.5 }),
             }}
           >
-            {icon}
+            <Icon />
           </StyledIcon>
         )}
 

@@ -1,13 +1,13 @@
 import { ApexOptions } from 'apexcharts';
 // @mui
-import { useTheme } from '@mui/material/styles';
 import ListItemText from '@mui/material/ListItemText';
 import Stack, { StackProps } from '@mui/material/Stack';
+import { useTheme } from '@mui/material/styles';
 // utils
 import { fNumber } from 'src/utils/format-number';
 // components
-import Iconify from 'src/components/iconify';
 import Chart, { useChart } from 'src/components/chart';
+import Iconify from 'src/components/iconify';
 // theme
 import { ColorSchema } from 'src/theme/palette';
 
@@ -51,8 +51,8 @@ export default function AppWidget({
       type: 'gradient',
       gradient: {
         colorStops: [
-          { offset: 0, color: theme.palette[color].light },
-          { offset: 100, color: theme.palette[color].main },
+          { offset: 0, color: theme.palette[color].light, opacity: 1 },
+          { offset: 100, color: theme.palette[color].main, opacity: 1 },
         ],
       },
     },

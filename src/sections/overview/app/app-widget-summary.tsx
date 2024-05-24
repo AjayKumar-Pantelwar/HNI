@@ -1,15 +1,15 @@
 import { ApexOptions } from 'apexcharts';
 // @mui
-import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
+import Card, { CardProps } from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import Card, { CardProps } from '@mui/material/Card';
+import { useTheme } from '@mui/material/styles';
 // utils
 import { fNumber, fPercent } from 'src/utils/format-number';
 // components
-import Iconify from 'src/components/iconify';
 import Chart from 'src/components/chart';
+import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
@@ -100,7 +100,13 @@ export default function AppWidgetSummary({ title, percent, total, chart, sx, ...
         <Typography variant="h3">{fNumber(total)}</Typography>
       </Box>
 
-      <Chart type="bar" series={[{ data: series }]} options={chartOptions} width={60} height={36} />
+      <Chart
+        type="bar"
+        series={[{ data: series }]}
+        options={chartOptions as any}
+        width={60}
+        height={36}
+      />
     </Card>
   );
 }

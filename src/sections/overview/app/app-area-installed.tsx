@@ -1,16 +1,16 @@
 import { ApexOptions } from 'apexcharts';
-import { useState, useCallback } from 'react';
+import { useCallback, useState } from 'react';
 // @mui
-import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import MenuItem from '@mui/material/MenuItem';
-import CardHeader from '@mui/material/CardHeader';
 import ButtonBase from '@mui/material/ButtonBase';
 import Card, { CardProps } from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import MenuItem from '@mui/material/MenuItem';
+import { useTheme } from '@mui/material/styles';
 // components
-import Iconify from 'src/components/iconify';
 import Chart, { useChart } from 'src/components/chart';
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
+import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
@@ -54,8 +54,8 @@ export default function AppAreaInstalled({ title, subheader, chart, ...other }: 
       type: 'gradient',
       gradient: {
         colorStops: colors.map((colr) => [
-          { offset: 0, color: colr[0] },
-          { offset: 100, color: colr[1] },
+          { offset: 0, color: colr[0], opacity: 1 },
+          { offset: 100, color: colr[1], opacity: 1 },
         ]),
       },
     },

@@ -1,3 +1,5 @@
+'use client';
+
 import { Box, IconButton, List, ListItemText, Stack, Typography } from '@mui/material';
 
 import EditIcon from 'src/assets/icons/edit-icon';
