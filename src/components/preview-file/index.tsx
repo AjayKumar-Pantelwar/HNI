@@ -22,11 +22,11 @@ export const PreviewFile = (props: Props) => {
 
   const getFileName = (file: File) => {
     const { name } = file;
-    if (name.length > 25) {
+    if (name?.length > 25) {
       const extension = name.split('.').pop();
       return `...${extension}`;
     }
-    return name;
+    return name || '--';
   };
 
   return (

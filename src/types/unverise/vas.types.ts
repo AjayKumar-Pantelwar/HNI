@@ -165,17 +165,17 @@ export enum InsuranceFormSteps {
 export interface InsuranceFormValues {
   insurance_name: string | undefined;
   insurance_icon: string | undefined;
-  insurance_section1_title?: string | undefined;
-  insurance_logo?: string | undefined;
+  insurance_section1_title: string | undefined;
+  insurance_logo: string | undefined;
   insurance_section2_title?: string | undefined;
-  plan_benefit?: PlanBenefit[] | undefined;
-  benefits?: Benefit[] | undefined;
-  insurance_footer?: string | undefined;
+  plan_benefit: PlanBenefit[] | undefined;
+  benefits: Benefit[] | undefined;
+  insurance_footer: string | undefined;
 }
 export interface InsuranceItem {
   insurance_icon: string;
   insurance_name: string;
-  fixed_income_icon: string;
+  fixed_income_icon?: string;
   insurance_description: string;
   insurance_subtitle: string;
   insurance_section1_title: string;
