@@ -23,10 +23,25 @@ interface Props {
   insuranceItem?: InsuranceItem;
 }
 
+const initialValues: InsuranceItem = {
+  benefits: [],
+  plan_benefit: [],
+  insurance_icon: '',
+  insurance_name: '',
+  fixed_income_icon: '',
+  insurance_description: '',
+  insurance_subtitle: '',
+  insurance_section1_title: '',
+  insurance_section2_title: '',
+  insurance_note: '',
+  insurance_logo: '',
+  insurance_short_note: '',
+};
+
 const AddInsuranceModal = (props: Props) => {
   const { onClose, open, insuranceItem } = props;
   const [activeStep, setActiveStep] = useState(0);
-  const [reviewData, setReviewData] = useState<InsuranceItem>();
+  const [reviewData, setReviewData] = useState<InsuranceItem>(initialValues);
 
   const steps = Object.values(InsuranceFormSteps).map((c) => c);
 
@@ -56,7 +71,7 @@ const AddInsuranceModal = (props: Props) => {
       ),
     }),
     Yup.object().shape({
-      insurance_footer: Yup.string().required('Footer is required'),
+      insurance_note: Yup.string().required('Footer is required'),
     }),
   ];
 
@@ -78,7 +93,7 @@ const AddInsuranceModal = (props: Props) => {
         benefits: insuranceItem?.benefits || [],
       },
       {
-        insurance_footer: '',
+        insurance_note: insuranceItem?.insurance_note || '',
       },
     ];
     return df[activeStep];
@@ -104,8 +119,44 @@ const AddInsuranceModal = (props: Props) => {
 
   const onSubmit = async (data: FormValues) => {
     if (activeStep !== steps.length) {
+      if (activeStep === 0 && data) {
+        setReviewData((prev) => ({
+          ...prev,
+          insurance_name: data?.insurance_name || '',
+          insurance_icon: data?.insurance_icon || '',
+        }));
+      }
+      if (activeStep === 1 && data) {
+        setReviewData((prev) => ({
+          ...prev,
+          insurance_section1_title: data?.insurance_section1_title || '',
+          insurance_logo: data?.insurance_logo || '',
+          insurance_section2_title: data?.insurance_section2_title || '',
+        }));
+      }
+
+      if (activeStep === 2 && data) {
+        setReviewData((prev) => ({
+          ...prev,
+          plan_benefit: data?.plan_benefit || [],
+        }));
+      }
+
+      if (activeStep === 3 && data) {
+        setReviewData((prev) => ({
+          ...prev,
+          benefits: data?.benefits || [],
+        }));
+      }
+      if (activeStep === 4 && data) {
+        setReviewData((prev) => ({
+          ...prev,
+          insurance_note: data?.insurance_note || '',
+        }));
+      }
       setActiveStep((prevStep) => prevStep + 1);
     }
+    console.log(data);
   };
 
   useEffect(() => {
@@ -129,7 +180,7 @@ const AddInsuranceModal = (props: Props) => {
     }
   }, [insuranceItem]);
 
-  console.log({ reviewData });
+  console.log(errors);
 
   return (
     <Dialog

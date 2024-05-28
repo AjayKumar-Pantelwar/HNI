@@ -12,7 +12,7 @@ const Footer = (props: Props) => {
 
   return (
     <Box>
-      <RHFTextField name="insurance_footer" label="Footer" />
+      <RHFTextField name="insurance_note" label="Footer" />
     </Box>
   );
 };

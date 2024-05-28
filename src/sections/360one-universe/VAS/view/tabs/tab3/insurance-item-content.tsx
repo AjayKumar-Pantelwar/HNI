@@ -80,8 +80,8 @@ const InsuranceItemContent = (props: Props) => {
           </Box>
         ))}
       </Box>
-      <Box sx={{ display: 'flex', gap: 2 }}>
-        <Stack gap={2}>
+      <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+        <Stack gap={2} sx={{ flex: 1 }}>
           <Typography variant="subtitle1">Benefits</Typography>
           <Box sx={{ p: 2, border: '1px solid', borderColor: 'divider' }}>
             <Box sx={{ display: 'flex', alignItems: 'end' }}>
@@ -101,7 +101,7 @@ const InsuranceItemContent = (props: Props) => {
             </Box>
           </Box>
         </Stack>
-        <Stack gap={2}>
+        <Stack gap={2} sx={{ flex: 1 }}>
           <Typography variant="subtitle1">Footer</Typography>
           <Box sx={{ p: 2, border: '1px solid', borderColor: 'divider', height: '100%' }}>
             <Box sx={{ display: 'flex', height: '100%' }}>
