@@ -15,7 +15,7 @@ type BaseQuery = (
 
 export const baseQuery: BaseQuery = async (args, baseApi, extraOptions) => {
   const _baseQuery = fetchBaseQuery({
-    // baseUrl: process.env.NEXT_PUBLIC_API_URL,
+    baseUrl: process.env.NEXT_PUBLIC_API_URL,
     credentials: 'include',
     // prepareHeaders: (headers) => {
     //   const { aid } = (baseApi.getState() as any).auth.user;
