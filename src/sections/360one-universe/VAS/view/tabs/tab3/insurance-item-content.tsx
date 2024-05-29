@@ -23,12 +23,12 @@ const InsuranceItemContent = (props: Props) => {
     <Stack sx={{ gap: 2 }}>
       {!edit && (
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-          <img src={t.insurance_icon} alt={t.insurance_name} height={30} width={30} />
-          <Typography variant="subtitle1">{t.insurance_name}</Typography>
+          <img src={t?.insurance_icon} alt={t?.insurance_name} height={30} width={30} />
+          <Typography variant="subtitle1">{t?.insurance_name}</Typography>
         </Box>
       )}
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-        <Typography variant="subtitle1">{t.insurance_section1_title}</Typography>
+        <Typography variant="subtitle1">{t?.insurance_section1_title}</Typography>
         {edit && (
           <IconButton onClick={() => null}>
             <EditIcon />
@@ -36,11 +36,11 @@ const InsuranceItemContent = (props: Props) => {
         )}
       </Box>
       <Box sx={{ p: 2, border: '1px solid', borderColor: 'divider', borderRadius: 1 }}>
-        <Typography variant="body1">{t.insurance_description}</Typography>
+        <Typography variant="body1">{t?.insurance_description}</Typography>
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Typography variant="subtitle1">{t.insurance_section2_title}</Typography>
+          <Typography variant="subtitle1">{t?.insurance_section2_title}</Typography>
           {edit && (
             <IconButton onClick={() => null}>
               <EditIcon />
@@ -50,7 +50,7 @@ const InsuranceItemContent = (props: Props) => {
         {edit && <Button startIcon={<AddIcon />}>Add New Benefit</Button>}
       </Box>
       <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
-        {t.plan_benefit.map((b, j) => (
+        {t?.plan_benefit?.map((b, j) => (
           <Box
             key={j}
             sx={{
@@ -80,13 +80,13 @@ const InsuranceItemContent = (props: Props) => {
           </Box>
         ))}
       </Box>
-      <Box sx={{ display: 'flex', gap: 2 }}>
-        <Stack gap={2}>
+      <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+        <Stack gap={2} sx={{ flex: 1 }}>
           <Typography variant="subtitle1">Benefits</Typography>
           <Box sx={{ p: 2, border: '1px solid', borderColor: 'divider' }}>
             <Box sx={{ display: 'flex', alignItems: 'end' }}>
               <List>
-                {t.benefits.map((p) => (
+                {t?.benefits?.map((p) => (
                   <ListItem key={p.title}>
                     <ListItemIcon sx={{ fontSize: 20 }}>*</ListItemIcon>
                     <Typography>{p.title}</Typography>
@@ -101,11 +101,11 @@ const InsuranceItemContent = (props: Props) => {
             </Box>
           </Box>
         </Stack>
-        <Stack gap={2}>
+        <Stack gap={2} sx={{ flex: 1 }}>
           <Typography variant="subtitle1">Footer</Typography>
           <Box sx={{ p: 2, border: '1px solid', borderColor: 'divider', height: '100%' }}>
             <Box sx={{ display: 'flex', height: '100%' }}>
-              <Typography variant="body1">{t.insurance_note}</Typography>
+              <Typography variant="body1">{t?.insurance_note}</Typography>
               {edit && (
                 <Box sx={{ display: 'flex', alignItems: 'end' }}>
                   <IconButton>

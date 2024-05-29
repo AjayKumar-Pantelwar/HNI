@@ -1,4 +1,4 @@
-import { Box, IconButton, Typography } from '@mui/material';
+import { Box, IconButton, Stack, Typography } from '@mui/material';
 
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import DeleteFileIcon from 'src/assets/icons/delete-file.icon';
@@ -8,10 +8,11 @@ import { FileDropzone } from '../file-dropzone';
 type Props = {
   selectedFile: File | null;
   handleFileChange: (file: File | null) => void;
+  label?: string;
 };
 
 export const PreviewFile = (props: Props) => {
-  const { selectedFile, handleFileChange } = props;
+  const { selectedFile, handleFileChange, label } = props;
 
   const handleDelete = () => {
     handleFileChange(null);
@@ -21,15 +22,18 @@ export const PreviewFile = (props: Props) => {
 
   const getFileName = (file: File) => {
     const { name } = file;
-    if (name.length > 25) {
+    if (name?.length > 25) {
       const extension = name.split('.').pop();
       return `...${extension}`;
     }
-    return name;
+    return name || '--';
   };
 
   return (
-    <Box>
+    <Stack>
+      <Typography variant="caption" color="text.secondary">
+        {label}
+      </Typography>
       {selectedFile && (
         <Box
           sx={{
@@ -87,6 +91,6 @@ export const PreviewFile = (props: Props) => {
           </Box>
         </Box>
       )}
-    </Box>
+    </Stack>
   );
 };

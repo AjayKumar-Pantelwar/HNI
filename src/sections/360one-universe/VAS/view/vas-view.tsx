@@ -16,6 +16,7 @@ import VASTab1 from './tabs/tab1/tab1';
 import VASTab2 from './tabs/tab2/tab2';
 import VASTab3 from './tabs/tab3/tab3';
 import VASTab4 from './tabs/tab4/tab4';
+import VASTab5 from './tabs/tab5/tab5';
 
 interface TabProps {
   tab: ResearchData;
@@ -53,6 +54,8 @@ const VASView = () => {
         return <VASTab3 data={data[newTab - 1]} />;
       case 4:
         return <VASTab4 data={data[newTab - 1]} />;
+      case 5:
+        return <VASTab5 data={data[newTab - 1]} />;
       default:
         return <></>;
     }
