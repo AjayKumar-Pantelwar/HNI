@@ -3,8 +3,8 @@ import { store } from 'src/redux/store';
 
 export class PublicService {
   protected client = axios.create({
-    // baseURL: process.env.NEXT_PUBLIC_API_URL,
-    // withCredentials: true,
+    baseURL: process.env.NEXT_PUBLIC_API_URL,
+    withCredentials: true,
   });
 
   protected interceptor = -1;
