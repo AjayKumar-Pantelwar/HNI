@@ -2,7 +2,7 @@ import FileUploadIcon from '@mui/icons-material/FileUpload';
 import { Box, Button, Divider, Stack } from '@mui/material';
 import { PreviewFile } from 'src/components/preview-file';
 import DownloadFile from './download-file';
-import ExcelUploadAndView from './excel-upload-view';
+import ExcelUploadAndView from './excel-viewer';
 import ExcelFileUpload from './file-upload';
 
 interface ExcelData {

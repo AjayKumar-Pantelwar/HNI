@@ -45,6 +45,8 @@ export const paths = {
     },
     productUpload: {
       root: `${ROOTS.DASHBOARD}/product-upload`,
+      excelUpload: { root: `${ROOTS.DASHBOARD}/product-upload/excel-upload` },
+      pdfUpload: { root: `${ROOTS.DASHBOARD}/product-upload/pdf-upload` },
     },
     user: {
       root: `${ROOTS.DASHBOARD}/user`,

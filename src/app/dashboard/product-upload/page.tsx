@@ -1,5 +1,6 @@
-import ProductUploadView from 'src/sections/product-upload/view/product-upload-view';
+import { redirect } from 'next/navigation';
+import { paths } from 'src/routes/paths';
 
-const ProductUploadPage = () => <ProductUploadView />;
-
-export default ProductUploadPage;
+export default function MLDsPage() {
+  redirect(paths.dashboard.productUpload.excelUpload.root);
+}

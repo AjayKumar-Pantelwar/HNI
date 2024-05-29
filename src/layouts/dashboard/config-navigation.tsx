@@ -87,6 +87,10 @@ export function useNavData() {
             title: t('Product Upload'),
             path: paths.dashboard.productUpload.root,
             Icon: MIcons.productUpload,
+            children: [
+              { title: t('Excel'), path: paths.dashboard.productUpload.excelUpload.root },
+              { title: t('PDF'), path: paths.dashboard.productUpload.pdfUpload.root },
+            ],
           },
           {
             title: t('Carousel'),

@@ -1,4 +1,4 @@
-import { Space_Grotesk, Hanken_Grotesk } from 'next/font/google';
+import { Space_Grotesk } from 'next/font/google';
 
 // ----------------------------------------------------------------------
 
@@ -30,7 +30,7 @@ declare module '@mui/material/styles' {
   }
 }
 
-export const primaryFont = Hanken_Grotesk({
+export const primaryFont = Space_Grotesk({
   weight: ['300', '400', '500', '600', '700'],
   subsets: ['latin'],
   display: 'swap',

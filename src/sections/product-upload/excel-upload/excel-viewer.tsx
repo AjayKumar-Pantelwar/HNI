@@ -25,7 +25,7 @@ interface Props {
   file: File | null;
 }
 const viewColumns = ['id', 'is_active'];
-const ExcelUploadAndView = (props: Props) => {
+const ExcelViewer = (props: Props) => {
   const { file } = props;
   const [actualData, setActualData] = useState<ExcelData[]>([]);
   const [columns, setColumns] = useState<string[]>([]);
@@ -132,4 +132,4 @@ const ExcelUploadAndView = (props: Props) => {
   );
 };
 
-export default ExcelUploadAndView;
+export default ExcelViewer;
