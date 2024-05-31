@@ -1,6 +1,7 @@
 import { enqueueSnackbar } from 'notistack';
 import { useState } from 'react';
 import { productUploadApi } from 'src/redux/api/product-upload.api';
+import { UploadResponseData } from 'src/types/product-upload.types';
 import { handleError } from 'src/utils/handle-error';
 import ProductLayout from '../../product-layout';
 
@@ -9,26 +10,35 @@ const MutualFunds = () => {
 
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 
+  const [open, setOpen] = useState(false);
+
   const [uploadExcel] = productUploadApi.useUploadExcelMutation();
+
+  const [excelData, setExcelData] = useState<UploadResponseData>();
 
   const handleFileChange = async (file: File | null) => {
     setUploadedFile(file);
-    try {
-      if (file) {
-        const formData = new FormData();
-        formData.append('file', file);
-        await uploadExcel({
-          type: 'mf',
-          file: formData,
-        }).unwrap();
-        enqueueSnackbar('File uploaded successfully', { variant: 'success' });
-      }
-    } catch (error) {
-      handleError(error);
-    }
   };
 
   const [triggerDownload] = productUploadApi.useLazyDownloadExcelQuery();
+
+  const handleUpload = async () => {
+    if (uploadedFile) {
+      setIsUpload(true);
+      try {
+        const formData = new FormData();
+        formData.append('file', uploadedFile);
+        const res = await uploadExcel({
+          type: 'mf',
+          file: formData,
+        }).unwrap();
+        setExcelData(res.data);
+        enqueueSnackbar('File uploaded successfully', { variant: 'success' });
+      } catch (error) {
+        handleError(error);
+      }
+    }
+  };
 
   const handleDownload = async () => {
     try {
@@ -52,11 +62,14 @@ const MutualFunds = () => {
 
   return (
     <ProductLayout
-      handleFileChange={handleFileChange}
       isUpload={isUpload}
-      setIsUpload={setIsUpload}
+      handleFileChange={handleFileChange}
       uploadedFile={uploadedFile}
       handleDownload={handleDownload}
+      data={excelData}
+      setOpen={setOpen}
+      handleUpload={handleUpload}
+      open={open}
     />
   );
 };

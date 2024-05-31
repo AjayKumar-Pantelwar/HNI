@@ -1,3 +1,5 @@
+import { ApiResponse } from './api.types';
+
 export enum ExcelUploadTabs {
   MUTUAL_FUND = 'Mutual Funds',
   PMS = 'PMS',
@@ -19,6 +21,26 @@ export interface PDFUploadData {
   PDF2: boolean;
   PDF3: boolean;
   PDF4: boolean;
+}
+
+export type UploadExcelResponse = ApiResponse<UploadResponseData>;
+
+export interface UploadResponseData {
+  success: Success[];
+  error: ErrorElement[];
+}
+
+export interface ErrorElement {
+  error: ErrorError;
+  scheme_id: string;
+  row_number: number;
+}
+
+export interface ErrorError {}
+
+export interface Success {
+  scheme_id: string;
+  row_number: number;
 }
 
 export const pdfUploadData: PDFUploadData[] = [

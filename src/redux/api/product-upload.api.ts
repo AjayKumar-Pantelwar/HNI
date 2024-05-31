@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { endpoints } from 'src/routes/endpoints';
-import { ApiResponse } from 'src/types/api.types';
+import { UploadExcelResponse } from 'src/types/product-upload.types';
 import { baseQuery } from './base-query';
 
 export const productUploadApi = createApi({
@@ -8,7 +8,7 @@ export const productUploadApi = createApi({
   baseQuery,
   tagTypes: ['product-upload'],
   endpoints: (builder) => ({
-    uploadExcel: builder.mutation<ApiResponse, { type: string; file: FormData }>({
+    uploadExcel: builder.mutation<UploadExcelResponse, { type: string; file: FormData }>({
       query: (body) => {
         const { type, file } = body;
         return { ...endpoints.productUpload.excelUpload.upload(type), body: file };

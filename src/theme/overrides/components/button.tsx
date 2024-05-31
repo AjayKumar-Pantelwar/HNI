@@ -1,5 +1,5 @@
+import { buttonClasses, ButtonProps } from '@mui/material/Button';
 import { alpha, Theme } from '@mui/material/styles';
-import { ButtonProps, buttonClasses } from '@mui/material/Button';
 
 // ----------------------------------------------------------------------
 
@@ -78,6 +78,10 @@ export default function Button(theme: Theme) {
       ...(ownerState.color === color && {
         // CONTAINED
         ...(containedVariant && {
+          color:
+            ownerState.color === 'secondary'
+              ? theme.palette.text.primary
+              : theme.palette.common.white,
           '&:hover': {
             boxShadow: theme.customShadows[color],
           },

@@ -1,4 +1,8 @@
-import { Box, Card, Table, TableBody, TableContainer } from '@mui/material';
+'use client';
+
+import { Box, Button, Card, Table, TableBody, TableContainer, TextField } from '@mui/material';
+import { KeyboardEvent, useState } from 'react';
+import Filters from 'src/assets/icons/filters';
 import Scrollbar from 'src/components/scrollbar';
 import {
   TableEmptyRows,
@@ -9,12 +13,9 @@ import {
   emptyRows,
   useTable,
 } from 'src/components/table';
-import { GetUserResponse } from 'src/types/user.types';
+import { userApi } from 'src/redux/api/user.api';
+import { GetUserRequest } from 'src/types/user.types';
 import UserTableRow from './user-table-row';
-
-interface Props {
-  data: GetUserResponse;
-}
 
 const TABLE_HEAD = [
   { id: 'client_name', label: 'Client Name' },
@@ -26,15 +27,63 @@ const TABLE_HEAD = [
   { id: 'edit', label: 'Actions', width: 80 },
 ];
 
-const UserListView = (props: Props) => {
-  const { data } = props;
+const defaultFilters: GetUserRequest = {
+  name: '',
+  mobile: '',
+  pan: '',
+  kyc_mismatch: false,
+  aml: false,
+  calibre: false,
+  total_pages: 1,
+  total_records: 10,
+};
+
+const UserListView = () => {
   const table = useTable();
 
+  const [filters, setFilters] = useState<GetUserRequest>(defaultFilters);
+  const { data } = userApi.useUsersQuery(filters);
+
+  const [input, setInput] = useState('');
+
   const denseHeight = table.dense ? 52 : 72;
+
+  const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      if (/\d/.test(input)) {
+        setFilters((prevFilters) => ({
+          ...prevFilters,
+          mobile: input,
+        }));
+      } else if (input.length === 10 && /^[A-Z]{5}\d{4}[A-Z]$/.test(input)) {
+        setFilters((prevFilters) => ({
+          ...prevFilters,
+          pan: input,
+        }));
+      } else {
+        setFilters((prevFilters) => ({
+          ...prevFilters,
+          name: input,
+        }));
+      }
+      setInput('');
+    }
+  };
 
   return (
     <Box>
       <Card>
+        <Box sx={{ p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <TextField
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Enter name, phone, PAN"
+            onKeyDown={handleKeyPress}
+          />
+          <Button variant="contained" color="secondary" startIcon={<Filters />}>
+            Filters
+          </Button>
+        </Box>
         <TableContainer sx={{ position: 'relative', overflow: 'unset' }}>
           <TableSelectedAction
             dense={table.dense}
