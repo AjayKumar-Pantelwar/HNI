@@ -14,11 +14,11 @@ interface Props {
   setIsUpload: React.Dispatch<React.SetStateAction<boolean>>;
   handleFileChange: (file: File | null) => void;
   uploadedFile: File | null;
-  //   setUploadedFileno: React.Dispatch<React.SetStateAction<File | null>>;
+  handleDownload: () => Promise<void>;
 }
 
 const ProductLayout = (props: Props) => {
-  const { handleFileChange, isUpload, setIsUpload, uploadedFile } = props;
+  const { handleFileChange, isUpload, setIsUpload, uploadedFile, handleDownload } = props;
 
   return (
     <>
@@ -26,7 +26,7 @@ const ProductLayout = (props: Props) => {
         <ExcelUploadAndView file={uploadedFile} />
       ) : (
         <Box sx={{ display: 'flex', alignItems: 'center', minHeight: '400px' }}>
-          <DownloadFile />
+          <DownloadFile handleDownload={handleDownload} />
           <Divider orientation="vertical" sx={{ minHeight: '450px' }} />
           <Stack sx={{ flex: 1, p: 3, gap: 3 }}>
             <ExcelFileUpload handleFileChange={handleFileChange} />
@@ -37,7 +37,9 @@ const ProductLayout = (props: Props) => {
             )}
             <Box sx={{ display: 'flex', justifyContent: 'end' }}>
               <Button
-                onClick={() => setIsUpload(true)}
+                onClick={() => {
+                  setIsUpload(true);
+                }}
                 variant="contained"
                 sx={{ width: '200px' }}
                 startIcon={<FileUploadIcon />}

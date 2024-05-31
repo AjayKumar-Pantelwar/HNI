@@ -23,6 +23,12 @@ export const endpoints = {
     edit: p('PUT', `/notifications/update`),
     activeList: p('GET', '/notifications/active'),
   },
+  productUpload: {
+    excelUpload: {
+      upload: (type: string) => p('POST', `/${type}/upload/all`),
+      download: (type: string) => p('GET', `/${type}/download/all`),
+    },
+  },
 
   users: {
     list: p('GET', '/users'),
