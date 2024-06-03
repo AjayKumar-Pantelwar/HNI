@@ -5,6 +5,7 @@ import Collapse from '@mui/material/Collapse';
 import { usePathname } from 'src/routes/hook';
 import { useActiveLink } from 'src/routes/hook/use-active-link';
 //
+import { secondaryFont } from 'src/theme/typography';
 import { NavConfigProps, NavListProps } from '../types';
 import NavItem from './nav-item';
 
@@ -51,6 +52,14 @@ export default function NavList({ data, depth, hasChild, config }: NavListRootPr
         externalLink={externalLink}
         onClick={handleToggle}
         config={config}
+        sx={{
+          fontFamily: secondaryFont.style.fontFamily,
+          color: 'text.primary',
+          '&:hover': {
+            color: 'primary.main',
+            backgroundColor: '#FFF6F2',
+          },
+        }}
       />
 
       {hasChild && (

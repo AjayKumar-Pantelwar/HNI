@@ -59,11 +59,11 @@ export function useNavData() {
             path: paths.dashboard.admin.root,
             Icon: MIcons.admin,
             children: [
-              { title: t('List'), path: paths.dashboard.admin.list },
-              { title: t('Roles'), path: paths.dashboard.roles.list },
+              { title: t('list'), path: paths.dashboard.admin.list },
+              { title: t('roles'), path: paths.dashboard.admin.roles.list },
               {
-                title: t('Logs'),
-                path: paths.dashboard.actions.list,
+                title: t('logs'),
+                path: paths.dashboard.admin.actions.list,
               },
             ].filter(Boolean),
           },
@@ -109,7 +109,7 @@ export function useNavData() {
                 title: t('Research'),
                 path: paths.dashboard.contentManagement.reasearch.list,
               },
-              { title: t('Pre Onboarding'), path: paths.dashboard.carousel.list },
+              { title: t('Pre Onboarding'), path: paths.dashboard.contentManagement.carousel.list },
               {
                 title: t('Risk Profile'),
                 path: paths.dashboard.contentManagement.riskProfile.list,
@@ -119,7 +119,7 @@ export function useNavData() {
           {
             title: t('360one Universe'),
             Icon: MIcons.universe,
-            path: paths.dashboard.contentManagement.root,
+            path: paths.dashboard.universe.root,
             children: [
               {
                 title: t('Value Added Services'),

@@ -1,4 +1,7 @@
+'use client';
+
 // @mui
+
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -10,6 +13,7 @@ import Tooltip from '@mui/material/Tooltip';
 import { RouterLink } from 'src/routes/components';
 //
 //
+import { useTheme } from '@mui/material';
 import { NavConfigProps, NavItemProps } from '../types';
 import { StyledDotIcon, StyledIcon, StyledItem } from './styles';
 
@@ -34,6 +38,8 @@ export default function NavItem({
 
   const { sx, ...rest } = other;
 
+  const theme = useTheme();
+
   const renderContent = (
     <StyledItem
       disableGutters
@@ -41,7 +47,31 @@ export default function NavItem({
       active={active}
       depth={depth}
       config={config}
-      sx={{ gap: 2, ...sx }}
+      sx={{
+        gap: 2,
+        ...sx,
+        ...(!children && {
+          ':hover': {
+            borderRight: '4px solid',
+            borderColor: 'primary.main',
+            borderRadius: 'unset',
+          },
+        }),
+        ...(subItem &&
+          active && {
+            borderRight: '4px solid',
+            borderColor: 'primary.main',
+            backgroundColor: '#FFF6F2',
+            color: 'primary.main',
+          }),
+        ...(!children &&
+          active && {
+            borderRight: '4px solid',
+            borderColor: 'primary.main',
+            backgroundColor: '#FFF6F2',
+            color: 'primary.main',
+          }),
+      }}
       {...rest}
     >
       <>

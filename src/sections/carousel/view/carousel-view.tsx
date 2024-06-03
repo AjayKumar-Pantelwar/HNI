@@ -54,7 +54,7 @@ const CarouselView = () => {
         heading="List"
         links={[
           { name: 'Dashboard', href: paths.dashboard.root },
-          { name: 'Carousel', href: paths.dashboard.carousel.list },
+          { name: 'Carousel', href: paths.dashboard.contentManagement.carousel.list },
           { name: 'List' },
         ]}
         action={

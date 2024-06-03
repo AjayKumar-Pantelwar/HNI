@@ -73,13 +73,13 @@ export default function RolesListView() {
           heading="List"
           links={[
             { name: 'Dashboard', href: paths.dashboard.root },
-            { name: 'Roles', href: paths.dashboard.roles.list },
+            { name: 'Roles', href: paths.dashboard.admin.roles.list },
             { name: 'List' },
           ]}
           action={
             <Button
               component={RouterLink}
-              href={paths.dashboard.roles.new}
+              href={paths.dashboard.admin.roles.new}
               variant="contained"
               startIcon={<AddRoundedIcon />}
             >

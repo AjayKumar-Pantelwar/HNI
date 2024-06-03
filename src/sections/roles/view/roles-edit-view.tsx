@@ -39,7 +39,7 @@ export default function RolesEditView() {
           },
           {
             name: 'Roles',
-            href: paths.dashboard.roles.list,
+            href: paths.dashboard.admin.roles.list,
           },
           { name: currentRole?.rname },
         ]}

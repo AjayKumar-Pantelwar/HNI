@@ -69,7 +69,11 @@ export default function AdminCreateView() {
               You have to create roles first, to create admins
             </Typography>
             <Stack alignItems="center" flex={1}>
-              <Button variant="outlined" component={RouterLink} href={paths.dashboard.roles.new}>
+              <Button
+                variant="outlined"
+                component={RouterLink}
+                href={paths.dashboard.admin.roles.new}
+              >
                 Click here to add a role
               </Button>
             </Stack>

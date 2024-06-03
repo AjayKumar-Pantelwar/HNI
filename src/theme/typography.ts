@@ -1,4 +1,4 @@
-import { Space_Grotesk } from 'next/font/google';
+import { Hanken_Grotesk, Space_Grotesk } from 'next/font/google';
 
 // ----------------------------------------------------------------------
 
@@ -37,7 +37,7 @@ export const primaryFont = Space_Grotesk({
   fallback: ['Helvetica', 'Arial', 'sans-serif'],
 });
 
-export const secondaryFont = Space_Grotesk({
+export const secondaryFont = Hanken_Grotesk({
   weight: ['300', '400', '500', '600', '700'],
   subsets: ['latin'],
   display: 'swap',

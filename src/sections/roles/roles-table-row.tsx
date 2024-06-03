@@ -42,7 +42,11 @@ export default function RolesTableRow({ row, selected, onSelectRow }: Props) {
 
       <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
         <Tooltip title="Quick Edit" placement="top" arrow>
-          <IconButton component={Link} href={paths.dashboard.roles.edit(row.rid)} sx={{ py: 0 }}>
+          <IconButton
+            component={Link}
+            href={paths.dashboard.admin.roles.edit(row.rid)}
+            sx={{ py: 0 }}
+          >
             <ModeEditOutlineRoundedIcon />
           </IconButton>
         </Tooltip>
