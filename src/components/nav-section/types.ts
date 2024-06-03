@@ -2,6 +2,7 @@ import { SvgIconTypeMap } from '@mui/material';
 import { ListItemButtonProps } from '@mui/material/ListItemButton';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 import { StackProps } from '@mui/material/Stack';
+import { ComponentProps } from 'react';
 
 // ----------------------------------------------------------------------
 
@@ -27,9 +28,9 @@ export type NavItemProps = ListItemButtonProps & {
 export type NavListProps = {
   title: string;
   path: string;
-  Icon?: OverridableComponent<SvgIconTypeMap<{}, 'svg'>> & {
-    muiName: string;
-  };
+  Icon?:
+    | OverridableComponent<SvgIconTypeMap<{}, 'svg'>>
+    | ((props: ComponentProps<'svg'>) => JSX.Element);
   info?: React.ReactElement;
   caption?: string;
   disabled?: boolean;

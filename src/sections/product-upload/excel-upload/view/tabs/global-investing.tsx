@@ -1,7 +1,7 @@
 import { enqueueSnackbar } from 'notistack';
 import { useState } from 'react';
 import { productUploadApi } from 'src/redux/api/product-upload.api';
-import { UploadResponseData } from 'src/types/product-upload.types';
+import { ExcelUploadTabs, UploadResponseData } from 'src/types/product-upload.types';
 import { handleError } from 'src/utils/handle-error';
 import ProductLayout from '../../product-layout';
 
@@ -70,6 +70,7 @@ const GlobalInvesting = () => {
       setOpen={setOpen}
       handleUpload={handleUpload}
       open={open}
+      tab={ExcelUploadTabs.GLOBAL_INVESTING}
     />
   );
 };

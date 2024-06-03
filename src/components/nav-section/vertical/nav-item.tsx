@@ -32,6 +32,8 @@ export default function NavItem({
 
   const subItem = depth !== 1;
 
+  const { sx, ...rest } = other;
+
   const renderContent = (
     <StyledItem
       disableGutters
@@ -39,10 +41,11 @@ export default function NavItem({
       active={active}
       depth={depth}
       config={config}
-      {...other}
+      sx={{ gap: 2, ...sx }}
+      {...rest}
     >
       <>
-        {Icon && <Icon sx={{ mr: 2 }} />}
+        {Icon && <Icon />}
 
         {subItem && (
           <StyledIcon size={config.iconSize}>
@@ -65,6 +68,7 @@ export default function NavItem({
             typography: 'body2',
             textTransform: 'capitalize',
             fontWeight: active ? 'fontWeightSemiBold' : 'fontWeightMedium',
+            color: 'text.primary',
           }}
           secondaryTypographyProps={{
             noWrap: true,
@@ -81,9 +85,12 @@ export default function NavItem({
       )}
       {!!children &&
         (open ? (
-          <KeyboardArrowDownIcon width={16} sx={{ flexShrink: 0, ml: 0.5 }} />
+          <KeyboardArrowDownIcon
+            width={16}
+            sx={{ color: 'text.primary', flexShrink: 0, ml: 0.5 }}
+          />
         ) : (
-          <ChevronRightIcon width={16} sx={{ flexShrink: 0, ml: 0.5 }} />
+          <ChevronRightIcon width={16} sx={{ color: 'text.primary', flexShrink: 0, ml: 0.5 }} />
         ))}
     </StyledItem>
   );

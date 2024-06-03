@@ -13,8 +13,10 @@ import {
   emptyRows,
   useTable,
 } from 'src/components/table';
+import { useBoolean } from 'src/hooks/use-boolean';
 import { userApi } from 'src/redux/api/user.api';
 import { GetUserRequest } from 'src/types/user.types';
+import UserFilterDrawer from './user-filter-drawer';
 import UserTableRow from './user-table-row';
 
 const TABLE_HEAD = [
@@ -45,6 +47,8 @@ const UserListView = () => {
   const { data } = userApi.useUsersQuery(filters);
 
   const [input, setInput] = useState('');
+
+  const filtersDrawer = useBoolean();
 
   const denseHeight = table.dense ? 52 : 72;
 
@@ -80,7 +84,12 @@ const UserListView = () => {
             placeholder="Enter name, phone, PAN"
             onKeyDown={handleKeyPress}
           />
-          <Button variant="contained" color="secondary" startIcon={<Filters />}>
+          <Button
+            onClick={() => filtersDrawer.onTrue()}
+            variant="contained"
+            color="secondary"
+            startIcon={<Filters />}
+          >
             Filters
           </Button>
         </Box>
@@ -144,6 +153,12 @@ const UserListView = () => {
           onChangeDense={table.onChangeDense}
         />
       </Card>
+      <UserFilterDrawer
+        defaultFilters={defaultFilters}
+        setFilters={setFilters}
+        open={filtersDrawer.value}
+        onClose={filtersDrawer.onFalse}
+      />
     </Box>
   );
 };
