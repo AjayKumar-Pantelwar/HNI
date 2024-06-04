@@ -125,6 +125,10 @@ export function useNavData() {
                 title: t('Value Added Services'),
                 path: paths.dashboard.universe.root,
               },
+              {
+                title: t('Landing page'),
+                path: paths.dashboard.universe.landingPage.root,
+              },
             ],
           },
           {

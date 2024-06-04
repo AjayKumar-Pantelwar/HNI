@@ -41,6 +41,9 @@ export const paths = {
       vas: {
         root: `${ROOTS.DASHBOARD}/360one-universe/vas`,
       },
+      landingPage: {
+        root: `${ROOTS.DASHBOARD}/360one-universe/landing-page`,
+      },
     },
 
     notifications: {

@@ -67,7 +67,7 @@ const VASView = () => {
         heading="Research"
         links={[
           { name: 'Dashboard', href: paths.dashboard.root },
-          { name: 'Content Management', href: paths.dashboard.contentManagement.root },
+          { name: '360 Universe', href: paths.dashboard.universe.root },
           { name: 'Research' },
         ]}
         sx={{
