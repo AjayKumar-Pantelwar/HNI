@@ -12,6 +12,7 @@ import { carouselApi } from './api/carousel.api';
 import { mldsApi } from './api/mlds.api';
 import { notificationsApi } from './api/notifications.api';
 import { productUploadApi } from './api/product-upload.api';
+import { researchApi } from './api/research.api';
 import { roleApi } from './api/role.api';
 import { userApi } from './api/user.api';
 import { rootReducer } from './root-reducer';
@@ -36,6 +37,7 @@ export const store = configureStore({
       userApi.middleware,
       notificationsApi.middleware,
       productUploadApi.middleware,
+      researchApi.middleware,
       // dealApi.middleware,
       // companyApi.middleware,
       // constantApi.middleware,

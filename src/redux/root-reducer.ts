@@ -8,6 +8,7 @@ import { carouselApi } from './api/carousel.api';
 import { mldsApi } from './api/mlds.api';
 import { notificationsApi } from './api/notifications.api';
 import { productUploadApi } from './api/product-upload.api';
+import { researchApi } from './api/research.api';
 import { roleApi } from './api/role.api';
 import { userApi } from './api/user.api';
 import { authSlice } from './slices/auth.slice';
@@ -44,6 +45,7 @@ export const rootReducer = combineReducers({
   [userApi.reducerPath]: userApi.reducer,
   [notificationsApi.reducerPath]: notificationsApi.reducer,
   [productUploadApi.reducerPath]: productUploadApi.reducer,
+  [researchApi.reducerPath]: researchApi.reducer,
 
   // [dealApi.reducerPath]: dealApi.reducer,
   // [constantApi.reducerPath]: constantApi.reducer,

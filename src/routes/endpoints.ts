@@ -29,7 +29,13 @@ export const endpoints = {
       download: (type: string) => p('GET', `/${type}/download/all`),
     },
   },
-
+  contentManagement: {
+    research: {
+      tablist: p('GET', '/path/content/research/tab'),
+      tabDetails: (id: string) => p('GET', `/path/content/research/tab/${id}`),
+      addTab: p('POST', `/path/content/research/tab`),
+    },
+  },
   users: {
     list: p('GET', '/users'),
     edit: p('PUT', `/users/flags`),
