@@ -13,7 +13,6 @@ export const userApi = createApi({
       query: (params) => ({ ...endpoints.users.list, params }),
       providesTags: ['user'],
     }),
-
     editUser: builder.mutation<ApiResponse, UpdateUserRequest>({
       query: ({ action, ...body }) => ({
         ...endpoints.users.edit,

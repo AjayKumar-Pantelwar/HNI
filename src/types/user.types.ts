@@ -3,13 +3,14 @@ import { ApiResponse } from './api.types';
 export type GetUserResponse = ApiResponse<User[]>;
 
 export interface GetUserRequest {
-  client_name: string;
-  email: string;
-  mobile_number: string;
+  name: string;
+  mobile: string;
   pan: string;
   kyc_mismatch: boolean;
   aml: boolean;
   calibre: boolean;
+  total_records: number;
+  total_pages: number;
 }
 
 export interface User {
@@ -22,6 +23,14 @@ export interface User {
   aml: boolean;
   calibre: boolean;
   is_blocked: boolean;
+  name: string;
+  mobile: string;
+  is_kyc_mismatched: boolean;
+  is_aml_present: boolean;
+  is_calibre_user: boolean;
+  aml_bypassed: boolean;
+  calibre_allowed: boolean;
+  kyc_mismatch_allowed: boolean;
 }
 
 export enum UserActions {

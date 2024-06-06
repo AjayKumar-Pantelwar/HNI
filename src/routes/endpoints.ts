@@ -23,7 +23,19 @@ export const endpoints = {
     edit: p('PUT', `/notifications/update`),
     activeList: p('GET', '/notifications/active'),
   },
-
+  productUpload: {
+    excelUpload: {
+      upload: (type: string) => p('POST', `/${type}/upload/all`),
+      download: (type: string) => p('GET', `/${type}/download/all`),
+    },
+  },
+  contentManagement: {
+    research: {
+      tablist: p('GET', '/path/content/research/tab'),
+      tabDetails: (id: string) => p('GET', `/path/content/research/tab/${id}`),
+      addTab: p('POST', `/path/content/research/tab`),
+    },
+  },
   users: {
     list: p('GET', '/users'),
     edit: p('PUT', `/users/flags`),

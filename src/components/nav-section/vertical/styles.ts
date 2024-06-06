@@ -23,7 +23,7 @@ export const StyledItem = styled(ListItemButton, {
     root: {
       color:
         theme.palette.mode === 'light' ? theme.palette.primary.main : theme.palette.primary.light,
-      backgroundColor: alpha(theme.palette.primary.main, 0.08),
+      backgroundColor: alpha(theme.palette.primary.light, 0.08),
       '&:hover': {
         backgroundColor: alpha(theme.palette.primary.main, 0.16),
       },
@@ -112,7 +112,7 @@ export const StyledSubheader = styled(ListSubheader)<StyledSubheaderProps>(({ co
   paddingTop: theme.spacing(2),
   marginBottom: config.itemGap,
   paddingBottom: theme.spacing(1),
-  color: theme.palette.text.disabled,
+  color: theme.palette.text.primary,
   transition: theme.transitions.create(['color'], {
     duration: theme.transitions.duration.shortest,
   }),

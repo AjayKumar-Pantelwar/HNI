@@ -5,8 +5,8 @@ import Container from '@mui/material/Container';
 // routes
 import { paths } from 'src/routes/paths';
 // components
-import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
+import { useSettingsContext } from 'src/components/settings';
 import RolesNewEditForm from '../roles-new-edit-form';
 //
 
@@ -26,7 +26,7 @@ export default function RolesCreateView() {
           },
           {
             name: 'Roles',
-            href: paths.dashboard.roles.list,
+            href: paths.dashboard.admin.roles.list,
           },
           { name: 'New Role' },
         ]}

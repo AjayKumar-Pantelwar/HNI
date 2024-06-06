@@ -90,7 +90,7 @@ export const ActionListView: React.FC = () => {
         heading="Actions"
         links={[
           { name: 'Dashboard', href: paths.dashboard.root },
-          { name: 'Actions', href: paths.dashboard.actions.list },
+          { name: 'Actions', href: paths.dashboard.admin.actions.list },
           { name: 'List' },
         ]}
         sx={{

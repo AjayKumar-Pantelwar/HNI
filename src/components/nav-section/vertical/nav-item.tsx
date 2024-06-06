@@ -1,4 +1,7 @@
+'use client';
+
 // @mui
+
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -10,6 +13,7 @@ import Tooltip from '@mui/material/Tooltip';
 import { RouterLink } from 'src/routes/components';
 //
 //
+import { useTheme } from '@mui/material';
 import { NavConfigProps, NavItemProps } from '../types';
 import { StyledDotIcon, StyledIcon, StyledItem } from './styles';
 
@@ -32,6 +36,10 @@ export default function NavItem({
 
   const subItem = depth !== 1;
 
+  const { sx, ...rest } = other;
+
+  const theme = useTheme();
+
   const renderContent = (
     <StyledItem
       disableGutters
@@ -39,10 +47,35 @@ export default function NavItem({
       active={active}
       depth={depth}
       config={config}
-      {...other}
+      sx={{
+        gap: 2,
+        ...sx,
+        ...(!children && {
+          ':hover': {
+            borderRight: '4px solid',
+            borderColor: 'primary.main',
+            borderRadius: 'unset',
+          },
+        }),
+        ...(subItem &&
+          active && {
+            borderRight: '4px solid',
+            borderColor: 'primary.main',
+            backgroundColor: '#FFF6F2',
+            color: 'primary.main',
+          }),
+        ...(!children &&
+          active && {
+            borderRight: '4px solid',
+            borderColor: 'primary.main',
+            backgroundColor: '#FFF6F2',
+            color: 'primary.main',
+          }),
+      }}
+      {...rest}
     >
       <>
-        {Icon && <Icon sx={{ mr: 2 }} />}
+        {Icon && <Icon />}
 
         {subItem && (
           <StyledIcon size={config.iconSize}>
@@ -65,6 +98,7 @@ export default function NavItem({
             typography: 'body2',
             textTransform: 'capitalize',
             fontWeight: active ? 'fontWeightSemiBold' : 'fontWeightMedium',
+            color: 'text.primary',
           }}
           secondaryTypographyProps={{
             noWrap: true,
@@ -81,9 +115,12 @@ export default function NavItem({
       )}
       {!!children &&
         (open ? (
-          <KeyboardArrowDownIcon width={16} sx={{ flexShrink: 0, ml: 0.5 }} />
+          <KeyboardArrowDownIcon
+            width={16}
+            sx={{ color: 'text.primary', flexShrink: 0, ml: 0.5 }}
+          />
         ) : (
-          <ChevronRightIcon width={16} sx={{ flexShrink: 0, ml: 0.5 }} />
+          <ChevronRightIcon width={16} sx={{ color: 'text.primary', flexShrink: 0, ml: 0.5 }} />
         ))}
     </StyledItem>
   );

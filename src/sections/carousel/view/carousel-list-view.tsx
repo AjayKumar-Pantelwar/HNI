@@ -4,12 +4,10 @@ import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import IconButton from '@mui/material/IconButton';
 import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
 import Tooltip from '@mui/material/Tooltip';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import Scrollbar from 'src/components/scrollbar';
-import { useSettingsContext } from 'src/components/settings';
 import {
   TableEmptyRows,
   TableHeadCustom,
@@ -23,23 +21,24 @@ import { useBoolean } from 'src/hooks/use-boolean';
 // import { usePerm } from 'src/hooks/use-perm';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import { useEffect, useState } from 'react';
+import { ReactSortable } from 'react-sortablejs';
 import { Carousel, GetCarouselResponse } from 'src/types/carousel.types';
 import CarouselTableRow from '../carousel-table-row';
 
 const TABLE_HEAD = [
+  { id: 'move', label: '' },
+  { id: 'image', label: 'Image' },
+  { id: 'icon', label: 'Icon' },
   { id: 'title', label: 'Title' },
   { id: 'subtitle', label: 'Subtitle' },
   { id: 'edit', label: 'Actions', width: 80 },
 ];
 interface Props {
   data: GetCarouselResponse;
-  isGlobalEdit: boolean;
 }
 
-export default function CarouselListView({ data, isGlobalEdit }: Props) {
+export default function CarouselListView({ data }: Props) {
   const table = useTable();
-
-  const settings = useSettingsContext();
 
   // const { adminManagementPerm } = usePerm();
   const [rows, setRows] = useState<Carousel[]>([]);
@@ -53,38 +52,6 @@ export default function CarouselListView({ data, isGlobalEdit }: Props) {
       setRows(data?.data);
     }
   }, [data]);
-
-  const [isOrderChanged, setIsOrderChanged] = useState(false);
-
-  const handleDragStart = (e: React.DragEvent<HTMLTableRowElement>, index: number) => {
-    if (!isGlobalEdit) {
-      e.preventDefault();
-      return;
-    }
-    e.dataTransfer.setData('text/plain', index.toString());
-  };
-
-  const handleDragOver = (e: React.DragEvent<HTMLTableRowElement>) => {
-    e.preventDefault();
-  };
-
-  const handleDrop = (e: React.DragEvent<HTMLTableRowElement>, index: number) => {
-    if (!isGlobalEdit) {
-      e.preventDefault();
-      return;
-    }
-
-    const draggedIndex = Number(e.dataTransfer.getData('text/plain'));
-    const draggedRow = rows[draggedIndex];
-
-    // Update the row order
-    const updatedRows = [...rows];
-    updatedRows.splice(draggedIndex, 1);
-    updatedRows.splice(index, 0, draggedRow);
-
-    setRows(updatedRows);
-    setIsOrderChanged(true);
-  };
 
   return (
     <>
@@ -115,33 +82,25 @@ export default function CarouselListView({ data, isGlobalEdit }: Props) {
                 rowCount={data?.data?.length}
                 numSelected={table.selected.length}
                 onSort={table.onSort}
-                // onSelectAllRows={(checked) =>
-                //   table.onSelectAllRows(checked, data?.data?.roles?.map((row) => row.rid) || [])
-                // }
               />
 
-              <TableBody>
+              <ReactSortable
+                list={rows}
+                tag="tbody"
+                setList={setRows}
+                style={{
+                  width: '100%',
+                }}
+              >
                 {rows?.map((row, index) => (
-                  <CarouselTableRow
-                    key={index}
-                    row={row}
-                    index={index}
-                    isEditing={isGlobalEdit}
-                    onDragStart={handleDragStart}
-                    onDragOver={handleDragOver}
-                    onDrop={handleDrop}
-                    // selected={table.selected.includes(row.rid)}
-                    // onSelectRow={() => table.onSelectRow(row.rid)}
-                  />
+                  <CarouselTableRow key={index} row={row} index={index} />
                 ))}
-
                 <TableEmptyRows
                   height={denseHeight}
                   emptyRows={emptyRows(table.page, table.rowsPerPage, data?.data?.length || 0)}
                 />
-
                 <TableNoData notFound={!data?.data?.length} />
-              </TableBody>
+              </ReactSortable>
             </Table>
           </Scrollbar>
         </TableContainer>
@@ -152,7 +111,6 @@ export default function CarouselListView({ data, isGlobalEdit }: Props) {
           rowsPerPage={table.rowsPerPage}
           onPageChange={table.onChangePage}
           onRowsPerPageChange={table.onChangeRowsPerPage}
-          //
           dense={table.dense}
           onChangeDense={table.onChangeDense}
         />

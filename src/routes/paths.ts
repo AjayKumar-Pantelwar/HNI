@@ -29,17 +29,23 @@ export const paths = {
       reasearch: {
         list: `${ROOTS.DASHBOARD}/content-management/research/list`,
       },
+      carousel: {
+        root: `${ROOTS.DASHBOARD}/content-management/carousel`,
+        list: `${ROOTS.DASHBOARD}/content-management/carousel/list`,
+        edit: (id: string) => `${ROOTS.DASHBOARD}/content-management/carousel/${id}/edit`,
+        new: `${ROOTS.DASHBOARD}/content-management/carousel/new`,
+      },
     },
     universe: {
       root: `${ROOTS.DASHBOARD}/360one-universe`,
       vas: {
         root: `${ROOTS.DASHBOARD}/360one-universe/vas`,
       },
+      landingPage: {
+        root: `${ROOTS.DASHBOARD}/360one-universe/landing-page`,
+      },
     },
-    actions: {
-      root: `${ROOTS.DASHBOARD}/actions`,
-      list: `${ROOTS.DASHBOARD}/actions/list`,
-    },
+
     notifications: {
       root: `${ROOTS.DASHBOARD}/notifications`,
     },
@@ -70,19 +76,23 @@ export const paths = {
       root: `${ROOTS.DASHBOARD}/admin`,
       new: `${ROOTS.DASHBOARD}/admin/new`,
       list: `${ROOTS.DASHBOARD}/admin/list`,
+      actions: {
+        root: `${ROOTS.DASHBOARD}/admin/actions`,
+        list: `${ROOTS.DASHBOARD}/admin/actions/list`,
+      },
+      roles: {
+        root: `${ROOTS.DASHBOARD}/admin/roles`,
+        new: `${ROOTS.DASHBOARD}/admin/roles/new`,
+        list: `${ROOTS.DASHBOARD}/admin/roles/list`,
+        cards: `${ROOTS.DASHBOARD}/admin/roles/cards`,
+        account: `${ROOTS.DASHBOARD}/admin/roles/account`,
+        edit: (id: string) => `${ROOTS.DASHBOARD}/admin/roles/${id}/edit`,
+        profile: (id: string) => `${ROOTS.DASHBOARD}/admin/roles/${id}/profile`,
+      },
       cards: `${ROOTS.DASHBOARD}/admin/cards`,
       account: `${ROOTS.DASHBOARD}/admin/account`,
       edit: (id: string) => `${ROOTS.DASHBOARD}/admin/${id}/edit`,
       profile: (id: string) => `${ROOTS.DASHBOARD}/admin/${id}/profile`,
-    },
-    roles: {
-      root: `${ROOTS.DASHBOARD}/roles`,
-      new: `${ROOTS.DASHBOARD}/roles/new`,
-      list: `${ROOTS.DASHBOARD}/roles/list`,
-      cards: `${ROOTS.DASHBOARD}/roles/cards`,
-      account: `${ROOTS.DASHBOARD}/roles/account`,
-      edit: (id: string) => `${ROOTS.DASHBOARD}/roles/${id}/edit`,
-      profile: (id: string) => `${ROOTS.DASHBOARD}/roles/${id}/profile`,
     },
     deals: {
       root: `${ROOTS.DASHBOARD}/deals`,

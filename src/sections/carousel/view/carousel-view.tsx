@@ -6,14 +6,11 @@ import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 import { useSettingsContext } from 'src/components/settings';
 // import { usePerm } from 'src/hooks/use-perm';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
-import GridViewIcon from '@mui/icons-material/GridView';
-import ListIcon from '@mui/icons-material/List';
-import { Box, Stack, ToggleButton, ToggleButtonGroup } from '@mui/material';
-import { useCallback, useState } from 'react';
+import { Stack } from '@mui/material';
 import EmptyContent from 'src/components/empty-content';
-import { RouterLink } from 'src/routes/components';
+import { useBoolean } from 'src/hooks/use-boolean';
 import { paths } from 'src/routes/paths';
-import CarouselGridView from './carousel-grid-view';
+import CarouselEditView from '../carousel-edit-modal';
 import CarouselListView from './carousel-list-view';
 
 const CarouselView = () => {
@@ -27,33 +24,21 @@ const CarouselView = () => {
     data: [
       {
         id: 1,
-        priority: 1,
-        title: {
-          normal: 'g',
-          bold: 'g',
-        },
-        subtitle: {
-          number: 6,
-          suffix: 'g',
-          data: 'h',
-        },
+
+        title: 'image one',
+        description: 'description one',
         media_url:
           'https://images.pexels.com/photos/210600/pexels-photo-210600.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
         icon: 'https://w7.pngwing.com/pngs/308/74/png-transparent-computer-icons-setting-icon-cdr-svg-setting-icon.png',
         is_active: true,
       },
       {
-        id: 1,
-        priority: 1,
-        title: {
-          normal: 'k',
-          bold: 'j',
-        },
-        subtitle: {
-          number: 6,
-          suffix: 'hii',
-          data: 'hello',
-        },
+        id: 2,
+
+        title: 'image two',
+
+        description: 'description two',
+
         media_url: 'https://images.pexels.com/photos/342942/pexels-photo-342942.jpeg',
         icon: 'https://w7.pngwing.com/pngs/308/74/png-transparent-computer-icons-setting-icon-cdr-svg-setting-icon.png',
         is_active: true,
@@ -61,18 +46,7 @@ const CarouselView = () => {
     ],
   };
 
-  const [isGlobalEdit, setIsGlobalEdit] = useState(false);
-
-  const [view, setView] = useState('list');
-
-  const handleChangeView = useCallback(
-    (event: React.MouseEvent<HTMLElement>, newView: string | null) => {
-      if (newView !== null) {
-        setView(newView);
-      }
-    },
-    []
-  );
+  const newCarousel = useBoolean();
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
@@ -80,13 +54,12 @@ const CarouselView = () => {
         heading="List"
         links={[
           { name: 'Dashboard', href: paths.dashboard.root },
-          { name: 'Carousel', href: paths.dashboard.carousel.list },
+          { name: 'Carousel', href: paths.dashboard.contentManagement.carousel.list },
           { name: 'List' },
         ]}
         action={
           <Button
-            component={RouterLink}
-            href={paths.dashboard.carousel.new}
+            onClick={() => newCarousel.onTrue()}
             variant="contained"
             startIcon={<AddRoundedIcon />}
           >
@@ -98,28 +71,6 @@ const CarouselView = () => {
         }}
       />
       <Stack gap={3}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <ToggleButtonGroup size="small" value={view} exclusive onChange={handleChangeView}>
-            <ToggleButton value="list">
-              <ListIcon />
-            </ToggleButton>
-            <ToggleButton value="grid">
-              <GridViewIcon />
-            </ToggleButton>
-          </ToggleButtonGroup>
-          {view === 'list' && (
-            <Box>
-              <Button
-                variant="contained"
-                onClick={() => {
-                  setIsGlobalEdit((prev) => !prev);
-                }}
-              >
-                {isGlobalEdit ? 'Cancel' : 'Edit'}
-              </Button>
-            </Box>
-          )}
-        </Box>
         <Stack>
           {!data ? (
             <EmptyContent
@@ -130,16 +81,11 @@ const CarouselView = () => {
               }}
             />
           ) : (
-            <>
-              {view === 'list' ? (
-                <CarouselListView data={data} isGlobalEdit={isGlobalEdit} />
-              ) : (
-                <CarouselGridView data={data} />
-              )}
-            </>
+            <CarouselListView data={data} />
           )}
         </Stack>
       </Stack>
+      <CarouselEditView open={newCarousel.value} onClose={newCarousel.onFalse} />
     </Container>
   );
 };

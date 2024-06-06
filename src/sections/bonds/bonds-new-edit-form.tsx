@@ -70,7 +70,7 @@ export default function BondsNewEditForm({ currentBond }: Props) {
         await createBond(data).unwrap();
       }
       enqueueSnackbar(currentBond ? 'Update success!' : 'Create success!');
-      router.push(paths.dashboard.roles.list);
+      router.push(paths.dashboard.admin.roles.list);
     } catch (error) {
       enqueueSnackbar(error.error, { variant: 'error' });
       console.error(error);

@@ -4,9 +4,9 @@ export type GetCarouselResponse = ApiResponse<Carousel[]>;
 
 export interface Carousel {
   id: number;
-  priority: number;
-  title: Title;
-  subtitle: Subtitle;
+  // priority: number;
+  title: string;
+  description: string;
   media_url: string;
   icon: string;
   is_active: boolean;

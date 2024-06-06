@@ -73,7 +73,7 @@ const BondAMCEditDailog = (props: Props) => {
     try {
       await editAMC({ bond_id, body: formData }).unwrap();
       enqueueSnackbar(currentAMC ? 'Update success!' : 'Create success!');
-      router.push(paths.dashboard.roles.list);
+      router.push(paths.dashboard.admin.roles.list);
     } catch (error) {
       enqueueSnackbar(error.error, { variant: 'error' });
       console.error(error);
