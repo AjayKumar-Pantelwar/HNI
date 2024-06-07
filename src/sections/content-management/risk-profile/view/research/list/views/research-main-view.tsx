@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ResearchData, ResearchViews } from 'src/types/content-management/research.types';
 import ImageLinkTag from './image-link-tag/image-link-tag';
 import PDFLinkTag from './pdf-link-tag/pdf-link-tag';
@@ -21,7 +21,13 @@ const ResearchMainView = (props: Props) => {
     setTab(newValue);
   };
 
-  console.log(data);
+  console.log(data, tab);
+
+  useEffect(() => {
+    if (data?.page?.[0]?.type) {
+      setTab(data?.page?.[0]?.type);
+    }
+  }, [data]);
 
   switch (tab) {
     case ResearchViews.PDF_TAG_LIST:

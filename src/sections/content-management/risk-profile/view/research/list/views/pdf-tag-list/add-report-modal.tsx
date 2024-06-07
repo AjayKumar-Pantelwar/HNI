@@ -6,6 +6,8 @@ import { useForm } from 'react-hook-form';
 import { RHFTextField } from 'src/components/hook-form';
 import FormProvider from 'src/components/hook-form/form-provider';
 import RHFDateField from 'src/components/hook-form/rhf-date-field';
+import { PreviewFile } from 'src/components/preview-file';
+import { UploadFile } from 'src/components/upload-file';
 import { ResearchCard } from 'src/types/content-management/research.types';
 import * as Yup from 'yup';
 
@@ -50,7 +52,20 @@ const AddReportModal = (props: Props) => {
     handleSubmit,
     formState: { errors, isSubmitting },
     watch,
+    setValue,
   } = methods;
+
+  const image = watch('image');
+
+  const handleImageChangePerm = (file: File | null) => {
+    setValue('image', file as any);
+  };
+
+  const document = watch('document');
+
+  const handleDocumentChangePerm = (file: File | null) => {
+    setValue('document', file as any);
+  };
 
   const onSubmit = handleSubmit(async (data) => {});
 
@@ -84,12 +99,38 @@ const AddReportModal = (props: Props) => {
                   multiline
                   rows={3}
                 />
+                {!image ? (
+                  <UploadFile
+                    uploadAs="SVG"
+                    maxFile={2}
+                    label="Upload Image"
+                    handleFileChange={handleImageChangePerm}
+                  />
+                ) : (
+                  <PreviewFile
+                    selectedFile={image as any}
+                    handleFileChange={handleImageChangePerm}
+                  />
+                )}
               </Stack>
             </Grid>
             <Grid item md={6} xs={12}>
               <Stack gap={3}>
                 <RHFTextField name="category" label="Category" />
                 <RHFDateField name="expriyDate" label="Date of Expiry" />
+                {!document ? (
+                  <UploadFile
+                    uploadAs="PDF"
+                    maxFile={2}
+                    label="Upload Document"
+                    handleFileChange={handleDocumentChangePerm}
+                  />
+                ) : (
+                  <PreviewFile
+                    selectedFile={document as any}
+                    handleFileChange={handleDocumentChangePerm}
+                  />
+                )}
               </Stack>
             </Grid>
           </Grid>

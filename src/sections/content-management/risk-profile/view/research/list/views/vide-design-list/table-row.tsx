@@ -1,7 +1,7 @@
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-import DeleteIcon from '@mui/icons-material/Delete';
 import { IconButton, MenuItem, TableCell, TableRow } from '@mui/material';
+import DeleteIcon from 'src/assets/icons/delete-icon';
 import EditIcon from 'src/assets/icons/edit-icon';
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
 import { useBoolean } from 'src/hooks/use-boolean';

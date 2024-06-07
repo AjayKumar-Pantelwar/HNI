@@ -1,12 +1,12 @@
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-import DeleteIcon from '@mui/icons-material/Delete';
 import { Button, Chip, IconButton, MenuItem, Stack, TableCell, TableRow } from '@mui/material';
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
 import { useBoolean } from 'src/hooks/use-boolean';
 import { ResearchCard } from 'src/types/content-management/research.types';
 
 import LinkIcon from '@mui/icons-material/Link';
+import DeleteIcon from 'src/assets/icons/delete-icon';
 import EditIcon from 'src/assets/icons/edit-icon';
 import AddNewsModal from './add-news';
 

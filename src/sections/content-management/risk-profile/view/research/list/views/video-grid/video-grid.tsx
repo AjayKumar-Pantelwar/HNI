@@ -26,7 +26,7 @@ import {
 import { useBoolean } from 'src/hooks/use-boolean';
 import { ResearchData, ResearchViews } from 'src/types/content-management/research.types';
 import SubTabsInternal from '../../../sub-tabs';
-import { VideoDesignListTableRow } from '../vide-design-list/table-row';
+import { VideoGridTableRow } from './table-row';
 
 // import { Tab1TableRow } from './table-row';
 
@@ -121,7 +121,7 @@ const VideoGrid = (props: Props) => {
 
               <TableBody>
                 {cards?.map((row, i) => (
-                  <VideoDesignListTableRow
+                  <VideoGridTableRow
                     key={i}
                     {...row}
                     // selected={table.selected.includes(row.rid)}

@@ -120,7 +120,6 @@ const PDFTagList = (props: Props) => {
                 //   table.onSelectAllRows(checked, data?.data?.bonds?.roles?.map((row) => row.rid) || [])
                 // }
               />
-
               <TableBody>
                 {cards?.map((row, i) => (
                   <PDFTagListTableRow
