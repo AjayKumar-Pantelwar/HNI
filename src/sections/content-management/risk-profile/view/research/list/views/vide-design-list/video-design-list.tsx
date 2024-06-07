@@ -27,7 +27,7 @@ import { useBoolean } from 'src/hooks/use-boolean';
 import { ResearchData, ResearchViews } from 'src/types/content-management/research.types';
 import SubTabsInternal from '../../../sub-tabs';
 import AddSpeakerModal from './add-speaker';
-import { Tab4TableRow } from './table-row';
+import { VideoDesignListTableRow } from './table-row';
 
 // import { Tab1TableRow } from './table-row';
 
@@ -125,7 +125,7 @@ const VideoDesignList = (props: Props) => {
 
               <TableBody>
                 {cards?.map((row, i) => (
-                  <Tab4TableRow
+                  <VideoDesignListTableRow
                     key={i}
                     {...row}
                     // selected={table.selected.includes(row.rid)}

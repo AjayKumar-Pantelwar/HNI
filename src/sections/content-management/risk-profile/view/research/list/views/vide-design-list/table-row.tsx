@@ -8,7 +8,7 @@ import { useBoolean } from 'src/hooks/use-boolean';
 import { ResearchCard } from 'src/types/content-management/research.types';
 import AddSpeakerModal from './add-speaker';
 
-export const Tab4TableRow = (card: ResearchCard) => {
+export const VideoDesignListTableRow = (card: ResearchCard) => {
   const popover = usePopover();
 
   const quickEdit = useBoolean();

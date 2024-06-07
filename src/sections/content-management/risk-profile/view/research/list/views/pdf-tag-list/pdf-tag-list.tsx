@@ -27,7 +27,7 @@ import { useBoolean } from 'src/hooks/use-boolean';
 import { ResearchData, ResearchViews } from 'src/types/content-management/research.types';
 import SubTabsInternal from '../../../sub-tabs';
 import AddReportModal from './add-report-modal';
-import { Tab1TableRow } from './table-row';
+import { PDFTagListTableRow } from './table-row';
 
 // import { Tab1TableRow } from './table-row';
 
@@ -123,7 +123,7 @@ const PDFTagList = (props: Props) => {
 
               <TableBody>
                 {cards?.map((row, i) => (
-                  <Tab1TableRow
+                  <PDFTagListTableRow
                     key={i}
                     {...row}
                     // selected={table.selected.includes(row.rid)}

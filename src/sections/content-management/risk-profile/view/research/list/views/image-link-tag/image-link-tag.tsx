@@ -27,7 +27,7 @@ import { useBoolean } from 'src/hooks/use-boolean';
 import { ResearchData, ResearchViews } from 'src/types/content-management/research.types';
 import SubTabsInternal from '../../../sub-tabs';
 import AddNewsModal from './add-news';
-import { Tab3TableRow } from './table-row';
+import { ImageLinkTagTableRow } from './table-row';
 
 // import { Tab1TableRow } from './table-row';
 
@@ -124,7 +124,7 @@ const ImageLinkTag = (props: Props) => {
 
               <TableBody>
                 {cards?.map((row, i) => (
-                  <Tab3TableRow
+                  <ImageLinkTagTableRow
                     key={i}
                     {...row}
                     // selected={table.selected.includes(row.rid)}

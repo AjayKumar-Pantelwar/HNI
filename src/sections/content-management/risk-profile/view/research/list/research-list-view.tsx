@@ -11,7 +11,7 @@ import { paths } from 'src/routes/paths';
 import { ResearchData, mockGetResearchResponse } from 'src/types/content-management/research.types';
 import { capitalize } from 'src/utils/change-case';
 import EditTabName from '../edit-tab-name';
-import ResearchTab1 from './tabs/tab1/tab1';
+import ResearchMainView from './views/research-main-view';
 
 interface TabProps {
   tab: ResearchData;
@@ -39,7 +39,7 @@ const ResearchListView = () => {
     setTab(newValue);
   };
 
-  const tabContent = (newTab: number) => <ResearchTab1 data={data[newTab - 1]} />;
+  const tabContent = (newTab: number) => <ResearchMainView data={data[newTab - 1]} />;
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>

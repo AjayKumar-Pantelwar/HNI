@@ -10,7 +10,7 @@ import { useBoolean } from 'src/hooks/use-boolean';
 import { ResearchCard } from 'src/types/content-management/research.types';
 // import AddReportModal from './add-report-modal';
 
-export const Tab1TableRow = (card: ResearchCard) => {
+export const PDFLinkTagTableRow = (card: ResearchCard) => {
   const popover = usePopover();
 
   const quickEdit = useBoolean();

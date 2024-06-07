@@ -10,7 +10,7 @@ import LinkIcon from '@mui/icons-material/Link';
 import EditIcon from 'src/assets/icons/edit-icon';
 import AddNewsModal from './add-news';
 
-export const Tab3TableRow = (card: ResearchCard) => {
+export const ImageLinkTagTableRow = (card: ResearchCard) => {
   const popover = usePopover();
 
   const quickEdit = useBoolean();

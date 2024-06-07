@@ -10,7 +10,7 @@ import { ResearchCard } from 'src/types/content-management/research.types';
 import { identifyFilename } from 'src/utils/identify-file';
 // import AddReportModal from './add-report-modal';
 
-export const Tab1TableRow = (card: ResearchCard) => {
+export const VideoGridTableRow = (card: ResearchCard) => {
   const popover = usePopover();
 
   const quickEdit = useBoolean();
