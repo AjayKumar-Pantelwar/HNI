@@ -1,6 +1,5 @@
 'use client';
 
-import ModeEditOutlineRoundedIcon from '@mui/icons-material/ModeEditOutlineRounded';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import TableCell from '@mui/material/TableCell';
@@ -8,6 +7,7 @@ import TableRow from '@mui/material/TableRow';
 import Tooltip from '@mui/material/Tooltip';
 // import { usePerm } from 'src/hooks/use-perm';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
+import EditIcon from 'src/assets/icons/edit-icon';
 import { useBoolean } from 'src/hooks/use-boolean';
 import { Carousel } from 'src/types/carousel.types';
 import CarouselEditModal from './carousel-edit-modal';
@@ -52,7 +52,7 @@ export default function CarouselTableRow(props: Props) {
       <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
         <Tooltip title="Quick Edit" placement="top" arrow>
           <IconButton onClick={() => edit.onTrue()} sx={{ py: 0 }}>
-            <ModeEditOutlineRoundedIcon />
+            <EditIcon />
           </IconButton>
         </Tooltip>
       </TableCell>

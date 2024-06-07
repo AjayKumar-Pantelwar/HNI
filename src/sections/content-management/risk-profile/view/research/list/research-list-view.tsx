@@ -13,10 +13,6 @@ import { capitalize } from 'src/utils/change-case';
 import EditTabName from '../edit-tab-name';
 import ResearchTab1 from './tabs/tab1/tab1';
 
-import ResearchTab2 from './tabs/tab2/tab2';
-import ResearchTab3 from './tabs/tab3/tab3';
-import ResearchTab4 from './tabs/tab4/tab4';
-
 interface TabProps {
   tab: ResearchData;
   value: number;
@@ -43,20 +39,7 @@ const ResearchListView = () => {
     setTab(newValue);
   };
 
-  const tabContent = (newTab: number) => {
-    switch (newTab) {
-      case 1:
-        return <ResearchTab1 data={data[newTab - 1]} />;
-      case 2:
-        return <ResearchTab2 data={data[newTab - 1]} />;
-      case 3:
-        return <ResearchTab3 data={data[newTab - 1]} />;
-      case 4:
-        return <ResearchTab4 data={data[newTab - 1]} />;
-      default:
-        return <></>;
-    }
-  };
+  const tabContent = (newTab: number) => <ResearchTab1 data={data[newTab - 1]} />;
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>

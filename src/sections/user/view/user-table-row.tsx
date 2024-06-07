@@ -1,9 +1,9 @@
-import ModeEditOutlineRoundedIcon from '@mui/icons-material/ModeEditOutlineRounded';
 import { Checkbox, IconButton, MenuItem, TableCell, TableRow, Tooltip } from '@mui/material';
 import { useState } from 'react';
 
 import BlockIcon from '@mui/icons-material/Block';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import EditIcon from 'src/assets/icons/edit-icon';
 import { usePopover } from 'src/components/custom-popover';
 import CustomPopover from 'src/components/custom-popover/custom-popover';
 import { useBoolean } from 'src/hooks/use-boolean';
@@ -80,7 +80,7 @@ const UserTableRow = (props: Props) => {
             popover.onClose();
           }}
         >
-          <ModeEditOutlineRoundedIcon />
+          <EditIcon />
           Edit
         </MenuItem>
         {/* )} */}

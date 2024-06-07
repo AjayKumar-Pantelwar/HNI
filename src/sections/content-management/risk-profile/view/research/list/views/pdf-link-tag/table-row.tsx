@@ -1,16 +1,16 @@
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-import DeleteIcon from '@mui/icons-material/Delete';
-import { Button, Chip, IconButton, MenuItem, Stack, TableCell, TableRow } from '@mui/material';
+import { Box, Chip, IconButton, MenuItem, TableCell, TableRow, Typography } from '@mui/material';
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
+
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from 'src/assets/icons/edit-icon';
+import LinkIcon from 'src/assets/icons/link-icon';
 import { useBoolean } from 'src/hooks/use-boolean';
 import { ResearchCard } from 'src/types/content-management/research.types';
+// import AddReportModal from './add-report-modal';
 
-import LinkIcon from '@mui/icons-material/Link';
-import EditIcon from 'src/assets/icons/edit-icon';
-import AddNewsModal from './add-news';
-
-export const Tab3TableRow = (card: ResearchCard) => {
+export const Tab1TableRow = (card: ResearchCard) => {
   const popover = usePopover();
 
   const quickEdit = useBoolean();
@@ -23,18 +23,23 @@ export const Tab3TableRow = (card: ResearchCard) => {
         <img src={card?.image} alt={card?.title} width={40} height={40} />
       </TableCell>
       <TableCell>{card?.title}</TableCell>
-      <TableCell>{card?.subtitle}</TableCell>
       <TableCell>
-        <Stack direction="row" sx={{ gap: 1, flexWrap: 'wrap' }}>
-          {card?.tags?.map((c) => (
-            <Chip color="info" variant="soft" label={c.value} />
-          ))}
-        </Stack>
+        <Chip color="primary" variant="soft" label={card?.subText1 || '--'} />
       </TableCell>
       <TableCell>
-        <Button startIcon={<LinkIcon />} variant="text" color="info">
-          Link
-        </Button>
+        <Chip
+          color="info"
+          variant="soft"
+          sx={{ cursor: 'pointer' }}
+          label={
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <LinkIcon />
+              <Typography variant="body1" color="info.dark">
+                Link
+              </Typography>
+            </Box>
+          }
+        />
       </TableCell>
       <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
         <IconButton sx={{ py: 0 }} onClick={popover.onOpen}>
@@ -67,7 +72,7 @@ export const Tab3TableRow = (card: ResearchCard) => {
           Delete
         </MenuItem>
       </CustomPopover>
-      <AddNewsModal card={card} open={quickEdit.value} onClose={quickEdit.onFalse} />
+      {/* <AddReportModal card={card} open={quickEdit.value} onClose={quickEdit.onFalse} /> */}
     </TableRow>
   );
 };
