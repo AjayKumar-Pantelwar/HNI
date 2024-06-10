@@ -18,11 +18,11 @@ interface Props {
   open: boolean;
   onClose: () => void;
   card?: ResearchCard;
-  pageType: string;
+  pagetype: string;
 }
 
-const AddSpeakerModal = (props: Props) => {
-  const { onClose, open, card, pageType } = props;
+const AddPDFLinkModal = (props: Props) => {
+  const { onClose, open, card, pagetype } = props;
 
   const { enqueueSnackbar } = useSnackbar();
   const [updateCard] = researchApi.useUpdateCardMutation();
@@ -30,20 +30,21 @@ const AddSpeakerModal = (props: Props) => {
 
   const addReportSchema = Yup.object().shape({
     title: Yup.string().required('Title is required'),
-    speakerName: Yup.string().required('Speaker Name is required'),
-    description: Yup.string()
+    tags: Yup.string().required('Tags is required'),
+    subtitle: Yup.string()
       .required('description is required')
-      .max(87, 'description must be less than 150 characters'),
-    logo: Yup.mixed().required('Logo is required'),
-    image: Yup.mixed().required('Image is required'),
-    video: Yup.mixed().required('video is required'),
+      .max(200, 'description must be less than 150 characters'),
+    // uploadDate: Yup.string().required('Upload Date is required'),
+    image: Yup.mixed().nonNullable().required('Image is required'),
+    link: Yup.string().required('Link is required'),
   });
 
   const defaultValues = {
     title: card?.title || '',
-    speakerName: '',
-    description: '',
-    logo: card?.logo || '',
+    // uploadDate: '',
+    subtitle: card?.subtitle || '',
+    sub_text1: card?.sub_text1 || '',
+    // expiryDate: '',
     image: card?.image || '',
     pdf: card?.pdf || '',
     card_id: card?.card_id || '',
@@ -52,13 +53,14 @@ const AddSpeakerModal = (props: Props) => {
     field2: card?.field2 || '',
     field3: card?.field3 || '',
     link: card?.link || '',
+    logo: card?.logo || '',
     page_id: card?.page_id || '',
     sub_text2: card?.sub_text2 || '',
     sub_text3: card?.sub_text3 || '',
     tags: card?.tags.join(',') || '',
     text: card?.text || '',
     video: card?.video || '',
-    page_type: pageType || '',
+    page_type: pagetype || '',
     article: card?.article || '',
   };
 
@@ -76,12 +78,13 @@ const AddSpeakerModal = (props: Props) => {
   } = methods;
 
   const onSubmit = handleSubmit(async (data) => {
+    const fdata = { ...data, tags: data.tags.split(',') };
     try {
       if (card) {
-        await updateCard({ body: convertToFD(data), id: card?.card_id }).unwrap();
+        await updateCard({ body: convertToFD(fdata), id: card?.card_id }).unwrap();
         enqueueSnackbar('Update success!');
       } else {
-        await addCard(convertToFD(data)).unwrap();
+        await addCard(convertToFD(fdata)).unwrap();
         enqueueSnackbar('Add success!');
       }
     } catch (error) {
@@ -91,22 +94,10 @@ const AddSpeakerModal = (props: Props) => {
     }
   });
 
-  const logo = watch('logo');
-
-  const handleFileChangePerm = (file: File | null) => {
-    setValue('logo', file as any);
-  };
-
   const image = watch('image');
 
-  const handleImageChangePerm = (file: File | null) => {
+  const handleFileChangePerm = (file: File | null) => {
     setValue('image', file as any);
-  };
-
-  const video = watch('video');
-
-  const handleVideoChangePerm = (file: File | null) => {
-    setValue('video', file as any);
   };
 
   return (
@@ -133,53 +124,32 @@ const AddSpeakerModal = (props: Props) => {
               <Stack gap={3}>
                 <RHFTextField name="title" label="Title" />
                 <RHFTextField
-                  name="description"
+                  name="subtitle"
                   label="Description"
                   maxLimitCharacters={200}
                   multiline
                   rows={3}
                 />
-                {!video ? (
+                {!image ? (
                   <UploadFile
                     uploadAs="JPG"
                     maxFile={2}
-                    label="Upload Video"
-                    handleFileChange={handleVideoChangePerm}
+                    label="Upload Image"
+                    handleFileChange={handleFileChangePerm}
                   />
                 ) : (
                   <PreviewFile
-                    selectedFile={video as any}
-                    handleFileChange={handleVideoChangePerm}
+                    selectedFile={image as any}
+                    handleFileChange={handleFileChangePerm}
                   />
                 )}
               </Stack>
             </Grid>
             <Grid item md={6} xs={12}>
               <Stack gap={3}>
-                <RHFTextField name="speakerName" label="Tags" />
-                {!logo ? (
-                  <UploadFile
-                    uploadAs="JPG"
-                    maxFile={2}
-                    label="Upload Logo"
-                    handleFileChange={handleFileChangePerm}
-                  />
-                ) : (
-                  <PreviewFile selectedFile={logo as any} handleFileChange={handleFileChangePerm} />
-                )}
-                {!image ? (
-                  <UploadFile
-                    uploadAs="JPG"
-                    maxFile={2}
-                    label="Upload Image"
-                    handleFileChange={handleImageChangePerm}
-                  />
-                ) : (
-                  <PreviewFile
-                    selectedFile={image as any}
-                    handleFileChange={handleImageChangePerm}
-                  />
-                )}
+                <RHFTextField name="tags" label="Tags" />
+                <RHFTextField name="link" label="Link" />
+                {/* <RHFDateField name="uploadDate" label="Upload Date" /> */}
               </Stack>
             </Grid>
           </Grid>
@@ -187,7 +157,7 @@ const AddSpeakerModal = (props: Props) => {
         <Divider />
         <Box sx={{ p: 3, display: 'flex', justifyContent: 'flex-end' }}>
           <Button variant="contained" type="submit">
-            {card ? 'Save Changes' : 'Add Speaker'}
+            {card ? 'Save Changes' : 'Create Article Link'}
           </Button>
         </Box>
       </FormProvider>
@@ -195,4 +165,4 @@ const AddSpeakerModal = (props: Props) => {
   );
 };
 
-export default AddSpeakerModal;
+export default AddPDFLinkModal;

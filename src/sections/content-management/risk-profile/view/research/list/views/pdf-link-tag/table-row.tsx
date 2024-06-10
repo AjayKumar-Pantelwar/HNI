@@ -8,9 +8,16 @@ import EditIcon from 'src/assets/icons/edit-icon';
 import LinkIcon from 'src/assets/icons/link-icon';
 import { useBoolean } from 'src/hooks/use-boolean';
 import { ResearchCard } from 'src/types/content-management/research.types';
+import AddPDFLinkModal from './add-pdf-link-modal';
 // import AddReportModal from './add-report-modal';
 
-export const PDFLinkTagTableRow = (card: ResearchCard) => {
+interface Props {
+  card: ResearchCard;
+  type: string;
+}
+
+export const PDFLinkTagTableRow = (props: Props) => {
+  const { card, type } = props;
   const popover = usePopover();
 
   const quickEdit = useBoolean();
@@ -23,7 +30,7 @@ export const PDFLinkTagTableRow = (card: ResearchCard) => {
       </TableCell>
       <TableCell>{card?.title}</TableCell>
       <TableCell>
-        <Chip color="primary" variant="soft" label={card?.subText1 || '--'} />
+        <Chip color="primary" variant="soft" label={card?.sub_text1 || '--'} />
       </TableCell>
       <TableCell>
         <Chip
@@ -71,7 +78,12 @@ export const PDFLinkTagTableRow = (card: ResearchCard) => {
           Delete
         </MenuItem>
       </CustomPopover>
-      {/* <AddReportModal card={card} open={quickEdit.value} onClose={quickEdit.onFalse} /> */}
+      <AddPDFLinkModal
+        pagetype={type}
+        card={card}
+        open={quickEdit.value}
+        onClose={quickEdit.onFalse}
+      />
     </TableRow>
   );
 };

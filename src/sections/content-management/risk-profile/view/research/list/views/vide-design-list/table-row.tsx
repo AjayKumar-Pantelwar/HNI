@@ -8,7 +8,13 @@ import { useBoolean } from 'src/hooks/use-boolean';
 import { ResearchCard } from 'src/types/content-management/research.types';
 import AddSpeakerModal from './add-speaker';
 
-export const VideoDesignListTableRow = (card: ResearchCard) => {
+interface Props {
+  card: ResearchCard;
+  type: string;
+}
+
+export const VideoDesignListTableRow = (props: Props) => {
+  const { card, type } = props;
   const popover = usePopover();
 
   const quickEdit = useBoolean();
@@ -58,7 +64,12 @@ export const VideoDesignListTableRow = (card: ResearchCard) => {
           Delete
         </MenuItem>
       </CustomPopover>
-      <AddSpeakerModal card={card} open={quickEdit.value} onClose={quickEdit.onFalse} />
+      <AddSpeakerModal
+        pageType={type}
+        card={card}
+        open={quickEdit.value}
+        onClose={quickEdit.onFalse}
+      />
     </TableRow>
   );
 };

@@ -5,37 +5,62 @@ import Dialog from '@mui/material/Dialog';
 import { useForm } from 'react-hook-form';
 import { RHFTextField } from 'src/components/hook-form';
 import FormProvider from 'src/components/hook-form/form-provider';
-import RHFDateField from 'src/components/hook-form/rhf-date-field';
 import { PreviewFile } from 'src/components/preview-file';
+import { useSnackbar } from 'src/components/snackbar';
 import { UploadFile } from 'src/components/upload-file';
+import { researchApi } from 'src/redux/api/research.api';
 import { ResearchCard } from 'src/types/content-management/research.types';
+import { convertToFD } from 'src/utils/convert-fd';
+import { handleError } from 'src/utils/handle-error';
 import * as Yup from 'yup';
 
 interface Props {
   open: boolean;
   onClose: () => void;
   card?: ResearchCard;
+  pagetype: string;
 }
 
 const AddNewsModal = (props: Props) => {
-  const { onClose, open, card } = props;
+  const { onClose, open, card, pagetype } = props;
+
+  const { enqueueSnackbar } = useSnackbar();
+  const [updateCard] = researchApi.useUpdateCardMutation();
+  const [addCard] = researchApi.useAddCardMutation();
 
   const addReportSchema = Yup.object().shape({
     title: Yup.string().required('Title is required'),
     tags: Yup.string().required('Tags is required'),
-    description: Yup.string()
+    subtitle: Yup.string()
       .required('description is required')
       .max(200, 'description must be less than 150 characters'),
-    uploadDate: Yup.string().required('Upload Date is required'),
+    // uploadDate: Yup.string().required('Upload Date is required'),
     image: Yup.mixed().nonNullable().required('Image is required'),
   });
 
   const defaultValues = {
     title: card?.title || '',
-    tags: '',
-    description: '',
-    uploadDate: '',
-    image: '',
+    // uploadDate: '',
+    subtitle: card?.subtitle || '',
+    sub_text1: card?.sub_text1 || '',
+    // expiryDate: '',
+    image: card?.image || '',
+    pdf: card?.pdf || '',
+    card_id: card?.card_id || '',
+    color: card?.color || '',
+    field1: card?.field1 || '',
+    field2: card?.field2 || '',
+    field3: card?.field3 || '',
+    link: card?.link || '',
+    logo: card?.logo || '',
+    page_id: card?.page_id || '',
+    sub_text2: card?.sub_text2 || '',
+    sub_text3: card?.sub_text3 || '',
+    tags: card?.tags.join(',') || '',
+    text: card?.text || '',
+    video: card?.video || '',
+    page_type: pagetype || '',
+    article: card?.article || '',
   };
 
   const methods = useForm({
@@ -51,7 +76,22 @@ const AddNewsModal = (props: Props) => {
     setValue,
   } = methods;
 
-  const onSubmit = handleSubmit(async (data) => {});
+  const onSubmit = handleSubmit(async (data) => {
+    const fdata = { ...data, tags: data.tags.split(',') };
+    try {
+      if (card) {
+        await updateCard({ body: convertToFD(fdata), id: card?.card_id }).unwrap();
+        enqueueSnackbar('Update success!');
+      } else {
+        await addCard(convertToFD(fdata)).unwrap();
+        enqueueSnackbar('Add success!');
+      }
+    } catch (error) {
+      handleError(error);
+    } finally {
+      onClose();
+    }
+  });
 
   const image = watch('image');
 
@@ -83,7 +123,7 @@ const AddNewsModal = (props: Props) => {
               <Stack gap={3}>
                 <RHFTextField name="title" label="Title" />
                 <RHFTextField
-                  name="description"
+                  name="subtitle"
                   label="Description"
                   maxLimitCharacters={200}
                   multiline
@@ -107,7 +147,7 @@ const AddNewsModal = (props: Props) => {
             <Grid item md={6} xs={12}>
               <Stack gap={3}>
                 <RHFTextField name="tags" label="Tags" />
-                <RHFDateField name="uploadDate" label="Upload Date" />
+                {/* <RHFDateField name="uploadDate" label="Upload Date" /> */}
               </Stack>
             </Grid>
           </Grid>

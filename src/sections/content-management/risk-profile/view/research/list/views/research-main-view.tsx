@@ -15,17 +15,15 @@ interface Props {
 const ResearchMainView = (props: Props) => {
   const { data } = props;
 
-  const [tab, setTab] = useState(data?.page?.[0]?.type);
+  const [tab, setTab] = useState(data?.pages?.[0]?.type);
 
   const handleChange = (_event: React.SyntheticEvent, newValue: ResearchViews) => {
     setTab(newValue);
   };
 
-  console.log(data, tab);
-
   useEffect(() => {
-    if (data?.page?.[0]?.type) {
-      setTab(data?.page?.[0]?.type);
+    if (data?.pages?.[0]?.type) {
+      setTab(data?.pages?.[0]?.type);
     }
   }, [data]);
 

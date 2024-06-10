@@ -1,6 +1,15 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import Close from '@mui/icons-material/Close';
-import { Box, Button, Divider, Grid, IconButton, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Divider,
+  Grid,
+  IconButton,
+  Stack,
+  Typography,
+} from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import { useForm } from 'react-hook-form';
 import { RHFTextField } from 'src/components/hook-form';
@@ -12,6 +21,7 @@ import { researchApi } from 'src/redux/api/research.api';
 import { ResearchCard } from 'src/types/content-management/research.types';
 import { convertToFD } from 'src/utils/convert-fd';
 import { handleError } from 'src/utils/handle-error';
+
 import * as Yup from 'yup';
 
 interface Props {
@@ -21,29 +31,27 @@ interface Props {
   pageType: string;
 }
 
-const AddSpeakerModal = (props: Props) => {
+const AddVideoModal = (props: Props) => {
   const { onClose, open, card, pageType } = props;
 
   const { enqueueSnackbar } = useSnackbar();
+
   const [updateCard] = researchApi.useUpdateCardMutation();
   const [addCard] = researchApi.useAddCardMutation();
 
   const addReportSchema = Yup.object().shape({
-    title: Yup.string().required('Title is required'),
-    speakerName: Yup.string().required('Speaker Name is required'),
-    description: Yup.string()
-      .required('description is required')
-      .max(87, 'description must be less than 150 characters'),
-    logo: Yup.mixed().required('Logo is required'),
-    image: Yup.mixed().required('Image is required'),
-    video: Yup.mixed().required('video is required'),
+    title: Yup.string()
+      .required('Title is required')
+      .max(40, 'Title must be less than 50 characters'),
+    image: Yup.mixed().nonNullable().required('Image is required'),
+    video: Yup.mixed().nonNullable().required('Document is required'),
   });
 
   const defaultValues = {
     title: card?.title || '',
-    speakerName: '',
-    description: '',
-    logo: card?.logo || '',
+    subtitle: card?.subtitle || '',
+    sub_text1: card?.sub_text1 || '',
+    // expiryDate: '',
     image: card?.image || '',
     pdf: card?.pdf || '',
     card_id: card?.card_id || '',
@@ -52,10 +60,11 @@ const AddSpeakerModal = (props: Props) => {
     field2: card?.field2 || '',
     field3: card?.field3 || '',
     link: card?.link || '',
+    logo: card?.logo || '',
     page_id: card?.page_id || '',
     sub_text2: card?.sub_text2 || '',
     sub_text3: card?.sub_text3 || '',
-    tags: card?.tags.join(',') || '',
+    tags: card?.tags || [],
     text: card?.text || '',
     video: card?.video || '',
     page_type: pageType || '',
@@ -75,6 +84,18 @@ const AddSpeakerModal = (props: Props) => {
     setValue,
   } = methods;
 
+  const image = watch('image');
+
+  const handleImageChangePerm = (file: File | null) => {
+    setValue('image', file as any);
+  };
+
+  const video = watch('video');
+
+  const handleVideoChangePerm = (file: File | null) => {
+    setValue('video', file as any);
+  };
+
   const onSubmit = handleSubmit(async (data) => {
     try {
       if (card) {
@@ -91,24 +112,6 @@ const AddSpeakerModal = (props: Props) => {
     }
   });
 
-  const logo = watch('logo');
-
-  const handleFileChangePerm = (file: File | null) => {
-    setValue('logo', file as any);
-  };
-
-  const image = watch('image');
-
-  const handleImageChangePerm = (file: File | null) => {
-    setValue('image', file as any);
-  };
-
-  const video = watch('video');
-
-  const handleVideoChangePerm = (file: File | null) => {
-    setValue('video', file as any);
-  };
-
   return (
     <Dialog
       open={open}
@@ -121,7 +124,7 @@ const AddSpeakerModal = (props: Props) => {
     >
       <FormProvider methods={methods} onSubmit={onSubmit}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 3 }}>
-          <Typography variant="h5">Add News</Typography>
+          <Typography variant="h5">Add New Video</Typography>
           <IconButton onClick={onClose}>
             <Close />
           </IconButton>
@@ -131,45 +134,11 @@ const AddSpeakerModal = (props: Props) => {
           <Grid container spacing={3}>
             <Grid item md={6} xs={12}>
               <Stack gap={3}>
-                <RHFTextField name="title" label="Title" />
-                <RHFTextField
-                  name="description"
-                  label="Description"
-                  maxLimitCharacters={200}
-                  multiline
-                  rows={3}
-                />
-                {!video ? (
-                  <UploadFile
-                    uploadAs="JPG"
-                    maxFile={2}
-                    label="Upload Video"
-                    handleFileChange={handleVideoChangePerm}
-                  />
-                ) : (
-                  <PreviewFile
-                    selectedFile={video as any}
-                    handleFileChange={handleVideoChangePerm}
-                  />
-                )}
-              </Stack>
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <Stack gap={3}>
-                <RHFTextField name="speakerName" label="Tags" />
-                {!logo ? (
-                  <UploadFile
-                    uploadAs="JPG"
-                    maxFile={2}
-                    label="Upload Logo"
-                    handleFileChange={handleFileChangePerm}
-                  />
-                ) : (
-                  <PreviewFile selectedFile={logo as any} handleFileChange={handleFileChangePerm} />
-                )}
+                <RHFTextField name="title" label="Title" maxLimitCharacters={40} />
+
                 {!image ? (
                   <UploadFile
-                    uploadAs="JPG"
+                    uploadAs="SVG"
                     maxFile={2}
                     label="Upload Image"
                     handleFileChange={handleImageChangePerm}
@@ -182,12 +151,29 @@ const AddSpeakerModal = (props: Props) => {
                 )}
               </Stack>
             </Grid>
+            <Grid item md={6} xs={12}>
+              <Stack gap={3}>
+                {!video ? (
+                  <UploadFile
+                    uploadAs="PDF"
+                    maxFile={2}
+                    label="Upload Document"
+                    handleFileChange={handleVideoChangePerm}
+                  />
+                ) : (
+                  <PreviewFile
+                    selectedFile={video as any}
+                    handleFileChange={handleVideoChangePerm}
+                  />
+                )}
+              </Stack>
+            </Grid>
           </Grid>
         </Box>
         <Divider />
         <Box sx={{ p: 3, display: 'flex', justifyContent: 'flex-end' }}>
-          <Button variant="contained" type="submit">
-            {card ? 'Save Changes' : 'Add Speaker'}
+          <Button variant="contained" type="submit" disabled={isSubmitting}>
+            {isSubmitting ? <CircularProgress /> : card ? 'Save Changes' : 'Create Video'}
           </Button>
         </Box>
       </FormProvider>
@@ -195,4 +181,4 @@ const AddSpeakerModal = (props: Props) => {
   );
 };
 
-export default AddSpeakerModal;
+export default AddVideoModal;

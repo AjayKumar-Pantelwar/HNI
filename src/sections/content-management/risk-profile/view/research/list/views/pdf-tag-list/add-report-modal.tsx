@@ -1,45 +1,78 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import Close from '@mui/icons-material/Close';
-import { Box, Button, Divider, Grid, IconButton, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Divider,
+  Grid,
+  IconButton,
+  Stack,
+  Typography,
+} from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import { useForm } from 'react-hook-form';
 import { RHFTextField } from 'src/components/hook-form';
 import FormProvider from 'src/components/hook-form/form-provider';
-import RHFDateField from 'src/components/hook-form/rhf-date-field';
 import { PreviewFile } from 'src/components/preview-file';
+import { useSnackbar } from 'src/components/snackbar';
 import { UploadFile } from 'src/components/upload-file';
+import { researchApi } from 'src/redux/api/research.api';
 import { ResearchCard } from 'src/types/content-management/research.types';
+import { convertToFD } from 'src/utils/convert-fd';
+import { handleError } from 'src/utils/handle-error';
+
 import * as Yup from 'yup';
 
 interface Props {
   open: boolean;
   onClose: () => void;
   card?: ResearchCard;
+  pageType: string;
 }
 
 const AddReportModal = (props: Props) => {
-  const { onClose, open, card } = props;
+  const { onClose, open, card, pageType } = props;
+
+  const { enqueueSnackbar } = useSnackbar();
+
+  const [updateCard] = researchApi.useUpdateCardMutation();
+  const [addCard] = researchApi.useAddCardMutation();
 
   const addReportSchema = Yup.object().shape({
     title: Yup.string()
       .required('Title is required')
       .max(40, 'Title must be less than 50 characters'),
-    category: Yup.string().required('Category is required'),
-    description: Yup.string()
+    subtitle: Yup.string().required('Category is required'),
+    sub_text1: Yup.string()
       .required('description is required')
       .max(87, 'description must be less than 150 characters'),
-    expiryDate: Yup.string().required('Expire Date is required'),
     image: Yup.mixed().nonNullable().required('Image is required'),
-    document: Yup.mixed().nonNullable().required('Document is required'),
+    pdf: Yup.mixed().nonNullable().required('Document is required'),
   });
 
   const defaultValues = {
     title: card?.title || '',
-    category: '',
-    description: '',
-    expiryDate: '',
-    image: '',
-    document: '',
+    subtitle: card?.subtitle || '',
+    sub_text1: card?.sub_text1 || '',
+    // expiryDate: '',
+    image: card?.image || '',
+    pdf: card?.pdf || '',
+    card_id: card?.card_id || '',
+    color: card?.color || '',
+    field1: card?.field1 || '',
+    field2: card?.field2 || '',
+    field3: card?.field3 || '',
+    link: card?.link || '',
+    logo: card?.logo || '',
+    page_id: card?.page_id || '',
+    sub_text2: card?.sub_text2 || '',
+    sub_text3: card?.sub_text3 || '',
+    tags: card?.tags || [],
+    text: card?.text || '',
+    video: card?.video || '',
+    page_type: pageType || '',
+    article: card?.article || '',
   };
 
   const methods = useForm({
@@ -61,13 +94,27 @@ const AddReportModal = (props: Props) => {
     setValue('image', file as any);
   };
 
-  const document = watch('document');
+  const document = watch('pdf');
 
   const handleDocumentChangePerm = (file: File | null) => {
-    setValue('document', file as any);
+    setValue('pdf', file as any);
   };
 
-  const onSubmit = handleSubmit(async (data) => {});
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      if (card) {
+        await updateCard({ body: convertToFD(data), id: card?.card_id }).unwrap();
+        enqueueSnackbar('Update success!');
+      } else {
+        await addCard(convertToFD(data)).unwrap();
+        enqueueSnackbar('Add success!');
+      }
+    } catch (error) {
+      handleError(error);
+    } finally {
+      onClose();
+    }
+  });
 
   return (
     <Dialog
@@ -93,7 +140,7 @@ const AddReportModal = (props: Props) => {
               <Stack gap={3}>
                 <RHFTextField name="title" label="Title" maxLimitCharacters={40} />
                 <RHFTextField
-                  name="description"
+                  name="sub_text1"
                   label="Description"
                   maxLimitCharacters={87}
                   multiline
@@ -116,8 +163,8 @@ const AddReportModal = (props: Props) => {
             </Grid>
             <Grid item md={6} xs={12}>
               <Stack gap={3}>
-                <RHFTextField name="category" label="Category" />
-                <RHFDateField name="expriyDate" label="Date of Expiry" />
+                <RHFTextField name="subtitle" label="Category" />
+                {/* <RHFDateField name="expriyDate" label="Date of Expiry" /> */}
                 {!document ? (
                   <UploadFile
                     uploadAs="PDF"
@@ -137,8 +184,8 @@ const AddReportModal = (props: Props) => {
         </Box>
         <Divider />
         <Box sx={{ p: 3, display: 'flex', justifyContent: 'flex-end' }}>
-          <Button variant="contained" type="submit">
-            {card ? 'Save Changes' : 'Create Report'}
+          <Button variant="contained" type="submit" disabled={isSubmitting}>
+            {isSubmitting ? <CircularProgress /> : card ? 'Save Changes' : 'Create Report'}
           </Button>
         </Box>
       </FormProvider>

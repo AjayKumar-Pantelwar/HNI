@@ -9,7 +9,13 @@ import { useBoolean } from 'src/hooks/use-boolean';
 import { ResearchCard } from 'src/types/content-management/research.types';
 import AddReportModal from './add-report-modal';
 
-export const PDFTagListTableRow = (card: ResearchCard) => {
+interface Props {
+  card: ResearchCard;
+  type: string;
+}
+
+export const PDFTagListTableRow = (props: Props) => {
+  const { card, type } = props;
   const popover = usePopover();
 
   const quickEdit = useBoolean();
@@ -61,7 +67,12 @@ export const PDFTagListTableRow = (card: ResearchCard) => {
           Delete
         </MenuItem>
       </CustomPopover>
-      <AddReportModal card={card} open={quickEdit.value} onClose={quickEdit.onFalse} />
+      <AddReportModal
+        pageType={type}
+        card={card}
+        open={quickEdit.value}
+        onClose={quickEdit.onFalse}
+      />
     </TableRow>
   );
 };

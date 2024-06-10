@@ -10,7 +10,13 @@ import DeleteIcon from 'src/assets/icons/delete-icon';
 import EditIcon from 'src/assets/icons/edit-icon';
 import AddNewsModal from './add-news';
 
-export const ImageLinkTagTableRow = (card: ResearchCard) => {
+interface Props {
+  card: ResearchCard;
+  type: string;
+}
+
+export const ImageLinkTagTableRow = (props: Props) => {
+  const { card, type } = props;
   const popover = usePopover();
 
   const quickEdit = useBoolean();
@@ -67,7 +73,12 @@ export const ImageLinkTagTableRow = (card: ResearchCard) => {
           Delete
         </MenuItem>
       </CustomPopover>
-      <AddNewsModal card={card} open={quickEdit.value} onClose={quickEdit.onFalse} />
+      <AddNewsModal
+        pagetype={type}
+        card={card}
+        open={quickEdit.value}
+        onClose={quickEdit.onFalse}
+      />
     </TableRow>
   );
 };

@@ -31,9 +31,12 @@ export const endpoints = {
   },
   contentManagement: {
     research: {
-      tablist: p('GET', '/path/content/research/tab'),
-      tabDetails: (id: string) => p('GET', `/path/content/research/tab/${id}`),
-      addTab: p('POST', `/path/content/research/tab`),
+      list: p('GET', '/path/content/research'),
+      updateTab: p('PUT', `/path/content/research/tab`),
+      updatePage: (id: string) => p('PUT', `/path/content/research/page/${id}`),
+      addCard: p('POST', `path/content/research/card`),
+      updateCard: (id: string) => p('PUT', `path/content/research/card/${id}`),
+      deleteCard: (id: string) => p('DELETE', `path/content/research/card/${id}`),
     },
   },
   users: {

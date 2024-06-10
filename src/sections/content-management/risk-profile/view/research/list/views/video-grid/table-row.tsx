@@ -8,9 +8,16 @@ import EditIcon from 'src/assets/icons/edit-icon';
 import { useBoolean } from 'src/hooks/use-boolean';
 import { ResearchCard } from 'src/types/content-management/research.types';
 import { identifyFilename } from 'src/utils/identify-file';
+import AddVideoModal from './add-video-modal';
 // import AddReportModal from './add-report-modal';
 
-export const VideoGridTableRow = (card: ResearchCard) => {
+interface Props {
+  card: ResearchCard;
+  type: string;
+}
+
+export const VideoGridTableRow = (props: Props) => {
+  const { card, type } = props;
   const popover = usePopover();
 
   const quickEdit = useBoolean();
@@ -62,7 +69,12 @@ export const VideoGridTableRow = (card: ResearchCard) => {
           Delete
         </MenuItem>
       </CustomPopover>
-      {/* <AddReportModal card={card} open={quickEdit.value} onClose={quickEdit.onFalse} /> */}
+      <AddVideoModal
+        pageType={type}
+        card={card}
+        open={quickEdit.value}
+        onClose={quickEdit.onFalse}
+      />
     </TableRow>
   );
 };

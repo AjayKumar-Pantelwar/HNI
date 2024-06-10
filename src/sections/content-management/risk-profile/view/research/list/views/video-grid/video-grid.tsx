@@ -1,19 +1,7 @@
-import {
-  Box,
-  Button,
-  Checkbox,
-  Divider,
-  IconButton,
-  Stack,
-  Table,
-  TableBody,
-  TableContainer,
-  Typography,
-} from '@mui/material';
+import { Box, Button, Divider, Stack, Table, TableBody, TableContainer } from '@mui/material';
 import Scrollbar from 'src/components/scrollbar';
 
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import EditIcon from 'src/assets/icons/edit-icon';
 import {
   TableEmptyRows,
   TableHeadCustom,
@@ -26,6 +14,8 @@ import {
 import { useBoolean } from 'src/hooks/use-boolean';
 import { ResearchData, ResearchViews } from 'src/types/content-management/research.types';
 import SubTabsInternal from '../../../sub-tabs';
+import PageHeader from '../page-header';
+import AddVideoModal from './add-video-modal';
 import { VideoGridTableRow } from './table-row';
 
 // import { Tab1TableRow } from './table-row';
@@ -52,43 +42,18 @@ const VideoGrid = (props: Props) => {
 
   const denseHeight = table.dense ? 52 : 72;
 
-  const cards = data?.page?.filter((p) => p.type === tab)[0]?.cards;
+  const cards = data?.pages?.filter((p) => p.type === tab)[0]?.cards;
 
-  const page = data?.page?.filter((p) => p.type === tab)[0];
+  const page = data?.pages?.filter((p) => p.type === tab)[0];
 
   return (
     <Box>
       <Stack>
         <Box sx={{ px: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-            {page?.heading && (
-              <>
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Typography variant="subtitle1">{page?.heading}</Typography>
-                  <IconButton>
-                    <EditIcon />
-                  </IconButton>
-                </Box>
-                <Divider sx={{ height: '100px' }} orientation="vertical" variant="fullWidth" />
-              </>
-            )}
-            <Stack sx={{ alignItems: 'start' }}>
-              <Typography variant="body1" color="text.secondary">
-                Downloadable
-              </Typography>
-              <Checkbox checked={page?.is_downloadable} />
-            </Stack>
-            <Divider sx={{ height: '100px' }} orientation="vertical" variant="fullWidth" />
-            <Stack sx={{ alignItems: 'start' }}>
-              <Typography variant="body1" color="text.secondary">
-                Shareable
-              </Typography>
-              <Checkbox checked={page?.is_shareable} />
-            </Stack>
-          </Box>
+          <PageHeader page={page} />
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-            {data?.page?.length > 1 && (
-              <SubTabsInternal tab={tab} handleChange={handleChange} page={data?.page} />
+            {data?.pages?.length > 1 && (
+              <SubTabsInternal tab={tab} handleChange={handleChange} page={data?.pages} />
             )}
             <Button onClick={addNew.onTrue} startIcon={<AddCircleIcon />} variant="contained">
               Add new Video
@@ -123,7 +88,8 @@ const VideoGrid = (props: Props) => {
                 {cards?.map((row, i) => (
                   <VideoGridTableRow
                     key={i}
-                    {...row}
+                    card={row}
+                    type={page?.type}
                     // selected={table.selected.includes(row.rid)}
                     // onSelectRow={() => table.onSelectRow(row.rid)}
                   />
@@ -149,7 +115,7 @@ const VideoGrid = (props: Props) => {
           onChangeDense={table.onChangeDense}
         />
       </Stack>
-      {/* <AddReportModal open={addNew.value} onClose={addNew.onFalse} /> */}
+      <AddVideoModal pageType={page?.type} open={addNew.value} onClose={addNew.onFalse} />
     </Box>
   );
 };
