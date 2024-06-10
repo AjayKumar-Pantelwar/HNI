@@ -8,6 +8,7 @@ import EditIcon from 'src/assets/icons/edit-icon';
 import { useBoolean } from 'src/hooks/use-boolean';
 import { ResearchCard } from 'src/types/content-management/research.types';
 import { identifyFilename } from 'src/utils/identify-file';
+import DeleteCardModal from '../delete-card-modal';
 import AddVideoModal from './add-video-modal';
 // import AddReportModal from './add-report-modal';
 
@@ -74,6 +75,11 @@ export const VideoGridTableRow = (props: Props) => {
         card={card}
         open={quickEdit.value}
         onClose={quickEdit.onFalse}
+      />
+      <DeleteCardModal
+        open={deleteEntry.value}
+        onClose={deleteEntry.onFalse}
+        cardId={card?.card_id}
       />
     </TableRow>
   );

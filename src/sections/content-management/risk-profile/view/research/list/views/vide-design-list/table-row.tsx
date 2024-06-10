@@ -6,6 +6,7 @@ import EditIcon from 'src/assets/icons/edit-icon';
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
 import { useBoolean } from 'src/hooks/use-boolean';
 import { ResearchCard } from 'src/types/content-management/research.types';
+import DeleteCardModal from '../delete-card-modal';
 import AddSpeakerModal from './add-speaker';
 
 interface Props {
@@ -69,6 +70,11 @@ export const VideoDesignListTableRow = (props: Props) => {
         card={card}
         open={quickEdit.value}
         onClose={quickEdit.onFalse}
+      />
+      <DeleteCardModal
+        open={deleteEntry.value}
+        onClose={deleteEntry.onFalse}
+        cardId={card?.card_id}
       />
     </TableRow>
   );

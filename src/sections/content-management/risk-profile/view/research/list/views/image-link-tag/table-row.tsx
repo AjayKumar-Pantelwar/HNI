@@ -8,6 +8,7 @@ import { ResearchCard } from 'src/types/content-management/research.types';
 import LinkIcon from '@mui/icons-material/Link';
 import DeleteIcon from 'src/assets/icons/delete-icon';
 import EditIcon from 'src/assets/icons/edit-icon';
+import DeleteCardModal from '../delete-card-modal';
 import AddNewsModal from './add-news';
 
 interface Props {
@@ -78,6 +79,11 @@ export const ImageLinkTagTableRow = (props: Props) => {
         card={card}
         open={quickEdit.value}
         onClose={quickEdit.onFalse}
+      />
+      <DeleteCardModal
+        open={deleteEntry.value}
+        onClose={deleteEntry.onFalse}
+        cardId={card?.card_id}
       />
     </TableRow>
   );
