@@ -49,6 +49,8 @@ const AddReportModal = (props: Props) => {
       .max(87, 'description must be less than 150 characters'),
     image: Yup.mixed().nonNullable().required('Image is required'),
     pdf: Yup.mixed().nonNullable().required('Document is required'),
+    card_id: Yup.string(),
+    color: Yup.string(),
   });
 
   const defaultValues = {
@@ -96,7 +98,10 @@ const AddReportModal = (props: Props) => {
 
   const document = watch('pdf');
 
-  const handleDocumentChangePerm = (file: File | null) => {
+  const handleDocumentChangePerm = (
+    file: File | null
+    // key: keyof Yup.InferType<typeof addReportSchema>
+  ) => {
     setValue('pdf', file as any);
   };
 
@@ -149,7 +154,8 @@ const AddReportModal = (props: Props) => {
                 {!image ? (
                   <UploadFile
                     uploadAs="SVG"
-                    maxFile={2}
+                    maxFileSize={2}
+                    accept={{ 'image/svg': ['.svg'] }}
                     label="Upload Image"
                     handleFileChange={handleImageChangePerm}
                   />
@@ -168,9 +174,10 @@ const AddReportModal = (props: Props) => {
                 {!document ? (
                   <UploadFile
                     uploadAs="PDF"
-                    maxFile={2}
+                    maxFileSize={2}
                     label="Upload Document"
                     handleFileChange={handleDocumentChangePerm}
+                    accept={{ 'application/pdf': ['.pdf'] }}
                   />
                 ) : (
                   <PreviewFile

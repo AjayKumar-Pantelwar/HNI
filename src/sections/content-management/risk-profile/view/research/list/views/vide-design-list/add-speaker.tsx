@@ -121,7 +121,7 @@ const AddSpeakerModal = (props: Props) => {
     >
       <FormProvider methods={methods} onSubmit={onSubmit}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 3 }}>
-          <Typography variant="h5">Add News</Typography>
+          <Typography variant="h5">Add New Speaker</Typography>
           <IconButton onClick={onClose}>
             <Close />
           </IconButton>
@@ -141,10 +141,11 @@ const AddSpeakerModal = (props: Props) => {
                 />
                 {!video ? (
                   <UploadFile
-                    uploadAs="JPG"
-                    maxFile={2}
+                    uploadAs="MP4"
+                    maxFileSize={800}
                     label="Upload Video"
                     handleFileChange={handleVideoChangePerm}
+                    accept={{ 'video/mp4': ['.mp4'] }}
                   />
                 ) : (
                   <PreviewFile
@@ -160,9 +161,10 @@ const AddSpeakerModal = (props: Props) => {
                 {!logo ? (
                   <UploadFile
                     uploadAs="JPG"
-                    maxFile={2}
+                    maxFileSize={2}
                     label="Upload Logo"
                     handleFileChange={handleFileChangePerm}
+                    accept={{ 'image/jpg': ['.jpg'] }}
                   />
                 ) : (
                   <PreviewFile selectedFile={logo as any} handleFileChange={handleFileChangePerm} />
@@ -170,9 +172,10 @@ const AddSpeakerModal = (props: Props) => {
                 {!image ? (
                   <UploadFile
                     uploadAs="JPG"
-                    maxFile={2}
+                    maxFileSize={2}
                     label="Upload Image"
                     handleFileChange={handleImageChangePerm}
+                    accept={{ 'image/jpg': ['.jpg'] }}
                   />
                 ) : (
                   <PreviewFile

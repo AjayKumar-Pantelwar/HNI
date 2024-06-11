@@ -42,7 +42,7 @@ const ResearchListView = () => {
 
   const tabContent = (newTab: number) => {
     const flag = data?.data?.[newTab - 1];
-    console.log({ flag });
+
     if (!flag) return <></>;
     return <ResearchMainView data={data?.data?.[newTab - 1]} />;
   };

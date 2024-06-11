@@ -139,7 +139,7 @@ const AddVideoModal = (props: Props) => {
                 {!image ? (
                   <UploadFile
                     uploadAs="SVG"
-                    maxFile={2}
+                    maxFileSize={2}
                     label="Upload Image"
                     handleFileChange={handleImageChangePerm}
                   />
@@ -156,7 +156,7 @@ const AddVideoModal = (props: Props) => {
                 {!video ? (
                   <UploadFile
                     uploadAs="PDF"
-                    maxFile={2}
+                    maxFileSize={2}
                     label="Upload Document"
                     handleFileChange={handleVideoChangePerm}
                   />

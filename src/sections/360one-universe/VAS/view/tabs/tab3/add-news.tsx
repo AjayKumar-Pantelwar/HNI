@@ -92,7 +92,7 @@ const AddNewsModal = (props: Props) => {
                 {!image ? (
                   <UploadFile
                     uploadAs="JPG"
-                    maxFile={2}
+                    maxFileSize={2}
                     label="Upload Image"
                     handleFileChange={handleFileChangePerm}
                   />

@@ -31,8 +31,6 @@ const EditTabName = (props: Props) => {
   }, [tabName]);
 
   async function handleSubmit() {
-    console.log({ value, tabId });
-
     try {
       setIsLoading(true);
       if (value && tabId) {

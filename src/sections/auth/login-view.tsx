@@ -108,7 +108,6 @@ export default function LoginSection() {
       handleError(error);
     } finally {
       setLoading(false);
-
       setOtp('');
     }
   };
@@ -117,7 +116,6 @@ export default function LoginSection() {
     try {
       const response = await authService.login(data);
 
-      console.log({ response });
       dispatch(authSlice.actions.setUser({ ...response.data.data, username: data.username }));
       if (response?.data?.data?.is_password_changed_required) {
         enqueueSnackbar('You need to reset your password', { variant: 'error' });

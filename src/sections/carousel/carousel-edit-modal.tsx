@@ -128,7 +128,7 @@ export default function CarouselEditModal(props: Props) {
                     {!image ? (
                       <UploadFile
                         uploadAs="JPG"
-                        maxFile={2}
+                        maxFileSize={2}
                         label="Upload Image"
                         handleFileChange={handleImageFileChangePerm}
                       />
@@ -142,7 +142,7 @@ export default function CarouselEditModal(props: Props) {
                     {!icon ? (
                       <UploadFile
                         uploadAs="JPG"
-                        maxFile={2}
+                        maxFileSize={2}
                         label="Upload Image"
                         handleFileChange={handleIconFileChangePerm}
                       />
