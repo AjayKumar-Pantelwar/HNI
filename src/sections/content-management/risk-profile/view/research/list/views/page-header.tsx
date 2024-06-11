@@ -1,19 +1,11 @@
 import Close from '@mui/icons-material/Close';
 import { LoadingButton } from '@mui/lab';
-import {
-  Box,
-  Checkbox,
-  Dialog,
-  Divider,
-  IconButton,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Box, Dialog, Divider, IconButton, Stack, TextField, Typography } from '@mui/material';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 import EditIcon from 'src/assets/icons/edit-icon';
 import { useSnackbar } from 'src/components/snackbar';
+import CustomSwitch from 'src/components/toggle-button';
 import { useBoolean } from 'src/hooks/use-boolean';
 import { researchApi } from 'src/redux/api/research.api';
 import { ResearchRecord, UpdatePageRequest } from 'src/types/content-management/research.types';
@@ -75,7 +67,7 @@ const PageHeader = (props: Props) => {
         <Typography variant="body1" color="text.secondary">
           Downloadable
         </Typography>
-        <Checkbox
+        <CustomSwitch
           checked={filters?.is_downloadable}
           onChange={(e) => {
             setFilters({ ...filters, is_downloadable: e.target.checked });
@@ -87,7 +79,7 @@ const PageHeader = (props: Props) => {
         <Typography variant="body1" color="text.secondary">
           Shareable
         </Typography>
-        <Checkbox
+        <CustomSwitch
           checked={filters?.is_shareable}
           onChange={(e) => {
             setFilters({ ...filters, is_shareable: e.target.checked });
