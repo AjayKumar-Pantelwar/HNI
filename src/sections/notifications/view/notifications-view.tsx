@@ -1,7 +1,15 @@
 'use client';
 
-import { Box, Card, Container, Tab, Tabs, Typography } from '@mui/material';
+import { Box, Button, Card, Container, Tab, Tabs, Typography } from '@mui/material';
 import { useState } from 'react';
+import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs';
+import Iconify from 'src/components/iconify';
+import { useSettingsContext } from 'src/components/settings';
+import { useBoolean } from 'src/hooks/use-boolean';
+import { notificationsApi } from 'src/redux/api/notifications.api';
+import { paths } from 'src/routes/paths';
+import kebabToCapitalize from 'src/utils/change-case';
+import AddAnnouncementModal from './tabs/announcements/add-announcement-modal';
 import Announcement from './tabs/announcements/announcement';
 import AppUpdate from './tabs/app-update';
 
@@ -11,16 +19,22 @@ export enum NotificationTabs {
 }
 
 const NotificationsView = () => {
+  const settings = useSettingsContext();
+
   const [tab, setTab] = useState<NotificationTabs>(NotificationTabs.ANNOUNCEMENT);
 
   const handleChange = (_event: React.SyntheticEvent, newValue: NotificationTabs) => {
     setTab(newValue);
   };
 
+  const quickAdd = useBoolean();
+
+  const { data } = notificationsApi.useGetNotificationsQuery();
+
   const tabContent = (newTab: NotificationTabs) => {
     switch (newTab) {
       case NotificationTabs.ANNOUNCEMENT:
-        return <Announcement />;
+        return <Announcement data={data} />;
       case NotificationTabs.APP_UPDATE:
         return <AppUpdate />;
       default:
@@ -33,8 +47,31 @@ const NotificationsView = () => {
   };
 
   return (
-    <Container>
-      <Typography variant="h4">Notification</Typography>
+    <Container maxWidth={settings.themeStretch ? false : 'lg'}>
+      <CustomBreadcrumbs
+        heading="Notifications"
+        links={[
+          { name: 'Dashboard', href: paths.dashboard.root },
+          { name: 'Notifications', href: paths.dashboard.notifications.root },
+          { name: kebabToCapitalize(tab) },
+        ]}
+        sx={{
+          mb: { xs: 3, md: 5 },
+        }}
+        action={
+          tab === NotificationTabs.ANNOUNCEMENT &&
+          !data?.data?.length && (
+            <Button
+              variant="contained"
+              startIcon={<Iconify icon="mingcute:add-line" />}
+              onClick={quickAdd.onTrue}
+            >
+              New Announcement
+            </Button>
+          )
+        }
+      />
+
       <Card sx={{ width: '100%', mt: 3 }}>
         <Box sx={{ borderBottom: 1, px: 2, borderColor: 'divider' }}>
           <Tabs value={tab} onChange={handleChange} aria-label="notification tabs">
@@ -44,6 +81,7 @@ const NotificationsView = () => {
         </Box>
         {tabContent(tab)}
       </Card>
+      <AddAnnouncementModal open={quickAdd.value} onClose={quickAdd.onFalse} />
     </Container>
   );
 };
