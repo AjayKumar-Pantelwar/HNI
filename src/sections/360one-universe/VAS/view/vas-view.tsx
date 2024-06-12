@@ -15,18 +15,13 @@ import { VASProductTabs } from 'src/types/unverise/vas.types';
 import { capitalize } from 'src/utils/change-case';
 import EditTabName from './edit-tab-name';
 import LendingSolutionsTab from './tabs/lending-solutions/lending-solutions';
+import WillsTab from './tabs/wills/wills';
 
 interface TabProps {
   tab: ResearchData;
   value: number;
   currentTab: number;
 }
-
-const CustomeTab = (props: TabProps) => {
-  const { tab, value, currentTab } = props;
-
-  return <></>;
-};
 
 const VASView = () => {
   const settings = useSettingsContext();
@@ -35,6 +30,7 @@ const VASView = () => {
   const edit = useBoolean();
 
   const [tabName, setTabName] = useState('');
+  const [tabId, setTabId] = useState('');
 
   const [tab, setTab] = useState<VASProductTabs>(VASProductTabs.LENDINGSOLUTIONS);
 
@@ -46,8 +42,8 @@ const VASView = () => {
     switch (newTab) {
       case VASProductTabs.LENDINGSOLUTIONS:
         return <LendingSolutionsTab data={data?.data?.lending_solutions} />;
-      // case 2:
-      //   return <VASTab2 data={data[newTab - 1]} />;
+      case VASProductTabs.WILLS:
+        return <WillsTab data={data?.data?.wills} />;
       // case 3:
       //   return <VASTab3 data={data[newTab - 1]} />;
       // case 4:
@@ -73,7 +69,7 @@ const VASView = () => {
         }}
       />
       <Card sx={{ width: '100%', mt: 3 }}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider', px: 2 }}>
           <Tabs
             allowScrollButtonsMobile
             value={tab}
@@ -93,7 +89,8 @@ const VASView = () => {
                           onClick={(e) => {
                             e.stopPropagation();
                             edit.onTrue();
-                            setTabName(d.product_name);
+                            setTabName(d?.product_name);
+                            setTabId(d?.product_id);
                           }}
                         >
                           <EditIcon fontSize="small" color="primary" />
@@ -107,7 +104,7 @@ const VASView = () => {
         </Box>
         {tabContent(tab)}
       </Card>
-      <EditTabName open={edit.value} onClose={edit.onFalse} tabName={tabName} />
+      <EditTabName tid={tabId} open={edit.value} onClose={edit.onFalse} tabName={tabName} />
     </Container>
   );
 };

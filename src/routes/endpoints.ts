@@ -19,6 +19,16 @@ export const endpoints = {
   universe: {
     vas: {
       list: p('GET', '/vas'),
+      editTab: (id: string) => p('PUT', `/vas?id=${id}`),
+      lendingSolutions: {
+        editDescription: p('PUT', `/vas/lending_solutions/items`),
+        addDescription: p('POST', `/vas/lending_solutions/items`),
+        editHeading: (id: string) => p('PUT', `/vas/lending_solutions/items/heading?id=${id}`),
+      },
+      wills: {
+        editDescription: p('PUT', `/vas/wills/items`),
+        editHeading: (id: string) => p('PUT', `/vas/wills/items/heading?id=${id}`),
+      },
     },
   },
   notifications: {

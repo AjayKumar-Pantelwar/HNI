@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Box,
   Button,
@@ -13,9 +15,13 @@ import {
 import { useBoolean } from 'src/hooks/use-boolean';
 
 import AddIcon from '@mui/icons-material/Add';
+import { useState } from 'react';
 import DeleteIcon from 'src/assets/icons/delete-icon';
 import EditIcon from 'src/assets/icons/edit-icon';
+import { useSnackbar } from 'src/components/snackbar';
+import { VASApi } from 'src/redux/api/vas.api';
 import { LendingSolutions, NbfcSpecializations } from 'src/types/unverise/vas.types';
+import { handleError } from 'src/utils/handle-error';
 import EditTitle from '../../edit-title';
 import EditItemsModal from './edit-items-modal';
 import EditSpecificationsModal from './edit-specifications-modal';
@@ -36,15 +42,37 @@ interface Props {
 const LendingSolutionsTab = (props: Props) => {
   const { data } = props;
 
+  const { enqueueSnackbar } = useSnackbar();
   const addItem = useBoolean();
   const editTitle = useBoolean();
 
   const addSpecifications = useBoolean();
+  const [loading, setLoading] = useState(false);
+
+  const [value, setValue] = useState(data?.nbfc_specializations?.title || '');
+
+  const [editHeading] = VASApi.useEditLendingSolutionsHeadingMutation();
+
+  async function handleSubmit() {
+    setLoading(true);
+    try {
+      if (data?.product_id && value) {
+        await editHeading({ id: data?.nbfc_specializations?.id, title: value }).unwrap();
+
+        enqueueSnackbar('Update success!');
+      }
+    } catch (error) {
+      handleError(error);
+    } finally {
+      setLoading(false);
+      editTitle.onFalse();
+    }
+  }
 
   return (
     <Stack sx={{ p: 3, gap: 3 }}>
       <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-        <Typography variant="h5">{data?.product_label}</Typography>
+        <Typography variant="h5">{data?.nbfc_specializations?.title}</Typography>
         <IconButton onClick={() => editTitle.onTrue()}>
           <EditIcon />
         </IconButton>
@@ -98,7 +126,10 @@ const LendingSolutionsTab = (props: Props) => {
       <EditTitle
         open={editTitle.value}
         onClose={editTitle.onFalse}
-        title={data?.product_label || ''}
+        value={value}
+        setValue={setValue}
+        onSubmit={() => handleSubmit()}
+        isSubmitting={loading}
       />
     </Stack>
   );

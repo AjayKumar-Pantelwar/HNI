@@ -1,13 +1,25 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import Close from '@mui/icons-material/Close';
-import { Box, Button, Divider, Grid, IconButton, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Divider,
+  Grid,
+  IconButton,
+  Typography,
+} from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import { useForm } from 'react-hook-form';
 import { RHFTextField } from 'src/components/hook-form';
 import FormProvider from 'src/components/hook-form/form-provider';
 import { PreviewFile } from 'src/components/preview-file';
+import { useSnackbar } from 'src/components/snackbar';
 import { UploadFile } from 'src/components/upload-file';
+import { VASApi } from 'src/redux/api/vas.api';
 import { NbfcSpecializations } from 'src/types/unverise/vas.types';
+import { convertToFD } from 'src/utils/convert-fd';
+import { handleError } from 'src/utils/handle-error';
 import * as Yup from 'yup';
 
 interface Props {
@@ -18,6 +30,10 @@ interface Props {
 
 const EditSpecificationsModal = (props: Props) => {
   const { onClose, open, card } = props;
+
+  const [editDescription] = VASApi.useEditLendingSolutionsDescriptionMutation();
+
+  const { enqueueSnackbar } = useSnackbar();
 
   const addReportSchema = Yup.object().shape({
     description: Yup.array()
@@ -52,7 +68,17 @@ const EditSpecificationsModal = (props: Props) => {
 
   const description = watch('description');
 
-  const onSubmit = handleSubmit(async (data) => {});
+  const onSubmit = handleSubmit(async (data) => {
+    const formData = convertToFD({ id: card?.id, ...data });
+    try {
+      await editDescription(formData).unwrap();
+      enqueueSnackbar('Added Successfully', { variant: 'success' });
+    } catch (error) {
+      handleError(error);
+    } finally {
+      onClose();
+    }
+  });
 
   const handleFileChangePerm = (file: File | null) => {
     setValue('logo', file as any);
@@ -111,7 +137,7 @@ const EditSpecificationsModal = (props: Props) => {
         <Divider />
         <Box sx={{ p: 3, display: 'flex', justifyContent: 'flex-end' }}>
           <Button variant="contained" type="submit">
-            {card ? 'Save Changes' : 'Create Report'}
+            {isSubmitting ? <CircularProgress /> : card ? 'Save Changes' : 'Create'}
           </Button>
         </Box>
       </FormProvider>

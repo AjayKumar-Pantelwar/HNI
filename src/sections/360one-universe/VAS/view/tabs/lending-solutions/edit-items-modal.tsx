@@ -1,13 +1,26 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import Close from '@mui/icons-material/Close';
-import { Box, Button, Divider, Grid, IconButton, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Divider,
+  Grid,
+  IconButton,
+  Stack,
+  Typography,
+} from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import { useForm } from 'react-hook-form';
 import { RHFTextField } from 'src/components/hook-form';
 import FormProvider from 'src/components/hook-form/form-provider';
 import { PreviewFile } from 'src/components/preview-file';
+import { useSnackbar } from 'src/components/snackbar';
 import { UploadFile } from 'src/components/upload-file';
+import { VASApi } from 'src/redux/api/vas.api';
 import { NbfcSpecializations } from 'src/types/unverise/vas.types';
+import { convertToFD } from 'src/utils/convert-fd';
+import { handleError } from 'src/utils/handle-error';
 import * as Yup from 'yup';
 
 interface Props {
@@ -18,6 +31,11 @@ interface Props {
 
 const EditItemsModal = (props: Props) => {
   const { onClose, open, card } = props;
+
+  const [addDescription] = VASApi.useEditLendingSolutionsDescriptionMutation();
+  const [editDescription] = VASApi.useEditLendingSolutionsDescriptionMutation();
+
+  const { enqueueSnackbar } = useSnackbar();
 
   const addReportSchema = Yup.object().shape({
     title: Yup.string()
@@ -30,13 +48,13 @@ const EditItemsModal = (props: Props) => {
           .max(200, 'description must be less than 200 characters')
       )
       .required('description is required'),
-    image: Yup.mixed().nonNullable().required('Image is required'),
+    logo: Yup.mixed().nonNullable().required('logo is required'),
   });
 
   const defaultValues = {
     title: card?.title || '',
     description: card?.description || [],
-    image: card?.logo || '',
+    logo: card?.logo || '',
   };
 
   const methods = useForm({
@@ -52,12 +70,27 @@ const EditItemsModal = (props: Props) => {
     setValue,
   } = methods;
 
-  const image = watch('image');
+  const logo = watch('logo');
 
-  const onSubmit = handleSubmit(async (data) => {});
+  const onSubmit = handleSubmit(async (data) => {
+    const formData = card ? convertToFD({ id: card?.id, ...data }) : convertToFD(data);
+    try {
+      if (card) {
+        await editDescription(formData).unwrap();
+        enqueueSnackbar('Added Successfully', { variant: 'success' });
+      } else {
+        await addDescription(formData).unwrap();
+        enqueueSnackbar('Edited Successfully', { variant: 'success' });
+      }
+    } catch (error) {
+      handleError(error);
+    } finally {
+      onClose();
+    }
+  });
 
   const handleFileChangePerm = (file: File | null) => {
-    setValue('image', file as any);
+    setValue('logo', file as any);
   };
 
   const description = watch('description');
@@ -85,7 +118,7 @@ const EditItemsModal = (props: Props) => {
             <Grid item xs={12}>
               <Stack sx={{ gap: 3 }}>
                 <RHFTextField sx={{ flex: 1 }} name="title" label="Title" maxLimitCharacters={40} />
-                {!image ? (
+                {!logo ? (
                   <UploadFile
                     uploadAs="JPG"
                     maxFileSize={2}
@@ -93,10 +126,7 @@ const EditItemsModal = (props: Props) => {
                     handleFileChange={handleFileChangePerm}
                   />
                 ) : (
-                  <PreviewFile
-                    selectedFile={image as any}
-                    handleFileChange={handleFileChangePerm}
-                  />
+                  <PreviewFile selectedFile={logo as any} handleFileChange={handleFileChangePerm} />
                 )}
               </Stack>
             </Grid>
@@ -105,7 +135,7 @@ const EditItemsModal = (props: Props) => {
                 <RHFTextField
                   key={i}
                   fullWidth
-                  name={`description.[${i}]`}
+                  name={`description[${i}]`}
                   label={`Description ${i + 1}`}
                   maxLimitCharacters={80}
                 />
@@ -120,8 +150,8 @@ const EditItemsModal = (props: Props) => {
         </Box>
         <Divider />
         <Box sx={{ p: 3, display: 'flex', justifyContent: 'flex-end' }}>
-          <Button variant="contained" type="submit">
-            {card ? 'Save Changes' : 'Create Report'}
+          <Button variant="contained" type="submit" disabled={isSubmitting}>
+            {isSubmitting ? <CircularProgress /> : card ? 'Save Changes' : 'Create'}
           </Button>
         </Box>
       </FormProvider>

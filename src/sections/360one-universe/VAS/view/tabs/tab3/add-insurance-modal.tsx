@@ -156,7 +156,6 @@ const AddInsuranceModal = (props: Props) => {
       }
       setActiveStep((prevStep) => prevStep + 1);
     }
-    console.log(data);
   };
 
   useEffect(() => {
@@ -179,8 +178,6 @@ const AddInsuranceModal = (props: Props) => {
       );
     }
   }, [insuranceItem]);
-
-  console.log(errors);
 
   return (
     <Dialog

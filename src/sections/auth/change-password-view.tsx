@@ -76,7 +76,7 @@ export default function ChangePasswordView() {
   });
 
   const renderForm = (
-    <Stack spacing={3} alignItems="center">
+    <Stack spacing={3}>
       <RHFTextField
         name="password"
         label="Password"

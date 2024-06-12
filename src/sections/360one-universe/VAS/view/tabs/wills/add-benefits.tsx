@@ -1,36 +1,51 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import Close from '@mui/icons-material/Close';
-import { Box, Button, Divider, Grid, IconButton, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Divider,
+  Grid,
+  IconButton,
+  Stack,
+  Typography,
+} from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import { useForm } from 'react-hook-form';
 import { RHFTextField } from 'src/components/hook-form';
 import FormProvider from 'src/components/hook-form/form-provider';
-import { ReasonsWhy } from 'src/types/unverise/vas.types';
+import { useSnackbar } from 'src/components/snackbar';
+import { VASApi } from 'src/redux/api/vas.api';
+import { NbfcSpecializations } from 'src/types/unverise/vas.types';
+import { convertToFD } from 'src/utils/convert-fd';
+import { handleError } from 'src/utils/handle-error';
 import * as Yup from 'yup';
 
 interface Props {
   open: boolean;
   onClose: () => void;
-  card?: ReasonsWhy;
+  card?: NbfcSpecializations;
 }
 
 const AddBenefitsModal = (props: Props) => {
   const { onClose, open, card } = props;
 
+  const { enqueueSnackbar } = useSnackbar();
+
+  const [editDescription] = VASApi.useEditWillsDescriptionMutation();
+
   const addReportSchema = Yup.object().shape({
-    title: Yup.string()
-      .required('Title is required')
-      .max(120, 'Title must be less than 120 characters'),
-    points: Yup.array()
+    description: Yup.array()
       .of(
-        Yup.string().max(80, 'Point contains maximum 80 characters').required('Point is required')
+        Yup.string()
+          .required('description is required')
+          .max(200, 'description must be less than 200 characters')
       )
-      .required('Points is required'),
+      .required('description is required'),
   });
 
   const defaultValues = {
-    title: card?.label || '',
-    points: card?.items || [],
+    description: card?.description || [],
   };
 
   const methods = useForm({
@@ -46,9 +61,19 @@ const AddBenefitsModal = (props: Props) => {
     setValue,
   } = methods;
 
-  const onSubmit = handleSubmit(async (data) => {});
+  const onSubmit = handleSubmit(async (data) => {
+    const formData = convertToFD({ id: card?.id, ...data });
+    try {
+      await editDescription(formData).unwrap();
+      enqueueSnackbar('Added Successfully', { variant: 'success' });
+    } catch (error) {
+      handleError(error);
+    } finally {
+      onClose();
+    }
+  });
 
-  const points = watch('points');
+  const points = watch('description');
 
   return (
     <Dialog
@@ -70,15 +95,12 @@ const AddBenefitsModal = (props: Props) => {
         <Divider />
         <Stack sx={{ p: 3, gap: 2 }}>
           <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <RHFTextField fullWidth name="title" label="Title" maxLimitCharacters={80} />
-            </Grid>
             {points.map((p, i) => (
               <Grid item xs={12} md={6}>
                 <RHFTextField
                   key={i}
                   fullWidth
-                  name={`points[${i}]`}
+                  name={`description[${i}]`}
                   label={`Point ${i + 1}`}
                   maxLimitCharacters={80}
                 />
@@ -86,12 +108,12 @@ const AddBenefitsModal = (props: Props) => {
             ))}
           </Grid>
 
-          <Button onClick={() => setValue('points', [...points, ''])}>Add Point</Button>
+          <Button onClick={() => setValue('description', [...points, ''])}>Add Point</Button>
         </Stack>
         <Divider />
         <Box sx={{ p: 3, display: 'flex', justifyContent: 'flex-end' }}>
-          <Button variant="contained" type="submit">
-            {card ? 'Save Changes' : 'Create Report'}
+          <Button variant="contained" type="submit" disabled={isSubmitting}>
+            {isSubmitting ? <CircularProgress /> : card ? 'Save Changes' : 'Create'}
           </Button>
         </Box>
       </FormProvider>

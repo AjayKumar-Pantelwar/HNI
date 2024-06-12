@@ -14,38 +14,42 @@ import {
 import EditIcon from 'src/assets/icons/edit-icon';
 
 import { useBoolean } from 'src/hooks/use-boolean';
-import { VASData } from 'src/types/unverise/vas.types';
+import { VASApi } from 'src/redux/api/vas.api';
+import { Wills } from 'src/types/unverise/vas.types';
 import AddBenefitsModal from './add-benefits';
 import EditSpecificationsModal from './edit-specifications-modal';
+import WillsTitle from './wills-title';
 
 // import { Tab1TableRow } from './table-row';
 
 interface Props {
-  data: VASData;
+  data: Wills | undefined;
 }
 
-const VASTab5 = (props: Props) => {
+const WillsTab = (props: Props) => {
   const { data } = props;
 
   const concept = data?.estate_planning;
   const reasons = data?.reasons_why;
 
-  const whyUs = data?.why_use;
+  const [editHeading] = VASApi.useEditWillsHeadingMutation();
+
+  const whyUs = data?.why_us;
 
   const addSpecifications = useBoolean();
   const addBenefits = useBoolean();
+  const editConcept = useBoolean();
 
   return (
     <Stack sx={{ m: 3, gap: 3, minHeight: '100%' }}>
       <Grid container spacing={2}>
         <Grid item xs={12} md={6}>
           <Stack gap={2}>
-            <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-              <Typography variant="h5">{concept?.label}</Typography>
-              <IconButton onClick={() => null}>
-                <EditIcon />
-              </IconButton>
-            </Box>
+            <WillsTitle
+              sx={{ display: 'flex', gap: 1, alignItems: 'center' }}
+              title={concept?.title || ''}
+              tid={concept?.id || ''}
+            />
             <Box
               sx={{
                 border: '1px solid',
@@ -60,7 +64,7 @@ const VASTab5 = (props: Props) => {
               <Typography variant="body1" sx={{ flex: 1 }}>
                 {concept?.description}
               </Typography>
-              <IconButton onClick={() => null}>
+              <IconButton onClick={() => editConcept.onTrue()}>
                 <EditIcon />
               </IconButton>
             </Box>
@@ -68,12 +72,12 @@ const VASTab5 = (props: Props) => {
         </Grid>
         <Grid item xs={12} md={6}>
           <Stack gap={2}>
-            <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-              <Typography variant="h5">{reasons?.label}</Typography>
-              <IconButton onClick={() => null}>
-                <EditIcon />
-              </IconButton>
-            </Box>
+            <WillsTitle
+              sx={{ display: 'flex', gap: 1, alignItems: 'center' }}
+              title={reasons?.title || ''}
+              tid={reasons?.id || ''}
+            />
+
             <Box
               sx={{
                 border: '1px solid',
@@ -86,7 +90,7 @@ const VASTab5 = (props: Props) => {
               }}
             >
               <List component={Stack} sx={{ flex: 1 }}>
-                {reasons?.items?.map((c, i) => (
+                {reasons?.description?.map((c, i) => (
                   <ListItem key={i}>
                     <ListItemIcon sx={{ fontSize: 20 }}>*</ListItemIcon>
                     <Typography>{c}</Typography>
@@ -101,12 +105,11 @@ const VASTab5 = (props: Props) => {
         </Grid>
       </Grid>
       <Stack sx={{ gap: 2 }}>
-        <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-          <Typography variant="h5">{whyUs?.label}</Typography>
-          <IconButton onClick={() => null}>
-            <EditIcon />
-          </IconButton>
-        </Box>
+        <WillsTitle
+          sx={{ display: 'flex', gap: 1, alignItems: 'center' }}
+          title={whyUs?.title || ''}
+          tid={whyUs?.id || ''}
+        />
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
           <Box sx={{ border: '1px solid', borderColor: 'divider', borderRadius: 1, p: 2 }}>
             <img src="/logo/360logo.png" alt="360One" width={40} height={40} />
@@ -122,7 +125,7 @@ const VASTab5 = (props: Props) => {
             }}
           >
             <List component={Stack} sx={{ flex: 1 }}>
-              {whyUs?.items?.map((c, i) => (
+              {whyUs?.description?.map((c, i) => (
                 <ListItem key={i}>
                   <ListItemIcon sx={{ fontSize: 20 }}>*</ListItemIcon>
                   <Typography>{c}</Typography>
@@ -138,11 +141,12 @@ const VASTab5 = (props: Props) => {
       <EditSpecificationsModal
         onClose={addSpecifications.onFalse}
         open={addSpecifications.value}
-        card={whyUs?.items}
+        card={whyUs}
       />
       <AddBenefitsModal onClose={addBenefits.onFalse} open={addBenefits.value} card={reasons} />
+      <AddBenefitsModal onClose={editConcept.onFalse} open={editConcept.value} card={concept} />
     </Stack>
   );
 };
 
-export default VASTab5;
+export default WillsTab;

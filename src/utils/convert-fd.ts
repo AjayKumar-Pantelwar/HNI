@@ -1,5 +1,5 @@
 function addValue(formData: FormData, key: string, value: any) {
-  if (Array.isArray(value)) {
+  if (Array.isArray(value) && value[0] instanceof File) {
     value.forEach((val) => addValue(formData, key, val));
   } else if (value instanceof Blob) {
     formData.append(key, value);

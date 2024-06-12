@@ -26,8 +26,6 @@ export const FileDropzone = (props: Props) => {
     maxSize: maxSize && maxSize * 1024 * 1024,
   });
 
-  console.log({ isDragReject, maxSize });
-
   return (
     <Box {...getRootProps()} sx={{ cursor: 'pointer' }}>
       {children}
