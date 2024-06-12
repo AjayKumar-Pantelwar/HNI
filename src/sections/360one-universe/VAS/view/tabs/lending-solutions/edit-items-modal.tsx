@@ -7,13 +7,13 @@ import { RHFTextField } from 'src/components/hook-form';
 import FormProvider from 'src/components/hook-form/form-provider';
 import { PreviewFile } from 'src/components/preview-file';
 import { UploadFile } from 'src/components/upload-file';
-import { VASItem } from 'src/types/unverise/vas.types';
+import { NbfcSpecializations } from 'src/types/unverise/vas.types';
 import * as Yup from 'yup';
 
 interface Props {
   open: boolean;
   onClose: () => void;
-  card?: VASItem;
+  card?: NbfcSpecializations;
 }
 
 const EditItemsModal = (props: Props) => {
@@ -23,16 +23,20 @@ const EditItemsModal = (props: Props) => {
     title: Yup.string()
       .required('Title is required')
       .max(40, 'Title must be less than 40 characters'),
-    subtitle: Yup.string()
-      .required('subtitle is required')
-      .max(200, 'subtitle must be less than 200 characters'),
+    description: Yup.array()
+      .of(
+        Yup.string()
+          .required('description is required')
+          .max(200, 'description must be less than 200 characters')
+      )
+      .required('description is required'),
     image: Yup.mixed().nonNullable().required('Image is required'),
   });
 
   const defaultValues = {
     title: card?.title || '',
-    subtitle: card?.sub_title || '',
-    image: '',
+    description: card?.description || [],
+    image: card?.logo || '',
   };
 
   const methods = useForm({
@@ -55,6 +59,8 @@ const EditItemsModal = (props: Props) => {
   const handleFileChangePerm = (file: File | null) => {
     setValue('image', file as any);
   };
+
+  const description = watch('description');
 
   return (
     <Dialog
@@ -94,15 +100,21 @@ const EditItemsModal = (props: Props) => {
                 )}
               </Stack>
             </Grid>
+            {description?.map((p, i) => (
+              <Grid item xs={12} md={6}>
+                <RHFTextField
+                  key={i}
+                  fullWidth
+                  name={`description.[${i}]`}
+                  label={`Description ${i + 1}`}
+                  maxLimitCharacters={80}
+                />
+              </Grid>
+            ))}
             <Grid item xs={12}>
-              <RHFTextField
-                sx={{ flex: 1 }}
-                name="subtitle"
-                label="Subtitle"
-                maxLimitCharacters={200}
-                multiline
-                minRows={3}
-              />
+              <Button fullWidth onClick={() => setValue('description', [...description, ''])}>
+                Add Description
+              </Button>
             </Grid>
           </Grid>
         </Box>

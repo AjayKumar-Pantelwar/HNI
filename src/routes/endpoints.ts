@@ -16,6 +16,11 @@ export const endpoints = {
     create: p('POST', '/cms/rps'),
     edit: (id: string) => p('POST', `/cms/rps`),
   },
+  universe: {
+    vas: {
+      list: p('GET', '/vas'),
+    },
+  },
   notifications: {
     updateAPP: p('PUT', '/versions/update'),
     list: p('GET', '/notifications'),

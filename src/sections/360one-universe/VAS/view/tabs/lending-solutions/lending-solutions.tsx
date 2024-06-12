@@ -15,7 +15,7 @@ import { useBoolean } from 'src/hooks/use-boolean';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from 'src/assets/icons/delete-icon';
 import EditIcon from 'src/assets/icons/edit-icon';
-import { VASData, VASItem } from 'src/types/unverise/vas.types';
+import { LendingSolutions, NbfcSpecializations } from 'src/types/unverise/vas.types';
 import EditTitle from '../../edit-title';
 import EditItemsModal from './edit-items-modal';
 import EditSpecificationsModal from './edit-specifications-modal';
@@ -30,10 +30,10 @@ const TABLE_HEAD = [
 ];
 
 interface Props {
-  data: VASData;
+  data: LendingSolutions | undefined;
 }
 
-const VASTab1 = (props: Props) => {
+const LendingSolutionsTab = (props: Props) => {
   const { data } = props;
 
   const addItem = useBoolean();
@@ -65,7 +65,7 @@ const VASTab1 = (props: Props) => {
           }}
         >
           <List component={Stack} sx={{ flex: 1 }}>
-            {data?.nbfc_specializations?.items?.map((c, i) => (
+            {data?.nbfc_specializations?.description?.map((c, i) => (
               <ListItem key={i}>
                 <ListItemIcon sx={{ fontSize: 20 }}>*</ListItemIcon>
                 <Typography>{c}</Typography>
@@ -88,11 +88,13 @@ const VASTab1 = (props: Props) => {
         </Button>
       </Box>
       <EditItemsModal open={addItem.value} onClose={addItem.onFalse} />
-      <EditSpecificationsModal
-        onClose={addSpecifications.onFalse}
-        open={addSpecifications.value}
-        card={data?.nbfc_specializations?.items}
-      />
+      {data?.nbfc_specializations && (
+        <EditSpecificationsModal
+          onClose={addSpecifications.onFalse}
+          open={addSpecifications.value}
+          card={data?.nbfc_specializations}
+        />
+      )}
       <EditTitle
         open={editTitle.value}
         onClose={editTitle.onFalse}
@@ -102,10 +104,10 @@ const VASTab1 = (props: Props) => {
   );
 };
 
-export default VASTab1;
+export default LendingSolutionsTab;
 
 interface ItemProps {
-  item: VASItem;
+  item: NbfcSpecializations;
 }
 
 const VASItemCard = (props: ItemProps) => {
@@ -128,9 +130,11 @@ const VASItemCard = (props: ItemProps) => {
         <Stack sx={{ gap: 2 }}>
           <img src={item?.logo} height={30} width={30} alt={item?.title} />
           <Typography variant="subtitle1">{item?.title}</Typography>
-          <Typography variant="subtitle2" color="text.secondary">
-            {item?.sub_title}
-          </Typography>
+          {item?.description?.map((d) => (
+            <Typography variant="subtitle2" color="text.secondary">
+              {d}
+            </Typography>
+          ))}
         </Stack>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <IconButton>
