@@ -89,7 +89,7 @@ const VideoGrid = (props: Props) => {
                   <VideoGridTableRow
                     key={i}
                     card={row}
-                    type={page?.type}
+                    page={page}
                     // selected={table.selected.includes(row.rid)}
                     // onSelectRow={() => table.onSelectRow(row.rid)}
                   />
@@ -115,7 +115,7 @@ const VideoGrid = (props: Props) => {
           onChangeDense={table.onChangeDense}
         />
       </Stack>
-      <AddVideoModal pageType={page?.type} open={addNew.value} onClose={addNew.onFalse} />
+      <AddVideoModal page={page} open={addNew.value} onClose={addNew.onFalse} />
     </Box>
   );
 };

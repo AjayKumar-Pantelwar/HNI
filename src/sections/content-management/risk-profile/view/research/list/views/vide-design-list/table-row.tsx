@@ -5,17 +5,17 @@ import DeleteIcon from 'src/assets/icons/delete-icon';
 import EditIcon from 'src/assets/icons/edit-icon';
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
 import { useBoolean } from 'src/hooks/use-boolean';
-import { ResearchCard } from 'src/types/content-management/research.types';
+import { ResearchCard, ResearchRecord } from 'src/types/content-management/research.types';
 import DeleteCardModal from '../delete-card-modal';
 import AddSpeakerModal from './add-speaker';
 
 interface Props {
   card: ResearchCard;
-  type: string;
+  page: ResearchRecord;
 }
 
 export const VideoDesignListTableRow = (props: Props) => {
-  const { card, type } = props;
+  const { card, page } = props;
   const popover = usePopover();
 
   const quickEdit = useBoolean();
@@ -65,12 +65,7 @@ export const VideoDesignListTableRow = (props: Props) => {
           Delete
         </MenuItem>
       </CustomPopover>
-      <AddSpeakerModal
-        pageType={type}
-        card={card}
-        open={quickEdit.value}
-        onClose={quickEdit.onFalse}
-      />
+      <AddSpeakerModal page={page} card={card} open={quickEdit.value} onClose={quickEdit.onFalse} />
       <DeleteCardModal
         open={deleteEntry.value}
         onClose={deleteEntry.onFalse}

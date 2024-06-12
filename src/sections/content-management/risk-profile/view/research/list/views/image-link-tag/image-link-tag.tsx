@@ -91,7 +91,7 @@ const ImageLinkTag = (props: Props) => {
                   <ImageLinkTagTableRow
                     key={i}
                     card={row}
-                    type={page?.type}
+                    page={page}
                     // selected={table.selected.includes(row.rid)}
                     // onSelectRow={() => table.onSelectRow(row.rid)}
                   />
@@ -117,7 +117,7 @@ const ImageLinkTag = (props: Props) => {
           onChangeDense={table.onChangeDense}
         />
       </Stack>
-      <AddNewsModal open={addNew.value} onClose={addNew.onFalse} pagetype={page?.type} />
+      <AddNewsModal open={addNew.value} onClose={addNew.onFalse} page={page} />
     </Box>
   );
 };

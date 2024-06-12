@@ -92,7 +92,7 @@ const VideoDesignList = (props: Props) => {
                   <VideoDesignListTableRow
                     key={i}
                     card={row}
-                    type={page?.type}
+                    page={page}
                     // selected={table.selected.includes(row.rid)}
                     // onSelectRow={() => table.onSelectRow(row.rid)}
                   />
@@ -118,7 +118,7 @@ const VideoDesignList = (props: Props) => {
           onChangeDense={table.onChangeDense}
         />
       </Stack>
-      <AddSpeakerModal open={addNew.value} onClose={addNew.onFalse} pageType={page?.type} />
+      <AddSpeakerModal open={addNew.value} onClose={addNew.onFalse} page={page} />
     </Box>
   );
 };

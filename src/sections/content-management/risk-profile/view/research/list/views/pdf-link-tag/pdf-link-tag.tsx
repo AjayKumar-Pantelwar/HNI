@@ -89,7 +89,7 @@ const PDFLinkTag = (props: Props) => {
                   <PDFLinkTagTableRow
                     key={i}
                     card={row}
-                    type={page?.type}
+                    page={page}
                     // selected={table.selected.includes(row.rid)}
                     // onSelectRow={() => table.onSelectRow(row.rid)}
                   />
@@ -115,7 +115,7 @@ const PDFLinkTag = (props: Props) => {
           onChangeDense={table.onChangeDense}
         />
       </Stack>
-      <AddPDFLinkModal pagetype={page?.type} open={addNew.value} onClose={addNew.onFalse} />
+      <AddPDFLinkModal page={page} open={addNew.value} onClose={addNew.onFalse} />
     </Box>
   );
 };

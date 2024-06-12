@@ -3,7 +3,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Button, Chip, IconButton, MenuItem, Stack, TableCell, TableRow } from '@mui/material';
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
 import { useBoolean } from 'src/hooks/use-boolean';
-import { ResearchCard } from 'src/types/content-management/research.types';
+import { ResearchCard, ResearchRecord } from 'src/types/content-management/research.types';
 
 import LinkIcon from '@mui/icons-material/Link';
 import DeleteIcon from 'src/assets/icons/delete-icon';
@@ -13,11 +13,11 @@ import AddNewsModal from './add-news';
 
 interface Props {
   card: ResearchCard;
-  type: string;
+  page: ResearchRecord;
 }
 
 export const ImageLinkTagTableRow = (props: Props) => {
-  const { card, type } = props;
+  const { card, page } = props;
   const popover = usePopover();
 
   const quickEdit = useBoolean();
@@ -74,12 +74,7 @@ export const ImageLinkTagTableRow = (props: Props) => {
           Delete
         </MenuItem>
       </CustomPopover>
-      <AddNewsModal
-        pagetype={type}
-        card={card}
-        open={quickEdit.value}
-        onClose={quickEdit.onFalse}
-      />
+      <AddNewsModal page={page} card={card} open={quickEdit.value} onClose={quickEdit.onFalse} />
       <DeleteCardModal
         open={deleteEntry.value}
         onClose={deleteEntry.onFalse}

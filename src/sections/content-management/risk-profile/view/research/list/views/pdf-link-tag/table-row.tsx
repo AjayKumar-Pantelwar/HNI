@@ -7,18 +7,18 @@ import DeleteIcon from 'src/assets/icons/delete-icon';
 import EditIcon from 'src/assets/icons/edit-icon';
 import LinkIcon from 'src/assets/icons/link-icon';
 import { useBoolean } from 'src/hooks/use-boolean';
-import { ResearchCard } from 'src/types/content-management/research.types';
+import { ResearchCard, ResearchRecord } from 'src/types/content-management/research.types';
 import DeleteCardModal from '../delete-card-modal';
 import AddPDFLinkModal from './add-pdf-link-modal';
 // import AddReportModal from './add-report-modal';
 
 interface Props {
   card: ResearchCard;
-  type: string;
+  page: ResearchRecord;
 }
 
 export const PDFLinkTagTableRow = (props: Props) => {
-  const { card, type } = props;
+  const { card, page } = props;
   const popover = usePopover();
 
   const quickEdit = useBoolean();
@@ -79,12 +79,7 @@ export const PDFLinkTagTableRow = (props: Props) => {
           Delete
         </MenuItem>
       </CustomPopover>
-      <AddPDFLinkModal
-        pagetype={type}
-        card={card}
-        open={quickEdit.value}
-        onClose={quickEdit.onFalse}
-      />
+      <AddPDFLinkModal page={page} card={card} open={quickEdit.value} onClose={quickEdit.onFalse} />
       <DeleteCardModal
         open={deleteEntry.value}
         onClose={deleteEntry.onFalse}

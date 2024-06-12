@@ -9,7 +9,7 @@ import { PreviewFile } from 'src/components/preview-file';
 import { useSnackbar } from 'src/components/snackbar';
 import { UploadFile } from 'src/components/upload-file';
 import { researchApi } from 'src/redux/api/research.api';
-import { ResearchCard } from 'src/types/content-management/research.types';
+import { ResearchCard, ResearchRecord } from 'src/types/content-management/research.types';
 import { convertToFD } from 'src/utils/convert-fd';
 import { handleError } from 'src/utils/handle-error';
 import * as Yup from 'yup';
@@ -18,11 +18,11 @@ interface Props {
   open: boolean;
   onClose: () => void;
   card?: ResearchCard;
-  pageType: string;
+  page: ResearchRecord;
 }
 
 const AddSpeakerModal = (props: Props) => {
-  const { onClose, open, card, pageType } = props;
+  const { onClose, open, card, page } = props;
 
   const { enqueueSnackbar } = useSnackbar();
   const [updateCard] = researchApi.useUpdateCardMutation();
@@ -52,13 +52,13 @@ const AddSpeakerModal = (props: Props) => {
     field2: card?.field2 || '',
     field3: card?.field3 || '',
     link: card?.link || '',
-    page_id: card?.page_id || '',
+    page_id: page?.page_id || '',
     sub_text2: card?.sub_text2 || '',
     sub_text3: card?.sub_text3 || '',
     tags: card?.tags.join(',') || '',
     text: card?.text || '',
     video: card?.video || '',
-    page_type: pageType || '',
+    page_type: page?.type || '',
     article: card?.article || '',
   };
 

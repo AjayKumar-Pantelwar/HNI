@@ -89,7 +89,7 @@ const PDFTagList = (props: Props) => {
                   <PDFTagListTableRow
                     key={i}
                     card={row}
-                    type={page?.type}
+                    page={page}
                     // selected={table.selected.includes(row.rid)}
                     // onSelectRow={() => table.onSelectRow(row.rid)}
                   />
@@ -115,7 +115,7 @@ const PDFTagList = (props: Props) => {
           onChangeDense={table.onChangeDense}
         />
       </Stack>
-      <AddReportModal open={addNew.value} onClose={addNew.onFalse} pageType={page?.type} />
+      <AddReportModal open={addNew.value} onClose={addNew.onFalse} page={page} />
     </Box>
   );
 };
