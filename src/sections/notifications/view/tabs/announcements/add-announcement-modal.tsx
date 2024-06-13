@@ -1,5 +1,5 @@
 import Close from '@mui/icons-material/Close';
-import { Box, IconButton, Stack, Typography } from '@mui/material';
+import { Box, Divider, IconButton, Stack, Typography } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import { Notifications } from 'src/types/notifications.types';
 import AnnouncementForm from './announcement-form';
@@ -7,7 +7,7 @@ import AnnouncementForm from './announcement-form';
 interface Props {
   open: boolean;
   onClose: () => void;
-  notification: Notifications;
+  notification?: Notifications;
 }
 
 const AddAnnouncementModal = (props: Props) => {
@@ -18,13 +18,13 @@ const AddAnnouncementModal = (props: Props) => {
       onClose={onClose}
       PaperProps={{
         sx: {
-          p: 2,
+          // p: 2,
           minWidth: '650px',
         },
       }}
     >
-      <Stack gap={3}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <Stack sx={{ gap: 2 }}>
+        <Box sx={{ p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Typography variant="h5">
             {notification ? 'Edit Announcement' : 'Add New Announcement'}
           </Typography>
@@ -32,7 +32,10 @@ const AddAnnouncementModal = (props: Props) => {
             <Close />
           </IconButton>
         </Box>
-        <AnnouncementForm notification={notification} />
+        <Divider />
+        <Box sx={{ p: 2 }}>
+          <AnnouncementForm notification={notification} />
+        </Box>
       </Stack>
     </Dialog>
   );

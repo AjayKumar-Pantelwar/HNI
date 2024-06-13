@@ -37,7 +37,7 @@ export default function UserBlockForm({ currentUser, open, onClose }: Props) {
       if (!currentUser) return;
       await updateUser({
         action: UserActions.BLOCK_USER,
-        mobile_number: currentUser.mobile_number,
+        mobile_number: currentUser.mobile,
         reason,
         status: !currentUser?.is_blocked,
       }).unwrap();

@@ -1,24 +1,56 @@
+'use client';
+
 import Close from '@mui/icons-material/Close';
-import { Box, Button, Divider, IconButton, Stack, TextField, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Divider,
+  IconButton,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import { useEffect, useState } from 'react';
+import { VASApi } from 'src/redux/api/vas.api';
+import { handleError } from 'src/utils/handle-error';
 
 interface Props {
   open: boolean;
   onClose: () => void;
   tabName: string;
+  tid: string;
 }
 
 const EditTabName = (props: Props) => {
-  const { onClose, open, tabName } = props;
+  const { onClose, open, tabName, tid } = props;
 
   const [value, setValue] = useState('');
+
+  const [loading, setLoading] = useState(false);
+
+  const [editTabName] = VASApi.useEditTabNameMutation();
 
   useEffect(() => {
     if (tabName) {
       setValue(tabName);
     }
   }, [tabName]);
+
+  const onSubmit = async () => {
+    setLoading(true);
+    try {
+      if (tid && value) {
+        await editTabName({ id: tid, name: value }).unwrap();
+      }
+    } catch (error) {
+      handleError(error);
+    } finally {
+      setLoading(false);
+      onClose();
+    }
+  };
 
   return (
     <Dialog
@@ -55,7 +87,9 @@ const EditTabName = (props: Props) => {
         </Box>
         <Divider />
         <Box sx={{ display: 'flex', justifyContent: 'end', p: 3 }}>
-          <Button variant="contained">Save Changes</Button>
+          <Button variant="contained" onClick={onSubmit} disabled={!value || loading}>
+            {loading ? <CircularProgress /> : 'Save Changes'}
+          </Button>
         </Box>
       </Stack>
     </Dialog>

@@ -16,6 +16,21 @@ export const endpoints = {
     create: p('POST', '/cms/rps'),
     edit: (id: string) => p('POST', `/cms/rps`),
   },
+  universe: {
+    vas: {
+      list: p('GET', '/vas'),
+      editTab: (id: string) => p('PUT', `/vas?id=${id}`),
+      lendingSolutions: {
+        editDescription: p('PUT', `/vas/lending_solutions/items`),
+        addDescription: p('POST', `/vas/lending_solutions/items`),
+        editHeading: (id: string) => p('PUT', `/vas/lending_solutions/items/heading?id=${id}`),
+      },
+      wills: {
+        editDescription: p('PUT', `/vas/wills/items`),
+        editHeading: (id: string) => p('PUT', `/vas/wills/items/heading?id=${id}`),
+      },
+    },
+  },
   notifications: {
     updateAPP: p('PUT', '/versions/update'),
     list: p('GET', '/notifications'),
@@ -31,9 +46,12 @@ export const endpoints = {
   },
   contentManagement: {
     research: {
-      tablist: p('GET', '/path/content/research/tab'),
-      tabDetails: (id: string) => p('GET', `/path/content/research/tab/${id}`),
-      addTab: p('POST', `/path/content/research/tab`),
+      list: p('GET', '/path/content/research'),
+      updateTab: p('PUT', `/path/content/research/tab`),
+      updatePage: (id: string) => p('PUT', `/path/content/research/page/${id}`),
+      addCard: p('POST', `path/content/research/card`),
+      updateCard: (id: string) => p('PUT', `path/content/research/card/${id}`),
+      deleteCard: (id: string) => p('DELETE', `path/content/research/card/${id}`),
     },
   },
   users: {

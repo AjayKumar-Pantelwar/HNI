@@ -1,6 +1,5 @@
 'use client';
 
-import ModeEditOutlineRoundedIcon from '@mui/icons-material/ModeEditOutlineRounded';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { Avatar, Box, ListItemText } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
@@ -10,6 +9,7 @@ import TableRow from '@mui/material/TableRow';
 import Tooltip from '@mui/material/Tooltip';
 
 import Link from 'next/link';
+import EditIcon from 'src/assets/icons/edit-icon';
 // import { usePerm } from 'src/hooks/use-perm';
 import { paths } from 'src/routes/paths';
 import { MldElement } from 'src/types/mlds.types';
@@ -68,7 +68,7 @@ export default function MLDsTableRow({ row, selected, onSelectRow }: Props) {
             href={paths.dashboard.mlds.view(row.mld.mld_id)}
             sx={{ py: 0 }}
           >
-            <ModeEditOutlineRoundedIcon />
+            <EditIcon />
           </IconButton>
         </Tooltip>
       </TableCell>

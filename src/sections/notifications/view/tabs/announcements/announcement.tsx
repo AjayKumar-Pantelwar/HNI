@@ -9,7 +9,7 @@ import {
   emptyRows,
   useTable,
 } from 'src/components/table';
-import { notificationsApi } from 'src/redux/api/notifications.api';
+import { GetNotificationsResponse } from 'src/types/notifications.types';
 import AnnouncementForm from './announcement-form';
 import { Tab1TableRow } from './table-row';
 
@@ -21,12 +21,16 @@ const TABLE_HEAD = [
   { id: 'edit', label: 'Actions', width: 80 },
 ];
 
-const Announcement = () => {
+interface Props {
+  data: GetNotificationsResponse | undefined;
+}
+
+const Announcement = (props: Props) => {
+  const { data } = props;
   const { enqueueSnackbar } = useSnackbar();
 
   const table = useTable();
   const denseHeight = table.dense ? 52 : 72;
-  const { data } = notificationsApi.useGetNotificationsQuery();
 
   const notifications = data?.data || [
     {

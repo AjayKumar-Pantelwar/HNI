@@ -7,15 +7,12 @@ import EditIcon from '@mui/icons-material/Edit';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 import { useSettingsContext } from 'src/components/settings';
 import { useBoolean } from 'src/hooks/use-boolean';
+import { researchApi } from 'src/redux/api/research.api';
 import { paths } from 'src/routes/paths';
-import { ResearchData, mockGetResearchResponse } from 'src/types/content-management/research.types';
+import { ResearchData } from 'src/types/content-management/research.types';
 import { capitalize } from 'src/utils/change-case';
 import EditTabName from '../edit-tab-name';
-import ResearchTab1 from './tabs/tab1/tab1';
-
-import ResearchTab2 from './tabs/tab2/tab2';
-import ResearchTab3 from './tabs/tab3/tab3';
-import ResearchTab4 from './tabs/tab4/tab4';
+import ResearchMainView from './views/research-main-view';
 
 interface TabProps {
   tab: ResearchData;
@@ -31,7 +28,7 @@ const CustomeTab = (props: TabProps) => {
 
 const ResearchListView = () => {
   const settings = useSettingsContext();
-  const { data } = mockGetResearchResponse;
+  const { data } = researchApi.useGetResearchQuery();
 
   const edit = useBoolean();
 
@@ -44,19 +41,13 @@ const ResearchListView = () => {
   };
 
   const tabContent = (newTab: number) => {
-    switch (newTab) {
-      case 1:
-        return <ResearchTab1 data={data[newTab - 1]} />;
-      case 2:
-        return <ResearchTab2 data={data[newTab - 1]} />;
-      case 3:
-        return <ResearchTab3 data={data[newTab - 1]} />;
-      case 4:
-        return <ResearchTab4 data={data[newTab - 1]} />;
-      default:
-        return <></>;
-    }
+    const flag = data?.data?.[newTab - 1];
+
+    if (!flag) return <></>;
+    return <ResearchMainView data={data?.data?.[newTab - 1]} />;
   };
+
+  const id = data?.data?.[tab - 1]?.tab_id || '';
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
@@ -73,20 +64,25 @@ const ResearchListView = () => {
       />
       <Card sx={{ width: '100%', mt: 3 }}>
         <Box sx={{ borderBottom: 1, px: 2, borderColor: 'divider' }}>
-          <Tabs value={tab} onChange={handleChange} aria-label="notification tabs">
-            {data.map((d, i) => (
+          <Tabs
+            value={tab}
+            allowScrollButtonsMobile
+            onChange={handleChange}
+            aria-label="notification tabs"
+          >
+            {data?.data?.map((d, i) => (
               <Tab
                 key={i}
                 value={i + 1}
                 label={
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <Typography variant="subtitle2">{capitalize(d.tab_name)}</Typography>
+                    <Typography variant="subtitle2">{capitalize(d?.table_name)}</Typography>
                     {tab === i + 1 && (
                       <IconButton
                         onClick={(e) => {
                           e.stopPropagation();
                           edit.onTrue();
-                          setTabName(d.tab_name);
+                          setTabName(d?.table_name);
                         }}
                       >
                         <EditIcon fontSize="small" color="primary" />
@@ -100,7 +96,7 @@ const ResearchListView = () => {
         </Box>
         {tabContent(tab)}
       </Card>
-      <EditTabName open={edit.value} onClose={edit.onFalse} tabName={tabName} />
+      <EditTabName open={edit.value} onClose={edit.onFalse} tabName={tabName} tabId={id} />
     </Container>
   );
 };

@@ -15,6 +15,7 @@ import { productUploadApi } from './api/product-upload.api';
 import { researchApi } from './api/research.api';
 import { roleApi } from './api/role.api';
 import { userApi } from './api/user.api';
+import { VASApi } from './api/vas.api';
 import { rootReducer } from './root-reducer';
 
 export type RootState = ReturnType<typeof rootReducer>;
@@ -38,6 +39,7 @@ export const store = configureStore({
       notificationsApi.middleware,
       productUploadApi.middleware,
       researchApi.middleware,
+      VASApi.middleware,
       // dealApi.middleware,
       // companyApi.middleware,
       // constantApi.middleware,

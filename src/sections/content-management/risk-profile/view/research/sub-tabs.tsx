@@ -1,14 +1,15 @@
 import { Tab, Tabs, Typography } from '@mui/material';
-import { SubTabs } from 'src/types/content-management/research.types';
+import { ResearchRecord, ResearchViews } from 'src/types/content-management/research.types';
 import { capitalize } from 'src/utils/change-case';
 
 interface Props {
-  tab: number;
-  handleChange: (event: React.SyntheticEvent, newValue: number) => void;
+  tab: string;
+  handleChange: (event: React.SyntheticEvent, newValue: ResearchViews) => void;
+  page: ResearchRecord[];
 }
 
 const SubTabsInternal = (props: Props) => {
-  const { handleChange, tab } = props;
+  const { handleChange, tab, page } = props;
   return (
     <Tabs
       value={tab}
@@ -30,9 +31,9 @@ const SubTabsInternal = (props: Props) => {
         },
       }}
     >
-      {Object.values(SubTabs).map((d, i) => (
+      {page?.map((d, i) => (
         <Tab
-          label={<Typography variant="subtitle2">{capitalize(d)}</Typography>}
+          label={<Typography variant="subtitle2">{capitalize(d?.heading)}</Typography>}
           sx={{
             '&.MuiButtonBase-root': {
               mr: 'unset',
@@ -46,8 +47,8 @@ const SubTabsInternal = (props: Props) => {
             px: { xs: 1, md: 3 },
             py: '0',
           }}
-          key={d}
-          value={i + 1}
+          key={d?.type}
+          value={d?.type}
         />
       ))}
     </Tabs>

@@ -1,5 +1,6 @@
 import { Box, Stack, Typography } from '@mui/material';
 
+import { Accept } from 'react-dropzone';
 import { UploadIcon } from 'src/assets/icons/upload.icon';
 import { FileDropzone } from '../file-dropzone';
 
@@ -7,11 +8,13 @@ type Props = {
   handleFileChange: (file: File) => void;
   label: string;
   uploadAs?: string;
-  maxFile?: number;
+  maxFileSize?: number;
+  accept?: Accept;
 };
 
 export const UploadFile = (props: Props) => {
-  const { handleFileChange, label, uploadAs, maxFile } = props;
+  const { handleFileChange, label, uploadAs, maxFileSize, accept } = props;
+
   return (
     <Stack>
       <Typography variant="caption" color="text.secondary">
@@ -25,7 +28,7 @@ export const UploadFile = (props: Props) => {
         alignItems="center"
         pl={2}
       >
-        <FileDropzone handleFileChange={handleFileChange}>
+        <FileDropzone handleFileChange={handleFileChange} accept={accept} maxSize={maxFileSize}>
           <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
             <Box
               sx={{
@@ -49,12 +52,12 @@ export const UploadFile = (props: Props) => {
                   <Typography variant="body2">{uploadAs}</Typography>
                 </Box>
               )}
-              {maxFile && (
+              {maxFileSize && (
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <Typography variant="body2" color="text.secondary">
                     Max file size:{' '}
                   </Typography>
-                  <Typography variant="body2">{maxFile}</Typography>
+                  <Typography variant="body2">{maxFileSize} MB</Typography>
                 </Box>
               )}
             </Stack>

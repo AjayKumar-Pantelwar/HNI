@@ -55,7 +55,7 @@ const UserEditModal = (props: Props) => {
             : expanded === 'aml'
             ? UserActions.AML_BYPASS
             : UserActions.CALIBER_BYPASS,
-        mobile_number: user.mobile_number,
+        mobile_number: user.mobile,
         reason,
         status: isChecked,
       }).unwrap();
@@ -71,17 +71,17 @@ const UserEditModal = (props: Props) => {
   const details = [
     {
       title: 'KYC Mismatch',
-      value: user?.kyc_mismatch ? 'Yes' : 'No',
+      value: user?.is_kyc_mismatched ? 'Yes' : 'No',
       id: 'kyc',
     },
     {
       title: 'AML',
-      value: user?.aml ? 'Yes' : 'No',
+      value: user?.is_aml_present ? 'Yes' : 'No',
       id: 'aml',
     },
     {
       title: 'Caliber',
-      value: user?.calibre ? 'Yes' : 'No',
+      value: user?.is_calibre_user ? 'Yes' : 'No',
       id: 'caliber',
     },
   ];

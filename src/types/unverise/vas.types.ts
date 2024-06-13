@@ -1,32 +1,53 @@
 export interface GetVASResponse {
   status: string;
-  data: VASData[];
+  data: VASData;
 }
 
 export interface VASData {
+  lending_solutions: LendingSolutions;
+  wills: Wills;
+}
+
+export interface Wills {
   product_name: string;
   product_id: string;
   product_label: string;
-  nbfc_specializations?: NbfcSpecializations;
-  items?: VASItem[];
-  why_immigration?: NbfcSpecializations;
-  preferred_by_hni?: PreferredByHni;
-  pdfs?: Pdfs;
-  insurances?: Insurance[];
-  concept_section?: ConceptSection;
-  advantage_section?: AdvantageSection;
-  criteria?: Criteria;
-  estate_planning?: EstatePlanning;
-  reasons_why?: ReasonsWhy;
-  why_use?: ReasonsWhy;
-  title?: string;
-  intro?: Intro;
-  deals?: DatumDeal[];
-  about?: About;
-  portfolio?: Portfolio;
-  sectors?: Sectors;
-  past_deals?: PastDeals;
+  estate_planning: NbfcSpecializations;
+  reasons_why: NbfcSpecializations;
+  why_us: NbfcSpecializations;
 }
+export interface LendingSolutions {
+  product_name: string;
+  product_id: string;
+  product_label: string;
+  nbfc_specializations: NbfcSpecializations;
+  items: NbfcSpecializations[];
+}
+
+// export interface VASData {
+//   product_name: string;
+//   product_id: string;
+//   product_label: string;
+//   nbfc_specializations?: NbfcSpecializations;
+//   items?: VASItem[];
+//   why_immigration?: NbfcSpecializations;
+//   preferred_by_hni?: PreferredByHni;
+//   pdfs?: Pdfs;
+//   insurances?: Insurance[];
+//   concept_section?: ConceptSection;
+//   advantage_section?: AdvantageSection;
+//   criteria?: Criteria;
+//   estate_planning?: EstatePlanning;
+//   reasons_why?: ReasonsWhy;
+//   why_use?: ReasonsWhy;
+//   title?: string;
+//   intro?: Intro;
+//   deals?: DatumDeal[];
+//   about?: About;
+//   portfolio?: Portfolio;
+//   sectors?: Sectors;
+//   past_deals?: PastDeals;
+// }
 
 export interface About {
   label: string;
@@ -212,9 +233,10 @@ export interface VASItem {
 }
 
 export interface NbfcSpecializations {
-  label: string;
-  wealth_logo: string;
-  items: string[];
+  id: string;
+  title: string;
+  logo?: string;
+  description: string[];
 }
 
 export interface PastDeals {
@@ -275,7 +297,12 @@ export interface SectorsAll {
   perc: string;
 }
 
-export const mockGetVASResponse: GetVASResponse = {
+export enum VASProductTabs {
+  LENDINGSOLUTIONS = 'lending_solutions',
+  WILLS = 'wills',
+}
+
+export const mockGetVASResponse = {
   status: 'success',
   data: [
     {

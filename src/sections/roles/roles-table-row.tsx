@@ -1,7 +1,6 @@
 'use client';
 
 import KeyRoundedIcon from '@mui/icons-material/KeyRounded';
-import ModeEditOutlineRoundedIcon from '@mui/icons-material/ModeEditOutlineRounded';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import ListItemText from '@mui/material/ListItemText';
@@ -9,6 +8,7 @@ import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import Tooltip from '@mui/material/Tooltip';
 import Link from 'next/link';
+import EditIcon from 'src/assets/icons/edit-icon';
 // import { usePerm } from 'src/hooks/use-perm';
 import { paths } from 'src/routes/paths';
 import { Role } from 'src/types/role.types';
@@ -47,7 +47,7 @@ export default function RolesTableRow({ row, selected, onSelectRow }: Props) {
             href={paths.dashboard.admin.roles.edit(row.rid)}
             sx={{ py: 0 }}
           >
-            <ModeEditOutlineRoundedIcon />
+            <EditIcon />
           </IconButton>
         </Tooltip>
       </TableCell>

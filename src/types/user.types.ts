@@ -1,6 +1,6 @@
 import { ApiResponse } from './api.types';
 
-export type GetUserResponse = ApiResponse<User[]>;
+export type GetUserResponse = ApiResponse<{ users: User[] }>;
 
 export interface GetUserRequest {
   name: string;
@@ -15,16 +15,11 @@ export interface GetUserRequest {
 
 export interface User {
   id: number;
-  client_name: string;
-  email: string;
-  mobile_number: string;
-  pan: string;
-  kyc_mismatch: boolean;
-  aml: boolean;
-  calibre: boolean;
-  is_blocked: boolean;
   name: string;
+  pan: string;
   mobile: string;
+  email: string;
+  is_blocked: boolean;
   is_kyc_mismatched: boolean;
   is_aml_present: boolean;
   is_calibre_user: boolean;

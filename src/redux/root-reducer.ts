@@ -11,6 +11,7 @@ import { productUploadApi } from './api/product-upload.api';
 import { researchApi } from './api/research.api';
 import { roleApi } from './api/role.api';
 import { userApi } from './api/user.api';
+import { VASApi } from './api/vas.api';
 import { authSlice } from './slices/auth.slice';
 
 export const createNoopStorage = () => ({
@@ -46,6 +47,7 @@ export const rootReducer = combineReducers({
   [notificationsApi.reducerPath]: notificationsApi.reducer,
   [productUploadApi.reducerPath]: productUploadApi.reducer,
   [researchApi.reducerPath]: researchApi.reducer,
+  [VASApi.reducerPath]: VASApi.reducer,
 
   // [dealApi.reducerPath]: dealApi.reducer,
   // [constantApi.reducerPath]: constantApi.reducer,

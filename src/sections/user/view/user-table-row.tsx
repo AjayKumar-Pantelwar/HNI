@@ -1,9 +1,9 @@
-import ModeEditOutlineRoundedIcon from '@mui/icons-material/ModeEditOutlineRounded';
 import { Checkbox, IconButton, MenuItem, TableCell, TableRow, Tooltip } from '@mui/material';
 import { useState } from 'react';
 
 import BlockIcon from '@mui/icons-material/Block';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import EditIcon from 'src/assets/icons/edit-icon';
 import { usePopover } from 'src/components/custom-popover';
 import CustomPopover from 'src/components/custom-popover/custom-popover';
 import { useBoolean } from 'src/hooks/use-boolean';
@@ -53,12 +53,12 @@ const UserTableRow = (props: Props) => {
           <Checkbox checked={selected} onClick={onSelectRow} />
         </TableCell>
       )}
-      <TableCell>{row?.client_name}</TableCell>
-      <TableCell>{row?.mobile_number}</TableCell>
+      <TableCell>{row?.name}</TableCell>
+      <TableCell>{row?.mobile}</TableCell>
       <TableCell>{row?.pan}</TableCell>
-      <TableCell>{row?.kyc_mismatch ? 'Yes' : 'No'}</TableCell>
-      <TableCell>{row?.aml ? 'Yes' : 'No'}</TableCell>
-      <TableCell>{row?.calibre ? 'Yes' : 'No'}</TableCell>
+      <TableCell>{row?.is_kyc_mismatched ? 'Yes' : 'No'}</TableCell>
+      <TableCell>{row?.is_aml_present ? 'Yes' : 'No'}</TableCell>
+      <TableCell>{row?.is_calibre_user ? 'Yes' : 'No'}</TableCell>
       <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
         <Tooltip title="Quick Edit" placement="top" arrow>
           <IconButton sx={{ py: 0 }} onClick={popover.onOpen}>
@@ -80,7 +80,7 @@ const UserTableRow = (props: Props) => {
             popover.onClose();
           }}
         >
-          <ModeEditOutlineRoundedIcon />
+          <EditIcon />
           Edit
         </MenuItem>
         {/* )} */}

@@ -59,19 +59,11 @@ export const PreviewFile = (props: Props) => {
                 textOverflow: 'ellipsis',
               }}
             >
-              {getFileName(selectedFile)}
+              {getFileName(selectedFile)}{' '}
+              <Typography sx={{ color: 'text.primary' }}>
+                {fileSizeInMB(selectedFile)} MB
+              </Typography>
             </Typography>
-
-            {/* <Typography
-              variant="h6"
-              fontSize={9}
-              fontWeight={400}
-              color="text.primary"
-              display="flex"
-            >
-              <Box sx={{ color: 'text.secondary' }}>File Size :</Box>&nbsp;
-              {fileSizeInMB(selectedFile)} MB
-            </Typography> */}
           </Box>
           <Box
             sx={{

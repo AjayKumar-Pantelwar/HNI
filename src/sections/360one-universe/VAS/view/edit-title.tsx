@@ -1,25 +1,28 @@
 import Close from '@mui/icons-material/Close';
-import { Box, Button, Divider, IconButton, Stack, TextField, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Divider,
+  IconButton,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 import Dialog from '@mui/material/Dialog';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 
 interface Props {
   open: boolean;
   onClose: () => void;
-  title: string;
-  onSubmit?: () => void;
+  value: string;
+  setValue: Dispatch<SetStateAction<string>>;
+  onSubmit?: () => Promise<void>;
+  isSubmitting?: boolean;
 }
 
 const EditTitle = (props: Props) => {
-  const { onClose, open, title, onSubmit } = props;
-
-  const [value, setValue] = useState('');
-
-  useEffect(() => {
-    if (title) {
-      setValue(title);
-    }
-  }, [title]);
+  const { onClose, open, value, onSubmit, setValue, isSubmitting } = props;
 
   return (
     <Dialog
@@ -56,8 +59,8 @@ const EditTitle = (props: Props) => {
         </Box>
         <Divider />
         <Box sx={{ display: 'flex', justifyContent: 'end', p: 3 }}>
-          <Button variant="contained" disabled={!value} onClick={onSubmit}>
-            Save Changes
+          <Button variant="contained" disabled={!value || isSubmitting} onClick={onSubmit}>
+            {isSubmitting ? <CircularProgress /> : 'Save Changes'}
           </Button>
         </Box>
       </Stack>

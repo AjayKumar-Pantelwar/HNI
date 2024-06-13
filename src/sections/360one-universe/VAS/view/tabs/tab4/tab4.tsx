@@ -27,8 +27,6 @@ const VASTab4 = (props: Props) => {
 
   const editDetails = useBoolean();
 
-  console.log(data);
-
   return (
     <Stack sx={{ p: 3, gap: 3 }}>
       <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>

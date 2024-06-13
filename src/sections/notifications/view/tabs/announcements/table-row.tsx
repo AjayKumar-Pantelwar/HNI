@@ -1,9 +1,8 @@
-import ModeEditOutlineRoundedIcon from '@mui/icons-material/ModeEditOutlineRounded';
-
 import { Box, IconButton, TableCell, TableRow } from '@mui/material';
 import { usePopover } from 'src/components/custom-popover';
 
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from 'src/assets/icons/delete-icon';
+import EditIcon from 'src/assets/icons/edit-icon';
 import { useBoolean } from 'src/hooks/use-boolean';
 import { Notifications } from 'src/types/notifications.types';
 import { fDate } from 'src/utils/format-time';
@@ -30,7 +29,7 @@ export const Tab1TableRow = (row: Notifications) => {
               popover.onClose();
             }}
           >
-            <ModeEditOutlineRoundedIcon />
+            <EditIcon />
           </IconButton>
           <IconButton
             onClick={() => {

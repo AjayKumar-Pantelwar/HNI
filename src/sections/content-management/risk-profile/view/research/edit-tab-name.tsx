@@ -1,24 +1,49 @@
 import Close from '@mui/icons-material/Close';
-import { Box, Button, Divider, IconButton, Stack, TextField, Typography } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
+import { Box, Divider, IconButton, Stack, TextField, Typography } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import { useEffect, useState } from 'react';
+import { useSnackbar } from 'src/components/snackbar';
+import { researchApi } from 'src/redux/api/research.api';
+import { handleError } from 'src/utils/handle-error';
 
 interface Props {
   open: boolean;
   onClose: () => void;
   tabName: string;
+  tabId: string;
 }
 
 const EditTabName = (props: Props) => {
-  const { onClose, open, tabName } = props;
+  const { onClose, open, tabName, tabId } = props;
 
   const [value, setValue] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [updateTab] = researchApi.useUpdateTabMutation();
+
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     if (tabName) {
       setValue(tabName);
     }
   }, [tabName]);
+
+  async function handleSubmit() {
+    try {
+      setIsLoading(true);
+      if (value && tabId) {
+        await updateTab({ tab_name: value, tab_id: tabId }).unwrap();
+        enqueueSnackbar('Update success!');
+      }
+    } catch (error) {
+      handleError(error);
+    } finally {
+      setIsLoading(false);
+      onClose();
+    }
+  }
 
   return (
     <Dialog
@@ -55,7 +80,14 @@ const EditTabName = (props: Props) => {
         </Box>
         <Divider />
         <Box sx={{ display: 'flex', justifyContent: 'end', p: 3 }}>
-          <Button variant="contained">Save Changes</Button>
+          <LoadingButton
+            disabled={!value || isLoading}
+            loading={isLoading}
+            variant="contained"
+            onClick={() => handleSubmit()}
+          >
+            Save Changes
+          </LoadingButton>
         </Box>
       </Stack>
     </Dialog>

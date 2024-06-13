@@ -1,6 +1,5 @@
 'use client';
 
-import ModeEditOutlineRoundedIcon from '@mui/icons-material/ModeEditOutlineRounded';
 import { Avatar, Box, ListItemText } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
@@ -10,6 +9,7 @@ import Tooltip from '@mui/material/Tooltip';
 import Link from 'next/link';
 // import { usePerm } from 'src/hooks/use-perm';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import EditIcon from 'src/assets/icons/edit-icon';
 import { paths } from 'src/routes/paths';
 import { BondElement } from 'src/types/bonds.types';
 import { fDate } from 'src/utils/format-time';
@@ -67,7 +67,7 @@ export default function BondsTableRow({ row, selected, onSelectRow }: Props) {
               href={paths.dashboard.bonds.edit(row?.bond?.bond_id)}
               sx={{ py: 0 }}
             >
-              <ModeEditOutlineRoundedIcon />
+              <EditIcon />
             </IconButton>
           </Tooltip>
         </Box>

@@ -113,7 +113,7 @@ const EditIntroductionModal = (props: Props) => {
                     {!video ? (
                       <UploadFile
                         uploadAs="JPG"
-                        maxFile={2}
+                        maxFileSize={2}
                         label="Upload Image"
                         handleFileChange={handleVideoChangePerm}
                       />
@@ -129,7 +129,7 @@ const EditIntroductionModal = (props: Props) => {
                     {!thumbnail ? (
                       <UploadFile
                         uploadAs="JPG"
-                        maxFile={2}
+                        maxFileSize={2}
                         label="Upload Image"
                         handleFileChange={handleThumbnailChangePerm}
                       />
@@ -145,7 +145,7 @@ const EditIntroductionModal = (props: Props) => {
                     {!logo ? (
                       <UploadFile
                         uploadAs="JPG"
-                        maxFile={2}
+                        maxFileSize={2}
                         label="Upload Image"
                         handleFileChange={handleLogoChangePerm}
                       />

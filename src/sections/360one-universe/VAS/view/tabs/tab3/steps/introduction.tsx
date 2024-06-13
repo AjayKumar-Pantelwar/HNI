@@ -30,7 +30,7 @@ const Introduction = (props: Props) => {
         {!logo ? (
           <UploadFile
             uploadAs="JPG"
-            maxFile={2}
+            maxFileSize={2}
             label="Upload Image"
             handleFileChange={handleFileChangePerm}
           />
