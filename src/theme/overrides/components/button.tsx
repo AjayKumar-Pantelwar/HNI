@@ -43,6 +43,7 @@ export default function Button(theme: Theme) {
           '&:hover': {
             backgroundColor: isLight ? theme.palette.grey[700] : theme.palette.grey[400],
           },
+          borderRadius: '4px',
         }),
         // OUTLINED
         ...(outlinedVariant && {

@@ -31,7 +31,7 @@ declare module '@mui/material/styles' {
 }
 
 export const primaryFont = Space_Grotesk({
-  weight: ['300', '400', '500', '600', '700'],
+  weight: ['600'],
   subsets: ['latin'],
   display: 'swap',
   fallback: ['Helvetica', 'Arial', 'sans-serif'],
