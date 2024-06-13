@@ -74,6 +74,8 @@ const UserListView = () => {
     }
   };
 
+  console.log(data);
+
   return (
     <Box>
       <Card>
@@ -97,9 +99,12 @@ const UserListView = () => {
           <TableSelectedAction
             dense={table.dense}
             numSelected={table.selected.length}
-            rowCount={data?.data?.length || 0}
+            rowCount={data?.data?.users?.length || 0}
             onSelectAllRows={(checked) =>
-              table.onSelectAllRows(checked, data?.data?.map((row) => row.id.toString()) || [])
+              table.onSelectAllRows(
+                checked,
+                data?.data?.users?.map((row) => row.id.toString()) || []
+              )
             }
           />
 
@@ -109,7 +114,7 @@ const UserListView = () => {
                 order={table.order}
                 orderBy={table.orderBy}
                 headLabel={TABLE_HEAD}
-                rowCount={data?.data?.length}
+                rowCount={data?.data?.users?.length}
                 numSelected={table.selected.length}
                 onSort={table.onSort}
                 // onSelectAllRows={(checked) =>
@@ -118,7 +123,7 @@ const UserListView = () => {
               />
 
               <TableBody>
-                {[...(data?.data || [])]
+                {[...(data?.data?.users || [])]
                   .slice(
                     table.page * table.rowsPerPage,
                     table.page * table.rowsPerPage + table.rowsPerPage
@@ -134,16 +139,20 @@ const UserListView = () => {
 
                 <TableEmptyRows
                   height={denseHeight}
-                  emptyRows={emptyRows(table.page, table.rowsPerPage, data?.data?.length || 0)}
+                  emptyRows={emptyRows(
+                    table.page,
+                    table.rowsPerPage,
+                    data?.data?.users?.length || 0
+                  )}
                 />
 
-                <TableNoData notFound={!data?.data?.length} />
+                <TableNoData notFound={!data?.data?.users?.length} />
               </TableBody>
             </Table>
           </Scrollbar>
         </TableContainer>
         <TablePaginationCustom
-          count={data?.data?.length || 0}
+          count={data?.data?.users?.length || 0}
           page={table.page}
           rowsPerPage={table.rowsPerPage}
           onPageChange={table.onChangePage}

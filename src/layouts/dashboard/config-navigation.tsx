@@ -81,25 +81,24 @@ export function useNavData() {
               { title: t('PDF'), path: paths.dashboard.productUpload.pdfUpload.root },
             ],
           },
-          {
-            title: t('Bonds'),
-            path: paths.dashboard.bonds.root,
-            Icon: MIcons.investors,
-            children: [
-              { title: t('list'), path: paths.dashboard.bonds.list },
-              { title: t('create'), path: paths.dashboard.bonds.new },
-            ],
-          },
-          {
-            title: t('MLDS'),
-            path: paths.dashboard.mlds.root,
-            Icon: MIcons.mlds,
-            children: [
-              { title: t('list'), path: paths.dashboard.mlds.list },
-              { title: t('create'), path: paths.dashboard.mlds.new },
-            ],
-          },
-
+          // {
+          //   title: t('Bonds'),
+          //   path: paths.dashboard.bonds.root,
+          //   Icon: MIcons.investors,
+          //   children: [
+          //     { title: t('list'), path: paths.dashboard.bonds.list },
+          //     { title: t('create'), path: paths.dashboard.bonds.new },
+          //   ],
+          // },
+          // {
+          //   title: t('MLDS'),
+          //   path: paths.dashboard.mlds.root,
+          //   Icon: MIcons.mlds,
+          //   children: [
+          //     { title: t('list'), path: paths.dashboard.mlds.list },
+          //     { title: t('create'), path: paths.dashboard.mlds.new },
+          //   ],
+          // },
           {
             title: t('Content Management'),
             Icon: MIcons.contentManagement,
