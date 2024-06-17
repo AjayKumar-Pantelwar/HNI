@@ -1,50 +1,52 @@
-import merge from 'lodash/merge';
 import { Theme } from '@mui/material/styles';
+import merge from 'lodash/merge';
 //
-import Fab from './components/fab';
+
+import Accordion from './components/accordion';
+import Alert from './components/alert';
+import AppBar from './components/appbar';
+import Autocomplete from './components/autocomplete';
+import Avatar from './components/avatar';
+import Backdrop from './components/backdrop';
+import Badge from './components/badge';
+import Breadcrumbs from './components/breadcrumbs';
+import Button from './components/button';
+import ButtonGroup from './components/button-group';
 import Card from './components/card';
+import Checkbox from './components/checkbox';
 import Chip from './components/chip';
-import Tabs from './components/tabs';
-import Menu from './components/menu';
+import CssBaseline from './components/css-baseline';
+import DataGrid from './components/data-grid';
+import MuiDatePicker from './components/date-picker';
+import Dialog from './components/dialog';
+import Divider from './components/divider';
+import Drawer from './components/drawer';
+import Fab from './components/fab';
 import Link from './components/link';
 import Lists from './components/list';
-import Table from './components/table';
-import Alert from './components/alert';
-import Badge from './components/badge';
+import LoadingButton from './components/loading-button';
+import Menu from './components/menu';
+import Pagination from './components/pagination';
 import Paper from './components/paper';
-import Stack from './components/stack';
-import AppBar from './components/appbar';
-import Drawer from './components/drawer';
-import Dialog from './components/dialog';
-import Avatar from './components/avatar';
-import Rating from './components/rating';
-import Slider from './components/slider';
-import Button from './components/button';
-import Switch from './components/switch';
-import Select from './components/select';
-import Tooltip from './components/tooltip';
 import Popover from './components/popover';
+import Progress from './components/progress';
+import RadioButton from './components/radio-button';
+import Rating from './components/rating';
+import Select from './components/select';
+import Skeleton from './components/skeleton';
+import Slider from './components/slider';
+import Stack from './components/stack';
 import Stepper from './components/stepper';
 import SvgIcon from './components/svg-icon';
-import Skeleton from './components/skeleton';
-import Backdrop from './components/backdrop';
-import Progress from './components/progress';
-import Timeline from './components/timeline';
-import Checkbox from './components/checkbox';
-import DataGrid from './components/data-grid';
-import TreeView from './components/tree-view';
+import Switch from './components/switch';
+import Table from './components/table';
+import Tabs from './components/tabs';
 import TextField from './components/textfield';
-import Accordion from './components/accordion';
-import Typography from './components/typography';
-import Pagination from './components/pagination';
-import Breadcrumbs from './components/breadcrumbs';
-import CssBaseline from './components/css-baseline';
-import RadioButton from './components/radio-button';
-import ButtonGroup from './components/button-group';
-import Autocomplete from './components/autocomplete';
-import MuiDatePicker from './components/date-picker';
+import Timeline from './components/timeline';
 import ToggleButton from './components/toggle-button';
-import LoadingButton from './components/loading-button';
+import Tooltip from './components/tooltip';
+import TreeView from './components/tree-view';
+import Typography from './components/typography';
 
 // ----------------------------------------------------------------------
 
@@ -93,7 +95,8 @@ export function componentsOverrides(theme: Theme) {
     Autocomplete(theme),
     ToggleButton(theme),
     MuiDatePicker(theme),
-    LoadingButton(theme)
+    LoadingButton(theme),
+    Divider(theme)
   );
 
   return components;

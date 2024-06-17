@@ -43,6 +43,8 @@ export default function Table(theme: Theme) {
       styleOverrides: {
         root: {
           borderBottomStyle: 'dashed',
+          fontSize: 12,
+          fontWeight: theme.typography.fontWeightMedium,
         },
         head: {
           fontSize: 12,

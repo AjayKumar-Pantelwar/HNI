@@ -45,8 +45,8 @@ const AddPDFLinkModal = (props: Props) => {
     subtitle: card?.subtitle || '',
     sub_text1: card?.sub_text1 || '',
     // expiryDate: '',
-    image: card?.image || '',
-    pdf: card?.pdf || '',
+    image: card?.image_link || '',
+    pdf: card?.pdf_link || '',
     card_id: card?.card_id || '',
     color: card?.color || '',
     field1: card?.field1 || '',
@@ -59,9 +59,9 @@ const AddPDFLinkModal = (props: Props) => {
     sub_text3: card?.sub_text3 || '',
     tags: card?.tags.join(',') || '',
     text: card?.text || '',
-    video: card?.video || '',
+    video: card?.video_link || '',
     page_type: page?.type || '',
-    article: card?.article || '',
+    article: card?.article_link || '',
   };
 
   const methods = useForm({

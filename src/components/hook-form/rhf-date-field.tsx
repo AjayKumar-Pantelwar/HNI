@@ -27,7 +27,7 @@ export default function RHFDateField<TDate extends Date>({
         return (
           <Stack>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <Typography variant="caption" color="text.secondary">
+              <Typography variant="caption" fontWeight={500} color="text.secondary">
                 {label}
               </Typography>
             </Box>

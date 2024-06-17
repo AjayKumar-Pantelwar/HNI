@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import Drawer from '@mui/material/Drawer';
 import React, { useState } from 'react';
+import { secondaryFont } from 'src/theme/typography';
 
 interface Props {
   open: boolean;
@@ -35,9 +36,13 @@ const FiltersDrawer = (props: Props) => {
     >
       <Stack sx={{ height: '100%' }}>
         <Stack sx={{ flex: 1, gap: 3 }}>
-          <Typography variant="h6">Filter by</Typography>
+          <Typography variant="h6" sx={{ fontFamily: secondaryFont.style.fontFamily }}>
+            Filter by
+          </Typography>
           <Stack sx={{ gap: 3 }}>
-            <Typography variant="subtitle1">Status</Typography>
+            <Typography variant="subtitle1" sx={{ fontFamily: secondaryFont.style.fontFamily }}>
+              Status
+            </Typography>
             <Divider variant="fullWidth" />
             <RadioGroup
               row

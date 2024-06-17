@@ -25,10 +25,10 @@ export interface ResearchCard {
   text: string;
   link: string;
   tags: Tag[];
-  image: string;
-  pdf: string;
+  image_link: string;
+  pdf_link: string;
   logo: string;
-  video: string;
+  video_link: string;
   color: string;
   field1: string;
   field2: string;
@@ -39,7 +39,7 @@ export interface ResearchCard {
   sub_text2: string;
   sub_text3: string;
   page_type: string;
-  article: string;
+  article_link: string;
 }
 
 export enum SubText1 {

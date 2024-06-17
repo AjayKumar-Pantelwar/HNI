@@ -30,14 +30,14 @@ declare module '@mui/material/styles' {
   }
 }
 
-export const primaryFont = Space_Grotesk({
+export const secondaryFont = Space_Grotesk({
   weight: ['600'],
   subsets: ['latin'],
   display: 'swap',
   fallback: ['Helvetica', 'Arial', 'sans-serif'],
 });
 
-export const secondaryFont = Hanken_Grotesk({
+export const primaryFont = Hanken_Grotesk({
   weight: ['300', '400', '500', '600', '700'],
   subsets: ['latin'],
   display: 'swap',

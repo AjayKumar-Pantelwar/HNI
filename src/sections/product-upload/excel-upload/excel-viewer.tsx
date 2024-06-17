@@ -1,6 +1,5 @@
 'use client';
 
-import FileUpload from '@mui/icons-material/FileUpload';
 import {
   Box,
   Button,
@@ -19,6 +18,7 @@ import {
 import React, { useState } from 'react';
 import DownloadIcon from 'src/assets/icons/download-icon';
 import Filters from 'src/assets/icons/filters';
+import UploadOutlinedIcon from 'src/assets/icons/upload-outlined-icon';
 import { useBoolean } from 'src/hooks/use-boolean';
 import { UploadResponseData } from 'src/types/product-upload.types';
 import FiltersDrawer from './filters-drawer';
@@ -183,7 +183,11 @@ const ExcelViewer = (props: Props) => {
           <Button variant="contained" startIcon={<DownloadIcon />} onClick={handleDownload}>
             Download
           </Button>
-          <Button onClick={() => setOpen(true)} variant="contained" startIcon={<FileUpload />}>
+          <Button
+            onClick={() => setOpen(true)}
+            variant="contained"
+            startIcon={<UploadOutlinedIcon />}
+          >
             Upload Excel
           </Button>
           <Button

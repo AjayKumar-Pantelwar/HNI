@@ -1,7 +1,8 @@
-import SystemUpdateAltIcon from '@mui/icons-material/SystemUpdateAlt';
 import { Button, Stack, Typography } from '@mui/material';
+import DownloadIcon from 'src/assets/icons/download-icon';
 
 import MutualFundsIcon from 'src/assets/icons/mutual-funds';
+import { secondaryFont } from 'src/theme/typography';
 import { ExcelUploadTabs } from 'src/types/product-upload.types';
 
 interface Props {
@@ -26,8 +27,10 @@ const DownloadFile = (props: Props) => {
   return (
     <Stack sx={{ gap: 2, alignItems: 'center', flex: 1, p: 3 }}>
       <MutualFundsIcon />
-      <Typography variant="h6">{content}</Typography>
-      <Button startIcon={<SystemUpdateAltIcon />} variant="contained" onClick={handleDownload}>
+      <Typography variant="h6" sx={{ fontFamily: secondaryFont.style.fontFamily }}>
+        {content}
+      </Typography>
+      <Button startIcon={<DownloadIcon />} variant="contained" onClick={handleDownload}>
         Download Now
       </Button>
     </Stack>

@@ -3,7 +3,7 @@
 import { Box, Card, Container, IconButton, Tab, Tabs, Typography } from '@mui/material';
 import { useState } from 'react';
 
-import EditIcon from '@mui/icons-material/Edit';
+import EditIcon from 'src/assets/icons/edit-icon';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 import { useSettingsContext } from 'src/components/settings';
 import { useBoolean } from 'src/hooks/use-boolean';
@@ -63,7 +63,7 @@ const ResearchListView = () => {
         }}
       />
       <Card sx={{ width: '100%', mt: 3 }}>
-        <Box sx={{ borderBottom: 1, px: 2, borderColor: 'divider' }}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs
             value={tab}
             allowScrollButtonsMobile

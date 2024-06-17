@@ -19,7 +19,7 @@ import TickIcon from 'src/assets/icons/tick-icon';
 import { roleApi } from 'src/redux/api/role.api';
 import { secondaryFont } from 'src/theme/typography';
 import { Admin } from 'src/types/admin.types';
-import { capitalize, titleCase } from 'src/utils/change-case';
+import { titleCase } from 'src/utils/change-case';
 import AdminBlockForm from './admin-block-form';
 import AdminQuickEditForm from './admin-quick-edit-form';
 import AdminRoleForm from './admin-role-form';
@@ -61,7 +61,7 @@ export default function AdminTableRow(props: Props) {
         )}
 
         <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
-          <Avatar src={capitalize(row.name)} alt={row.name} sx={{ mr: 2 }} />
+          <Avatar src={row.name.toLocaleUpperCase()} alt={row.name} sx={{ mr: 2 }} />
           <ListItemText
             primary={row.name}
             secondary={row.email}
@@ -72,18 +72,15 @@ export default function AdminTableRow(props: Props) {
             secondaryTypographyProps={{
               component: 'span',
               color: 'text.disabled',
-              fontFamily: secondaryFont.style.fontFamily,
             }}
           />
         </TableCell>
 
-        <TableCell sx={{ whiteSpace: 'nowrap', fontFamily: secondaryFont.style.fontFamily }}>
-          {row.username}
-        </TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{row.username}</TableCell>
 
         <TableCell sx={{ whiteSpace: 'nowrap' }}>
           <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-            <Typography noWrap variant="body2" sx={{ fontFamily: secondaryFont.style.fontFamily }}>
+            <Typography noWrap variant="caption" sx={{ fontWeight: 500 }}>
               {titleCase(role)}
             </Typography>
             <IconButton sx={{ p: 0 }} onClick={rolePopover.onTrue}>

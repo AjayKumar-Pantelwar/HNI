@@ -44,8 +44,8 @@ const AddSpeakerModal = (props: Props) => {
     speakerName: '',
     description: '',
     logo: card?.logo || '',
-    image: card?.image || '',
-    pdf: card?.pdf || '',
+    image: card?.image_link || '',
+    pdf: card?.pdf_link || '',
     card_id: card?.card_id || '',
     color: card?.color || '',
     field1: card?.field1 || '',
@@ -55,11 +55,12 @@ const AddSpeakerModal = (props: Props) => {
     page_id: page?.page_id || '',
     sub_text2: card?.sub_text2 || '',
     sub_text3: card?.sub_text3 || '',
+    sub_text1: card?.sub_text1 || '',
     tags: card?.tags.join(',') || '',
     text: card?.text || '',
-    video: card?.video || '',
+    video: card?.video_link || '',
     page_type: page?.type || '',
-    article: card?.article || '',
+    article: card?.article_link || '',
   };
 
   const methods = useForm({
@@ -132,13 +133,7 @@ const AddSpeakerModal = (props: Props) => {
             <Grid item md={6} xs={12}>
               <Stack gap={3}>
                 <RHFTextField name="title" label="Title" />
-                <RHFTextField
-                  name="description"
-                  label="Description"
-                  maxLimitCharacters={200}
-                  multiline
-                  rows={3}
-                />
+                <RHFTextField name="sub_text1" label="Designation" maxLimitCharacters={200} />
                 {!video ? (
                   <UploadFile
                     uploadAs="MP4"
@@ -157,7 +152,7 @@ const AddSpeakerModal = (props: Props) => {
             </Grid>
             <Grid item md={6} xs={12}>
               <Stack gap={3}>
-                <RHFTextField name="speakerName" label="Tags" />
+                <RHFTextField name="text" label="Speaker Name" />
                 {!logo ? (
                   <UploadFile
                     uploadAs="JPG"
