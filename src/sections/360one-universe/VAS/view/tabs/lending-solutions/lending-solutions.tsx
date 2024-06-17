@@ -3,6 +3,7 @@
 import {
   Box,
   Button,
+  Card,
   Grid,
   IconButton,
   List,
@@ -18,6 +19,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { useState } from 'react';
 import DeleteIcon from 'src/assets/icons/delete-icon';
 import EditIcon from 'src/assets/icons/edit-icon';
+import Star from 'src/assets/icons/star';
 import { useSnackbar } from 'src/components/snackbar';
 import { VASApi } from 'src/redux/api/vas.api';
 import { LendingSolutions, NbfcSpecializations } from 'src/types/unverise/vas.types';
@@ -78,31 +80,47 @@ const LendingSolutionsTab = (props: Props) => {
         </IconButton>
       </Box>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-        <Box sx={{ border: '1px solid', borderColor: 'divider', borderRadius: 1, p: 2 }}>
-          <img src="/logo/360logo.png" alt="360One" width={40} height={40} />
-        </Box>
-        <Box
+        <Card
           sx={{
-            border: '1px solid',
-            borderColor: 'divider',
-            borderRadius: 1,
+            width: 95,
+            height: 95,
+            borderRadius: 'unset',
             display: 'flex',
-            alignItems: 'end',
-            gap: 1,
-            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            position: 'absolute',
+            zIndex: 1,
           }}
         >
-          <List component={Stack} sx={{ flex: 1 }}>
-            {data?.nbfc_specializations?.description?.map((c, i) => (
-              <ListItem key={i}>
-                <ListItemIcon sx={{ fontSize: 20 }}>*</ListItemIcon>
-                <Typography>{c}</Typography>
-              </ListItem>
-            ))}
-          </List>
-          <IconButton onClick={() => addSpecifications.onTrue()}>
-            <EditIcon />
-          </IconButton>
+          <img src={data?.nbfc_specializations?.logo} alt="360One" width={40} height={40} />
+        </Card>
+        <Box sx={{ display: 'flex', justifyContent: 'end' }}>
+          <Box
+            sx={{
+              border: '1px solid',
+              borderColor: 'divider',
+              borderRadius: 1,
+              display: 'flex',
+              alignItems: 'end',
+              gap: 1,
+              flexBasis: '95%',
+              justifyContent: 'end',
+            }}
+          >
+            <List component={Stack} sx={{ flex: 1, pl: 6 }}>
+              {data?.nbfc_specializations?.description?.map((c, i) => (
+                <ListItem key={i}>
+                  <ListItemIcon sx={{ fontSize: 40 }}>
+                    <Star />
+                  </ListItemIcon>
+                  <Typography>{c}</Typography>
+                </ListItem>
+              ))}
+            </List>
+            <IconButton onClick={() => addSpecifications.onTrue()}>
+              <EditIcon />
+            </IconButton>
+          </Box>
         </Box>
       </Box>
       <Grid container spacing={3}>

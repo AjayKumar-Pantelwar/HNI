@@ -109,10 +109,10 @@ export function useNavData() {
                 path: paths.dashboard.contentManagement.reasearch.list,
               },
               { title: t('Pre Onboarding'), path: paths.dashboard.contentManagement.carousel.list },
-              {
-                title: t('Risk Profile'),
-                path: paths.dashboard.contentManagement.riskProfile.list,
-              },
+              // {
+              //   title: t('Risk Profile'),
+              //   path: paths.dashboard.contentManagement.riskProfile.list,
+              // },
             ],
           },
           {

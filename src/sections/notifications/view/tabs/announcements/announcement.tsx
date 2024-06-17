@@ -52,7 +52,7 @@ const Announcement = (props: Props) => {
   ];
 
   return (
-    <Box sx={{ p: 3 }}>
+    <Box>
       {notifications?.length === 0 ? (
         <AnnouncementForm />
       ) : (
