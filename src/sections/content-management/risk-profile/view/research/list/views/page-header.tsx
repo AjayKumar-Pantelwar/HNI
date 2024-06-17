@@ -51,7 +51,7 @@ const PageHeader = (props: Props) => {
   }, [filters]);
 
   return (
-    <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+    <Box sx={{ display: 'flex', gap: 5, alignItems: 'center' }}>
       {page?.heading && (
         <>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -63,7 +63,7 @@ const PageHeader = (props: Props) => {
           <Divider sx={{ height: '100px' }} orientation="vertical" variant="fullWidth" />
         </>
       )}
-      <Stack sx={{ alignItems: 'start' }}>
+      <Stack sx={{ alignItems: 'start', gap: 1 }}>
         <Typography variant="body1" color="text.secondary">
           Downloadable
         </Typography>
@@ -75,7 +75,7 @@ const PageHeader = (props: Props) => {
         />
       </Stack>
       <Divider sx={{ height: '100px' }} orientation="vertical" variant="fullWidth" />
-      <Stack sx={{ alignItems: 'start' }}>
+      <Stack sx={{ alignItems: 'start', gap: 1 }}>
         <Typography variant="body1" color="text.secondary">
           Shareable
         </Typography>
