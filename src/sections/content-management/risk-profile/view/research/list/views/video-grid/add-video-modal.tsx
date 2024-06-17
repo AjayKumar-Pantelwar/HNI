@@ -43,17 +43,16 @@ const AddVideoModal = (props: Props) => {
     title: Yup.string()
       .required('Title is required')
       .max(40, 'Title must be less than 50 characters'),
-    image: Yup.mixed().nonNullable().required('Image is required'),
-    video: Yup.mixed().nonNullable().required('Document is required'),
+    image_link: Yup.mixed().nonNullable().required('Image is required'),
+    video_link: Yup.mixed().nonNullable().required('Document is required'),
   });
 
   const defaultValues = {
     title: card?.title || '',
     subtitle: card?.subtitle || '',
     sub_text1: card?.sub_text1 || '',
-    // expiryDate: '',
-    image: card?.image_link || '',
-    pdf: card?.pdf_link || '',
+    image_link: card?.image_link || '',
+    pdf_link: card?.pdf_link || '',
     card_id: card?.card_id || '',
     color: card?.color || '',
     field1: card?.field1 || '',
@@ -66,7 +65,7 @@ const AddVideoModal = (props: Props) => {
     sub_text3: card?.sub_text3 || '',
     tags: card?.tags || [],
     text: card?.text || '',
-    video: card?.video_link || '',
+    video_link: card?.video_link || '',
     page_type: page?.type || '',
     article: card?.article_link || '',
   };
@@ -84,16 +83,16 @@ const AddVideoModal = (props: Props) => {
     setValue,
   } = methods;
 
-  const image = watch('image');
+  const image = watch('image_link');
 
   const handleImageChangePerm = (file: File | null) => {
-    setValue('image', file as any);
+    setValue('image_link', file as any);
   };
 
-  const video = watch('video');
+  const video = watch('video_link');
 
   const handleVideoChangePerm = (file: File | null) => {
-    setValue('video', file as any);
+    setValue('video_link', file as any);
   };
 
   const onSubmit = handleSubmit(async (data) => {
@@ -135,13 +134,13 @@ const AddVideoModal = (props: Props) => {
             <Grid item md={6} xs={12}>
               <Stack gap={3}>
                 <RHFTextField name="title" label="Title" maxLimitCharacters={40} />
-
                 {!image ? (
                   <UploadFile
                     uploadAs="SVG"
                     maxFileSize={2}
                     label="Upload Image"
                     handleFileChange={handleImageChangePerm}
+                    accept={{ 'image/svg': ['.svg'] }}
                   />
                 ) : (
                   <PreviewFile
@@ -174,7 +173,7 @@ const AddVideoModal = (props: Props) => {
         <Divider />
         <Box sx={{ p: 3, display: 'flex', justifyContent: 'flex-end' }}>
           <Button variant="contained" type="submit" disabled={isSubmitting}>
-            {isSubmitting ? <CircularProgress /> : card ? 'Save Changes' : 'Create Video'}
+            {isSubmitting ? <CircularProgress size={22} /> : card ? 'Save Changes' : 'Create Video'}
           </Button>
         </Box>
       </FormProvider>

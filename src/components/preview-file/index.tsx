@@ -33,7 +33,7 @@ export const PreviewFile = (props: Props) => {
   return (
     <Stack>
       <Typography variant="caption" color="text.secondary">
-        {label}
+        {label || 'File'}
       </Typography>
       {selectedFile && (
         <Box

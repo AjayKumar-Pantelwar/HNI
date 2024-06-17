@@ -23,7 +23,8 @@ import { PDFTagListTableRow } from './table-row';
 const TABLE_HEAD = [
   { id: 'image', label: 'Image' },
   { id: 'title', label: 'Title' },
-  { id: 'video_name', label: 'Video Name' },
+  { id: 'description', label: 'Description' },
+  { id: 'tags', label: 'Tags' },
   { id: 'edit', label: 'Actions', width: 80 },
 ];
 

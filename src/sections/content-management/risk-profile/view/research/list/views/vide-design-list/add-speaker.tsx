@@ -1,6 +1,15 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import Close from '@mui/icons-material/Close';
-import { Box, Button, Divider, Grid, IconButton, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Divider,
+  Grid,
+  IconButton,
+  Stack,
+  Typography,
+} from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import { useForm } from 'react-hook-form';
 import { RHFTextField } from 'src/components/hook-form';
@@ -30,22 +39,20 @@ const AddSpeakerModal = (props: Props) => {
 
   const addReportSchema = Yup.object().shape({
     title: Yup.string().required('Title is required'),
-    speakerName: Yup.string().required('Speaker Name is required'),
-    description: Yup.string()
-      .required('description is required')
-      .max(87, 'description must be less than 150 characters'),
+    text: Yup.string().required('Speaker Name is required'),
+    sub_text1: Yup.string()
+      .required('designation is required')
+      .max(87, 'designation must be less than 150 characters'),
     logo: Yup.mixed().required('Logo is required'),
-    image: Yup.mixed().required('Image is required'),
-    video: Yup.mixed().required('video is required'),
+    image_link: Yup.mixed().required('Image is required'),
+    video_link: Yup.mixed().required('video is required'),
   });
 
-  const defaultValues = {
+  const defaultValues: ResearchCard = {
     title: card?.title || '',
-    speakerName: '',
-    description: '',
     logo: card?.logo || '',
-    image: card?.image_link || '',
-    pdf: card?.pdf_link || '',
+    image_link: card?.image_link || '',
+    pdf_link: card?.pdf_link || '',
     card_id: card?.card_id || '',
     color: card?.color || '',
     field1: card?.field1 || '',
@@ -56,11 +63,12 @@ const AddSpeakerModal = (props: Props) => {
     sub_text2: card?.sub_text2 || '',
     sub_text3: card?.sub_text3 || '',
     sub_text1: card?.sub_text1 || '',
-    tags: card?.tags.join(',') || '',
+    tags: card?.tags || [],
     text: card?.text || '',
-    video: card?.video_link || '',
+    video_link: card?.video_link || '',
     page_type: page?.type || '',
-    article: card?.article_link || '',
+    article_link: card?.article_link || '',
+    subtitle: card?.subtitle || '',
   };
 
   const methods = useForm({
@@ -98,16 +106,16 @@ const AddSpeakerModal = (props: Props) => {
     setValue('logo', file as any);
   };
 
-  const image = watch('image');
+  const image = watch('image_link');
 
   const handleImageChangePerm = (file: File | null) => {
-    setValue('image', file as any);
+    setValue('image_link', file as any);
   };
 
-  const video = watch('video');
+  const video = watch('video_link');
 
   const handleVideoChangePerm = (file: File | null) => {
-    setValue('video', file as any);
+    setValue('video_link', file as any);
   };
 
   return (
@@ -185,7 +193,7 @@ const AddSpeakerModal = (props: Props) => {
         <Divider />
         <Box sx={{ p: 3, display: 'flex', justifyContent: 'flex-end' }}>
           <Button variant="contained" type="submit">
-            {card ? 'Save Changes' : 'Add Speaker'}
+            {isSubmitting ? <CircularProgress size={22} /> : card ? 'Save Changes' : 'Add Speaker'}
           </Button>
         </Box>
       </FormProvider>

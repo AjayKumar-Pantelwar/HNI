@@ -32,7 +32,6 @@ export const UploadFile = (props: Props) => {
           <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
             <Box
               sx={{
-                boxShadow: 4,
                 borderRadius: '100%',
                 display: 'flex',
                 alignItems: 'center',

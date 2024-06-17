@@ -35,7 +35,7 @@ const PageHeader = (props: Props) => {
 
   async function handleSubmit() {
     try {
-      if (page?.tab_id) await updatePage({ body: filters, tab_id: page?.tab_id }).unwrap();
+      if (page?.tab_id) await updatePage({ body: filters, tab_id: page?.page_id }).unwrap();
       enqueueSnackbar('Update success!');
     } catch (error) {
       handleError(error);
@@ -120,7 +120,7 @@ const EditHeading = (props: HeadingProps) => {
   async function handleSubmit() {
     setIsLoading(true);
     try {
-      if (page?.tab_id) await updatePage({ body: filters, tab_id: page?.tab_id }).unwrap();
+      if (page?.tab_id) await updatePage({ body: filters, tab_id: page?.page_id }).unwrap();
       enqueueSnackbar('Update success!');
     } catch (error) {
       handleError(error);
