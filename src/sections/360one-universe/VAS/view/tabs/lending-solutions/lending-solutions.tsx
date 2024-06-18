@@ -70,7 +70,7 @@ const LendingSolutionsTab = (props: Props) => {
       editTitle.onFalse();
     }
   }
-
+  if (!data) return <></>;
   return (
     <Stack sx={{ p: 3, gap: 3 }}>
       <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
