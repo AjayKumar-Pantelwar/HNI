@@ -1,7 +1,6 @@
-import { Box, IconButton, TableCell, TableRow } from '@mui/material';
+import { IconButton, TableCell, TableRow } from '@mui/material';
 import { usePopover } from 'src/components/custom-popover';
 
-import DeleteIcon from 'src/assets/icons/delete-icon';
 import EditIcon from 'src/assets/icons/edit-icon';
 import { useBoolean } from 'src/hooks/use-boolean';
 import { Notifications } from 'src/types/notifications.types';
@@ -22,24 +21,24 @@ export const Tab1TableRow = (row: Notifications) => {
       <TableCell>{fDate(row?.from_date)}</TableCell>
       <TableCell>{fDate(row?.to_date)}</TableCell>
       <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-          <IconButton
-            onClick={() => {
-              quickEdit.onTrue();
-              popover.onClose();
-            }}
-          >
-            <EditIcon />
-          </IconButton>
-          <IconButton
+        {/* <Box sx={{ display: 'flex', alignItems: 'end', gap: 2 }}> */}
+        <IconButton
+          onClick={() => {
+            quickEdit.onTrue();
+            popover.onClose();
+          }}
+        >
+          <EditIcon />
+        </IconButton>
+        {/* <IconButton
             onClick={() => {
               deleteEntry.onTrue();
               popover.onClose();
             }}
           >
             <DeleteIcon />
-          </IconButton>
-        </Box>
+          </IconButton> */}
+        {/* </Box> */}
       </TableCell>
       <AddAnnouncementModal notification={row} open={quickEdit.value} onClose={quickEdit.onFalse} />
     </TableRow>
