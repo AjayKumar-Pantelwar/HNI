@@ -1,5 +1,6 @@
 import { buttonClasses, ButtonProps } from '@mui/material/Button';
 import { alpha, Theme } from '@mui/material/styles';
+import { secondaryFont } from 'src/theme/typography';
 
 // ----------------------------------------------------------------------
 
@@ -35,6 +36,8 @@ export default function Button(theme: Theme) {
     const largeSize = ownerState.size === 'large';
 
     const defaultStyle = {
+      borderRadius: '4px',
+      fontFamily: secondaryFont.style.fontFamily,
       ...(inheritColor && {
         // CONTAINED
         ...(containedVariant && {

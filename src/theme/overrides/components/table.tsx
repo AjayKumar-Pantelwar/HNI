@@ -1,6 +1,7 @@
 import { tableCellClasses } from '@mui/material/TableCell';
 import { tableRowClasses } from '@mui/material/TableRow';
 import { Theme, alpha } from '@mui/material/styles';
+import { secondaryFont } from 'src/theme/typography';
 
 // ----------------------------------------------------------------------
 
@@ -42,14 +43,17 @@ export default function Table(theme: Theme) {
       styleOverrides: {
         root: {
           borderBottomStyle: 'dashed',
+          fontSize: 12,
+          fontWeight: theme.typography.fontWeightMedium,
         },
         head: {
-          fontSize: 14,
+          fontSize: 12,
           color: theme.palette.text.secondary,
           fontWeight: theme.typography.fontWeightSemiBold,
           // backgroundColor: theme.palette.background.neutral,
           border: '2px solid',
           borderColor: theme.palette.background.neutral,
+          fontFamily: secondaryFont.style.fontFamily,
         },
         stickyHeader: {
           backgroundColor: theme.palette.background.paper,

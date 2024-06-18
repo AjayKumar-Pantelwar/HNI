@@ -1,11 +1,11 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import LoadingButton from '@mui/lab/LoadingButton';
-import { Box, Grid, Stack } from '@mui/material';
+import { Box, Button, CircularProgress, Grid, Stack, Typography } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { useForm } from 'react-hook-form';
-import { RHFSwitch, RHFTextField } from 'src/components/hook-form';
+import { RHFTextField } from 'src/components/hook-form';
 import FormProvider from 'src/components/hook-form/form-provider';
 import RHFDateField from 'src/components/hook-form/rhf-date-field';
+import CustomSwitch from 'src/components/toggle-button';
 import { notificationsApi } from 'src/redux/api/notifications.api';
 import { Notifications } from 'src/types/notifications.types';
 import { handleError } from 'src/utils/handle-error';
@@ -51,6 +51,8 @@ const AnnouncementForm = (props: Props) => {
     handleSubmit,
     formState: { errors, isSubmitting },
     watch,
+    getValues,
+    setValue,
   } = methods;
 
   const onSubmit = handleSubmit(async (data) => {
@@ -108,14 +110,22 @@ const AnnouncementForm = (props: Props) => {
                   label="From Date"
                 />
                 <RHFDateField name="toDate" label="To Date" />
-                <RHFSwitch label="Active" name="active" />
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Typography variant="caption" fontWeight={500} color="text.secondary">
+                    Active
+                  </Typography>
+                  <CustomSwitch
+                    value={getValues('active')}
+                    onChange={(e) => setValue('active', e.target.value === 'true')}
+                  />
+                </Box>
               </Stack>
             </Grid>
           </Grid>
           <Box sx={{ display: 'flex', justifyContent: 'end' }}>
-            <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-              Save Changes
-            </LoadingButton>
+            <Button type="submit" variant="contained">
+              {isSubmitting ? <CircularProgress size={22} /> : 'Save Changes'}
+            </Button>
           </Box>
         </Stack>
       </FormProvider>

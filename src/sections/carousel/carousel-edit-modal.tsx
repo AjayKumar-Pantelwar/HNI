@@ -105,7 +105,9 @@ export default function CarouselEditModal(props: Props) {
     >
       <Stack>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 3 }}>
-          <Typography variant="h5">Edit Carousel</Typography>
+          <Typography variant="h5">
+            {currentCarousel ? 'Edit Carousel' : 'Add New Carousel'}
+          </Typography>
           <IconButton onClick={onClose}>
             <Close />
           </IconButton>

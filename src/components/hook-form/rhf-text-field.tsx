@@ -27,7 +27,7 @@ export default function RHFTextField({
       render={({ field, fieldState: { error } }) => (
         <Stack>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Typography variant="caption" color="text.secondary">
+            <Typography variant="caption" fontWeight={500} color="text.secondary">
               {label}
             </Typography>
             {maxLimitCharacters && (

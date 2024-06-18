@@ -23,7 +23,8 @@ import { PDFTagListTableRow } from './table-row';
 const TABLE_HEAD = [
   { id: 'image', label: 'Image' },
   { id: 'title', label: 'Title' },
-  { id: 'video_name', label: 'Video Name' },
+  { id: 'description', label: 'Description' },
+  { id: 'tags', label: 'Tags' },
   { id: 'edit', label: 'Actions', width: 80 },
 ];
 
@@ -68,7 +69,7 @@ const PDFTagList = (props: Props) => {
             numSelected={table.selected.length}
             rowCount={cards?.length || 0}
             onSelectAllRows={(checked) =>
-              table.onSelectAllRows(checked, cards?.map((row, i) => row?.image) || [])
+              table.onSelectAllRows(checked, cards?.map((row, i) => row?.image_link) || [])
             }
           />
           <Scrollbar>

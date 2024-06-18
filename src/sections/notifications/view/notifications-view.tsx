@@ -73,7 +73,7 @@ const NotificationsView = () => {
       />
 
       <Card sx={{ width: '100%', mt: 3 }}>
-        <Box sx={{ borderBottom: 1, px: 2, borderColor: 'divider' }}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={tab} onChange={handleChange} aria-label="notification tabs">
             <Tab value={NotificationTabs.ANNOUNCEMENT} label="Announcements" />
             <Tab value={NotificationTabs.APP_UPDATE} label="App Updates" />

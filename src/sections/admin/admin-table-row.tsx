@@ -1,7 +1,6 @@
 'use client';
 
-import EditIcon from '@mui/icons-material/Edit';
-import { Box, Typography } from '@mui/material';
+import { Box, Chip, Typography } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
@@ -11,10 +10,14 @@ import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
 import Iconify from 'src/components/iconify';
-import Label from 'src/components/label';
 import { useBoolean } from 'src/hooks/use-boolean';
 // import { usePerm } from 'src/hooks/use-perm';
+import BlockIcon from 'src/assets/icons/block-icon';
+import CrossIcon from 'src/assets/icons/cross-icon';
+import EditIcon from 'src/assets/icons/edit-icon';
+import TickIcon from 'src/assets/icons/tick-icon';
 import { roleApi } from 'src/redux/api/role.api';
+import { secondaryFont } from 'src/theme/typography';
 import { Admin } from 'src/types/admin.types';
 import { titleCase } from 'src/utils/change-case';
 import AdminBlockForm from './admin-block-form';
@@ -58,13 +61,18 @@ export default function AdminTableRow(props: Props) {
         )}
 
         <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
-          <Avatar alt={row.name} sx={{ mr: 2 }} />
-
+          <Avatar src={row.name.toLocaleUpperCase()} alt={row.name} sx={{ mr: 2 }} />
           <ListItemText
             primary={row.name}
             secondary={row.email}
-            primaryTypographyProps={{ typography: 'body2' }}
-            secondaryTypographyProps={{ component: 'span', color: 'text.disabled' }}
+            primaryTypographyProps={{
+              typography: 'subtitle1',
+              fontFamily: secondaryFont.style.fontFamily,
+            }}
+            secondaryTypographyProps={{
+              component: 'span',
+              color: 'text.disabled',
+            }}
           />
         </TableCell>
 
@@ -72,7 +80,7 @@ export default function AdminTableRow(props: Props) {
 
         <TableCell sx={{ whiteSpace: 'nowrap' }}>
           <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-            <Typography noWrap variant="body2">
+            <Typography noWrap variant="caption" sx={{ fontWeight: 500 }}>
               {titleCase(role)}
             </Typography>
             <IconButton sx={{ p: 0 }} onClick={rolePopover.onTrue}>
@@ -82,22 +90,14 @@ export default function AdminTableRow(props: Props) {
         </TableCell>
 
         <TableCell>
-          <Label variant="soft">{row.is_blocked ? ' blocked' : 'active'}</Label>
+          <Chip
+            variant="soft"
+            label={row.is_blocked ? ' blocked' : 'active'}
+            color={row.is_blocked ? 'error' : 'success'}
+          />
         </TableCell>
-        <TableCell>
-          {row.is_password_change_required ? (
-            <Iconify icon="humbleicons:times-circle" width={20} height={20} color="error.main" />
-          ) : (
-            <Iconify icon="gg:check-o" width={20} height={20} color="success.main" />
-          )}
-        </TableCell>
-        <TableCell>
-          {!row.is_totp_activated ? (
-            <Iconify icon="humbleicons:times-circle" width={20} height={20} color="error.main" />
-          ) : (
-            <Iconify icon="gg:check-o" width={20} height={20} color="success.main" />
-          )}
-        </TableCell>
+        <TableCell>{row.is_password_change_required ? <CrossIcon /> : <TickIcon />}</TableCell>
+        <TableCell>{!row.is_totp_activated ? <CrossIcon /> : <TickIcon />}</TableCell>
 
         <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
           <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
@@ -134,7 +134,7 @@ export default function AdminTableRow(props: Props) {
             popover.onClose();
           }}
         >
-          <Iconify icon="solar:pen-bold" />
+          <EditIcon />
           Edit
         </MenuItem>
         {/* )} */}
@@ -144,7 +144,7 @@ export default function AdminTableRow(props: Props) {
             popover.onClose();
           }}
         >
-          <Iconify icon="carbon:warning-filled" />
+          <BlockIcon />
           {row?.is_blocked ? 'Unblock' : 'Block'}
         </MenuItem>
       </CustomPopover>

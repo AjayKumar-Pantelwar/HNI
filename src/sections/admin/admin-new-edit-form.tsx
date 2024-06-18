@@ -4,7 +4,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 // @mui
-import LoadingButton from '@mui/lab/LoadingButton';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
@@ -16,6 +15,8 @@ import { paths } from 'src/routes/paths';
 // assets
 // components
 import {
+  Button,
+  CircularProgress,
   Grid,
   IconButton,
   InputAdornment,
@@ -39,6 +40,7 @@ import { useBoolean } from 'src/hooks/use-boolean';
 import { useResponsive } from 'src/hooks/use-responsive';
 import { adminApi } from 'src/redux/api/admin.api';
 import { roleApi } from 'src/redux/api/role.api';
+import { secondaryFont } from 'src/theme/typography';
 import { Admin, CreateAdminRequest, CreateAdminSchema } from 'src/types/admin.types';
 import { GetRolesResponse } from 'src/types/role.types';
 import { handleError } from 'src/utils/handle-error';
@@ -139,10 +141,13 @@ export default function AdminNewEditForm({ currentAdmin, roles: rolesData }: Pro
     <>
       {mdUp && (
         <Grid md={4}>
-          <Typography variant="h6" sx={{ mb: 0.5 }}>
+          <Typography variant="h6" sx={{ fontFamily: secondaryFont.style.fontFamily, mb: 0.5 }}>
             Basic Details
           </Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+          <Typography
+            variant="body2"
+            sx={{ fontFamily: secondaryFont.style.fontFamily, color: 'text.secondary' }}
+          >
             Enter basic details of the admin
           </Typography>
         </Grid>
@@ -339,9 +344,15 @@ export default function AdminNewEditForm({ currentAdmin, roles: rolesData }: Pro
   );
   const sectionThree = (
     <Stack alignItems="end" sx={{ width: '100%', mt: 3 }}>
-      <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-        {!currentAdmin ? 'Create Admin' : 'Save Changes'}
-      </LoadingButton>
+      <Button type="submit" variant="contained">
+        {isSubmitting ? (
+          <CircularProgress size={22} />
+        ) : !currentAdmin ? (
+          'Create Admin'
+        ) : (
+          'Save Changes'
+        )}
+      </Button>
     </Stack>
   );
   return (

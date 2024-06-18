@@ -1,6 +1,15 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import Close from '@mui/icons-material/Close';
-import { Box, Button, Divider, Grid, IconButton, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Divider,
+  Grid,
+  IconButton,
+  Stack,
+  Typography,
+} from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import { useForm } from 'react-hook-form';
 import { RHFTextField } from 'src/components/hook-form';
@@ -29,23 +38,24 @@ const AddNewsModal = (props: Props) => {
   const [addCard] = researchApi.useAddCardMutation();
 
   const addReportSchema = Yup.object().shape({
-    title: Yup.string().required('Title is required'),
-    tags: Yup.string().required('Tags is required'),
-    subtitle: Yup.string()
-      .required('description is required')
-      .max(200, 'description must be less than 150 characters'),
-    // uploadDate: Yup.string().required('Upload Date is required'),
-    image: Yup.mixed().nonNullable().required('Image is required'),
+    article_link: Yup.string().required('Link is required'),
+    tags: Yup.array()
+      .of(
+        Yup.object().shape({
+          key: Yup.string().required('key is required'),
+          value: Yup.string().required('value is required'),
+        })
+      )
+      .required('Tags are required'),
+    image_link: Yup.mixed().nonNullable().required('Image is required'),
   });
 
-  const defaultValues = {
+  const defaultValues: ResearchCard = {
     title: card?.title || '',
-    // uploadDate: '',
     subtitle: card?.subtitle || '',
     sub_text1: card?.sub_text1 || '',
-    // expiryDate: '',
-    image: card?.image || '',
-    pdf: card?.pdf || '',
+    image_link: card?.image_link || '',
+    pdf_link: card?.pdf_link || '',
     card_id: card?.card_id || '',
     color: card?.color || '',
     field1: card?.field1 || '',
@@ -56,11 +66,11 @@ const AddNewsModal = (props: Props) => {
     page_id: page?.page_id || '',
     sub_text2: card?.sub_text2 || '',
     sub_text3: card?.sub_text3 || '',
-    tags: card?.tags.join(',') || '',
+    tags: card?.tags || [{ key: 'type', value: '' }],
     text: card?.text || '',
-    video: card?.video || '',
+    video_link: card?.video_link || '',
     page_type: page?.type || '',
-    article: card?.article || 'hello',
+    article_link: card?.article_link || '',
   };
 
   const methods = useForm({
@@ -77,13 +87,12 @@ const AddNewsModal = (props: Props) => {
   } = methods;
 
   const onSubmit = handleSubmit(async (data) => {
-    const fdata = { ...data, tags: data.tags.split(',') };
     try {
       if (card) {
-        await updateCard({ body: convertToFD(fdata), id: card?.card_id }).unwrap();
+        await updateCard({ body: convertToFD(data), id: card?.card_id }).unwrap();
         enqueueSnackbar('Update success!');
       } else {
-        await addCard(convertToFD(fdata)).unwrap();
+        await addCard(convertToFD(data)).unwrap();
         enqueueSnackbar('Add success!');
       }
     } catch (error) {
@@ -93,11 +102,13 @@ const AddNewsModal = (props: Props) => {
     }
   });
 
-  const image = watch('image');
+  const image = watch('image_link');
 
   const handleFileChangePerm = (file: File | null) => {
-    setValue('image', file as any);
+    setValue('image_link', file as any);
   };
+
+  const tags = watch('tags');
 
   return (
     <Dialog
@@ -121,42 +132,61 @@ const AddNewsModal = (props: Props) => {
           <Grid container spacing={3}>
             <Grid item md={6} xs={12}>
               <Stack gap={3}>
-                <RHFTextField name="title" label="Title" />
-                <RHFTextField
-                  name="subtitle"
-                  label="Description"
-                  maxLimitCharacters={200}
-                  multiline
-                  rows={3}
-                />
-                {!image ? (
-                  <UploadFile
-                    uploadAs="JPG"
-                    maxFileSize={2}
-                    label="Upload Image"
-                    handleFileChange={handleFileChangePerm}
-                    accept={{ 'image/jpg': ['.jpg'] }}
-                  />
-                ) : (
-                  <PreviewFile
-                    selectedFile={image as any}
-                    handleFileChange={handleFileChangePerm}
-                  />
-                )}
+                <RHFTextField name="article_link" label="Article Link" />
               </Stack>
             </Grid>
             <Grid item md={6} xs={12}>
-              <Stack gap={3}>
-                <RHFTextField name="tags" label="Tags" />
-                {/* <RHFDateField name="uploadDate" label="Upload Date" /> */}
-              </Stack>
+              {!image ? (
+                <UploadFile
+                  uploadAs="JPG"
+                  maxFileSize={2}
+                  label="Upload Image"
+                  handleFileChange={handleFileChangePerm}
+                  accept={{ 'image/jpg': ['.jpg'] }}
+                />
+              ) : (
+                <PreviewFile selectedFile={image as any} handleFileChange={handleFileChangePerm} />
+              )}
+            </Grid>
+            {tags?.map((p, i) => (
+              <Grid item xs={12} md={6}>
+                <RHFTextField
+                  key={i}
+                  fullWidth
+                  name={`tags[${i}].value`}
+                  label={`Tag ${i + 1}`}
+                  maxLimitCharacters={80}
+                />
+              </Grid>
+            ))}
+            <Grid item xs={12}>
+              <Button
+                fullWidth
+                onClick={() =>
+                  setValue('tags', [
+                    ...(tags || []),
+                    {
+                      key: 'type',
+                      value: '',
+                    },
+                  ])
+                }
+              >
+                Add Tags
+              </Button>
             </Grid>
           </Grid>
         </Box>
         <Divider />
         <Box sx={{ p: 3, display: 'flex', justifyContent: 'flex-end' }}>
           <Button variant="contained" type="submit">
-            {card ? 'Save Changes' : 'Create Report'}
+            {isSubmitting ? (
+              <CircularProgress size={22} />
+            ) : card ? (
+              'Save Changes'
+            ) : (
+              'Create Report'
+            )}
           </Button>
         </Box>
       </FormProvider>

@@ -1,6 +1,6 @@
-import FileUploadIcon from '@mui/icons-material/FileUpload';
 import { Box, Button, Divider, Stack } from '@mui/material';
 import React from 'react';
+import UploadOutlinedIcon from 'src/assets/icons/upload-outlined-icon';
 import { PreviewFile } from 'src/components/preview-file';
 import { ExcelUploadTabs, UploadResponseData } from 'src/types/product-upload.types';
 import DownloadFile from './download-file';
@@ -58,7 +58,7 @@ const ProductLayout = (props: Props) => {
                 onClick={handleUpload}
                 variant="contained"
                 sx={{ width: '200px' }}
-                startIcon={<FileUploadIcon />}
+                startIcon={<UploadOutlinedIcon />}
                 disabled={!uploadedFile}
               >
                 Upload

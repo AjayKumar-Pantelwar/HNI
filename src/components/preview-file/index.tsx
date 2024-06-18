@@ -1,8 +1,9 @@
 import { Box, IconButton, Stack, Typography } from '@mui/material';
 
-import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import DeleteFileIcon from 'src/assets/icons/delete-file.icon';
+import PreviewFileIcon from 'src/assets/icons/preview-file';
 import RetryFileIcon from 'src/assets/icons/retry-file.icon';
+import { secondaryFont } from 'src/theme/typography';
 import { FileDropzone } from '../file-dropzone';
 
 type Props = {
@@ -22,7 +23,7 @@ export const PreviewFile = (props: Props) => {
 
   const getFileName = (file: File) => {
     const { name } = file;
-    if (name?.length > 25) {
+    if (name?.length > 24) {
       const extension = name.split('.').pop();
       return `...${extension}`;
     }
@@ -32,7 +33,7 @@ export const PreviewFile = (props: Props) => {
   return (
     <Stack>
       <Typography variant="caption" color="text.secondary">
-        {label}
+        {label || 'File'}
       </Typography>
       {selectedFile && (
         <Box
@@ -47,20 +48,23 @@ export const PreviewFile = (props: Props) => {
             borderRadius: 1,
           }}
         >
-          <InsertDriveFileIcon />
+          <PreviewFileIcon />
           <Box sx={{ flex: 1 }}>
             <Typography
-              variant="subtitle1"
-              color="text.secondary"
-              fontWeight={400}
               sx={{
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
+                fontFamily: secondaryFont.style.fontFamily,
               }}
             >
               {getFileName(selectedFile)}{' '}
-              <Typography sx={{ color: 'text.primary' }}>
+              <Typography
+                fontWeight={500}
+                fontSize={11}
+                sx={{ color: 'text.secondary' }}
+                component="span"
+              >
                 {fileSizeInMB(selectedFile)} MB
               </Typography>
             </Typography>

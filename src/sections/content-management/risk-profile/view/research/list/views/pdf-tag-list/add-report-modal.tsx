@@ -43,23 +43,23 @@ const AddReportModal = (props: Props) => {
     title: Yup.string()
       .required('Title is required')
       .max(40, 'Title must be less than 50 characters'),
-    subtitle: Yup.string().required('Category is required'),
-    sub_text1: Yup.string()
-      .required('description is required')
-      .max(87, 'description must be less than 150 characters'),
-    image: Yup.mixed().nonNullable().required('Image is required'),
-    pdf: Yup.mixed().nonNullable().required('Document is required'),
+    tags: Yup.array().of(
+      Yup.object().shape({
+        key: Yup.string().required('key is required'),
+        value: Yup.string().required('value is required'),
+      })
+    ),
+    image_link: Yup.mixed().nonNullable().required('Image is required'),
+    pdf_link: Yup.mixed().nonNullable().required('Document is required'),
     card_id: Yup.string(),
-    color: Yup.string(),
   });
 
-  const defaultValues = {
+  const defaultValues: ResearchCard = {
     title: card?.title || '',
     subtitle: card?.subtitle || '',
     sub_text1: card?.sub_text1 || '',
-    // expiryDate: '',
-    image: card?.image || '',
-    pdf: card?.pdf || '',
+    image_link: card?.image_link || '',
+    pdf_link: card?.pdf_link || '',
     card_id: card?.card_id || '',
     color: card?.color || '',
     field1: card?.field1 || '',
@@ -72,8 +72,9 @@ const AddReportModal = (props: Props) => {
     sub_text3: card?.sub_text3 || '',
     tags: card?.tags || [],
     text: card?.text || '',
-    video: card?.video || '',
+    video_link: card?.video_link || '',
     page_type: page?.type || '',
+    article_link: card?.article_link || '',
   };
 
   const methods = useForm({
@@ -89,19 +90,19 @@ const AddReportModal = (props: Props) => {
     setValue,
   } = methods;
 
-  const image = watch('image');
+  const image = watch('image_link');
 
   const handleImageChangePerm = (file: File | null) => {
-    setValue('image', file as any);
+    setValue('image_link', file as any);
   };
 
-  const document = watch('pdf');
+  const document = watch('pdf_link');
 
   const handleDocumentChangePerm = (
     file: File | null
     // key: keyof Yup.InferType<typeof addReportSchema>
   ) => {
-    setValue('pdf', file as any);
+    setValue('pdf_link', file as any);
   };
 
   const onSubmit = handleSubmit(async (data) => {
@@ -119,6 +120,8 @@ const AddReportModal = (props: Props) => {
       onClose();
     }
   });
+
+  const points = watch('tags');
 
   return (
     <Dialog
@@ -143,13 +146,6 @@ const AddReportModal = (props: Props) => {
             <Grid item md={6} xs={12}>
               <Stack gap={3}>
                 <RHFTextField name="title" label="Title" maxLimitCharacters={40} />
-                <RHFTextField
-                  name="sub_text1"
-                  label="Description"
-                  maxLimitCharacters={87}
-                  multiline
-                  rows={3}
-                />
                 {!image ? (
                   <UploadFile
                     uploadAs="SVG"
@@ -168,8 +164,6 @@ const AddReportModal = (props: Props) => {
             </Grid>
             <Grid item md={6} xs={12}>
               <Stack gap={3}>
-                <RHFTextField name="subtitle" label="Category" />
-                {/* <RHFDateField name="expriyDate" label="Date of Expiry" /> */}
                 {!document ? (
                   <UploadFile
                     uploadAs="PDF"
@@ -186,12 +180,45 @@ const AddReportModal = (props: Props) => {
                 )}
               </Stack>
             </Grid>
+            {points?.map((p, i) => (
+              <Grid item xs={12} md={6}>
+                <RHFTextField
+                  key={i}
+                  fullWidth
+                  name={`tags[${i}].value`}
+                  label={`Tag ${i + 1}`}
+                  maxLimitCharacters={80}
+                />
+              </Grid>
+            ))}
+            <Grid item xs={12}>
+              <Button
+                fullWidth
+                onClick={() =>
+                  setValue('tags', [
+                    ...(points || []),
+                    {
+                      key: 'type',
+                      value: '',
+                    },
+                  ])
+                }
+              >
+                Add Tags
+              </Button>
+            </Grid>
           </Grid>
         </Box>
         <Divider />
         <Box sx={{ p: 3, display: 'flex', justifyContent: 'flex-end' }}>
           <Button variant="contained" type="submit" disabled={isSubmitting}>
-            {isSubmitting ? <CircularProgress /> : card ? 'Save Changes' : 'Create Report'}
+            {isSubmitting ? (
+              <CircularProgress size={22} />
+            ) : card ? (
+              'Save Changes'
+            ) : (
+              'Create Report'
+            )}
           </Button>
         </Box>
       </FormProvider>

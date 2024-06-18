@@ -70,7 +70,7 @@ const VideoDesignList = (props: Props) => {
             numSelected={table.selected.length}
             rowCount={cards?.length || 0}
             onSelectAllRows={(checked) =>
-              table.onSelectAllRows(checked, cards?.map((row, i) => row?.image) || [])
+              table.onSelectAllRows(checked, cards?.map((row, i) => row?.image_link) || [])
             }
           />
           <Scrollbar>

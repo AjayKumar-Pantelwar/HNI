@@ -1,4 +1,13 @@
-import { Checkbox, IconButton, MenuItem, TableCell, TableRow, Tooltip } from '@mui/material';
+import {
+  Avatar,
+  Checkbox,
+  IconButton,
+  ListItemText,
+  MenuItem,
+  TableCell,
+  TableRow,
+  Tooltip,
+} from '@mui/material';
 import { useState } from 'react';
 
 import BlockIcon from '@mui/icons-material/Block';
@@ -7,6 +16,7 @@ import EditIcon from 'src/assets/icons/edit-icon';
 import { usePopover } from 'src/components/custom-popover';
 import CustomPopover from 'src/components/custom-popover/custom-popover';
 import { useBoolean } from 'src/hooks/use-boolean';
+import { secondaryFont } from 'src/theme/typography';
 import { User } from 'src/types/user.types';
 import UserBlockForm from './user-block-modal';
 import UserEditModal from './user-edit-modal';
@@ -53,7 +63,21 @@ const UserTableRow = (props: Props) => {
           <Checkbox checked={selected} onClick={onSelectRow} />
         </TableCell>
       )}
-      <TableCell>{row?.name}</TableCell>
+      <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
+        <Avatar src={row.name.toLocaleUpperCase()} alt={row.name} sx={{ mr: 2 }} />
+        <ListItemText
+          primary={row.name}
+          secondary={row.email}
+          primaryTypographyProps={{
+            typography: 'subtitle1',
+            fontFamily: secondaryFont.style.fontFamily,
+          }}
+          secondaryTypographyProps={{
+            component: 'span',
+            color: 'text.disabled',
+          }}
+        />
+      </TableCell>
       <TableCell>{row?.mobile}</TableCell>
       <TableCell>{row?.pan}</TableCell>
       <TableCell>{row?.is_kyc_mismatched ? 'Yes' : 'No'}</TableCell>

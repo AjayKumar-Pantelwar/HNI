@@ -51,7 +51,7 @@ export default function CarouselTableRow(props: Props) {
       <TableCell>{row.description}</TableCell>
       <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
         <Tooltip title="Quick Edit" placement="top" arrow>
-          <IconButton onClick={() => edit.onTrue()} sx={{ py: 0 }}>
+          <IconButton onClick={() => edit.onTrue()}>
             <EditIcon />
           </IconButton>
         </Tooltip>

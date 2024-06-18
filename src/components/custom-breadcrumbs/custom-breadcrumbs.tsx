@@ -1,12 +1,13 @@
 // @mui
 import Box from '@mui/material/Box';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import Breadcrumbs from '@mui/material/Breadcrumbs';
 //
-import { CustomBreadcrumbsProps } from './types';
+import { secondaryFont } from 'src/theme/typography';
 import LinkItem from './link-item';
+import { CustomBreadcrumbsProps } from './types';
 
 // ----------------------------------------------------------------------
 
@@ -27,7 +28,11 @@ export default function CustomBreadcrumbs({
         <Box sx={{ flexGrow: 1 }}>
           {/* HEADING */}
           {heading && (
-            <Typography variant="h4" gutterBottom>
+            <Typography
+              sx={{ fontFamily: secondaryFont.style.fontFamily }}
+              variant="h4"
+              gutterBottom
+            >
               {heading}
             </Typography>
           )}

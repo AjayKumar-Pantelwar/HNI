@@ -28,10 +28,10 @@ export const VideoGridTableRow = (props: Props) => {
   return (
     <TableRow>
       <TableCell>
-        <img src={card?.image} alt={card?.title} width={40} height={40} />
+        <img src={card?.image_link} alt={card?.title} width={40} height={40} />
       </TableCell>
       <TableCell>{card?.title}</TableCell>
-      <TableCell>{identifyFilename(card?.video)}</TableCell>
+      <TableCell>{identifyFilename(card?.video_link)}</TableCell>
       <TableCell>
         <Stack direction="row" sx={{ gap: 1, flexWrap: 'wrap' }}>
           {card?.tags?.map((c) => (

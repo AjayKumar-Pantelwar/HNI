@@ -38,7 +38,7 @@ export const researchApi = createApi({
     updateCard: builder.mutation<ApiResponse, { id: string; body: FormData }>({
       query: ({ id, body }) => ({
         ...endpoints.contentManagement.research.updateCard(id),
-        ...body,
+        body,
       }),
       invalidatesTags: ['Research'],
     }),

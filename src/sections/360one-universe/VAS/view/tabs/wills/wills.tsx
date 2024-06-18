@@ -2,6 +2,7 @@
 
 import {
   Box,
+  Card,
   Grid,
   IconButton,
   List,
@@ -111,30 +112,45 @@ const WillsTab = (props: Props) => {
           tid={whyUs?.id || ''}
         />
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-          <Box sx={{ border: '1px solid', borderColor: 'divider', borderRadius: 1, p: 2 }}>
-            <img src="/logo/360logo.png" alt="360One" width={40} height={40} />
-          </Box>
-          <Box
+          <Card
             sx={{
-              border: '1px solid',
-              borderColor: 'divider',
-              p: 2,
-              borderRadius: 1,
+              width: 95,
+              height: 95,
+              borderRadius: 'unset',
               display: 'flex',
-              alignItems: 'end',
+              justifyContent: 'center',
+              alignItems: 'center',
+              position: 'absolute',
+              zIndex: 1,
             }}
           >
-            <List component={Stack} sx={{ flex: 1 }}>
-              {whyUs?.description?.map((c, i) => (
-                <ListItem key={i}>
-                  <ListItemIcon sx={{ fontSize: 20 }}>*</ListItemIcon>
-                  <Typography>{c}</Typography>
-                </ListItem>
-              ))}
-            </List>
-            <IconButton onClick={() => addSpecifications.onTrue()}>
-              <EditIcon />
-            </IconButton>
+            <img src={whyUs?.logo} alt="360One" width={40} height={40} />
+          </Card>
+          <Box sx={{ display: 'flex', justifyContent: 'end' }}>
+            <Box
+              sx={{
+                border: '1px solid',
+                borderColor: 'divider',
+                p: 2,
+                borderRadius: 1,
+                display: 'flex',
+                alignItems: 'end',
+                flexBasis: '93%',
+                justifyContent: 'end',
+              }}
+            >
+              <List component={Stack} sx={{ flex: 1 }}>
+                {whyUs?.description?.map((c, i) => (
+                  <ListItem key={i}>
+                    <ListItemIcon sx={{ fontSize: 20 }}>*</ListItemIcon>
+                    <Typography>{c}</Typography>
+                  </ListItem>
+                ))}
+              </List>
+              <IconButton onClick={() => addSpecifications.onTrue()}>
+                <EditIcon />
+              </IconButton>
+            </Box>
           </Box>
         </Box>
       </Stack>
