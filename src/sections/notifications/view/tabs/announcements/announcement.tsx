@@ -18,6 +18,7 @@ const TABLE_HEAD = [
   { id: 'description', label: 'Description' },
   { id: 'from_date', label: 'From Date' },
   { id: 'to_date', label: 'To Date' },
+  { id: 'active', label: 'Active' },
   { id: 'edit', label: 'Actions', width: 80 },
 ];
 
