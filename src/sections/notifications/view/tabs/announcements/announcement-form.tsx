@@ -117,17 +117,19 @@ const AnnouncementForm = (props: Props) => {
                   disablePast
                 />
                 <RHFDateField disablePast name="toDate" label="To Date" />
-                <Stack sx={{ gap: 1 }}>
-                  <Typography variant="caption" fontWeight={500} color="text.secondary">
-                    Active / Inactive
-                  </Typography>
-                  <CustomSwitch
-                    checked={getValues('active')}
-                    onChange={(e) => {
-                      setValue('active', e.target.checked);
-                    }}
-                  />
-                </Stack>
+                {notification && (
+                  <Stack sx={{ gap: 1 }}>
+                    <Typography variant="caption" fontWeight={500} color="text.secondary">
+                      Active / Inactive
+                    </Typography>
+                    <CustomSwitch
+                      checked={getValues('active')}
+                      onChange={(e) => {
+                        setValue('active', e.target.checked);
+                      }}
+                    />
+                  </Stack>
+                )}
               </Stack>
             </Grid>
           </Grid>
