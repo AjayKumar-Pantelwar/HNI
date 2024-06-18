@@ -41,7 +41,6 @@ export const Tab1TableRow = (row: Notifications) => {
           </IconButton>
         </Box>
       </TableCell>
-
       <AddAnnouncementModal notification={row} open={quickEdit.value} onClose={quickEdit.onFalse} />
     </TableRow>
   );

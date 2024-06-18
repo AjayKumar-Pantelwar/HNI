@@ -8,15 +8,17 @@ import RHFDateField from 'src/components/hook-form/rhf-date-field';
 import CustomSwitch from 'src/components/toggle-button';
 import { notificationsApi } from 'src/redux/api/notifications.api';
 import { Notifications } from 'src/types/notifications.types';
+import { fDate } from 'src/utils/format-time';
 import { handleError } from 'src/utils/handle-error';
 import * as Yup from 'yup';
 
 interface Props {
   notification?: Notifications;
+  onClose?: () => void;
 }
 
 const AnnouncementForm = (props: Props) => {
-  const { notification } = props;
+  const { notification, onClose } = props;
   const { enqueueSnackbar } = useSnackbar();
   const [createNotication] = notificationsApi.useCreateNotificationMutation();
   const [updateNotication] = notificationsApi.useUpdateNotificationMutation();
@@ -36,8 +38,8 @@ const AnnouncementForm = (props: Props) => {
   const defaultValues = {
     title: notification?.title || '',
     description: notification?.subtitle || '',
-    fromDate: notification?.from_date || '',
-    toDate: notification?.to_date || '',
+    fromDate: fDate(notification?.from_date) || '',
+    toDate: fDate(notification?.to_date) || '',
     active: notification?.is_active || false,
   };
 
@@ -57,12 +59,14 @@ const AnnouncementForm = (props: Props) => {
 
   const onSubmit = handleSubmit(async (data) => {
     const { toDate, active, description, ...rest } = data;
+
     try {
       if (notification) {
         await updateNotication({
           id: notification.id,
-          is_active: active,
-        });
+          ...(active !== notification.is_active && { is_active: active }),
+          ...(toDate !== fDate(notification?.to_date) && { to_date: toDate }),
+        }).unwrap();
         enqueueSnackbar('Update success!', { variant: 'success' });
       } else {
         await createNotication({
@@ -70,12 +74,14 @@ const AnnouncementForm = (props: Props) => {
           title: rest.title,
           subtitle: description,
           to_date: toDate,
-        });
+        }).unwrap();
         enqueueSnackbar('Created success!', { variant: 'success' });
       }
       reset();
     } catch (error) {
       handleError(error);
+    } finally {
+      if (onClose) onClose();
     }
   });
 
@@ -93,8 +99,8 @@ const AnnouncementForm = (props: Props) => {
                   maxLimitCharacters={86}
                 />
                 <RHFTextField
-                  disabled={!!notification?.subtitle}
                   multiline
+                  disabled={!!notification?.subtitle}
                   rows={3}
                   name="description"
                   label="Description"
@@ -105,20 +111,23 @@ const AnnouncementForm = (props: Props) => {
             <Grid item xs={12} sm={6}>
               <Stack gap={3}>
                 <RHFDateField
-                  name="fromDate"
                   disabled={!!notification?.from_date}
+                  name="fromDate"
                   label="From Date"
+                  disablePast
                 />
-                <RHFDateField name="toDate" label="To Date" />
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <RHFDateField disablePast name="toDate" label="To Date" />
+                <Stack sx={{ gap: 1 }}>
                   <Typography variant="caption" fontWeight={500} color="text.secondary">
-                    Active
+                    Active / Inactive
                   </Typography>
                   <CustomSwitch
-                    value={getValues('active')}
-                    onChange={(e) => setValue('active', e.target.value === 'true')}
+                    checked={getValues('active')}
+                    onChange={(e) => {
+                      setValue('active', e.target.checked);
+                    }}
                   />
-                </Box>
+                </Stack>
               </Stack>
             </Grid>
           </Grid>

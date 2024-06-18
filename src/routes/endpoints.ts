@@ -47,7 +47,7 @@ export const endpoints = {
   contentManagement: {
     research: {
       list: p('GET', '/path/content/research'),
-      updateTab: p('PUT', `/path/content/research/tab`),
+      updateTab: (id: string) => p('PUT', `/path/content/research/tab/${id}`),
       updatePage: (id: string) => p('PUT', `/path/content/research/page/${id}`),
       addCard: p('POST', `path/content/research/card`),
       updateCard: (id: string) => p('PUT', `path/content/research/card/${id}`),

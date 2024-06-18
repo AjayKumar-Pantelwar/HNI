@@ -11,7 +11,7 @@ export interface UpdateAppVerionRequest {
   app_store_url: string;
   android_mandatory: boolean;
   ios_mandatory: boolean;
-  type: APPType;
+  os_type: APPType;
 }
 
 export enum APPType {
@@ -39,5 +39,6 @@ export interface CreateNotificationRequest {
 
 export interface UpdateNotificationRequest {
   id: string;
-  is_active: boolean;
+  is_active?: boolean;
+  to_date?: string;
 }

@@ -18,7 +18,10 @@ export const researchApi = createApi({
       providesTags: ['Research'],
     }),
     updateTab: builder.mutation<ApiResponse, UpdateTabRequest>({
-      query: (body) => ({ ...endpoints.contentManagement.research.updateTab, body }),
+      query: ({ tab_id: id, ...body }) => ({
+        ...endpoints.contentManagement.research.updateTab(id),
+        body,
+      }),
       invalidatesTags: ['Research'],
     }),
     updatePage: builder.mutation<ApiResponse, { tab_id: string; body: UpdatePageRequest }>({
