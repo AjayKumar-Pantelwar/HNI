@@ -65,15 +65,16 @@ const Announcement = (props: Props) => {
                 />
 
                 <TableBody>
-                  {notifications?.map((row, i) => (
-                    <Tab1TableRow
-                      key={i}
-                      {...row}
-                      // selected={table.selected.includes(row.rid)}
-                      // onSelectRow={() => table.onSelectRow(row.rid)}
-                    />
-                  ))}
-
+                  {[...(notifications || [])]
+                    ?.sort((a, b) => a.id.localeCompare(b.id))
+                    ?.map((row, i) => (
+                      <Tab1TableRow
+                        key={i}
+                        {...row}
+                        // selected={table.selected.includes(row.rid)}
+                        // onSelectRow={() => table.onSelectRow(row.rid)}
+                      />
+                    ))}
                   <TableEmptyRows
                     height={denseHeight}
                     emptyRows={emptyRows(table.page, table.rowsPerPage, notifications?.length || 0)}

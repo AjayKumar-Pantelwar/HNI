@@ -123,7 +123,7 @@ const AnnouncementForm = (props: Props) => {
                       Active / Inactive
                     </Typography>
                     <CustomSwitch
-                      checked={getValues('active')}
+                      checked={watch('active')}
                       onChange={(e) => {
                         setValue('active', e.target.checked);
                       }}
