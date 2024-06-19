@@ -1,6 +1,15 @@
 'use client';
 
-import { Box, Card, Container, IconButton, Tab, Tabs, Typography } from '@mui/material';
+import {
+  Box,
+  Card,
+  CircularProgress,
+  Container,
+  IconButton,
+  Tab,
+  Tabs,
+  Typography,
+} from '@mui/material';
 import { useState } from 'react';
 
 import EditIcon from '@mui/icons-material/Edit';
@@ -25,7 +34,7 @@ interface TabProps {
 
 const VASView = () => {
   const settings = useSettingsContext();
-  const { data } = VASApi.useVasProductsQuery();
+  const { data, error, isError, isLoading } = VASApi.useVasProductsQuery();
 
   const edit = useBoolean();
 
@@ -58,52 +67,85 @@ const VASView = () => {
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
       <CustomBreadcrumbs
-        heading="Research"
+        heading="Value Added Services"
         links={[
           { name: 'Dashboard', href: paths.dashboard.root },
           { name: '360 Universe', href: paths.dashboard.universe.root },
-          { name: 'Research' },
+          { name: 'VAS' },
         ]}
         sx={{
           mb: { xs: 3, md: 5 },
         }}
       />
+
       <Card sx={{ width: '100%', mt: 3 }}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider', px: 2 }}>
-          <Tabs
-            allowScrollButtonsMobile
-            value={tab}
-            onChange={handleChange}
-            aria-label="notification tabs"
+        {isError ? (
+          <Box
+            sx={{
+              width: '100%',
+              minHeight: '200px',
+              alignItems: 'center',
+              display: 'flex',
+              justifyContent: 'center',
+            }}
           >
-            {data &&
-              Object.entries(data?.data).map(([key, d], i) => (
-                <Tab
-                  key={key}
-                  value={key}
-                  label={
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <Typography variant="subtitle2">{capitalize(d?.product_name)}</Typography>
-                      {tab === key && (
-                        <IconButton
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            edit.onTrue();
-                            setTabName(d?.product_name);
-                            setTabId(d?.product_id);
-                          }}
-                        >
-                          <EditIcon fontSize="small" color="primary" />
-                        </IconButton>
-                      )}
-                    </Box>
-                  }
-                />
-              ))}
-          </Tabs>
-        </Box>
-        {tabContent(tab)}
+            <Typography variant="subtitle1">
+              {(error as any)?.message || 'Data not found'}
+            </Typography>
+          </Box>
+        ) : isLoading ? (
+          <Box
+            sx={{
+              width: '100%',
+              minHeight: '200px',
+              alignItems: 'center',
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
+            <CircularProgress />
+          </Box>
+        ) : (
+          data && (
+            <>
+              <Box sx={{ borderBottom: 1, borderColor: 'divider', px: 2 }}>
+                <Tabs
+                  allowScrollButtonsMobile
+                  value={tab}
+                  onChange={handleChange}
+                  aria-label="notification tabs"
+                >
+                  {Object.entries(data?.data).map(([key, d], i) => (
+                    <Tab
+                      key={key}
+                      value={key}
+                      label={
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          <Typography variant="subtitle2">{capitalize(d?.product_name)}</Typography>
+                          {tab === key && (
+                            <IconButton
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                edit.onTrue();
+                                setTabName(d?.product_name);
+                                setTabId(d?.product_id);
+                              }}
+                            >
+                              <EditIcon fontSize="small" color="primary" />
+                            </IconButton>
+                          )}
+                        </Box>
+                      }
+                    />
+                  ))}
+                </Tabs>
+              </Box>
+              {tabContent(tab)}
+            </>
+          )
+        )}
       </Card>
+
       <EditTabName tid={tabId} open={edit.value} onClose={edit.onFalse} tabName={tabName} />
     </Container>
   );

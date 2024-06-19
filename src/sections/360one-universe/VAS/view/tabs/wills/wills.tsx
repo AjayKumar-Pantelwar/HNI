@@ -40,7 +40,7 @@ const WillsTab = (props: Props) => {
   const addSpecifications = useBoolean();
   const addBenefits = useBoolean();
   const editConcept = useBoolean();
-
+  if (!data) return <></>;
   return (
     <Stack sx={{ m: 3, gap: 3, minHeight: '100%' }}>
       <Grid container spacing={2}>

@@ -34,7 +34,7 @@ const AddAnnouncementModal = (props: Props) => {
         </Box>
         <Divider />
         <Box sx={{ p: 2 }}>
-          <AnnouncementForm notification={notification} />
+          <AnnouncementForm notification={notification} onClose={onClose} />
         </Box>
       </Stack>
     </Dialog>

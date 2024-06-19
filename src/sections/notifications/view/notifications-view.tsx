@@ -60,7 +60,7 @@ const NotificationsView = () => {
         }}
         action={
           tab === NotificationTabs.ANNOUNCEMENT &&
-          !data?.data?.length && (
+          data?.data?.length && (
             <Button
               variant="contained"
               startIcon={<Iconify icon="mingcute:add-line" />}

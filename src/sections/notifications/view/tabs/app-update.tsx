@@ -26,13 +26,20 @@ const AppUpdate = () => {
     button1: Yup.string()
       .required('Button 1 is required')
       .max(86, 'Button 1 must be less than 86 characters'),
-    button2: Yup.string()
-      .required('Button 2 is required')
-      .max(86, 'Button 2 must be less than 86 characters'),
+    app_mandatory: Yup.string().required('App mandatory is required'),
+    button2: Yup.string().test('button2-required', 'Button 2 is required', (value, context) => {
+      const appMandatory = context?.parent?.app_mandatory;
+      if (appMandatory === 'false') {
+        return Yup.string()
+          .required('Button 2 is required')
+          .max(86, 'Button 2 must be less than 86 characters')
+          .isValidSync(value);
+      }
+      return true;
+    }),
     app_link: Yup.string().required('App link is required'),
     app_version: Yup.string().required('App version is required'),
-    app_mandatory: Yup.string().required('App mandatory is required'),
-    type: Yup.string()
+    os_type: Yup.string()
       .required('Type is required')
       .oneOf(['android', 'ios'], 'Type must be either android or ios'),
   });
@@ -42,10 +49,10 @@ const AppUpdate = () => {
     subtitle: '',
     button1: '',
     button2: '',
-    type: APPType.ANDROID,
+    os_type: APPType.ANDROID,
     app_link: '',
     app_version: '',
-    app_mandatory: 'yes',
+    app_mandatory: 'true',
   };
 
   const methods = useForm({
@@ -62,16 +69,16 @@ const AppUpdate = () => {
   } = methods;
 
   const onSubmit = handleSubmit(async (data) => {
-    const { type, app_link, app_mandatory, app_version, ...rest } = data;
+    const { os_type: type, app_link, app_mandatory, app_version, ...rest } = data;
 
     try {
       await updateAPPVersion({
         ...rest,
-        type: type as APPType,
-        button2: appMandate ? '' : data.button2,
+        os_type: type as APPType,
+        button2: appMandate === 'true' ? '' : data.button2,
         ...(type === APPType.ANDROID
           ? {
-              android_mandatory: app_mandatory === 'yes',
+              android_mandatory: app_mandatory === 'true',
               android_version: app_version,
               play_store_url: app_link,
             }
@@ -82,7 +89,7 @@ const AppUpdate = () => {
             }),
         ...(type === APPType.IOS
           ? {
-              ios_mandatory: app_mandatory === 'yes',
+              ios_mandatory: app_mandatory === 'true',
               ios_version: app_version,
               app_store_url: app_link,
             }
@@ -93,7 +100,6 @@ const AppUpdate = () => {
             }),
       }).unwrap();
       reset();
-
       enqueueSnackbar('Update success!', { variant: 'success' });
     } catch (error) {
       handleError(error);
@@ -101,6 +107,8 @@ const AppUpdate = () => {
   });
 
   const appMandate = watch('app_mandatory');
+
+  console.log(errors, getValues());
 
   return (
     <Box sx={{ p: 3 }}>
@@ -121,7 +129,7 @@ const AppUpdate = () => {
               <Stack gap={3}>
                 <RHFTextField name="app_link" label="App link" />
                 <RHFTextField name="app_version" label="App version" />
-                <RHFSelect name="type" label="Type">
+                <RHFSelect name="os_type" label="Type">
                   <MenuItem value={APPType.ANDROID}>Android</MenuItem>
                   <MenuItem value={APPType.IOS}>IOS</MenuItem>
                 </RHFSelect>

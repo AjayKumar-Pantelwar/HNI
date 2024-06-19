@@ -18,6 +18,7 @@ const TABLE_HEAD = [
   { id: 'description', label: 'Description' },
   { id: 'from_date', label: 'From Date' },
   { id: 'to_date', label: 'To Date' },
+  { id: 'active', label: 'Active' },
   { id: 'edit', label: 'Actions', width: 80 },
 ];
 
@@ -32,24 +33,7 @@ const Announcement = (props: Props) => {
   const table = useTable();
   const denseHeight = table.dense ? 52 : 72;
 
-  const notifications = data?.data || [
-    {
-      id: 'b993c9f0-a951-46ba-a40a-02d859f9bc4f',
-      title: 'bse down',
-      subtitle: 'kuchh nahi chalega',
-      is_active: false,
-      from_date: '2024-05-11 00:00:00 +0000 UTC',
-      to_date: '2024-05-13 00:00:00 +0000 UTC',
-    },
-    {
-      id: '7e4fdaaa-d72f-4116-8381-cf03b115dfcc',
-      title: 'server down',
-      subtitle: 'kuchh nahi chalega',
-      is_active: false,
-      from_date: '2024-05-13 00:00:00 +0000 UTC',
-      to_date: '2024-05-13 00:00:00 +0000 UTC',
-    },
-  ];
+  const notifications = data?.data;
 
   return (
     <Box>
