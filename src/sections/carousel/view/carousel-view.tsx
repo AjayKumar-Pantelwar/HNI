@@ -54,8 +54,8 @@ const CarouselView = () => {
         heading="List"
         links={[
           { name: 'Dashboard', href: paths.dashboard.root },
-          { name: 'Carousel', href: paths.dashboard.contentManagement.carousel.list },
-          { name: 'List' },
+          { name: 'Content Management', href: paths.dashboard.contentManagement.carousel.list },
+          { name: 'Pre-Onboarding' },
         ]}
         action={
           <Button

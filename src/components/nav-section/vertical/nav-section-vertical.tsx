@@ -1,11 +1,11 @@
-import { memo, useState, useCallback } from 'react';
+import { memo, useCallback, useState } from 'react';
 // @mui
+import Collapse from '@mui/material/Collapse';
 import List from '@mui/material/List';
 import Stack from '@mui/material/Stack';
-import Collapse from '@mui/material/Collapse';
 //
-import { NavSectionProps, NavListProps, NavConfigProps } from '../types';
 import { navVerticalConfig } from '../config';
+import { NavConfigProps, NavListProps, NavSectionProps } from '../types';
 import { StyledSubheader } from './styles';
 
 import NavList from './nav-list';
@@ -55,7 +55,7 @@ function Group({ subheader, items, config }: GroupProps) {
   ));
 
   return (
-    <List disablePadding sx={{ px: 2 }}>
+    <List disablePadding>
       {subheader ? (
         <>
           <StyledSubheader disableGutters disableSticky onClick={handleToggle} config={config}>

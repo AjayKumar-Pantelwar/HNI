@@ -1,7 +1,8 @@
+import { chipClasses, ChipProps } from '@mui/material/Chip';
 import { alpha, Theme } from '@mui/material/styles';
-import { ChipProps, chipClasses } from '@mui/material/Chip';
 // components
 import Iconify from 'src/components/iconify';
+import { secondaryFont, typography } from 'src/theme/typography';
 
 // ----------------------------------------------------------------------
 
@@ -29,6 +30,9 @@ export default function Chip(theme: Theme) {
     const softVariant = ownerState.variant === 'soft';
 
     const defaultStyle = {
+      fontFamily: secondaryFont.style.fontFamily,
+      fontWeight: typography.fontWeightMedium,
+
       [`& .${chipClasses.deleteIcon}`]: {
         opacity: 0.48,
         color: 'currentColor',
@@ -37,7 +41,6 @@ export default function Chip(theme: Theme) {
           color: 'currentColor',
         },
       },
-
       ...(defaultColor && {
         [`& .${chipClasses.avatar}`]: {
           color: theme.palette.text.primary,
