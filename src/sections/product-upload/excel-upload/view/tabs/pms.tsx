@@ -11,6 +11,7 @@ const PMS = () => {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 
   const [open, setOpen] = useState(false);
+  const [downloading, setDownloading] = useState(false);
 
   const [uploadExcel] = productUploadApi.useUploadExcelMutation();
 
@@ -42,13 +43,14 @@ const PMS = () => {
 
   const handleDownload = async () => {
     try {
+      setDownloading(true);
       const { data } = await triggerDownload({ type: 'pms' });
       if (data) {
         const url = window.URL.createObjectURL(new Blob([data]));
         const link = document.createElement('a');
         link.href = url;
         console.log(url, link);
-        link.setAttribute('download', 'file.xlsx');
+        link.setAttribute('download', 'Whitelisted-PMS.xlsx');
         document.body.appendChild(link);
         link.click();
         link.remove();
@@ -57,6 +59,8 @@ const PMS = () => {
     } catch (error) {
       console.error('Download error:', error);
       enqueueSnackbar('Failed to download file', { variant: 'error' });
+    } finally {
+      setDownloading(false);
     }
   };
   return (
@@ -70,6 +74,7 @@ const PMS = () => {
       handleUpload={handleUpload}
       open={open}
       tab={ExcelUploadTabs.PMS}
+      downloading={downloading}
     />
   );
 };

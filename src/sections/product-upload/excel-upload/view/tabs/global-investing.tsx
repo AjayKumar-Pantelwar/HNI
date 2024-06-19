@@ -12,6 +12,8 @@ const GlobalInvesting = () => {
 
   const [open, setOpen] = useState(false);
 
+  const [downloading, setDownloading] = useState(false);
+
   const [uploadExcel] = productUploadApi.useUploadExcelMutation();
 
   const [excelData, setExcelData] = useState<UploadResponseData>();
@@ -42,13 +44,14 @@ const GlobalInvesting = () => {
 
   const handleDownload = async () => {
     try {
+      setDownloading(true);
       const { data } = await triggerDownload({ type: 'mf' });
       if (data) {
         const url = window.URL.createObjectURL(new Blob([data]));
         const link = document.createElement('a');
         link.href = url;
         console.log(url, link);
-        link.setAttribute('download', 'file.xlsx');
+        link.setAttribute('download', 'Global-Investing.xlsx');
         document.body.appendChild(link);
         link.click();
         link.remove();
@@ -57,6 +60,8 @@ const GlobalInvesting = () => {
     } catch (error) {
       console.error('Download error:', error);
       enqueueSnackbar('Failed to download file', { variant: 'error' });
+    } finally {
+      setDownloading(false);
     }
   };
 
@@ -71,6 +76,7 @@ const GlobalInvesting = () => {
       handleUpload={handleUpload}
       open={open}
       tab={ExcelUploadTabs.GLOBAL_INVESTING}
+      downloading={downloading}
     />
   );
 };
