@@ -39,7 +39,7 @@ export default function NavMini() {
       >
         {/* <Logo sx={{ mx: 'auto', my: 2 }} /> */}
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-          <img src="/logo/360logo.png" alt="logo" style={{ width: 45, height: 45, padding: 5 }} />
+          <img src="/logo/360logo.svg" alt="logo" style={{ width: 45, height: 45, padding: 5 }} />
         </Box>
 
         <NavSectionMini

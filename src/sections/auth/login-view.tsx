@@ -172,7 +172,7 @@ export default function LoginSection() {
 
   const renderHead = (
     <Stack sx={{ mb: 5, display: 'flex', alignItems: 'center' }}>
-      <img src="/logo/360logo.png" alt="logo" style={{ width: 60, marginBottom: 24 }} />
+      <img src="/logo/360logo.svg" alt="logo" style={{ width: 60, marginBottom: 24 }} />
       <Typography variant="h4">Login</Typography>
       <Typography variant="body2" color="text.secondary">
         Sign in on the 360ONE Wealth Mobile CMS

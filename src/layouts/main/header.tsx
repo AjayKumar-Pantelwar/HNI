@@ -63,7 +63,7 @@ export default function Header() {
               </Link>
             }
           >
-            <img src="/logo/360logo.png" alt="logo" style={{ width: 60, height: 60 }} />
+            <img src="/logo/360logo.svg" alt="logo" style={{ width: 60, height: 60 }} />
           </Badge>
 
           <Box sx={{ flexGrow: 1 }} />
