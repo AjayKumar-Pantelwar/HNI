@@ -63,7 +63,7 @@ const AddVideoModal = (props: Props) => {
     page_id: page?.page_id || '',
     sub_text2: card?.sub_text2 || '',
     sub_text3: card?.sub_text3 || '',
-    tags: card?.tags || [],
+    tags: card?.tags || [{ key: 'type', value: '' }],
     text: card?.text || '',
     video_link: card?.video_link || '',
     page_type: page?.type || '',

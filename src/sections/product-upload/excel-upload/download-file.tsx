@@ -1,4 +1,4 @@
-import { Button, Stack, Typography } from '@mui/material';
+import { Button, CircularProgress, Stack, Typography } from '@mui/material';
 import DownloadIcon from 'src/assets/icons/download-icon';
 
 import MutualFundsIcon from 'src/assets/icons/mutual-funds';
@@ -8,10 +8,11 @@ import { ExcelUploadTabs } from 'src/types/product-upload.types';
 interface Props {
   handleDownload: () => Promise<void>;
   tab: ExcelUploadTabs;
+  downloading: boolean;
 }
 
 const DownloadFile = (props: Props) => {
-  const { handleDownload, tab } = props;
+  const { handleDownload, tab, downloading } = props;
 
   const content =
     tab === ExcelUploadTabs.AIF
@@ -30,8 +31,13 @@ const DownloadFile = (props: Props) => {
       <Typography variant="h6" sx={{ fontFamily: secondaryFont.style.fontFamily }}>
         {content}
       </Typography>
-      <Button startIcon={<DownloadIcon />} variant="contained" onClick={handleDownload}>
-        Download Now
+      <Button
+        disabled={downloading}
+        startIcon={!downloading && <DownloadIcon />}
+        variant="contained"
+        onClick={handleDownload}
+      >
+        {downloading ? <CircularProgress size={22} /> : 'Download Now'}
       </Button>
     </Stack>
   );

@@ -43,6 +43,7 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
           height: 1,
           display: 'flex',
           flexDirection: 'column',
+          // gap: 3,
         },
       }}
     >
@@ -56,6 +57,7 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
       </Box>
 
       <NavSectionVertical
+        sx={{ mt: 2 }}
         data={navData}
         config={{
           currentRole: user?.aid || 'admin',

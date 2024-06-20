@@ -40,6 +40,8 @@ export default function NavItem({
 
   const theme = useTheme();
 
+  console.log({ subItem, children, active });
+
   const renderContent = (
     <StyledItem
       disableGutters
@@ -49,15 +51,21 @@ export default function NavItem({
       config={config}
       sx={{
         gap: 2,
+        borderRadius: 'unset',
+        // borderRight: `solid 4px`,
+        // borderColor: active ? 'primary.main' : 'transparent',
+        '& svg path': {
+          color: active ? 'primary.main' : 'inherit',
+        },
         ...sx,
         ...(!children && {
           ':hover': {
-            borderRight: '4px solid',
-            borderColor: 'primary.main',
+            // borderColor: 'primary.main',
+            color: 'primary.main',
             borderRadius: 'unset',
           },
         }),
-        ...(subItem &&
+        ...(children &&
           active && {
             borderRight: '4px solid',
             borderColor: 'primary.main',
@@ -66,6 +74,11 @@ export default function NavItem({
           }),
         ...(!children &&
           active && {
+            color: 'primary.main',
+          }),
+        ...(!children &&
+          active &&
+          !subItem && {
             borderRight: '4px solid',
             borderColor: 'primary.main',
             backgroundColor: '#FFF6F2',
@@ -98,7 +111,7 @@ export default function NavItem({
             typography: 'body2',
             textTransform: 'capitalize',
             fontWeight: active ? 'fontWeightSemiBold' : 'fontWeightMedium',
-            color: 'text.primary',
+            color: active ? 'primary.main' : 'text.primary',
           }}
           secondaryTypographyProps={{
             noWrap: true,

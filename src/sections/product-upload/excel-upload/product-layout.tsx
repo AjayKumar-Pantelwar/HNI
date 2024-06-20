@@ -23,6 +23,7 @@ interface Props {
   handleUpload: () => Promise<void>;
   open: boolean;
   tab: ExcelUploadTabs;
+  downloading: boolean;
 }
 
 const ProductLayout = (props: Props) => {
@@ -36,6 +37,7 @@ const ProductLayout = (props: Props) => {
     setOpen,
     open,
     tab,
+    downloading,
   } = props;
 
   return (
@@ -44,7 +46,7 @@ const ProductLayout = (props: Props) => {
         <ExcelViewer data={data} handleDownload={handleDownload} setOpen={setOpen} />
       ) : (
         <Box sx={{ display: 'flex', alignItems: 'center', minHeight: '400px' }}>
-          <DownloadFile handleDownload={handleDownload} tab={tab} />
+          <DownloadFile handleDownload={handleDownload} tab={tab} downloading={downloading} />
           <Divider orientation="vertical" sx={{ minHeight: '450px' }} />
           <Stack sx={{ flex: 1, p: 3, gap: 3 }}>
             <ExcelFileUpload handleFileChange={handleFileChange} />
