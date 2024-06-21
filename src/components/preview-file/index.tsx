@@ -25,7 +25,7 @@ export const PreviewFile = (props: Props) => {
     const { name } = file;
     if (name?.length > 24) {
       const extension = name.split('.').pop();
-      return `...${extension}`;
+      return `${name.slice(0, 15)}...${extension}`;
     }
     return name || '--';
   };

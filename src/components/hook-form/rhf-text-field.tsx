@@ -1,6 +1,6 @@
 import { Controller, useFormContext } from 'react-hook-form';
 // @mui
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Stack, StackProps, Typography } from '@mui/material';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
 
 // ----------------------------------------------------------------------
@@ -8,6 +8,7 @@ import TextField, { TextFieldProps } from '@mui/material/TextField';
 type Props = TextFieldProps & {
   name: string;
   maxLimitCharacters?: number;
+  stackProps?: StackProps;
 };
 
 export default function RHFTextField({
@@ -16,6 +17,7 @@ export default function RHFTextField({
   type,
   label,
   maxLimitCharacters,
+  stackProps,
   ...other
 }: Props) {
   const { control } = useFormContext();
@@ -25,7 +27,7 @@ export default function RHFTextField({
       name={name}
       control={control}
       render={({ field, fieldState: { error } }) => (
-        <Stack>
+        <Stack {...stackProps}>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <Typography variant="caption" fontWeight={500} color="text.secondary">
               {label}

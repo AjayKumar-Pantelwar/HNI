@@ -1,6 +1,16 @@
 'use client';
 
-import { Box, Button, Card, Table, TableBody, TableContainer, TextField } from '@mui/material';
+import { Search } from '@mui/icons-material';
+import {
+  Box,
+  Button,
+  Card,
+  InputAdornment,
+  Table,
+  TableBody,
+  TableContainer,
+  TextField,
+} from '@mui/material';
 import { KeyboardEvent, useState } from 'react';
 import Filters from 'src/assets/icons/filters';
 import Scrollbar from 'src/components/scrollbar';
@@ -85,6 +95,13 @@ const UserListView = () => {
             onChange={(e) => setInput(e.target.value)}
             placeholder="Enter name, phone, PAN"
             onKeyDown={handleKeyPress}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Search />
+                </InputAdornment>
+              ),
+            }}
           />
           <Button
             onClick={() => filtersDrawer.onTrue()}

@@ -163,22 +163,22 @@ const AddSpeakerModal = (props: Props) => {
                 <RHFTextField name="text" label="Speaker Name" />
                 {!logo ? (
                   <UploadFile
-                    uploadAs="JPG"
+                    uploadAs="SVG"
                     maxFileSize={2}
                     label="Upload Logo"
                     handleFileChange={handleFileChangePerm}
-                    accept={{ 'image/jpg': ['.jpg'] }}
+                    accept={{ 'image/svg': ['.svg'] }}
                   />
                 ) : (
                   <PreviewFile selectedFile={logo as any} handleFileChange={handleFileChangePerm} />
                 )}
                 {!image ? (
                   <UploadFile
-                    uploadAs="JPG"
+                    uploadAs="PNG"
                     maxFileSize={2}
                     label="Upload Image"
                     handleFileChange={handleImageChangePerm}
-                    accept={{ 'image/jpg': ['.jpg'] }}
+                    accept={{ 'image/png': ['.png'] }}
                   />
                 ) : (
                   <PreviewFile
