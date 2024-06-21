@@ -81,7 +81,7 @@ const UserEditModal = (props: Props) => {
     },
     {
       title: 'Caliber',
-      value: user?.is_calibre_user ? 'Yes' : 'No',
+      value: user?.is_caliber_user ? 'Yes' : 'No',
       id: 'caliber',
     },
   ];

@@ -25,7 +25,7 @@ const TABLE_HEAD = [
   { id: 'pan', label: 'PAN Number' },
   { id: 'kyc_missmatch', label: 'KYC Mismatch' },
   { id: 'aml', label: 'AML' },
-  { id: 'calibre', label: 'Calibre' },
+  { id: 'caliber', label: 'Caliber' },
   { id: 'edit', label: 'Actions', width: 80 },
 ];
 
@@ -33,9 +33,9 @@ const defaultFilters: GetUserRequest = {
   name: '',
   mobile: '',
   pan: '',
-  kyc_mismatch: false,
-  aml: false,
-  calibre: false,
+  kyc_mismatch: 'false',
+  is_aml: 'false',
+  is_caliber: 'false',
   total_pages: 1,
   total_records: 10,
 };
