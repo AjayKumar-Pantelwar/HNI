@@ -1,6 +1,7 @@
 import {
   Avatar,
   Checkbox,
+  Chip,
   IconButton,
   ListItemText,
   MenuItem,
@@ -10,8 +11,8 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 
-import BlockIcon from '@mui/icons-material/Block';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import BlockIcon from 'src/assets/icons/block-icon';
 import EditIcon from 'src/assets/icons/edit-icon';
 import { usePopover } from 'src/components/custom-popover';
 import CustomPopover from 'src/components/custom-popover/custom-popover';
@@ -45,6 +46,12 @@ const UserTableRow = (props: Props) => {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const caliber = row?.is_caliber_user ? 'Yes' : 'No';
+
+  const kyc = row?.is_caliber_user ? '---' : row?.is_kyc_mismatched ? 'Yes' : 'No';
+
+  const aml = row?.is_caliber_user ? '---' : row?.is_aml_present ? 'Yes' : 'No';
 
   return (
     <TableRow
@@ -80,9 +87,16 @@ const UserTableRow = (props: Props) => {
       </TableCell>
       <TableCell>{row?.mobile}</TableCell>
       <TableCell>{row?.pan}</TableCell>
-      <TableCell>{row?.is_kyc_mismatched ? 'Yes' : 'No'}</TableCell>
-      <TableCell>{row?.is_aml_present ? 'Yes' : 'No'}</TableCell>
-      <TableCell>{row?.is_caliber_user ? 'Yes' : 'No'}</TableCell>
+      <TableCell>
+        <Chip
+          variant="soft"
+          label={row.is_blocked ? ' blocked' : 'active'}
+          color={row.is_blocked ? 'error' : 'success'}
+        />
+      </TableCell>
+      <TableCell>{caliber}</TableCell>
+      <TableCell>{kyc}</TableCell>
+      <TableCell>{aml}</TableCell>
       <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
         <Tooltip title="Quick Edit" placement="top" arrow>
           <IconButton sx={{ py: 0 }} onClick={popover.onOpen}>

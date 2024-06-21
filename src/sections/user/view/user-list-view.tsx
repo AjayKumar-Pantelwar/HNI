@@ -1,6 +1,5 @@
 'use client';
 
-import { Search } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -13,6 +12,7 @@ import {
 } from '@mui/material';
 import { KeyboardEvent, useState } from 'react';
 import Filters from 'src/assets/icons/filters';
+import SearchIcon from 'src/assets/icons/search-icon';
 import Scrollbar from 'src/components/scrollbar';
 import {
   TableEmptyRows,
@@ -33,9 +33,10 @@ const TABLE_HEAD = [
   { id: 'client_name', label: 'Client Name' },
   { id: 'mobile_no', label: 'Mobile No' },
   { id: 'pan', label: 'PAN Number' },
+  { id: 'blocked', label: 'Status' },
+  { id: 'caliber', label: 'Caliber' },
   { id: 'kyc_missmatch', label: 'KYC Mismatch' },
   { id: 'aml', label: 'AML' },
-  { id: 'caliber', label: 'Caliber' },
   { id: 'edit', label: 'Actions', width: 80 },
 ];
 
@@ -98,7 +99,7 @@ const UserListView = () => {
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <Search />
+                  <SearchIcon />
                 </InputAdornment>
               ),
             }}
