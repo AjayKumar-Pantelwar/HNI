@@ -43,7 +43,7 @@ const NavItem = forwardRef<HTMLDivElement, Props>(
               ...(subItem && { mr: 1.5 }),
             }}
           >
-            <Icon />
+            <Icon selectedColor="#1B1C1E" />
           </StyledIcon>
         )}
 

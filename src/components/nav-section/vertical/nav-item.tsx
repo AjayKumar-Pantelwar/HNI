@@ -88,7 +88,7 @@ export default function NavItem({
       {...rest}
     >
       <>
-        {Icon && <Icon />}
+        {Icon && <Icon selectedColor={active ? theme.palette.primary.main : '#1B1C1E'} />}
 
         {subItem && (
           <StyledIcon size={config.iconSize}>
