@@ -1,6 +1,10 @@
 import { ApiResponse } from './api.types';
 
-export type GetUserResponse = ApiResponse<{ users: User[] }>;
+export type GetUserResponse = ApiResponse<{
+  users: User[];
+  total_pages: number;
+  total_records: number;
+}>;
 
 export interface GetUserRequest {
   name: string;

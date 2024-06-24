@@ -12,10 +12,12 @@ import kebabToCapitalize from 'src/utils/change-case';
 import AddAnnouncementModal from './tabs/announcements/add-announcement-modal';
 import Announcement from './tabs/announcements/announcement';
 import AppUpdate from './tabs/app-update';
+import PushNotifications from './tabs/push-notifications/push-notifications';
 
 export enum NotificationTabs {
   ANNOUNCEMENT = 'announcement',
   APP_UPDATE = 'app_update',
+  PUSH_NOTIFICATIONS = 'push_notifications',
 }
 
 const NotificationsView = () => {
@@ -37,6 +39,9 @@ const NotificationsView = () => {
         return <Announcement data={data} />;
       case NotificationTabs.APP_UPDATE:
         return <AppUpdate />;
+      case NotificationTabs.PUSH_NOTIFICATIONS:
+        return <PushNotifications />;
+
       default:
         return (
           <Typography component="div" sx={{ p: 3 }}>
@@ -77,6 +82,7 @@ const NotificationsView = () => {
           <Tabs value={tab} onChange={handleChange} aria-label="notification tabs">
             <Tab value={NotificationTabs.ANNOUNCEMENT} label="Announcements" />
             <Tab value={NotificationTabs.APP_UPDATE} label="App Updates" />
+            <Tab value={NotificationTabs.PUSH_NOTIFICATIONS} label="Push Notifications" />
           </Tabs>
         </Box>
         {tabContent(tab)}
