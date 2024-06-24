@@ -30,7 +30,7 @@ export type NavListProps = {
   path: string;
   Icon?:
     | OverridableComponent<SvgIconTypeMap<{}, 'svg'>>
-    | ((props: ComponentProps<'svg'>) => JSX.Element);
+    | ((props: ComponentProps<'svg'> & { selectedColor?: string }) => JSX.Element);
   info?: React.ReactElement;
   caption?: string;
   disabled?: boolean;

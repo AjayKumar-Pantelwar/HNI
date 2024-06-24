@@ -1,3 +1,5 @@
+'use client';
+
 import { yupResolver } from '@hookform/resolvers/yup';
 import Close from '@mui/icons-material/Close';
 import {
@@ -12,6 +14,7 @@ import {
 } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import { useForm } from 'react-hook-form';
+import DeleteIcon from 'src/assets/icons/delete-icon';
 import { RHFTextField } from 'src/components/hook-form';
 import FormProvider from 'src/components/hook-form/form-provider';
 import { PreviewFile } from 'src/components/preview-file';
@@ -138,25 +141,41 @@ const AddNewsModal = (props: Props) => {
             <Grid item md={6} xs={12}>
               {!image ? (
                 <UploadFile
-                  uploadAs="JPG"
+                  uploadAs="PNG"
                   maxFileSize={2}
                   label="Upload Image"
                   handleFileChange={handleFileChangePerm}
-                  accept={{ 'image/jpg': ['.jpg'] }}
+                  accept={{ 'image/png': ['.png'] }}
                 />
               ) : (
                 <PreviewFile selectedFile={image as any} handleFileChange={handleFileChangePerm} />
               )}
             </Grid>
             {tags?.map((p, i) => (
-              <Grid item xs={12} md={6}>
-                <RHFTextField
-                  key={i}
-                  fullWidth
-                  name={`tags[${i}].value`}
-                  label={`Tag ${i + 1}`}
-                  maxLimitCharacters={80}
-                />
+              <Grid item xs={12} key={i}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, width: '100%' }}>
+                  <RHFTextField
+                    stackProps={{
+                      sx: {
+                        width: '100%',
+                      },
+                    }}
+                    fullWidth
+                    key={tags?.length}
+                    name={`tags[${i}].value`}
+                    label={`Tag ${i + 1}`}
+                    maxLimitCharacters={80}
+                  />
+                  <IconButton
+                    sx={{ mt: 1 }}
+                    onClick={() => {
+                      console.log(i, tags);
+                      setValue('tags', tags?.filter((_, index) => index !== i) || []);
+                    }}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </Box>
               </Grid>
             ))}
             <Grid item xs={12}>

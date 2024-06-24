@@ -48,7 +48,7 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
       }}
     >
       <Box sx={{ px: 3, py: 2, display: 'flex', gap: 2, alignItems: 'center' }}>
-        <img src="/logo/360logo.png" alt="logo" style={{ height: 60 }} />
+        <img src="/logo/360logo.svg" alt="logo" style={{ height: 60 }} />
         <Divider orientation="vertical" />
         <Stack>
           <Typography variant="h6">Admin</Typography>

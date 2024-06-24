@@ -1,6 +1,5 @@
 'use client';
 
-import KeyRoundedIcon from '@mui/icons-material/KeyRounded';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import ListItemText from '@mui/material/ListItemText';
@@ -9,6 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import Tooltip from '@mui/material/Tooltip';
 import Link from 'next/link';
 import EditIcon from 'src/assets/icons/edit-icon';
+import KeyIcon from 'src/assets/icons/key-icon';
 // import { usePerm } from 'src/hooks/use-perm';
 import { paths } from 'src/routes/paths';
 import { Role } from 'src/types/role.types';
@@ -31,7 +31,7 @@ export default function RolesTableRow({ row, selected, onSelectRow }: Props) {
       )}
 
       <TableCell sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-        <KeyRoundedIcon width={18} height={18} />
+        <KeyIcon height={18} width={18} />
 
         <ListItemText
           primary={row.rname}

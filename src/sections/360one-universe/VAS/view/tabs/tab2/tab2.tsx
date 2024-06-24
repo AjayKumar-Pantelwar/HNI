@@ -50,7 +50,7 @@
 //         </Box>
 //         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
 //           <Box sx={{ border: '1px solid', borderColor: 'divider', borderRadius: 1, p: 2 }}>
-//             <img src="/logo/360logo.png" alt="360One" width={40} height={40} />
+//             <img src="/logo/360logo.svg" alt="360One" width={40} height={40} />
 //           </Box>
 //           <Box
 //             sx={{

@@ -37,7 +37,7 @@ export default function SplashScreen({ sx, ...other }: BoxProps) {
             repeat: Infinity,
           }}
         >
-          <img src="/logo/360logo.png" alt="logo" style={{ height: 60 }} />
+          <img src="/logo/360logo.svg" alt="logo" style={{ height: 60 }} />
         </m.div>
 
         <Box

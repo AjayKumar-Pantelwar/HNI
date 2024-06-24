@@ -47,7 +47,7 @@ const UserFilterDrawer = (props: Props) => {
               onChange={(e) => {
                 setCurrentFilters((prev) => ({
                   ...prev,
-                  kyc_mismatch: e.target.value === 'true',
+                  kyc_mismatch: e.target.value,
                 }));
               }}
             >
@@ -60,11 +60,11 @@ const UserFilterDrawer = (props: Props) => {
             <Divider variant="fullWidth" />
             <RadioGroup
               row
-              value={currentFilters.aml}
+              value={currentFilters.is_aml}
               onChange={(e) => {
                 setCurrentFilters((prev) => ({
                   ...prev,
-                  aml: e.target.value === 'true',
+                  aml: e.target.value,
                 }));
               }}
             >
@@ -77,11 +77,11 @@ const UserFilterDrawer = (props: Props) => {
             <Divider variant="fullWidth" />
             <RadioGroup
               row
-              value={currentFilters.calibre}
+              value={currentFilters.is_caliber}
               onChange={(e) => {
                 setCurrentFilters((prev) => ({
                   ...prev,
-                  calibre: e.target.value === 'true',
+                  caliber: e.target.value,
                 }));
               }}
             >

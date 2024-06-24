@@ -4,6 +4,8 @@ import DownloadIcon from 'src/assets/icons/download-icon';
 import MutualFundsIcon from 'src/assets/icons/mutual-funds';
 import { secondaryFont } from 'src/theme/typography';
 import { ExcelUploadTabs } from 'src/types/product-upload.types';
+import AIF from './icon/aif';
+import PMS from './icon/pms';
 
 interface Props {
   handleDownload: () => Promise<void>;
@@ -27,7 +29,13 @@ const DownloadFile = (props: Props) => {
 
   return (
     <Stack sx={{ gap: 2, alignItems: 'center', flex: 1, p: 3 }}>
-      <MutualFundsIcon />
+      {tab === ExcelUploadTabs.AIF ? (
+        <AIF />
+      ) : tab === ExcelUploadTabs.PMS ? (
+        <PMS />
+      ) : (
+        <MutualFundsIcon />
+      )}
       <Typography variant="h6" sx={{ fontFamily: secondaryFont.style.fontFamily }}>
         {content}
       </Typography>

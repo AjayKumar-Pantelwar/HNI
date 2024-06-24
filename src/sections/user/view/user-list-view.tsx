@@ -1,8 +1,18 @@
 'use client';
 
-import { Box, Button, Card, Table, TableBody, TableContainer, TextField } from '@mui/material';
+import {
+  Box,
+  Button,
+  Card,
+  InputAdornment,
+  Table,
+  TableBody,
+  TableContainer,
+  TextField,
+} from '@mui/material';
 import { KeyboardEvent, useState } from 'react';
 import Filters from 'src/assets/icons/filters';
+import SearchIcon from 'src/assets/icons/search-icon';
 import Scrollbar from 'src/components/scrollbar';
 import {
   TableEmptyRows,
@@ -23,9 +33,10 @@ const TABLE_HEAD = [
   { id: 'client_name', label: 'Client Name' },
   { id: 'mobile_no', label: 'Mobile No' },
   { id: 'pan', label: 'PAN Number' },
+  { id: 'blocked', label: 'Status' },
+  { id: 'caliber', label: 'Caliber' },
   { id: 'kyc_missmatch', label: 'KYC Mismatch' },
   { id: 'aml', label: 'AML' },
-  { id: 'calibre', label: 'Calibre' },
   { id: 'edit', label: 'Actions', width: 80 },
 ];
 
@@ -33,9 +44,9 @@ const defaultFilters: GetUserRequest = {
   name: '',
   mobile: '',
   pan: '',
-  kyc_mismatch: false,
-  aml: false,
-  calibre: false,
+  kyc_mismatch: 'false',
+  is_aml: 'false',
+  is_caliber: 'false',
   total_pages: 1,
   total_records: 10,
 };
@@ -85,6 +96,13 @@ const UserListView = () => {
             onChange={(e) => setInput(e.target.value)}
             placeholder="Enter name, phone, PAN"
             onKeyDown={handleKeyPress}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+            }}
           />
           <Button
             onClick={() => filtersDrawer.onTrue()}
