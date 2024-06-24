@@ -122,7 +122,7 @@ export function useNavData() {
             children: [
               {
                 title: t('Value Added Services'),
-                path: paths.dashboard.universe.root,
+                path: paths.dashboard.universe.vas.root,
               },
               {
                 title: t('Landing page'),

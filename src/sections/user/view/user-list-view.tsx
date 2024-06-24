@@ -141,19 +141,14 @@ const UserListView = () => {
               />
 
               <TableBody>
-                {[...(data?.data?.users || [])]
-                  .slice(
-                    table.page * table.rowsPerPage,
-                    table.page * table.rowsPerPage + table.rowsPerPage
-                  )
-                  .map((row, i) => (
-                    <UserTableRow
-                      key={i}
-                      row={row}
-                      // selected={table.selected.includes(row.rid)}
-                      // onSelectRow={() => table.onSelectRow(row.rid)}
-                    />
-                  ))}
+                {[...(data?.data?.users || [])].map((row, i) => (
+                  <UserTableRow
+                    key={i}
+                    row={row}
+                    // selected={table.selected.includes(row.rid)}
+                    // onSelectRow={() => table.onSelectRow(row.rid)}
+                  />
+                ))}
 
                 <TableEmptyRows
                   height={denseHeight}
@@ -170,10 +165,12 @@ const UserListView = () => {
           </Scrollbar>
         </TableContainer>
         <TablePaginationCustom
-          count={data?.data?.users?.length || 0}
-          page={table.page}
+          count={data?.data?.total_records || 0}
+          page={(filters?.total_pages || 1) - 1 || 0}
           rowsPerPage={table.rowsPerPage}
-          onPageChange={table.onChangePage}
+          onPageChange={(e, newPage) =>
+            setFilters((prev) => ({ ...prev, total_pages: newPage + 1 }))
+          }
           onRowsPerPageChange={table.onChangeRowsPerPage}
           //
           dense={table.dense}
