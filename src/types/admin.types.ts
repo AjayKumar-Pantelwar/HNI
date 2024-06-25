@@ -126,8 +126,7 @@ export type AdminActionResponse = ApiResponse<AdminActionsData>;
 
 export type AdminActionsData = {
   actions: Action[];
-  total_records: number;
-  total_pages: number;
+  count: number;
 };
 
 export type Action = {
