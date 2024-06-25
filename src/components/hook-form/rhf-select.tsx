@@ -1,5 +1,6 @@
 import { Controller, useFormContext } from 'react-hook-form';
 // @mui
+import { Stack, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
 import Chip from '@mui/material/Chip';
@@ -30,6 +31,7 @@ export function RHFSelect({
   helperText,
   children,
   PaperPropsSx,
+  label,
   ...other
 }: RHFSelectProps) {
   const { control } = useFormContext();
@@ -39,30 +41,35 @@ export function RHFSelect({
       name={name}
       control={control}
       render={({ field, fieldState: { error } }) => (
-        <TextField
-          {...field}
-          select
-          fullWidth
-          SelectProps={{
-            native,
-            MenuProps: {
-              PaperProps: {
-                sx: {
-                  ...(!native && {
-                    maxHeight: typeof maxHeight === 'number' ? maxHeight : 'unset',
-                  }),
-                  ...PaperPropsSx,
+        <Stack>
+          <Typography variant="caption" fontWeight={500} color="text.secondary">
+            {label}
+          </Typography>
+          <TextField
+            {...field}
+            select
+            fullWidth
+            SelectProps={{
+              native,
+              MenuProps: {
+                PaperProps: {
+                  sx: {
+                    ...(!native && {
+                      maxHeight: typeof maxHeight === 'number' ? maxHeight : 'unset',
+                    }),
+                    ...PaperPropsSx,
+                  },
                 },
               },
-            },
-            sx: { textTransform: 'capitalize' },
-          }}
-          error={!!error}
-          helperText={error ? error?.message : helperText || ' '}
-          {...other}
-        >
-          {children}
-        </TextField>
+              sx: { textTransform: 'capitalize' },
+            }}
+            error={!!error}
+            helperText={error ? error?.message : helperText}
+            {...other}
+          >
+            {children}
+          </TextField>
+        </Stack>
       )}
     />
   );
@@ -173,7 +180,9 @@ export function RHFMultiSelect({
           </Select>
 
           {(!!error || helperText) && (
-            <FormHelperText error={!!error}>{error ? error?.message : helperText}</FormHelperText>
+            <FormHelperText className="ajay" error={!!error}>
+              {error ? error?.message : helperText}
+            </FormHelperText>
           )}
         </FormControl>
       )}

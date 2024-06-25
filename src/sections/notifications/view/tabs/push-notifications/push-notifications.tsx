@@ -1,8 +1,8 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Box, Button, Grid, IconButton, MenuItem, Stack, Typography } from '@mui/material';
+import { Box, Button, Grid, MenuItem, Stack, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import DeleteIcon from 'src/assets/icons/delete-icon';
-import { RHFCheckbox, RHFRadioGroup, RHFSelect, RHFTextField } from 'src/components/hook-form';
+import { CustomCheckbox } from 'src/components/custom-checkbox';
+import { RHFRadioGroup, RHFSelect, RHFTextField } from 'src/components/hook-form';
 import FormProvider from 'src/components/hook-form/form-provider';
 import { PreviewFile } from 'src/components/preview-file';
 import CustomSwitch from 'src/components/toggle-button';
@@ -37,6 +37,10 @@ const PushNotifications = () => {
         })
       )
       .required('Tags are required'),
+    cta_label1: Yup.string().required('cta label 1 is required'),
+    cta_label2: Yup.string().required('cta label 2 is required'),
+    cta_key1: Yup.string().required('cta key 1 is required'),
+    cta_key2: Yup.string().required('cta key 2 is required'),
     deliver_type: Yup.string()
       .required('Type is required')
       .oneOf(['android', 'ios'], 'Type must be either android or ios'),
@@ -51,6 +55,10 @@ const PushNotifications = () => {
     rich_notification: false,
     image: '',
     ctas: [{ key: '', label: '' }],
+    cta_label1: '',
+    cta_label2: '',
+    cta_key1: '',
+    cta_key2: '',
     deliver_type: '',
     notification_box: false,
   };
@@ -113,6 +121,8 @@ const PushNotifications = () => {
                   rows={2}
                 />
                 <RHFTextField name="navigation_key" label="Navigation Key" />
+                <RHFTextField name="cta_label1" label="CTA 1 Label" />
+                <RHFTextField name="cta_label2" label="CTA 2 Label" />
               </Stack>
             </Grid>
             <Grid item xs={12} md={6}>
@@ -134,8 +144,30 @@ const PushNotifications = () => {
                       Deliver To (OS)
                     </Typography>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <RHFCheckbox name="deliver_type" label="Android" value="android" />
-                      <RHFCheckbox name="deliver_type" label="IOS" value="ios" />
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <CustomCheckbox
+                          name="deliver_type"
+                          label="Android"
+                          checked={watch('deliver_type') === 'android'}
+                          onChange={(e) => {
+                            if (e.target.checked) setValue('deliver_type', 'android');
+                            else setValue('deliver_type', '');
+                          }}
+                        />
+                        <Typography variant="subtitle2">Android</Typography>
+                      </Box>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <CustomCheckbox
+                          name="deliver_type"
+                          label="Android"
+                          checked={watch('deliver_type') === 'ios'}
+                          onChange={(e) => {
+                            if (e.target.checked) setValue('deliver_type', 'ios');
+                            else setValue('deliver_type', '');
+                          }}
+                        />
+                        <Typography variant="subtitle2">IOS</Typography>
+                      </Box>
                     </Box>
                   </Stack>
                 </Box>
@@ -149,9 +181,12 @@ const PushNotifications = () => {
                   label="Add to notification box"
                   sx={{ display: 'flex', flexDirection: 'row' }}
                 />
+                <RHFTextField name="cta_key1" label="CTA 1 Key" />
+
+                <RHFTextField name="cta_key2" label="CTA 2 Key" />
               </Stack>
             </Grid>
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <Stack sx={{ gap: 2 }}>
                 {cta.map((c, i) => (
                   <Box
@@ -189,7 +224,7 @@ const PushNotifications = () => {
                   Add CTA
                 </Button>
               </Stack>
-            </Grid>
+            </Grid> */}
             <Grid item xs={12}>
               <Box
                 sx={{
@@ -215,18 +250,20 @@ const PushNotifications = () => {
                   )}
                 </Box>
                 <Box sx={{ flex: 1 / 2 }}>
-                  <Button variant="contained" size="large" fullWidth>
+                  <Button type="submit" variant="contained" size="large" fullWidth>
                     Send Notification
                   </Button>
                 </Box>
               </Box>
             </Grid>
           </Grid>
-          <NotificationViewer
-            description={watch('description')}
-            title={watch('title')}
-            image={watch('image') as any}
-          />
+          <Box>
+            <NotificationViewer
+              description={watch('description')}
+              title={watch('title')}
+              image={watch('image') as any}
+            />
+          </Box>
         </Box>
       </FormProvider>
     </Box>

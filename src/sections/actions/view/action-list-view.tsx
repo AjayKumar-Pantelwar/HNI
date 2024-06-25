@@ -110,7 +110,7 @@ export const ActionListView: React.FC = () => {
           setFilters={setFilters}
           canReset={canReset}
           onResetFilters={handleResetFilters}
-          results={+(data?.data?.total_records || 0)}
+          results={+(data?.data?.count || 0)}
         />
         <ActionsFilters
           open={openFilters.value}
@@ -172,7 +172,7 @@ export const ActionListView: React.FC = () => {
         </TableContainer>
 
         <TablePaginationCustom
-          count={+(data?.data?.total_records || 0)}
+          count={+(data?.data?.count || 0)}
           page={+(filters.page_no || 1) - 1}
           rowsPerPage={+(filters.no_of_records || 10)}
           onPageChange={(_, page) => setFilters({ ...filters, page_no: page + 1 })}

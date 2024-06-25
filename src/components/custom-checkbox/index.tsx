@@ -23,6 +23,7 @@ export const CustomCheckbox = ({
   <Checkbox
     checked={checked}
     onChange={onChange}
+    sx={{ p: 'unset' }}
     inputProps={{
       id,
       name,
