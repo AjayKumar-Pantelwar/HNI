@@ -1,6 +1,6 @@
 import { Box, IconButton, Stack, Typography } from '@mui/material';
 
-import DeleteFileIcon from 'src/assets/icons/delete-file.icon';
+import DeleteIcon from 'src/assets/icons/delete-icon';
 import PreviewFileIcon from 'src/assets/icons/preview-file';
 import RetryFileIcon from 'src/assets/icons/retry-file.icon';
 import { secondaryFont } from 'src/theme/typography';
@@ -82,7 +82,7 @@ export const PreviewFile = (props: Props) => {
               </IconButton>
             </FileDropzone>
             <IconButton onClick={handleDelete} sx={{ p: 1 }}>
-              <DeleteFileIcon />
+              <DeleteIcon />
             </IconButton>
           </Box>
         </Box>
