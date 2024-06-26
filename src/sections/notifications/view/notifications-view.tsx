@@ -12,12 +12,14 @@ import kebabToCapitalize from 'src/utils/change-case';
 import AddAnnouncementModal from './tabs/announcements/add-announcement-modal';
 import Announcement from './tabs/announcements/announcement';
 import AppUpdate from './tabs/app-update';
+import InApp from './tabs/in-app/in-app';
 import PushNotifications from './tabs/push-notifications/push-notifications';
 
 export enum NotificationTabs {
   ANNOUNCEMENT = 'announcement',
   APP_UPDATE = 'app_update',
   PUSH_NOTIFICATIONS = 'push_notifications',
+  IN_APP = 'in_app',
 }
 
 const NotificationsView = () => {
@@ -41,7 +43,8 @@ const NotificationsView = () => {
         return <AppUpdate />;
       case NotificationTabs.PUSH_NOTIFICATIONS:
         return <PushNotifications />;
-
+      case NotificationTabs.IN_APP:
+        return <InApp />;
       default:
         return (
           <Typography component="div" sx={{ p: 3 }}>
@@ -83,6 +86,7 @@ const NotificationsView = () => {
             <Tab value={NotificationTabs.ANNOUNCEMENT} label="Announcements" />
             <Tab value={NotificationTabs.APP_UPDATE} label="App Updates" />
             <Tab value={NotificationTabs.PUSH_NOTIFICATIONS} label="Push Notifications" />
+            <Tab value={NotificationTabs.IN_APP} label="In App" />
           </Tabs>
         </Box>
         {tabContent(tab)}

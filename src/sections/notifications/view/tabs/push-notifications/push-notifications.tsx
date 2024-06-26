@@ -37,10 +37,10 @@ const PushNotifications = () => {
         })
       )
       .required('Tags are required'),
-    cta_label1: Yup.string().required('cta label 1 is required'),
-    cta_label2: Yup.string().required('cta label 2 is required'),
-    cta_key1: Yup.string().required('cta key 1 is required'),
-    cta_key2: Yup.string().required('cta key 2 is required'),
+    cta_label1: Yup.string(),
+    cta_label2: Yup.string(),
+    cta_key1: Yup.string(),
+    cta_key2: Yup.string(),
     deliver_type: Yup.string()
       .required('Type is required')
       .oneOf(['android', 'ios'], 'Type must be either android or ios'),
@@ -229,26 +229,28 @@ const PushNotifications = () => {
               <Box
                 sx={{
                   display: 'flex',
-                  justifyContent: 'space-between',
+                  justifyContent: 'end',
                   alignItems: 'end',
                   gap: 3,
                 }}
               >
-                <Box sx={{ flex: 1 }}>
-                  {!image ? (
-                    <UploadFile
-                      uploadAs="JPG"
-                      maxFileSize={2}
-                      label="Upload Image"
-                      handleFileChange={handleFileChangePerm}
-                    />
-                  ) : (
-                    <PreviewFile
-                      selectedFile={image as any}
-                      handleFileChange={handleFileChangePerm}
-                    />
-                  )}
-                </Box>
+                {watch('rich_notification') && (
+                  <Box sx={{ flex: 1 }}>
+                    {!image ? (
+                      <UploadFile
+                        uploadAs="JPG"
+                        maxFileSize={2}
+                        label="Upload Image"
+                        handleFileChange={handleFileChangePerm}
+                      />
+                    ) : (
+                      <PreviewFile
+                        selectedFile={image as any}
+                        handleFileChange={handleFileChangePerm}
+                      />
+                    )}
+                  </Box>
+                )}
                 <Box sx={{ flex: 1 / 2 }}>
                   <Button type="submit" variant="contained" size="large" fullWidth>
                     Send Notification
