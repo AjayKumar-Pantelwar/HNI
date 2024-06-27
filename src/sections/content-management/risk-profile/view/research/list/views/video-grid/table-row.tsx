@@ -1,6 +1,8 @@
+'use client';
+
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-import { Chip, IconButton, MenuItem, Stack, TableCell, TableRow } from '@mui/material';
+import { IconButton, MenuItem, TableCell, TableRow } from '@mui/material';
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
 
 import DeleteIcon from 'src/assets/icons/delete-icon';
@@ -25,6 +27,23 @@ export const VideoGridTableRow = (props: Props) => {
 
   const deleteEntry = useBoolean();
 
+  // const [imageUrl, setImageUrl] = useState('');
+
+  // const mounted = useMounted();
+
+  // useEffect(() => {
+  //   if (!mounted) return;
+  //   async function handleImageLink() {
+  //     if (card?.image_link) {
+  //       convertUrlToFile(card?.image_link).then((file) => {
+  //         const url = file ? URL.createObjectURL(file) : '';
+  //         setImageUrl(url);
+  //       });
+  //     }
+  //   }
+  //   handleImageLink();
+  // }, [card?.image_link, mounted]);
+
   return (
     <TableRow>
       <TableCell>
@@ -32,13 +51,13 @@ export const VideoGridTableRow = (props: Props) => {
       </TableCell>
       <TableCell>{card?.title}</TableCell>
       <TableCell>{identifyFilename(card?.video_link)}</TableCell>
-      <TableCell>
+      {/* <TableCell>
         <Stack direction="row" sx={{ gap: 1, flexWrap: 'wrap' }}>
           {card?.tags?.map((c) => (
             <Chip color="info" variant="soft" label={c.value} />
           ))}
         </Stack>
-      </TableCell>
+      </TableCell> */}
       <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
         <IconButton sx={{ py: 0 }} onClick={popover.onOpen}>
           <MoreVertIcon />

@@ -124,7 +124,7 @@ const AddPDFLinkModal = (props: Props) => {
     >
       <FormProvider methods={methods} onSubmit={onSubmit}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 3 }}>
-          <Typography variant="h5">Add News</Typography>
+          <Typography variant="h5">Add New Article</Typography>
           <IconButton onClick={onClose}>
             <Close />
           </IconButton>
@@ -137,10 +137,11 @@ const AddPDFLinkModal = (props: Props) => {
                 <RHFTextField name="title" label="Title" />
                 {!image ? (
                   <UploadFile
-                    uploadAs="JPG"
+                    uploadAs="PNG"
                     maxFileSize={2}
                     label="Upload Image"
                     handleFileChange={handleFileChangePerm}
+                    accept={{ 'image/png': ['.png'] }}
                   />
                 ) : (
                   <PreviewFile

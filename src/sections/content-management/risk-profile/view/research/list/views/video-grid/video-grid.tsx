@@ -1,3 +1,5 @@
+'use client';
+
 import { Box, Button, Divider, Stack, Table, TableBody, TableContainer } from '@mui/material';
 import Scrollbar from 'src/components/scrollbar';
 
