@@ -64,7 +64,7 @@ const UserFilterDrawer = (props: Props) => {
               onChange={(e) => {
                 setCurrentFilters((prev) => ({
                   ...prev,
-                  aml: e.target.value,
+                  is_aml: e.target.value,
                 }));
               }}
             >
@@ -81,7 +81,7 @@ const UserFilterDrawer = (props: Props) => {
               onChange={(e) => {
                 setCurrentFilters((prev) => ({
                   ...prev,
-                  caliber: e.target.value,
+                  is_caliber: e.target.value,
                 }));
               }}
             >
@@ -98,7 +98,7 @@ const UserFilterDrawer = (props: Props) => {
           fullWidth
           onClick={() => {
             setCurrentFilters(defaultFilters);
-            setFilters(currentFilters);
+            setFilters(defaultFilters);
             onClose();
           }}
         >

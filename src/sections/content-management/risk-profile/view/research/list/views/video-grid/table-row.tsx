@@ -1,3 +1,5 @@
+'use client';
+
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 import { Chip, IconButton, MenuItem, Stack, TableCell, TableRow } from '@mui/material';
@@ -24,6 +26,23 @@ export const VideoGridTableRow = (props: Props) => {
   const quickEdit = useBoolean();
 
   const deleteEntry = useBoolean();
+
+  // const [imageUrl, setImageUrl] = useState('');
+
+  // const mounted = useMounted();
+
+  // useEffect(() => {
+  //   if (!mounted) return;
+  //   async function handleImageLink() {
+  //     if (card?.image_link) {
+  //       convertUrlToFile(card?.image_link).then((file) => {
+  //         const url = file ? URL.createObjectURL(file) : '';
+  //         setImageUrl(url);
+  //       });
+  //     }
+  //   }
+  //   handleImageLink();
+  // }, [card?.image_link, mounted]);
 
   return (
     <TableRow>

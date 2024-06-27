@@ -10,10 +10,11 @@ import {
   TableContainer,
   TextField,
 } from '@mui/material';
-import { KeyboardEvent, useState } from 'react';
+import { KeyboardEvent, useEffect, useState } from 'react';
 import Filters from 'src/assets/icons/filters';
 import SearchIcon from 'src/assets/icons/search-icon';
 import Scrollbar from 'src/components/scrollbar';
+import { useSnackbar } from 'src/components/snackbar';
 import {
   TableEmptyRows,
   TableHeadCustom,
@@ -44,9 +45,9 @@ const defaultFilters: GetUserRequest = {
   name: '',
   mobile: '',
   pan: '',
-  kyc_mismatch: 'false',
-  is_aml: 'false',
-  is_caliber: 'false',
+  kyc_mismatch: '',
+  is_aml: '',
+  is_caliber: '',
   total_pages: 1,
   total_records: 10,
 };
@@ -55,7 +56,9 @@ const UserListView = () => {
   const table = useTable();
 
   const [filters, setFilters] = useState<GetUserRequest>(defaultFilters);
-  const { data } = userApi.useUsersQuery(filters);
+  const { data, error, isError } = userApi.useUsersQuery(filters);
+
+  const { enqueueSnackbar } = useSnackbar();
 
   const [input, setInput] = useState('');
 
@@ -85,7 +88,11 @@ const UserListView = () => {
     }
   };
 
-  console.log(data);
+  useEffect(() => {
+    if (isError) {
+      enqueueSnackbar((error as any).data.message, { variant: 'error' });
+    }
+  }, [isError]);
 
   return (
     <Box>
