@@ -2,7 +2,7 @@
 
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-import { Chip, IconButton, MenuItem, Stack, TableCell, TableRow } from '@mui/material';
+import { IconButton, MenuItem, TableCell, TableRow } from '@mui/material';
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
 
 import DeleteIcon from 'src/assets/icons/delete-icon';
@@ -51,13 +51,13 @@ export const VideoGridTableRow = (props: Props) => {
       </TableCell>
       <TableCell>{card?.title}</TableCell>
       <TableCell>{identifyFilename(card?.video_link)}</TableCell>
-      <TableCell>
+      {/* <TableCell>
         <Stack direction="row" sx={{ gap: 1, flexWrap: 'wrap' }}>
           {card?.tags?.map((c) => (
             <Chip color="info" variant="soft" label={c.value} />
           ))}
         </Stack>
-      </TableCell>
+      </TableCell> */}
       <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
         <IconButton sx={{ py: 0 }} onClick={popover.onOpen}>
           <MoreVertIcon />
