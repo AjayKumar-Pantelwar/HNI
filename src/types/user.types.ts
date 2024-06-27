@@ -26,16 +26,16 @@ export interface User {
   is_blocked: boolean;
   is_kyc_mismatched: boolean;
   is_aml_present: boolean;
-  is_caliber_user: boolean;
+  is_calibre_user: boolean;
   aml_bypassed: boolean;
-  caliber_allowed: boolean;
+  calibre_allowed: boolean;
   kyc_mismatch_allowed: boolean;
 }
 
 export enum UserActions {
   CKYC_MISMATCH = 'ckyc-mismatch',
   AML_BYPASS = 'aml-bypass',
-  CALIBER_BYPASS = 'caliber-bypass',
+  CALIBRE_BYPASS = 'calibre-bypass',
   BLOCK_USER = 'block-user',
 }
 

@@ -1,9 +1,11 @@
 'use client';
 
+import RefreshIcon from '@mui/icons-material/Refresh';
 import {
   Box,
   Button,
   Card,
+  IconButton,
   InputAdornment,
   Table,
   TableBody,
@@ -35,7 +37,7 @@ const TABLE_HEAD = [
   { id: 'mobile_no', label: 'Mobile No' },
   { id: 'pan', label: 'PAN Number' },
   { id: 'blocked', label: 'Status' },
-  { id: 'caliber', label: 'Caliber' },
+  { id: 'calibre', label: 'Caliber' },
   { id: 'kyc_missmatch', label: 'KYC Mismatch' },
   { id: 'aml', label: 'AML' },
   { id: 'edit', label: 'Actions', width: 80 },
@@ -56,7 +58,9 @@ const UserListView = () => {
   const table = useTable();
 
   const [filters, setFilters] = useState<GetUserRequest>(defaultFilters);
-  const { data, error, isError } = userApi.useUsersQuery(filters);
+  const { data, error, isError, refetch } = userApi.useUsersQuery(filters);
+
+  const [currentFilters, setCurrentFilters] = useState<GetUserRequest>(defaultFilters);
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -98,19 +102,32 @@ const UserListView = () => {
     <Box>
       <Card>
         <Box sx={{ p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <TextField
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Enter name, phone, PAN"
-            onKeyDown={handleKeyPress}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <TextField
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Enter name, phone, PAN"
+              onKeyDown={handleKeyPress}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+            {JSON.stringify(defaultFilters) !== JSON.stringify(filters) && (
+              <IconButton
+                onClick={() => {
+                  setFilters(defaultFilters);
+                  setCurrentFilters(defaultFilters);
+                  refetch();
+                }}
+              >
+                <RefreshIcon sx={{ color: '#2D68FE' }} />
+              </IconButton>
+            )}
+          </Box>
           <Button
             onClick={() => filtersDrawer.onTrue()}
             variant="contained"
@@ -189,6 +206,8 @@ const UserListView = () => {
         setFilters={setFilters}
         open={filtersDrawer.value}
         onClose={filtersDrawer.onFalse}
+        currentFilters={currentFilters}
+        setCurrentFilters={setCurrentFilters}
       />
     </Box>
   );

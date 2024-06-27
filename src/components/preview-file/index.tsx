@@ -1,9 +1,12 @@
 import { Box, IconButton, Stack, Typography } from '@mui/material';
 
+import { useEffect, useState } from 'react';
 import DeleteIcon from 'src/assets/icons/delete-icon';
 import PreviewFileIcon from 'src/assets/icons/preview-file';
 import RetryFileIcon from 'src/assets/icons/retry-file.icon';
+import useMounted from 'src/hooks/mounted';
 import { secondaryFont } from 'src/theme/typography';
+import { convertUrlToFile } from 'src/utils/convert-url-to-file';
 import { FileDropzone } from '../file-dropzone';
 
 type Props = {
@@ -19,7 +22,7 @@ export const PreviewFile = (props: Props) => {
     handleFileChange(null);
   };
 
-  const fileSizeInMB = (file: File) => (file.size / (1024 * 1024)).toFixed(2);
+  const fileSizeInMB = (file: File) => Number.isNaN((file.size / (1024 * 1024)).toFixed(2)) || '0';
 
   const getFileName = (file: File) => {
     const { name } = file;
@@ -29,6 +32,22 @@ export const PreviewFile = (props: Props) => {
     }
     return name || '--';
   };
+
+  const [modifiedFile, setModifiedFile] = useState<File>();
+
+  const mounted = useMounted();
+
+  useEffect(() => {
+    if (!mounted) return;
+    async function handleImageLink() {
+      if (typeof selectedFile === 'string') {
+        convertUrlToFile(selectedFile).then((file) => {
+          if (file) setModifiedFile(file);
+        });
+      }
+    }
+    handleImageLink();
+  }, [selectedFile, mounted]);
 
   return (
     <Stack>
@@ -58,7 +77,7 @@ export const PreviewFile = (props: Props) => {
                 fontFamily: secondaryFont.style.fontFamily,
               }}
             >
-              {getFileName(selectedFile)}{' '}
+              {getFileName(modifiedFile || selectedFile)}{' '}
               <Typography
                 fontWeight={500}
                 fontSize={11}
