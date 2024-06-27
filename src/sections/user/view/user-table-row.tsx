@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Box,
   Checkbox,
   Chip,
   IconButton,
@@ -8,6 +9,7 @@ import {
   TableCell,
   TableRow,
   Tooltip,
+  Typography,
 } from '@mui/material';
 import { useState } from 'react';
 
@@ -47,11 +49,11 @@ const UserTableRow = (props: Props) => {
     setOpen(false);
   };
 
-  const caliber = row?.is_caliber_user ? 'Yes' : 'No';
+  const calibre = row?.is_calibre_user ? 'Yes' : 'No';
 
-  const kyc = row?.is_caliber_user ? '---' : row?.is_kyc_mismatched ? 'Yes' : 'No';
+  const kyc = row?.is_calibre_user ? '---' : row?.is_kyc_mismatched ? 'Yes' : 'No';
 
-  const aml = row?.is_caliber_user ? '---' : row?.is_aml_present ? 'Yes' : 'No';
+  const aml = row?.is_calibre_user ? '---' : row?.is_aml_present ? 'Yes' : 'No';
 
   return (
     <TableRow
@@ -73,8 +75,8 @@ const UserTableRow = (props: Props) => {
       <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
         <Avatar src={row.name.toLocaleUpperCase()} alt={row.name} sx={{ mr: 2 }} />
         <ListItemText
-          primary={row.name}
-          secondary={row.email}
+          primary={row.name || '---'}
+          secondary={row.email || '---'}
           primaryTypographyProps={{
             typography: 'subtitle1',
             fontFamily: secondaryFont.style.fontFamily,
@@ -94,12 +96,63 @@ const UserTableRow = (props: Props) => {
           color={row.is_blocked ? 'error' : 'success'}
         />
       </TableCell>
-      <TableCell>{caliber}</TableCell>
-      <TableCell>{kyc}</TableCell>
-      <TableCell>{aml}</TableCell>
+      <TableCell>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+          <Typography sx={{ fontSize: '12px', fontWeight: 500 }}>{calibre}</Typography>
+          {row.calibre_allowed && (
+            <Chip
+              sx={{
+                fontSize: '11px',
+                fontWeight: 600,
+                px: 'unset',
+                '& .MuiChip-label': { px: 0.5 },
+              }}
+              variant="soft"
+              color="info"
+              label="Whitelisted"
+            />
+          )}
+        </Box>{' '}
+      </TableCell>
+      <TableCell>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+          <Typography sx={{ fontSize: '12px', fontWeight: 500 }}>{kyc}</Typography>
+          {row.kyc_mismatch_allowed && (
+            <Chip
+              sx={{
+                fontSize: '11px',
+                fontWeight: 600,
+                px: 'unset',
+                '& .MuiChip-label': { px: 0.5 },
+              }}
+              variant="soft"
+              color="info"
+              label="Whitelisted"
+            />
+          )}
+        </Box>{' '}
+      </TableCell>
+      <TableCell>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+          <Typography sx={{ fontSize: '12px', fontWeight: 500 }}>{aml}</Typography>
+          {row.aml_bypassed && (
+            <Chip
+              sx={{
+                fontSize: '11px',
+                fontWeight: 600,
+                px: 'unset',
+                '& .MuiChip-label': { px: 0.5 },
+              }}
+              variant="soft"
+              color="info"
+              label="Whitelisted"
+            />
+          )}
+        </Box>{' '}
+      </TableCell>
       <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
         <Tooltip title="Quick Edit" placement="top" arrow>
-          <IconButton sx={{ py: 0 }} onClick={popover.onOpen}>
+          <IconButton onClick={popover.onOpen}>
             <MoreVertIcon />
           </IconButton>
         </Tooltip>

@@ -14,6 +14,10 @@ export function identifyFilename(urlString: string) {
   try {
     const url = new URL(urlString);
     const filename = url.pathname.substring(url.pathname.lastIndexOf('/') + 1);
+    if (filename?.length > 24) {
+      const extension = filename.split('.').pop();
+      return `${filename.slice(0, 15)}...${extension}`;
+    }
     return filename ?? 'no file found';
   } catch (error) {
     return 'Invalid url';

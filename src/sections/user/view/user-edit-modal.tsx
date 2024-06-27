@@ -54,7 +54,7 @@ const UserEditModal = (props: Props) => {
             ? UserActions.CKYC_MISMATCH
             : expanded === 'aml'
             ? UserActions.AML_BYPASS
-            : UserActions.CALIBER_BYPASS,
+            : UserActions.CALIBRE_BYPASS,
         mobile_number: user.mobile,
         reason,
         status: isChecked,
@@ -81,7 +81,7 @@ const UserEditModal = (props: Props) => {
     },
     {
       title: 'Caliber',
-      value: user?.is_caliber_user ? 'Yes' : 'No',
+      value: user?.is_calibre_user ? 'Yes' : 'No',
       id: 'caliber',
     },
   ];

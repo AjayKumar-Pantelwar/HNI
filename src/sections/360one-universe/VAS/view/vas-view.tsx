@@ -12,11 +12,11 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 
-import EditIcon from '@mui/icons-material/Edit';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 import { useSettingsContext } from 'src/components/settings';
 import { useBoolean } from 'src/hooks/use-boolean';
 
+import EditIcon from 'src/assets/icons/edit-icon';
 import { VASApi } from 'src/redux/api/vas.api';
 import { paths } from 'src/routes/paths';
 import { ResearchData } from 'src/types/content-management/research.types';
@@ -119,23 +119,23 @@ const VASView = () => {
                     <Tab
                       key={key}
                       value={key}
-                      label={
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                          <Typography variant="subtitle2">{capitalize(d?.product_name)}</Typography>
-                          {tab === key && (
-                            <IconButton
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                edit.onTrue();
-                                setTabName(d?.product_name);
-                                setTabId(d?.product_id);
-                              }}
-                            >
-                              <EditIcon fontSize="small" color="primary" />
-                            </IconButton>
-                          )}
-                        </Box>
+                      iconPosition="end"
+                      icon={
+                        tab === key ? (
+                          <IconButton
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              edit.onTrue();
+                              setTabName(d?.table_name);
+                            }}
+                          >
+                            <EditIcon />
+                          </IconButton>
+                        ) : (
+                          <></>
+                        )
                       }
+                      label={capitalize(d?.product_name)}
                     />
                   ))}
                 </Tabs>

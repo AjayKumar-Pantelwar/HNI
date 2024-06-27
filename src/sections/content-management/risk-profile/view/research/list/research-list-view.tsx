@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Card, Container, IconButton, Tab, Tabs, Typography } from '@mui/material';
+import { Box, Card, Container, IconButton, Tab, Tabs } from '@mui/material';
 import { useState } from 'react';
 
 import EditIcon from 'src/assets/icons/edit-icon';
@@ -74,22 +74,23 @@ const ResearchListView = () => {
               <Tab
                 key={i}
                 value={i + 1}
-                label={
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <Typography variant="subtitle2">{capitalize(d?.table_name)}</Typography>
-                    {tab === i + 1 && (
-                      <IconButton
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          edit.onTrue();
-                          setTabName(d?.table_name);
-                        }}
-                      >
-                        <EditIcon fontSize="small" color="primary" />
-                      </IconButton>
-                    )}
-                  </Box>
+                iconPosition="end"
+                icon={
+                  tab === i + 1 ? (
+                    <IconButton
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        edit.onTrue();
+                        setTabName(d?.table_name);
+                      }}
+                    >
+                      <EditIcon fontSize="small" color="primary" />
+                    </IconButton>
+                  ) : (
+                    <></>
+                  )
                 }
+                label={capitalize(d?.table_name)}
               />
             ))}
           </Tabs>

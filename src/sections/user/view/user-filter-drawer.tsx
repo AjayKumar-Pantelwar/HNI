@@ -9,7 +9,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { GetUserRequest } from 'src/types/user.types';
 
 interface Props {
@@ -17,11 +17,13 @@ interface Props {
   onClose: () => void;
   defaultFilters: GetUserRequest;
   setFilters: Dispatch<SetStateAction<GetUserRequest>>;
+  currentFilters: GetUserRequest;
+  setCurrentFilters: Dispatch<SetStateAction<GetUserRequest>>;
 }
 
 const UserFilterDrawer = (props: Props) => {
-  const { onClose, open, defaultFilters, setFilters } = props;
-  const [currentFilters, setCurrentFilters] = useState<GetUserRequest>(defaultFilters);
+  const { onClose, open, defaultFilters, setFilters, currentFilters, setCurrentFilters } = props;
+
   return (
     <Drawer
       anchor="right"
