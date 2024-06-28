@@ -4,7 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import LoadingButton from '@mui/lab/LoadingButton';
 
-import { Alert, Box, Dialog, Divider, Link } from '@mui/material';
+import { Alert, Box, Dialog, Divider } from '@mui/material';
 
 import IconButton from '@mui/material/IconButton';
 
@@ -32,7 +32,6 @@ import { useBoolean } from 'src/hooks/use-boolean';
 import { authSlice } from 'src/redux/slices/auth.slice';
 
 import { useDispatch, useSelector } from 'src/redux/store';
-import { RouterLink } from 'src/routes/components';
 
 import { paths } from 'src/routes/paths';
 
@@ -162,11 +161,11 @@ export default function LoginSection() {
         </LoadingButton>
       </Stack>
       <Divider />
-      <Box sx={{ display: 'flex', justifyContent: 'start' }}>
+      {/* <Box sx={{ display: 'flex', justifyContent: 'start' }}>
         <Link component={RouterLink} href={paths.auth.changePassword}>
           Forgot Password?
         </Link>
-      </Box>
+      </Box> */}
     </Stack>
   );
 
