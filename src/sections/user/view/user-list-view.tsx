@@ -37,7 +37,7 @@ const TABLE_HEAD = [
   { id: 'mobile_no', label: 'Mobile No' },
   { id: 'pan', label: 'PAN Number' },
   { id: 'blocked', label: 'Status' },
-  { id: 'calibre', label: 'Caliber' },
+  { id: 'caliber', label: 'Caliber' },
   { id: 'kyc_missmatch', label: 'KYC Mismatch' },
   { id: 'aml', label: 'AML' },
   { id: 'edit', label: 'Actions', width: 80 },

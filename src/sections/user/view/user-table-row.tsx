@@ -51,11 +51,17 @@ const UserTableRow = (props: Props) => {
     setOpen(false);
   };
 
-  const calibre = row?.is_calibre_user ? 'Yes' : 'No';
+  const caliber = row?.is_caliber_user ? 'Yes' : 'No';
 
-  const kyc = row?.is_calibre_user ? '---' : row?.is_kyc_mismatched ? 'Yes' : 'No';
+  const kyc = row?.is_caliber_user ? '---' : row?.is_kyc_mismatched ? 'Yes' : 'No';
 
-  const aml = row?.is_calibre_user ? '---' : row?.is_aml_present ? 'Yes' : 'No';
+  const aml = row?.is_caliber_user ? '---' : row?.is_aml_present ? 'Yes' : 'No';
+
+  const status = row?.is_blocked
+    ? 'Blocked'
+    : row?.pan && row?.mobile && row?.name && row?.email
+    ? 'Active'
+    : 'Inactive';
 
   return (
     <TableRow
@@ -94,14 +100,14 @@ const UserTableRow = (props: Props) => {
       <TableCell>
         <Chip
           variant="soft"
-          label={row.is_blocked ? ' blocked' : 'active'}
-          color={row.is_blocked ? 'error' : 'success'}
+          label={status}
+          color={status === 'Active' ? 'success' : status === 'Inactive' ? 'warning' : 'error'}
         />
       </TableCell>
       <TableCell>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-          <Typography sx={{ fontSize: '12px', fontWeight: 500 }}>{calibre}</Typography>
-          {row.calibre_allowed && (
+          <Typography sx={{ fontSize: '12px', fontWeight: 500 }}>{caliber}</Typography>
+          {row.caliber_allowed && (
             <Chip
               sx={{
                 fontSize: '11px',

@@ -56,7 +56,7 @@ const UserEditModal = (props: Props) => {
             ? UserActions.CKYC_MISMATCH
             : expanded === 'aml'
             ? UserActions.AML_BYPASS
-            : UserActions.CALIBRE_BYPASS,
+            : UserActions.CALIBER_BYPASS,
         mobile_number: user.mobile,
         reason,
         status: isChecked,
@@ -83,7 +83,7 @@ const UserEditModal = (props: Props) => {
     },
     {
       title: 'Caliber',
-      value: user?.is_calibre_user ? 'Yes' : 'No',
+      value: user?.is_caliber_user ? 'Yes' : 'No',
       id: 'caliber',
     },
   ];
@@ -142,9 +142,14 @@ const UserEditModal = (props: Props) => {
                   }}
                 >
                   <Typography variant="subtitle1">Do you want to Whitelist?</Typography>
-                  <Checkbox checked={isChecked} onChange={() => setIsChecked(!isChecked)} />
+                  <Checkbox
+                    disabled={detail?.value === 'No'}
+                    checked={isChecked}
+                    onChange={() => setIsChecked(!isChecked)}
+                  />
                 </Box>
                 <TextField
+                  disabled={detail?.value === 'No'}
                   value={reason}
                   onChange={(e) => setReason(e.target.value)}
                   fullWidth
